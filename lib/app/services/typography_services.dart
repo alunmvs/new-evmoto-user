@@ -10,8 +10,22 @@ class TypographyServices extends GetxService {
     letterSpacing: 0,
   ).obs;
 
+  final headingSmallBold = GoogleFonts.nunitoSans(
+    fontWeight: FontWeight.w700,
+    fontSize: 20,
+    height: 1.4,
+    letterSpacing: 0,
+  ).obs;
+
   final bodyLargeBold = GoogleFonts.nunitoSans(
     fontWeight: FontWeight.w700,
+    fontSize: 16,
+    height: 1.4,
+    letterSpacing: 0,
+  ).obs;
+
+  final bodyLargeRegular = GoogleFonts.nunitoSans(
+    fontWeight: FontWeight.w400,
     fontSize: 16,
     height: 1.4,
     letterSpacing: 0,

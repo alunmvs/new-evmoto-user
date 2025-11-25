@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.7.3
   google_fonts: ^6.3.2
+  flutter_svg: ^2.2.3
+  flutter_otp_text_field: ^1.5.1+1
 
 dev_dependencies:
   get_cli: ^1.9.1
@@ -61,7 +63,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/logos/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
