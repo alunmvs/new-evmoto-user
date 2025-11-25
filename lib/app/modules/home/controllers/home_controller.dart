@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/services/theme_color_services.dart';
+import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  final themeColorServices = Get.find<ThemeColorServices>();
+  final typographyServices = Get.find<TypographyServices>();
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -18,6 +20,4 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }
