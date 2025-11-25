@@ -58,4 +58,18 @@ class TypographyServices extends GetxService {
     height: 1.2,
     letterSpacing: 0,
   ).obs;
+
+  final captionSmallBold = GoogleFonts.nunitoSans(
+    fontWeight: FontWeight.w700,
+    fontSize: 10,
+    height: 1.2,
+    letterSpacing: 0,
+  ).obs;
+
+  final captionSmallRegular = GoogleFonts.nunitoSans(
+    fontWeight: FontWeight.w500,
+    fontSize: 10,
+    height: 1.2,
+    letterSpacing: 0,
+  ).obs;
 }
