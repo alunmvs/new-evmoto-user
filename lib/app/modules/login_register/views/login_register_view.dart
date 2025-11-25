@@ -157,12 +157,17 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                       child: Column(
                                         children: [
                                           TextFormField(
+                                            autofocus: true,
                                             keyboardType: TextInputType.number,
                                             controller: controller
                                                 .mobileNumberTextEditingController,
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular
+                                                .value,
+                                            cursorErrorColor: controller
+                                                .themeColorServices
+                                                .primaryBlue
                                                 .value,
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(
@@ -180,7 +185,6 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8),
-
                                                 borderSide: BorderSide(
                                                   width: 2,
                                                   color: controller

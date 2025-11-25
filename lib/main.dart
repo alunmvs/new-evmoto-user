@@ -27,13 +27,19 @@ void main() {
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      theme: ThemeData(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Get.find<ThemeColorServices>().primaryBlue.value,
+          selectionColor: Get.find<ThemeColorServices>().primaryBlue.value
+              .withValues(alpha: 0.2),
+          selectionHandleColor:
+              Get.find<ThemeColorServices>().primaryBlue.value,
+        ),
+      ),
       builder: (context, child) {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            body: SafeArea(top: true, child: child!),
-          ),
+          child: child!,
         );
       },
     ),

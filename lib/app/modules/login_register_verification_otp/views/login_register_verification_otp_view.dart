@@ -53,6 +53,7 @@ class LoginRegisterVerificationOtpView
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 numberOfFields: 6,
+                autoFocus: true,
                 borderColor:
                     controller.themeColorServices.neutralsColorGrey400.value,
                 focusedBorderColor: controller.isOTPInvalid.value
@@ -62,14 +63,16 @@ class LoginRegisterVerificationOtpView
                     ? controller.themeColorServices.sematicColorRed500.value
                     : controller.themeColorServices.primaryBlue.value,
                 showFieldAsBox: true,
-                fieldHeight: 52,
+                fieldHeight: 52 + 5,
                 fieldWidth: 48,
                 borderWidth: 1,
                 borderRadius: BorderRadius.circular(8),
                 textStyle:
                     controller.typographyServices.headingMediumBold.value,
                 onCodeChanged: (String code) {},
-                onSubmit: (String verificationCode) {},
+                onSubmit: (String verificationCode) async {
+                  await controller.onSubmitOTP();
+                },
               ),
               SizedBox(height: 16),
               Text(
@@ -86,44 +89,55 @@ class LoginRegisterVerificationOtpView
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        padding: EdgeInsets.all(0),
-        color: controller.themeColorServices.neutralsColorGrey0.value,
-        child: Column(
-          children: [
-            DashedLine(
-              height: 0,
-              color: controller.themeColorServices.neutralsColorGrey200.value,
-            ),
-            Expanded(
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    text: "Tidak Menerima Kode? ",
-                    style: controller.typographyServices.bodyLargeRegular.value
-                        .copyWith(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey700
-                              .value,
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: BottomAppBar(
+          padding: EdgeInsets.all(0),
+          color: controller.themeColorServices.neutralsColorGrey0.value,
+          child: Column(
+            children: [
+              DashedLine(
+                height: 0,
+                color: controller.themeColorServices.neutralsColorGrey200.value,
+              ),
+              Expanded(
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Tidak Menerima Kode? ",
+                      style: controller
+                          .typographyServices
+                          .bodyLargeRegular
+                          .value
+                          .copyWith(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey700
+                                .value,
+                          ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '(20)',
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
                         ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: '(20)',
-                        style: controller.typographyServices.bodyLargeBold.value
-                            .copyWith(
-                              color: controller
-                                  .themeColorServices
-                                  .primaryBlue
-                                  .value,
-                            ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

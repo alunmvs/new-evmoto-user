@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
@@ -21,5 +22,9 @@ class LoginRegisterVerificationOtpController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> onSubmitOTP() async {
+    Get.offAllNamed(Routes.HOME);
   }
 }
