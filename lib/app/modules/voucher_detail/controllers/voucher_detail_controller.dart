@@ -6,6 +6,8 @@ class VoucherDetailController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
 
+  final isOpenTermAndCondition = true.obs;
+
   @override
   void onInit() {
     super.onInit();
