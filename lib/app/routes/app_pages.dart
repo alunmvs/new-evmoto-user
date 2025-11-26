@@ -1,7 +1,15 @@
 import 'package:get/get.dart';
 
+import '../modules/account/bindings/account_binding.dart';
+import '../modules/account/views/account_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/introduction_delivery_service/bindings/introduction_delivery_service_binding.dart';
+import '../modules/introduction_delivery_service/views/introduction_delivery_service_view.dart';
+import '../modules/introduction_food_service/bindings/introduction_food_service_binding.dart';
+import '../modules/introduction_food_service/views/introduction_food_service_view.dart';
+import '../modules/introduction_package_service/bindings/introduction_package_service_binding.dart';
+import '../modules/introduction_package_service/views/introduction_package_service_view.dart';
 import '../modules/login_register/bindings/login_register_binding.dart';
 import '../modules/login_register/views/login_register_view.dart';
 import '../modules/login_register_verification_otp/bindings/login_register_verification_otp_binding.dart';
@@ -22,7 +30,7 @@ class AppPages {
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
-      binding: HomeBinding(),
+      bindings: [HomeBinding(), AccountBinding()],
     ),
     GetPage(
       name: _Paths.SPLASH_SCREEN,
@@ -46,6 +54,26 @@ class AppPages {
       name: _Paths.LOGIN_REGISTER_VERIFICATION_OTP,
       page: () => const LoginRegisterVerificationOtpView(),
       binding: LoginRegisterVerificationOtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.INTRODUCTION_DELIVERY_SERVICE,
+      page: () => const IntroductionDeliveryServiceView(),
+      binding: IntroductionDeliveryServiceBinding(),
+    ),
+    GetPage(
+      name: _Paths.INTRODUCTION_PACKAGE_SERVICE,
+      page: () => const IntroductionPackageServiceView(),
+      binding: IntroductionPackageServiceBinding(),
+    ),
+    GetPage(
+      name: _Paths.INTRODUCTION_FOOD_SERVICE,
+      page: () => const IntroductionFoodServiceView(),
+      binding: IntroductionFoodServiceBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT,
+      page: () => const AccountView(),
+      binding: AccountBinding(),
     ),
   ];
 }

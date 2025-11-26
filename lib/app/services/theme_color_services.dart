@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class ThemeColorServices extends GetxService {
   final primaryBlue = Color(0XFF0060C6).obs;
   final sematicColorRed500 = Color(0XFFA32A21).obs;
+  final sematicColorBlue100 = Color(0XFFCFE9FC).obs;
   final sematicColorBlue200 = Color(0XFF7AC0F8).obs;
   final sematicColorBlue500 = Color(0XFF145F9A).obs;
   final sematicColorYellow300 = Color(0XFFFFAD33).obs;

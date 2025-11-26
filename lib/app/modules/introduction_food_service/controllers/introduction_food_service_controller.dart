@@ -2,16 +2,9 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
-class HomeController extends GetxController {
+class IntroductionFoodServiceController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
-
-  final bannerUrlList = [
-    "assets/images/img_promo_1.png",
-    "assets/images/img_promo_2.png",
-  ];
-  final indexBanner = 0.0.obs;
-  final indexNavigationBar = 0.obs;
 
   @override
   void onInit() {

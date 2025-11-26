@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^6.3.2
   flutter_svg: ^2.2.3
   flutter_otp_text_field: ^1.5.1+1
+  carousel_slider: ^5.1.1
+  dots_indicator: ^4.0.1
 
 dev_dependencies:
   get_cli: ^1.9.1
