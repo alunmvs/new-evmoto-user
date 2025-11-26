@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/views/account_view.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -313,113 +314,172 @@ class HomeView extends GetView<HomeController> {
                                   childAspectRatio: 104 / (97 + 20),
                                 ),
                             children: [
-                              Stack(
-                                children: [
-                                  Column(
-                                    children: [
-                                      SizedBox(height: 10),
-                                      AspectRatio(
-                                        aspectRatio: 1 / 1,
-                                        child: Container(
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey200
-                                                  .value,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              16,
-                                            ),
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_ride.svg",
-                                              ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                "Antar",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallBold
-                                                    .value,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Center(
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Color(0XFF8FD9FA),
-                                              Color(0XFFA1E2FB),
-                                              Color(0XFFB5ECFC),
-                                              Color(0XFFC2F2FD),
-                                              Color(0XFFC6F4FD),
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                          ),
-                                          border: Border.all(
-                                            color: controller
-                                                .themeColorServices
-                                                .sematicColorBlue200
-                                                .value,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "Diskon 50%",
-                                          style: controller
-                                              .typographyServices
-                                              .captionSmallBold
-                                              .value
-                                              .copyWith(
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(
+                                    Routes.INTRODUCTION_DELIVERY_SERVICE,
+                                  );
+                                },
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(height: 10),
+                                        AspectRatio(
+                                          aspectRatio: 1 / 1,
+                                          child: Container(
+                                            width: MediaQuery.of(
+                                              context,
+                                            ).size.width,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
                                                 color: controller
                                                     .themeColorServices
-                                                    .sematicColorBlue500
+                                                    .neutralsColorGrey200
                                                     .value,
                                               ),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  "assets/icons/icon_ride.svg",
+                                                ),
+                                                SizedBox(height: 4),
+                                                Text(
+                                                  "Antar",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Center(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(0XFF8FD9FA),
+                                                Color(0XFFA1E2FB),
+                                                Color(0XFFB5ECFC),
+                                                Color(0XFFC2F2FD),
+                                                Color(0XFFC6F4FD),
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ),
+                                            border: Border.all(
+                                              color: controller
+                                                  .themeColorServices
+                                                  .sematicColorBlue200
+                                                  .value,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            "Diskon 50%",
+                                            style: controller
+                                                .typographyServices
+                                                .captionSmallBold
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .sematicColorBlue500
+                                                      .value,
+                                                ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Stack(
-                                children: [
-                                  Column(
-                                    children: [
-                                      SizedBox(height: 10),
-                                      AspectRatio(
-                                        aspectRatio: 1 / 1,
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(
+                                    Routes.INTRODUCTION_PACKAGE_SERVICE,
+                                  );
+                                },
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(height: 10),
+                                        AspectRatio(
+                                          aspectRatio: 1 / 1,
+                                          child: Container(
+                                            width: MediaQuery.of(
+                                              context,
+                                            ).size.width,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey200
+                                                    .value,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  "assets/icons/icon_delivery_package.svg",
+                                                ),
+                                                SizedBox(height: 4),
+                                                Text(
+                                                  "Paket",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Center(
                                         child: Container(
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
                                           decoration: BoxDecoration(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
                                             border: Border.all(
                                               color: controller
                                                   .themeColorServices
@@ -427,82 +487,86 @@ class HomeView extends GetView<HomeController> {
                                                   .value,
                                             ),
                                             borderRadius: BorderRadius.circular(
-                                              16,
+                                              8,
                                             ),
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_delivery_package.svg",
-                                              ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                "Paket",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallBold
-                                                    .value,
-                                              ),
-                                            ],
+                                          child: Text(
+                                            "Segera Hadir",
+                                            style: controller
+                                                .typographyServices
+                                                .captionSmallBold
+                                                .value
+                                                .copyWith(),
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Center(
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                          border: Border.all(
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorGrey200
-                                                .value,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "Segera Hadir",
-                                          style: controller
-                                              .typographyServices
-                                              .captionSmallBold
-                                              .value
-                                              .copyWith(),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Stack(
-                                children: [
-                                  Column(
-                                    children: [
-                                      SizedBox(height: 10),
-                                      AspectRatio(
-                                        aspectRatio: 1 / 1,
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.INTRODUCTION_FOOD_SERVICE);
+                                },
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(height: 10),
+                                        AspectRatio(
+                                          aspectRatio: 1 / 1,
+                                          child: Container(
+                                            width: MediaQuery.of(
+                                              context,
+                                            ).size.width,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey200
+                                                    .value,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  "assets/icons/icon_food.svg",
+                                                ),
+                                                SizedBox(height: 4),
+                                                Text(
+                                                  "Makanan",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Center(
                                         child: Container(
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
                                           decoration: BoxDecoration(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
                                             border: Border.all(
                                               color: controller
                                                   .themeColorServices
@@ -510,69 +574,22 @@ class HomeView extends GetView<HomeController> {
                                                   .value,
                                             ),
                                             borderRadius: BorderRadius.circular(
-                                              16,
+                                              8,
                                             ),
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_food.svg",
-                                              ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                "Makanan",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallBold
-                                                    .value,
-                                              ),
-                                            ],
+                                          child: Text(
+                                            "Segera Hadir",
+                                            style: controller
+                                                .typographyServices
+                                                .captionSmallBold
+                                                .value
+                                                .copyWith(),
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Center(
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                          border: Border.all(
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorGrey200
-                                                .value,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "Segera Hadir",
-                                          style: controller
-                                              .typographyServices
-                                              .captionSmallBold
-                                              .value
-                                              .copyWith(),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
