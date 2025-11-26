@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 import '../controllers/history_balance_controller.dart';
 
@@ -36,7 +37,6 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
               ),
             ),
           ],
-
           if (controller.transactionList.isNotEmpty) ...[
             Container(
               height: MediaQuery.of(context).size.height,
@@ -122,79 +122,85 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 16,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 32,
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue100
-                                              .value,
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_wallet.svg",
-                                            width: 16,
-                                            height: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Topup Saldo",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey700
-                                                  .value,
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.HISTORY_BALANCE_DETAIL);
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 32,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
                                             ),
-                                      ),
-                                      Spacer(),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Rp55.000",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .primaryBlue
-                                                  .value,
-                                            ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      SizedBox(
-                                        height: 24,
-                                        width: 24,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_right.svg",
-                                            width: 6,
-                                            height: 12,
                                             color: controller
                                                 .themeColorServices
-                                                .neutralsColorGrey500
+                                                .sematicColorBlue100
                                                 .value,
                                           ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_wallet.svg",
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Topup Saldo",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey700
+                                                    .value,
+                                              ),
+                                        ),
+                                        Spacer(),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Rp55.000",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                              ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_arrow_right.svg",
+                                              width: 6,
+                                              height: 12,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey500
+                                                  .value,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Divider(
@@ -204,79 +210,85 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                       .neutralsColorGrey200
                                       .value,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 16,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 32,
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue100
-                                              .value,
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_wallet.svg",
-                                            width: 16,
-                                            height: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Topup Saldo",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey700
-                                                  .value,
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.HISTORY_BALANCE_DETAIL);
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 32,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
                                             ),
-                                      ),
-                                      Spacer(),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Rp55.000",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .primaryBlue
-                                                  .value,
-                                            ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      SizedBox(
-                                        height: 24,
-                                        width: 24,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_right.svg",
-                                            width: 6,
-                                            height: 12,
                                             color: controller
                                                 .themeColorServices
-                                                .neutralsColorGrey500
+                                                .sematicColorBlue100
                                                 .value,
                                           ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_wallet.svg",
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Topup Saldo",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey700
+                                                    .value,
+                                              ),
+                                        ),
+                                        Spacer(),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Rp55.000",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                              ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_arrow_right.svg",
+                                              width: 6,
+                                              height: 12,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey500
+                                                  .value,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -314,79 +326,85 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 16,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 32,
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue100
-                                              .value,
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_ride.svg",
-                                            width: 16,
-                                            height: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Antar ke Jatiasih",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey700
-                                                  .value,
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.HISTORY_BALANCE_DETAIL);
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 32,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
                                             ),
-                                      ),
-                                      Spacer(),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "-Rp55.000",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey700
-                                                  .value,
-                                            ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      SizedBox(
-                                        height: 24,
-                                        width: 24,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_right.svg",
-                                            width: 6,
-                                            height: 12,
                                             color: controller
                                                 .themeColorServices
-                                                .neutralsColorGrey500
+                                                .sematicColorBlue100
                                                 .value,
                                           ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_ride.svg",
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Antar ke Jatiasih",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey700
+                                                    .value,
+                                              ),
+                                        ),
+                                        Spacer(),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "-Rp55.000",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey700
+                                                    .value,
+                                              ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_arrow_right.svg",
+                                              width: 6,
+                                              height: 12,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey500
+                                                  .value,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -424,79 +442,85 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 16,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 32,
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue100
-                                              .value,
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_ride.svg",
-                                            width: 16,
-                                            height: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Antar ke Jatimakmur",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey700
-                                                  .value,
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.HISTORY_BALANCE_DETAIL);
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 32,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
                                             ),
-                                      ),
-                                      Spacer(),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "-Rp55.000",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey700
-                                                  .value,
-                                            ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      SizedBox(
-                                        height: 24,
-                                        width: 24,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_right.svg",
-                                            width: 6,
-                                            height: 12,
                                             color: controller
                                                 .themeColorServices
-                                                .neutralsColorGrey500
+                                                .sematicColorBlue100
                                                 .value,
                                           ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_ride.svg",
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Antar ke Jatimakmur",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey700
+                                                    .value,
+                                              ),
+                                        ),
+                                        Spacer(),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "-Rp55.000",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey700
+                                                    .value,
+                                              ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_arrow_right.svg",
+                                              width: 6,
+                                              height: 12,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey500
+                                                  .value,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

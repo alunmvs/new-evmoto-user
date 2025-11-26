@@ -3,6 +3,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TypographyServices extends GetxService {
+  final headingLargeBold = GoogleFonts.nunitoSans(
+    fontWeight: FontWeight.w700,
+    fontSize: 32,
+    height: 1.2,
+    letterSpacing: 0,
+  ).obs;
+
   final headingMediumBold = GoogleFonts.nunitoSans(
     fontWeight: FontWeight.w700,
     fontSize: 24,
