@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
+import '../modules/activity/bindings/activity_binding.dart';
+import '../modules/activity/views/activity_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/introduction_delivery_service/bindings/introduction_delivery_service_binding.dart';
@@ -30,7 +32,7 @@ class AppPages {
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
-      bindings: [HomeBinding(), AccountBinding()],
+      bindings: [HomeBinding(), AccountBinding(), ActivityBinding()],
     ),
     GetPage(
       name: _Paths.SPLASH_SCREEN,
@@ -74,6 +76,11 @@ class AppPages {
       name: _Paths.ACCOUNT,
       page: () => const AccountView(),
       binding: AccountBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACTIVITY,
+      page: () => const ActivityView(),
+      binding: ActivityBinding(),
     ),
   ];
 }

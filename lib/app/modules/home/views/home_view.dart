@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/views/account_view.dart';
+import 'package:new_evmoto_user/app/modules/activity/views/activity_view.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
@@ -30,6 +31,18 @@ class HomeView extends GetView<HomeController> {
                     width: 63.86,
                     height: 19.77,
                   ),
+                ),
+              ],
+              if (controller.indexNavigationBar.value == 1) ...[
+                Text(
+                  "Aktivitas",
+                  style: controller.typographyServices.headingSmallBold.value
+                      .copyWith(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
+                      ),
                 ),
               ],
               if (controller.indexNavigationBar.value == 2) ...[
@@ -808,7 +821,9 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
             ],
-            if (controller.indexNavigationBar.value == 1) ...[],
+            if (controller.indexNavigationBar.value == 1) ...[
+              Expanded(child: ActivityView()),
+            ],
             if (controller.indexNavigationBar.value == 2) ...[
               Expanded(child: AccountView()),
             ],

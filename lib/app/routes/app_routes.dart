@@ -15,6 +15,7 @@ abstract class Routes {
       _Paths.INTRODUCTION_PACKAGE_SERVICE;
   static const INTRODUCTION_FOOD_SERVICE = _Paths.INTRODUCTION_FOOD_SERVICE;
   static const ACCOUNT = _Paths.ACCOUNT;
+  static const ACTIVITY = _Paths.ACTIVITY;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const INTRODUCTION_PACKAGE_SERVICE = '/introduction-package-service';
   static const INTRODUCTION_FOOD_SERVICE = '/introduction-food-service';
   static const ACCOUNT = '/account';
+  static const ACTIVITY = '/activity';
 }
