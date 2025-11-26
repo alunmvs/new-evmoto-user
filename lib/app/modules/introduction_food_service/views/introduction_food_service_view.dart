@@ -13,6 +13,16 @@ class IntroductionFoodServiceView
     return Obx(
       () => Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: SvgPicture.asset(
+              "assets/icons/icon_close.svg",
+              width: 24,
+              height: 24,
+            ),
+          ),
           title: Text(
             "Layanan Antar Makanan",
             style: controller.typographyServices.bodyLargeBold.value,
