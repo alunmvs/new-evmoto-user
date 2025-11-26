@@ -11,8 +11,8 @@ class ActivityController extends GetxController
   late TabController tabController;
   final indexTabBar = 0.obs;
 
-  final latestActivityList = [].obs;
-  final historyActivityList = [].obs;
+  final latestActivityList = [1, 2].obs;
+  final historyActivityList = [1, 2].obs;
 
   @override
   void onInit() {
