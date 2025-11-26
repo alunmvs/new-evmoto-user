@@ -7,6 +7,7 @@ class ThemeColorServices extends GetxService {
   final sematicColorBlue100 = Color(0XFFCFE9FC).obs;
   final sematicColorBlue200 = Color(0XFF7AC0F8).obs;
   final sematicColorBlue500 = Color(0XFF145F9A).obs;
+  final sematicColorYellow100 = Color(0XFFFFEACC).obs;
   final sematicColorYellow300 = Color(0XFFFFAD33).obs;
   final sematicColorRed400 = Color(0XFFF44336).obs;
   final neutralsColorGrey0 = Color(0XFFFFFFFF).obs;
