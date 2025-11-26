@@ -4,6 +4,8 @@ import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
 import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
+import '../modules/activity_detail/bindings/activity_detail_binding.dart';
+import '../modules/activity_detail/views/activity_detail_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/introduction_delivery_service/bindings/introduction_delivery_service_binding.dart';
@@ -81,6 +83,11 @@ class AppPages {
       name: _Paths.ACTIVITY,
       page: () => const ActivityView(),
       binding: ActivityBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACTIVITY_DETAIL,
+      page: () => const ActivityDetailView(),
+      binding: ActivityDetailBinding(),
     ),
   ];
 }

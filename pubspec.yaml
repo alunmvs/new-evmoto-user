@@ -40,6 +40,7 @@ dependencies:
   flutter_otp_text_field: ^1.5.1+1
   carousel_slider: ^5.1.1
   dots_indicator: ^4.0.1
+  timelines_plus: ^1.0.8
 
 dev_dependencies:
   get_cli: ^1.9.1

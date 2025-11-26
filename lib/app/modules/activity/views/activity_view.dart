@@ -690,8 +690,11 @@ class ActivityView extends GetView<ActivityController> {
                                           in controller
                                               .historyActivityList) ...[
                                         GestureDetector(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Get.toNamed(Routes.ACTIVITY_DETAIL);
+                                          },
                                           child: Container(
+                                            color: Colors.transparent,
                                             padding: EdgeInsets.symmetric(
                                               horizontal: 16,
                                               vertical: 16,
