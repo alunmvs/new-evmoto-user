@@ -698,25 +698,30 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ),
                                     SizedBox(width: 14),
-                                    SizedBox(
-                                      width: 46,
-                                      height: 36,
-                                      child: Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_transaction_history.svg",
-                                            width: 18,
-                                            height: 18,
-                                          ),
-                                          SizedBox(height: 4),
-                                          Text(
-                                            "Riwayat",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value,
-                                          ),
-                                        ],
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(Routes.HISTORY_BALANCE);
+                                      },
+                                      child: SizedBox(
+                                        width: 46,
+                                        height: 36,
+                                        child: Column(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_transaction_history.svg",
+                                              width: 18,
+                                              height: 18,
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Riwayat",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],

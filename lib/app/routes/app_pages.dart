@@ -6,6 +6,10 @@ import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
 import '../modules/activity_detail/bindings/activity_detail_binding.dart';
 import '../modules/activity_detail/views/activity_detail_view.dart';
+import '../modules/history_balance/bindings/history_balance_binding.dart';
+import '../modules/history_balance/views/history_balance_view.dart';
+import '../modules/history_balance_detail/bindings/history_balance_detail_binding.dart';
+import '../modules/history_balance_detail/views/history_balance_detail_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/introduction_delivery_service/bindings/introduction_delivery_service_binding.dart';
@@ -88,6 +92,16 @@ class AppPages {
       name: _Paths.ACTIVITY_DETAIL,
       page: () => const ActivityDetailView(),
       binding: ActivityDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE,
+      page: () => const HistoryBalanceView(),
+      binding: HistoryBalanceBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_DETAIL,
+      page: () => const HistoryBalanceDetailView(),
+      binding: HistoryBalanceDetailBinding(),
     ),
   ];
 }

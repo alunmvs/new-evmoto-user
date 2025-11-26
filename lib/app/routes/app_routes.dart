@@ -17,6 +17,8 @@ abstract class Routes {
   static const ACCOUNT = _Paths.ACCOUNT;
   static const ACTIVITY = _Paths.ACTIVITY;
   static const ACTIVITY_DETAIL = _Paths.ACTIVITY_DETAIL;
+  static const HISTORY_BALANCE = _Paths.HISTORY_BALANCE;
+  static const HISTORY_BALANCE_DETAIL = _Paths.HISTORY_BALANCE_DETAIL;
 }
 
 abstract class _Paths {
@@ -33,4 +35,6 @@ abstract class _Paths {
   static const ACCOUNT = '/account';
   static const ACTIVITY = '/activity';
   static const ACTIVITY_DETAIL = '/activity-detail';
+  static const HISTORY_BALANCE = '/history-balance';
+  static const HISTORY_BALANCE_DETAIL = '/history-balance-detail';
 }
