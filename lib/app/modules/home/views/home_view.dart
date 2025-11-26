@@ -743,18 +743,23 @@ class HomeView extends GetView<HomeController> {
                                     .bodyLargeBold
                                     .value,
                               ),
-                              Text(
-                                "Lihat Semua",
-                                style: controller
-                                    .typographyServices
-                                    .bodySmallBold
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .primaryBlue
-                                          .value,
-                                    ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.PROMOTION);
+                                },
+                                child: Text(
+                                  "Lihat Semua",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      ),
+                                ),
                               ),
                             ],
                           ),
@@ -771,13 +776,18 @@ class HomeView extends GetView<HomeController> {
                                             controller.bannerUrlList.length
                                       ? EdgeInsets.only(left: 12)
                                       : EdgeInsets.only(left: 12, right: 16),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Container(
-                                      color: Colors.green,
-                                      child: Image.asset(
-                                        url,
-                                        fit: BoxFit.cover,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(Routes.VOUCHER_DETAIL);
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        child: Image.asset(
+                                          url,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),

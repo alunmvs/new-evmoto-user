@@ -11,6 +11,7 @@ class ThemeColorServices extends GetxService {
   final sematicColorBlue100 = Color(0XFFCFE9FC).obs;
   final sematicColorBlue200 = Color(0XFF7AC0F8).obs;
   final sematicColorBlue500 = Color(0XFF145F9A).obs;
+  final sematicColorBlue600 = Color(0XFF072841).obs;
   final sematicColorYellow100 = Color(0XFFFFEACC).obs;
   final sematicColorYellow300 = Color(0XFFFFAD33).obs;
   final sematicColorYellow400 = Color(0XFFFF9800).obs;
@@ -24,6 +25,7 @@ class ThemeColorServices extends GetxService {
   final neutralsColorGrey700 = Color(0XFF2E2E2E).obs;
   final neutralsColorGrey800 = Color(0XFF1A1F28).obs;
   final neutralsColorSlate100 = Color(0XFFE0E3EB).obs;
+  final neutralsColorSlate300 = Color(0XFF94A1BC).obs;
   final neutralsColorSlate400 = Color(0XFF7C8CB0).obs;
   final neutralsColorSlate700 = Color(0XFF242B37).obs;
   final overlayDark100 = Color(0XFF000000).obs;

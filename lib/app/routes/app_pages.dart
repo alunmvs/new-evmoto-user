@@ -24,8 +24,12 @@ import '../modules/login_register_verification_otp/bindings/login_register_verif
 import '../modules/login_register_verification_otp/views/login_register_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/promotion/bindings/promotion_binding.dart';
+import '../modules/promotion/views/promotion_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/voucher_detail/bindings/voucher_detail_binding.dart';
+import '../modules/voucher_detail/views/voucher_detail_view.dart';
 
 part 'app_routes.dart';
 
@@ -102,6 +106,16 @@ class AppPages {
       name: _Paths.HISTORY_BALANCE_DETAIL,
       page: () => const HistoryBalanceDetailView(),
       binding: HistoryBalanceDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROMOTION,
+      page: () => const PromotionView(),
+      binding: PromotionBinding(),
+    ),
+    GetPage(
+      name: _Paths.VOUCHER_DETAIL,
+      page: () => const VoucherDetailView(),
+      binding: VoucherDetailBinding(),
     ),
   ];
 }

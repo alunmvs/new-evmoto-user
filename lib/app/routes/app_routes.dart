@@ -19,6 +19,8 @@ abstract class Routes {
   static const ACTIVITY_DETAIL = _Paths.ACTIVITY_DETAIL;
   static const HISTORY_BALANCE = _Paths.HISTORY_BALANCE;
   static const HISTORY_BALANCE_DETAIL = _Paths.HISTORY_BALANCE_DETAIL;
+  static const PROMOTION = _Paths.PROMOTION;
+  static const VOUCHER_DETAIL = _Paths.VOUCHER_DETAIL;
 }
 
 abstract class _Paths {
@@ -37,4 +39,6 @@ abstract class _Paths {
   static const ACTIVITY_DETAIL = '/activity-detail';
   static const HISTORY_BALANCE = '/history-balance';
   static const HISTORY_BALANCE_DETAIL = '/history-balance-detail';
+  static const PROMOTION = '/promotion';
+  static const VOUCHER_DETAIL = '/voucher-detail';
 }
