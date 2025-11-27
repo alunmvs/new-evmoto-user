@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 import '../controllers/introduction_delivery_service_controller.dart';
 
@@ -85,7 +86,10 @@ class IntroductionDeliveryServiceView
                       width: MediaQuery.of(context).size.width,
                       height: 46,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.back();
+                          Get.toNamed(Routes.RIDE);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               controller.themeColorServices.primaryBlue.value,

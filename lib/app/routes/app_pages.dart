@@ -28,8 +28,12 @@ import '../modules/onboarding_introduction/bindings/onboarding_introduction_bind
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
 import '../modules/promotion/bindings/promotion_binding.dart';
 import '../modules/promotion/views/promotion_view.dart';
+import '../modules/ride/bindings/ride_binding.dart';
+import '../modules/ride/views/ride_view.dart';
 import '../modules/search_address/bindings/search_address_binding.dart';
 import '../modules/search_address/views/search_address_view.dart';
+import '../modules/select_promo/bindings/select_promo_binding.dart';
+import '../modules/select_promo/views/select_promo_view.dart';
 import '../modules/setting_language/bindings/setting_language_binding.dart';
 import '../modules/setting_language/views/setting_language_view.dart';
 import '../modules/setting_payment/bindings/setting_payment_binding.dart';
@@ -151,6 +155,16 @@ class AppPages {
       name: _Paths.SETTING_SAVED_LOCATION,
       page: () => const SettingSavedLocationView(),
       binding: SettingSavedLocationBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIDE,
+      page: () => const RideView(),
+      binding: RideBinding(),
+    ),
+    GetPage(
+      name: _Paths.SELECT_PROMO,
+      page: () => const SelectPromoView(),
+      binding: SelectPromoBinding(),
     ),
   ];
 }

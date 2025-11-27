@@ -26,6 +26,8 @@ abstract class Routes {
   static const SETTING_LANGUAGE = _Paths.SETTING_LANGUAGE;
   static const SETTING_PAYMENT = _Paths.SETTING_PAYMENT;
   static const SETTING_SAVED_LOCATION = _Paths.SETTING_SAVED_LOCATION;
+  static const RIDE = _Paths.RIDE;
+  static const SELECT_PROMO = _Paths.SELECT_PROMO;
 }
 
 abstract class _Paths {
@@ -51,4 +53,6 @@ abstract class _Paths {
   static const SETTING_LANGUAGE = '/setting-language';
   static const SETTING_PAYMENT = '/setting-payment';
   static const SETTING_SAVED_LOCATION = '/setting-saved-location';
+  static const RIDE = '/ride';
+  static const SELECT_PROMO = '/select-promo';
 }

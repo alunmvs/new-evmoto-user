@@ -132,43 +132,50 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ),
                                     SizedBox(height: 16),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: controller
-                                            .themeColorServices
-                                            .neutralsColorGrey100
-                                            .value,
-                                        border: Border.all(
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(Routes.RIDE);
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 8,
+                                        ),
+                                        decoration: BoxDecoration(
                                           color: controller
                                               .themeColorServices
-                                              .neutralsColorGrey300
+                                              .neutralsColorGrey100
                                               .value,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_pinpoint.svg",
-                                            width: 18,
-                                            height: 21,
-                                          ),
-                                          SizedBox(width: 11),
-                                          Text(
-                                            "Mau kemana hari ini?",
-                                            style: controller
-                                                .typographyServices
-                                                .bodyLargeBold
+                                          border: Border.all(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey300
                                                 .value,
                                           ),
-                                        ],
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_pinpoint.svg",
+                                              width: 18,
+                                              height: 21,
+                                            ),
+                                            SizedBox(width: 11),
+                                            Text(
+                                              "Mau kemana hari ini?",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeBold
+                                                  .value,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     SizedBox(height: 16),
