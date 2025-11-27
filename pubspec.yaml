@@ -41,6 +41,9 @@ dependencies:
   carousel_slider: ^5.1.1
   dots_indicator: ^4.0.1
   timelines_plus: ^1.0.8
+  highlight_text: ^1.8.0
+  visibility_detector: ^0.4.0+2
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   get_cli: ^1.9.1

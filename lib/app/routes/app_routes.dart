@@ -21,6 +21,8 @@ abstract class Routes {
   static const HISTORY_BALANCE_DETAIL = _Paths.HISTORY_BALANCE_DETAIL;
   static const PROMOTION = _Paths.PROMOTION;
   static const VOUCHER_DETAIL = _Paths.VOUCHER_DETAIL;
+  static const ADD_EDIT_ADDRESS = _Paths.ADD_EDIT_ADDRESS;
+  static const SEARCH_ADDRESS = _Paths.SEARCH_ADDRESS;
 }
 
 abstract class _Paths {
@@ -41,4 +43,6 @@ abstract class _Paths {
   static const HISTORY_BALANCE_DETAIL = '/history-balance-detail';
   static const PROMOTION = '/promotion';
   static const VOUCHER_DETAIL = '/voucher-detail';
+  static const ADD_EDIT_ADDRESS = '/add-edit-address';
+  static const SEARCH_ADDRESS = '/search-address';
 }

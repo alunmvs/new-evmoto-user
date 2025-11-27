@@ -6,6 +6,8 @@ import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
 import '../modules/activity_detail/bindings/activity_detail_binding.dart';
 import '../modules/activity_detail/views/activity_detail_view.dart';
+import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
+import '../modules/add_edit_address/views/add_edit_address_view.dart';
 import '../modules/history_balance/bindings/history_balance_binding.dart';
 import '../modules/history_balance/views/history_balance_view.dart';
 import '../modules/history_balance_detail/bindings/history_balance_detail_binding.dart';
@@ -26,6 +28,8 @@ import '../modules/onboarding_introduction/bindings/onboarding_introduction_bind
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
 import '../modules/promotion/bindings/promotion_binding.dart';
 import '../modules/promotion/views/promotion_view.dart';
+import '../modules/search_address/bindings/search_address_binding.dart';
+import '../modules/search_address/views/search_address_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/voucher_detail/bindings/voucher_detail_binding.dart';
@@ -116,6 +120,16 @@ class AppPages {
       name: _Paths.VOUCHER_DETAIL,
       page: () => const VoucherDetailView(),
       binding: VoucherDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_EDIT_ADDRESS,
+      page: () => const AddEditAddressView(),
+      binding: AddEditAddressBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEARCH_ADDRESS,
+      page: () => const SearchAddressView(),
+      binding: SearchAddressBinding(),
     ),
   ];
 }

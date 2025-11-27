@@ -177,123 +177,177 @@ class HomeView extends GetView<HomeController> {
                                       child: Row(
                                         children: [
                                           SizedBox(width: 16),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                              vertical: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                Routes.SEARCH_ADDRESS,
+                                                arguments: {
+                                                  "address_type": "home",
+                                                },
+                                              );
+
+                                              // Get.toNamed(
+                                              //   Routes.ADD_EDIT_ADDRESS,
+                                              //   arguments: {
+                                              //     "address_type": "home",
+                                              //   },
+                                              // );
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                                vertical: 8,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  "assets/icons/icon_home.svg",
-                                                  width: 12,
-                                                  height: 12,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                border: Border.all(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey200
+                                                      .value,
                                                 ),
-                                                SizedBox(width: 6),
-                                                Text(
-                                                  "Tambah Rumah",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .captionLargeRegular
-                                                      .value
-                                                      .copyWith(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .neutralsColorGrey500
-                                                            .value,
-                                                      ),
-                                                ),
-                                              ],
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_home.svg",
+                                                    width: 12,
+                                                    height: 12,
+                                                  ),
+                                                  SizedBox(width: 6),
+                                                  Text(
+                                                    "Tambah Rumah",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey500
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           SizedBox(width: 16),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                              vertical: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                Routes.SEARCH_ADDRESS,
+                                                arguments: {
+                                                  "address_type": "office",
+                                                },
+                                              );
+
+                                              // Get.toNamed(
+                                              //   Routes.ADD_EDIT_ADDRESS,
+                                              //   arguments: {
+                                              //     "address_type": "office",
+                                              //   },
+                                              // );
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                                vertical: 8,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  "assets/icons/icon_office.svg",
-                                                  width: 12,
-                                                  height: 12,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                border: Border.all(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey200
+                                                      .value,
                                                 ),
-                                                SizedBox(width: 6),
-                                                Text(
-                                                  "Tambah Kantor",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .captionLargeRegular
-                                                      .value
-                                                      .copyWith(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .neutralsColorGrey500
-                                                            .value,
-                                                      ),
-                                                ),
-                                              ],
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_office.svg",
+                                                    width: 12,
+                                                    height: 12,
+                                                  ),
+                                                  SizedBox(width: 6),
+                                                  Text(
+                                                    "Tambah Kantor",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey500
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           SizedBox(width: 16),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                              vertical: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                Routes.SEARCH_ADDRESS,
+                                                arguments: {
+                                                  "address_type": "other",
+                                                },
+                                              );
+
+                                              // Get.toNamed(
+                                              //   Routes.ADD_EDIT_ADDRESS,
+                                              //   arguments: {
+                                              //     "address_type": "other",
+                                              //   },
+                                              // );
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                                vertical: 8,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  "assets/icons/icon_office.svg",
-                                                  width: 12,
-                                                  height: 12,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                border: Border.all(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey200
+                                                      .value,
                                                 ),
-                                                SizedBox(width: 6),
-                                                Text(
-                                                  "Tambah Kantor",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .captionLargeRegular
-                                                      .value
-                                                      .copyWith(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .neutralsColorGrey500
-                                                            .value,
-                                                      ),
-                                                ),
-                                              ],
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_add_square.svg",
+                                                    width: 12,
+                                                    height: 12,
+                                                  ),
+                                                  SizedBox(width: 6),
+                                                  Text(
+                                                    "Lokasi Lainnya",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey500
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           SizedBox(width: 16),
