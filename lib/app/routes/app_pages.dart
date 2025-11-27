@@ -30,6 +30,12 @@ import '../modules/promotion/bindings/promotion_binding.dart';
 import '../modules/promotion/views/promotion_view.dart';
 import '../modules/search_address/bindings/search_address_binding.dart';
 import '../modules/search_address/views/search_address_view.dart';
+import '../modules/setting_language/bindings/setting_language_binding.dart';
+import '../modules/setting_language/views/setting_language_view.dart';
+import '../modules/setting_payment/bindings/setting_payment_binding.dart';
+import '../modules/setting_payment/views/setting_payment_view.dart';
+import '../modules/setting_saved_location/bindings/setting_saved_location_binding.dart';
+import '../modules/setting_saved_location/views/setting_saved_location_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/voucher_detail/bindings/voucher_detail_binding.dart';
@@ -130,6 +136,21 @@ class AppPages {
       name: _Paths.SEARCH_ADDRESS,
       page: () => const SearchAddressView(),
       binding: SearchAddressBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTING_LANGUAGE,
+      page: () => const SettingLanguageView(),
+      binding: SettingLanguageBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTING_PAYMENT,
+      page: () => const SettingPaymentView(),
+      binding: SettingPaymentBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTING_SAVED_LOCATION,
+      page: () => const SettingSavedLocationView(),
+      binding: SettingSavedLocationBinding(),
     ),
   ];
 }

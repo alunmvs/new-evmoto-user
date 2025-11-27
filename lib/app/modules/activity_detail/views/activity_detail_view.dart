@@ -419,6 +419,8 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
           height: 78,
           padding: EdgeInsets.all(16),
           color: controller.themeColorServices.neutralsColorGrey0.value,
+          shadowColor: controller.themeColorServices.overlayDark100.value
+              .withValues(alpha: 0.1),
           child: Column(
             children: [
               SizedBox(

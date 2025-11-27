@@ -41,7 +41,14 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
             Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Color(0XFFCDE2F8)),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0XFFF5F9FF), Color(0XFFCDE2F8)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0.0, 1.0],
+                ),
+              ),
             ),
           ],
           RefreshIndicator(

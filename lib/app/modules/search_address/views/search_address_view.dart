@@ -30,16 +30,34 @@ class SearchAddressView extends GetView<SearchAddressController> {
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor: Color(0XFFCDE2F8),
         body: Stack(
           clipBehavior: Clip.none,
           children: [
-            AspectRatio(
-              aspectRatio: 375 / 96,
-              child: Container(
-                color: controller.themeColorServices.neutralsColorGrey0.value,
-                width: MediaQuery.of(context).size.width,
-              ),
+            Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: 375 / 96,
+                  child: Container(
+                    color:
+                        controller.themeColorServices.neutralsColorGrey0.value,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0XFFF5F9FF), Color(0XFFCDE2F8)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [0.0, 1.0],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -23,6 +23,9 @@ abstract class Routes {
   static const VOUCHER_DETAIL = _Paths.VOUCHER_DETAIL;
   static const ADD_EDIT_ADDRESS = _Paths.ADD_EDIT_ADDRESS;
   static const SEARCH_ADDRESS = _Paths.SEARCH_ADDRESS;
+  static const SETTING_LANGUAGE = _Paths.SETTING_LANGUAGE;
+  static const SETTING_PAYMENT = _Paths.SETTING_PAYMENT;
+  static const SETTING_SAVED_LOCATION = _Paths.SETTING_SAVED_LOCATION;
 }
 
 abstract class _Paths {
@@ -45,4 +48,7 @@ abstract class _Paths {
   static const VOUCHER_DETAIL = '/voucher-detail';
   static const ADD_EDIT_ADDRESS = '/add-edit-address';
   static const SEARCH_ADDRESS = '/search-address';
+  static const SETTING_LANGUAGE = '/setting-language';
+  static const SETTING_PAYMENT = '/setting-payment';
+  static const SETTING_SAVED_LOCATION = '/setting-saved-location';
 }

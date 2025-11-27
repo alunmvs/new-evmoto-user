@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 import '../controllers/account_controller.dart';
 
@@ -126,7 +127,9 @@ class AccountView extends GetView<AccountController> {
                     child: Column(
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.SETTING_LANGUAGE);
+                          },
                           child: Container(
                             padding: EdgeInsets.all(16),
                             color: Colors.transparent,
