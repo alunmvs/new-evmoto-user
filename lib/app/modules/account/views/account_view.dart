@@ -233,7 +233,9 @@ class AccountView extends GetView<AccountController> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.SETTING_SAVED_LOCATION);
+                          },
                           child: Container(
                             padding: EdgeInsets.all(16),
                             color: Colors.transparent,

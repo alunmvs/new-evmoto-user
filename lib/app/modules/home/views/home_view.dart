@@ -373,6 +373,7 @@ class HomeView extends GetView<HomeController> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: GridView(
                             shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
