@@ -183,7 +183,9 @@ class AccountView extends GetView<AccountController> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.SETTING_PAYMENT);
+                          },
                           child: Container(
                             padding: EdgeInsets.all(16),
                             color: Colors.transparent,

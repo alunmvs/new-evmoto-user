@@ -173,7 +173,6 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
             ),
           ],
         ),
-
         bottomNavigationBar: BottomAppBar(
           height: 78,
           shadowColor: controller.themeColorServices.overlayDark100.value
