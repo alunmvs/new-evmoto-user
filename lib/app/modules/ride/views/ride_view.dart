@@ -1692,16 +1692,16 @@ class RideView extends GetView<RideController> {
                                       controller.status.value =
                                           "driver_on_the_way";
                                     });
-                                    // await Future.delayed(
-                                    //   Duration(seconds: 3),
-                                    // ).whenComplete(() {
-                                    //   controller.status.value = "in_transit";
-                                    // });
-                                    // await Future.delayed(
-                                    //   Duration(seconds: 5),
-                                    // ).whenComplete(() {
-                                    //   controller.status.value = "done";
-                                    // });
+                                    await Future.delayed(
+                                      Duration(seconds: 3),
+                                    ).whenComplete(() {
+                                      controller.status.value = "in_transit";
+                                    });
+                                    await Future.delayed(
+                                      Duration(seconds: 5),
+                                    ).whenComplete(() {
+                                      controller.status.value = "done";
+                                    });
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: controller
