@@ -6,6 +6,8 @@ class RideChatController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
 
+  final isAttachmentOptionOpen = false.obs;
+
   @override
   void onInit() {
     super.onInit();
