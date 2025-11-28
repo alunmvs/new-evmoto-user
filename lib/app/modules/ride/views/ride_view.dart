@@ -1342,19 +1342,6 @@ class RideView extends GetView<RideController> {
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                               ),
-                              child: Text(
-                                "Penjemputan",
-                                style: controller
-                                    .typographyServices
-                                    .bodyLargeBold
-                                    .value,
-                              ),
-                            ),
-                            SizedBox(height: 12),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -1367,15 +1354,29 @@ class RideView extends GetView<RideController> {
                                 ),
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 12,
-                                  vertical: 16,
+                                  vertical: 12,
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    SizedBox(
-                                      width: 24,
-                                      height: 24,
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color(0XFFF5F9FF),
+                                            Color(0XFFCDE2F8),
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          stops: [0.0, 1.0],
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          9.23,
+                                        ),
+                                      ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -1383,9 +1384,9 @@ class RideView extends GetView<RideController> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           SvgPicture.asset(
-                                            "assets/icons/icon_origin.svg",
-                                            width: 20,
-                                            height: 20,
+                                            "assets/icons/icon_ride.svg",
+                                            width: 29.23,
+                                            height: 21.64,
                                           ),
                                         ],
                                       ),
@@ -1397,10 +1398,10 @@ class RideView extends GetView<RideController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Jalan Haji Jian nomor 2B",
+                                            "ECGO EV Moto",
                                             style: controller
                                                 .typographyServices
-                                                .bodySmallBold
+                                                .bodyLargeBold
                                                 .value
                                                 .copyWith(
                                                   color: controller
@@ -1409,23 +1410,71 @@ class RideView extends GetView<RideController> {
                                                       .value,
                                                 ),
                                           ),
-                                          Text(
-                                            "Jalan Haji Jian nomor 2B, Cilandak, Jakarta Selatan...",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorSlate800
-                                                      .value,
-                                                ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
+                                          SizedBox(height: 4),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_account.svg",
+                                                width: 12,
+                                                height: 12,
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey400
+                                                    .value,
+                                              ),
+                                              SizedBox(width: 2.5),
+                                              Text(
+                                                "1 Penumpang",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey400
+                                                          .value,
+                                                    ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "Rp25.000",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeBold
+                                              .value,
+                                        ),
+                                        Text(
+                                          "Rp50.000",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey400
+                                                    .value,
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                decorationColor: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey400
+                                                    .value,
+                                              ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
