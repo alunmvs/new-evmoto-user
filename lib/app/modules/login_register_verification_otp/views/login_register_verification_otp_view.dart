@@ -69,7 +69,7 @@ class LoginRegisterVerificationOtpView
                 borderRadius: BorderRadius.circular(8),
                 textStyle:
                     controller.typographyServices.headingMediumBold.value,
-                onCodeChanged: (String code) {},
+                onCodeChanged: null,
                 onSubmit: (String verificationCode) async {
                   await controller.onSubmitOTP();
                 },
