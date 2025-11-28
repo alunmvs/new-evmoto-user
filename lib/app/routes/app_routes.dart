@@ -28,6 +28,8 @@ abstract class Routes {
   static const SETTING_SAVED_LOCATION = _Paths.SETTING_SAVED_LOCATION;
   static const RIDE = _Paths.RIDE;
   static const SELECT_PROMO = _Paths.SELECT_PROMO;
+  static const RIDE_CHAT = _Paths.RIDE_CHAT;
+  static const RIDE_CALL = _Paths.RIDE_CALL;
 }
 
 abstract class _Paths {
@@ -55,4 +57,6 @@ abstract class _Paths {
   static const SETTING_SAVED_LOCATION = '/setting-saved-location';
   static const RIDE = '/ride';
   static const SELECT_PROMO = '/select-promo';
+  static const RIDE_CHAT = '/ride-chat';
+  static const RIDE_CALL = '/ride-call';
 }

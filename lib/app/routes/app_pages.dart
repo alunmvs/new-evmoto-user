@@ -30,6 +30,10 @@ import '../modules/promotion/bindings/promotion_binding.dart';
 import '../modules/promotion/views/promotion_view.dart';
 import '../modules/ride/bindings/ride_binding.dart';
 import '../modules/ride/views/ride_view.dart';
+import '../modules/ride_call/bindings/ride_call_binding.dart';
+import '../modules/ride_call/views/ride_call_view.dart';
+import '../modules/ride_chat/bindings/ride_chat_binding.dart';
+import '../modules/ride_chat/views/ride_chat_view.dart';
 import '../modules/search_address/bindings/search_address_binding.dart';
 import '../modules/search_address/views/search_address_view.dart';
 import '../modules/select_promo/bindings/select_promo_binding.dart';
@@ -165,6 +169,16 @@ class AppPages {
       name: _Paths.SELECT_PROMO,
       page: () => const SelectPromoView(),
       binding: SelectPromoBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIDE_CHAT,
+      page: () => const RideChatView(),
+      binding: RideChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIDE_CALL,
+      page: () => const RideCallView(),
+      binding: RideCallBinding(),
     ),
   ];
 }
