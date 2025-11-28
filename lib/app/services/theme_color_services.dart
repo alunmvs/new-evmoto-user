@@ -26,6 +26,7 @@ class ThemeColorServices extends GetxService {
   final neutralsColorGrey600 = Color(0XFF4D4D4D).obs;
   final neutralsColorGrey700 = Color(0XFF2E2E2E).obs;
   final neutralsColorGrey800 = Color(0XFF1A1F28).obs;
+  final neutralsColorGrey900 = Color(0XFF2C2D3A).obs;
   final neutralsColorSlate100 = Color(0XFFE0E3EB).obs;
   final neutralsColorSlate300 = Color(0XFF94A1BC).obs;
   final neutralsColorSlate400 = Color(0XFF7C8CB0).obs;
