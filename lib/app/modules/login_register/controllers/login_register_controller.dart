@@ -34,6 +34,12 @@ class LoginRegisterController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
-    Get.toNamed(Routes.LOGIN_REGISTER_VERIFICATION_OTP);
+    Get.toNamed(
+      Routes.LOGIN_REGISTER_VERIFICATION_OTP,
+      arguments: {
+        "mobile_phone":
+            "62${mobileNumberTextEditingController.text}".removeAllWhitespace,
+      },
+    );
   }
 }
