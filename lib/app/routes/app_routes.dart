@@ -30,6 +30,8 @@ abstract class Routes {
   static const SELECT_PROMO = _Paths.SELECT_PROMO;
   static const RIDE_CHAT = _Paths.RIDE_CHAT;
   static const RIDE_CALL = _Paths.RIDE_CALL;
+  static const PRIVACY_POLICY = _Paths.PRIVACY_POLICY;
+  static const TERMS_AND_CONDITIONS = _Paths.TERMS_AND_CONDITIONS;
 }
 
 abstract class _Paths {
@@ -59,4 +61,6 @@ abstract class _Paths {
   static const SELECT_PROMO = '/select-promo';
   static const RIDE_CHAT = '/ride-chat';
   static const RIDE_CALL = '/ride-call';
+  static const PRIVACY_POLICY = '/privacy-policy';
+  static const TERMS_AND_CONDITIONS = '/terms-and-conditions';
 }

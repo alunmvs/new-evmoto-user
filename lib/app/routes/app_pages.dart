@@ -26,6 +26,8 @@ import '../modules/login_register_verification_otp/bindings/login_register_verif
 import '../modules/login_register_verification_otp/views/login_register_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
+import '../modules/privacy_policy/views/privacy_policy_view.dart';
 import '../modules/promotion/bindings/promotion_binding.dart';
 import '../modules/promotion/views/promotion_view.dart';
 import '../modules/ride/bindings/ride_binding.dart';
@@ -46,6 +48,8 @@ import '../modules/setting_saved_location/bindings/setting_saved_location_bindin
 import '../modules/setting_saved_location/views/setting_saved_location_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.dart';
+import '../modules/terms_and_conditions/views/terms_and_conditions_view.dart';
 import '../modules/voucher_detail/bindings/voucher_detail_binding.dart';
 import '../modules/voucher_detail/views/voucher_detail_view.dart';
 
@@ -179,6 +183,16 @@ class AppPages {
       name: _Paths.RIDE_CALL,
       page: () => const RideCallView(),
       binding: RideCallBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRIVACY_POLICY,
+      page: () => const PrivacyPolicyView(),
+      binding: PrivacyPolicyBinding(),
+    ),
+    GetPage(
+      name: _Paths.TERMS_AND_CONDITIONS,
+      page: () => const TermsAndConditionsView(),
+      binding: TermsAndConditionsBinding(),
     ),
   ];
 }

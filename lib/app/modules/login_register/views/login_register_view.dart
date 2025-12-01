@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 import '../controllers/login_register_controller.dart';
 
@@ -95,14 +97,74 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          "Dengan Mendaftar / Masuk, kamu menyetujui\nSyarat Ketentuan & Kebijakan Privasi berlaku",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(color: Colors.white),
+                                        RichText(
+                                          text: TextSpan(
+                                            text:
+                                                'Dengan Mendaftar / Masuk, kamu menyetujui\n',
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value
+                                                .copyWith(color: Colors.white),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: 'Syarat Ketentuan',
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                                recognizer: TapGestureRecognizer()
+                                                  ..onTap = () {
+                                                    Get.toNamed(
+                                                      Routes
+                                                          .TERMS_AND_CONDITIONS,
+                                                    );
+                                                  },
+                                              ),
+                                              TextSpan(
+                                                text: ' & ',
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                              TextSpan(
+                                                text: 'Kebijakan Privasi',
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        Get.toNamed(
+                                                          Routes.PRIVACY_POLICY,
+                                                        );
+                                                      },
+                                              ),
+                                              TextSpan(
+                                                text: ' berlaku',
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
+
                                         SizedBox(height: 14),
                                       ],
                                     ),
@@ -157,7 +219,6 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                       child: Column(
                                         children: [
                                           TextFormField(
-                                            autofocus: true,
                                             keyboardType: TextInputType.number,
                                             controller: controller
                                                 .mobileNumberTextEditingController,
