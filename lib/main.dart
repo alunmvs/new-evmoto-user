@@ -8,6 +8,8 @@ import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 import 'app/routes/app_pages.dart';
 
+final baseUrl = "http://api-dev.evmotoapp.com:8500";
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
