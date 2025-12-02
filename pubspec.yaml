@@ -50,6 +50,7 @@ dependencies:
   reactive_forms: ^18.2.0
   flutter_secure_storage: ^9.2.4
   flutter_html: ^3.0.0
+  geolocator: ^14.0.2
 
 dev_dependencies:
   get_cli: ^1.9.1
