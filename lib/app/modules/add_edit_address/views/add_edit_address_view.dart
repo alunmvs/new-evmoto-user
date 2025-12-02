@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/add_edit_address_controller.dart';
 
@@ -35,324 +36,282 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
               ),
             ),
           ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 16),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: controller
-                          .themeColorServices
-                          .neutralsColorGrey0
-                          .value,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey200
-                            .value,
-                      ),
-                    ),
-                    child: Form(
-                      key: controller.formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Nama",
-                                style: controller
-                                    .typographyServices
-                                    .bodyLargeBold
-                                    .value,
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                "*",
-                                style: controller
-                                    .typographyServices
-                                    .bodyLargeBold
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorRed400
-                                          .value,
-                                    ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4),
-                          TextFormField(
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value,
-                            cursorErrorColor:
-                                controller.themeColorServices.primaryBlue.value,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            errorBuilder: (context, errorText) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    errorText,
-                                    style: controller
-                                        .typographyServices
-                                        .captionLargeRegular
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorRed500
-                                              .value,
-                                        ),
-                                  ),
-                                ],
-                              );
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                              hintText: 'Masukkan Nama',
-                              hintStyle: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey700
-                                        .value,
-                                  ),
-                              errorStyle: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed500
-                                        .value,
-                                  ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .sematicColorRed500
-                                      .value,
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .sematicColorRed500
-                                      .value,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .primaryBlue
-                                      .value,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty ||
-                                  value == "" ||
-                                  value.isBlank!) {
-                                return 'Wajib diisi';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Text(
-                                "Alamat",
-                                style: controller
-                                    .typographyServices
-                                    .bodyLargeBold
-                                    .value,
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                "*",
-                                style: controller
-                                    .typographyServices
-                                    .bodyLargeBold
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorRed400
-                                          .value,
-                                    ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4),
-                          TextFormField(
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value,
-                            cursorErrorColor:
-                                controller.themeColorServices.primaryBlue.value,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            errorBuilder: (context, errorText) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    errorText,
-                                    style: controller
-                                        .typographyServices
-                                        .captionLargeRegular
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorRed500
-                                              .value,
-                                        ),
-                                  ),
-                                ],
-                              );
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                              hintText: 'Masukkan Alamat Kamu',
-                              hintStyle: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey700
-                                        .value,
-                                  ),
-                              errorStyle: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed500
-                                        .value,
-                                  ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .sematicColorRed500
-                                      .value,
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .sematicColorRed500
-                                      .value,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .primaryBlue
-                                      .value,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              suffixIcon: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/icon_circle.svg",
-                                          width: 12.6,
-                                          height: 12.6,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty ||
-                                  value == "" ||
-                                  value.isBlank!) {
-                                return 'Wajib diisi';
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 32),
-                ],
+          if (controller.isFetch.value) ...[
+            Center(
+              child: SizedBox(
+                width: 25,
+                height: 25,
+                child: CircularProgressIndicator(
+                  color: controller.themeColorServices.primaryBlue.value,
+                ),
               ),
             ),
-          ),
+          ],
+          if (controller.isFetch.value == false) ...[
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 16),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey200
+                              .value,
+                        ),
+                      ),
+                      child: ReactiveForm(
+                        formGroup: controller.formGroup,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Nama",
+                                  style: controller
+                                      .typographyServices
+                                      .bodyLargeBold
+                                      .value,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  "*",
+                                  style: controller
+                                      .typographyServices
+                                      .bodyLargeBold
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .sematicColorRed400
+                                            .value,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            ReactiveTextField(
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value,
+                              cursorErrorColor: controller
+                                  .themeColorServices
+                                  .primaryBlue
+                                  .value,
+                              formControlName: 'address_name',
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
+                                ),
+                                hintText: 'Masukkan Nama',
+                                hintStyle: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey700
+                                          .value,
+                                    ),
+                                errorStyle: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .sematicColorRed500
+                                          .value,
+                                    ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .primaryBlue
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Text(
+                                  "Alamat",
+                                  style: controller
+                                      .typographyServices
+                                      .bodyLargeBold
+                                      .value,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  "*",
+                                  style: controller
+                                      .typographyServices
+                                      .bodyLargeBold
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .sematicColorRed400
+                                            .value,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            ReactiveTextField(
+                              readOnly: true,
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value,
+                              cursorErrorColor: controller
+                                  .themeColorServices
+                                  .primaryBlue
+                                  .value,
+                              formControlName: 'address',
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
+                                ),
+                                hintText: 'Masukkan Alamat Kamu',
+                                hintStyle: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey700
+                                          .value,
+                                    ),
+                                errorStyle: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .sematicColorRed500
+                                          .value,
+                                    ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .primaryBlue
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_circle.svg",
+                                            width: 12.6,
+                                            height: 12.6,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 32),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ],
       ),
       bottomNavigationBar: BottomAppBar(
