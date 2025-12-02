@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -444,11 +445,25 @@ class HomeView extends GetView<HomeController> {
                                               ),
                                           children: [
                                             GestureDetector(
-                                              onTap: () {
-                                                Get.toNamed(
-                                                  Routes
-                                                      .INTRODUCTION_DELIVERY_SERVICE,
-                                                );
+                                              onTap: () async {
+                                                var prefs =
+                                                    await SharedPreferences.getInstance();
+
+                                                var isIntroductionDeliveryServiceShown =
+                                                    prefs.getBool(
+                                                      'is_introduction_delivery_service_shown',
+                                                    ) ??
+                                                    false;
+
+                                                if (isIntroductionDeliveryServiceShown ==
+                                                    false) {
+                                                  Get.toNamed(
+                                                    Routes
+                                                        .INTRODUCTION_DELIVERY_SERVICE,
+                                                  );
+                                                } else {
+                                                  Get.toNamed(Routes.RIDE);
+                                                }
                                               },
                                               child: Stack(
                                                 children: [

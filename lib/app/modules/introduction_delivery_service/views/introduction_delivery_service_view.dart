@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/introduction_delivery_service_controller.dart';
 
@@ -86,7 +87,13 @@ class IntroductionDeliveryServiceView
                       width: MediaQuery.of(context).size.width,
                       height: 46,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          var prefs = await SharedPreferences.getInstance();
+                          await prefs.setBool(
+                            'is_introduction_delivery_service_shown',
+                            true,
+                          );
+
                           Get.back();
                           Get.toNamed(Routes.RIDE);
                         },
