@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/repositories/login_register_repository.dart';
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
@@ -22,6 +24,10 @@ class LoginRegisterVerificationOtpController extends GetxController {
   final isOTPInvalid = false.obs;
 
   final mobilePhone = "".obs;
+  final otpCode = "".obs;
+
+  final latitude = "".obs;
+  final longitude = "".obs;
 
   final otpProtectionTimerSeconds = 0.obs;
   late Timer? otpProtectionTimer;
@@ -33,6 +39,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
     super.onInit();
     isFetch.value = true;
     mobilePhone.value = Get.arguments['mobile_phone'] ?? "";
+    await requestLocation();
     await requestOTP();
     isFetch.value = false;
   }
@@ -70,7 +77,47 @@ class LoginRegisterVerificationOtpController extends GetxController {
     }
   }
 
+  Future<void> requestLocation() async {
+    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    var permission = await Geolocator.requestPermission();
+
+    if (isLocationServiceEnabled == false ||
+        (permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever)) {
+      return;
+    }
+
+    var locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    var position = await Geolocator.getCurrentPosition(
+      locationSettings: locationSettings,
+    );
+
+    latitude.value = position.latitude.toString();
+    longitude.value = position.longitude.toString();
+  }
+
   Future<void> onSubmitOTP() async {
-    Get.offAllNamed(Routes.HOME);
+    try {
+      var loginData = await loginRegisterRepository.loginByOtp(
+        phone: mobilePhone.value,
+        code: otpCode.value,
+        language: 2,
+        lat: latitude.value,
+        lng: longitude.value,
+      );
+
+      var storage = FlutterSecureStorage();
+      await storage.write(key: "token", value: loginData.token);
+
+      Get.offAllNamed(Routes.HOME);
+    } catch (e) {
+      Get.showSnackbar(
+        GetSnackBar(message: e.toString(), duration: Duration(seconds: 2)),
+      );
+    }
   }
 }

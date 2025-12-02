@@ -71,7 +71,7 @@ class LoginRegisterVerificationOtpView
                       OtpTextField(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        numberOfFields: 6,
+                        numberOfFields: 4,
                         autoFocus: true,
                         borderColor: controller
                             .themeColorServices
@@ -100,6 +100,7 @@ class LoginRegisterVerificationOtpView
                             .value,
                         onCodeChanged: null,
                         onSubmit: (String verificationCode) async {
+                          controller.otpCode.value = verificationCode;
                           await controller.onSubmitOTP();
                         },
                       ),
