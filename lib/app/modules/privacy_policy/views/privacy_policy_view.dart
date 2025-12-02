@@ -23,20 +23,22 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
         backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: controller.isFetch.value
-              ? Center(
-                  child: SizedBox(
-                    width: 25,
-                    height: 25,
-                    child: CircularProgressIndicator(
-                      color: controller.themeColorServices.primaryBlue.value,
-                    ),
+        body: controller.isFetch.value
+            ? Center(
+                child: SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    color: controller.themeColorServices.primaryBlue.value,
                   ),
-                )
-              : Html(data: controller.agreement.value.content),
-        ),
+                ),
+              )
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Html(data: controller.agreement.value.content),
+                ),
+              ),
       ),
     );
   }

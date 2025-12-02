@@ -354,9 +354,10 @@ class AccountView extends GetView<AccountController> {
                             ),
                           ),
                         ),
-
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.TERMS_AND_CONDITIONS);
+                          },
                           child: Container(
                             padding: EdgeInsets.all(16),
                             color: Colors.transparent,
@@ -404,7 +405,9 @@ class AccountView extends GetView<AccountController> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.PRIVACY_POLICY);
+                          },
                           child: Container(
                             padding: EdgeInsets.all(16),
                             color: Colors.transparent,
