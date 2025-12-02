@@ -524,7 +524,9 @@ class AccountView extends GetView<AccountController> {
                     child: Column(
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () async {
+                            await controller.onTapLogout();
+                          },
                           child: Container(
                             padding: EdgeInsets.all(16),
                             color: Colors.transparent,
@@ -568,7 +570,7 @@ class AccountView extends GetView<AccountController> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
-                                        "APPS Version v1.2.3",
+                                        "APPS Version v${controller.packageVersion.value}",
                                         style: controller
                                             .typographyServices
                                             .captionSmallBold
