@@ -67,7 +67,7 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                controller.tempLanguageCode.value = "ID";
+                                controller.tempLanguageCode.value = "ZH_CN";
                               },
                               child: Container(
                                 color: Colors.transparent,
@@ -75,13 +75,13 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(
-                                      "assets/icons/icon_flag_id.svg",
+                                      "assets/icons/icon_flag_cn.svg",
                                       width: 24,
                                       height: 24,
                                     ),
                                     SizedBox(width: 12),
                                     Text(
-                                      "Bahasa Indonesia (ID)",
+                                      "简体中文 (ZH_CN)",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -89,22 +89,26 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                                     ),
                                     Spacer(),
                                     SizedBox(width: 12),
-                                    Radio(
-                                      value: "ID",
-                                      activeColor: controller
-                                          .themeColorServices
-                                          .primaryBlue
-                                          .value,
-                                      backgroundColor:
-                                          controller.tempLanguageCode.value ==
-                                              "ID"
-                                          ? WidgetStateProperty.all(
-                                              controller
-                                                  .themeColorServices
-                                                  .sematicColorBlue100
-                                                  .value,
-                                            )
-                                          : null,
+                                    SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: Radio(
+                                        value: "ZH_CN",
+                                        activeColor: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                        backgroundColor:
+                                            controller.tempLanguageCode.value ==
+                                                "ZH_CN"
+                                            ? WidgetStateProperty.all(
+                                                controller
+                                                    .themeColorServices
+                                                    .sematicColorBlue100
+                                                    .value,
+                                              )
+                                            : null,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -141,22 +145,82 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                                     ),
                                     Spacer(),
                                     SizedBox(width: 12),
-                                    Radio(
-                                      value: "EN",
-                                      activeColor: controller
-                                          .themeColorServices
-                                          .primaryBlue
+                                    SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: Radio(
+                                        value: "EN",
+                                        activeColor: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                        backgroundColor:
+                                            controller.tempLanguageCode.value ==
+                                                "EN"
+                                            ? WidgetStateProperty.all(
+                                                controller
+                                                    .themeColorServices
+                                                    .sematicColorBlue100
+                                                    .value,
+                                              )
+                                            : null,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              height: 0,
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey200
+                                  .value,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                controller.tempLanguageCode.value = "ID";
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                padding: const EdgeInsets.all(16),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_flag_id.svg",
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      "Bahasa Indonesia (ID)",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
                                           .value,
-                                      backgroundColor:
-                                          controller.tempLanguageCode.value ==
-                                              "EN"
-                                          ? WidgetStateProperty.all(
-                                              controller
-                                                  .themeColorServices
-                                                  .sematicColorBlue100
-                                                  .value,
-                                            )
-                                          : null,
+                                    ),
+                                    Spacer(),
+                                    SizedBox(width: 12),
+                                    SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: Radio(
+                                        value: "ID",
+                                        activeColor: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                        backgroundColor:
+                                            controller.tempLanguageCode.value ==
+                                                "ID"
+                                            ? WidgetStateProperty.all(
+                                                controller
+                                                    .themeColorServices
+                                                    .sematicColorBlue100
+                                                    .value,
+                                              )
+                                            : null,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -187,8 +251,9 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
                   onPressed: () {
-                    controller.languageServices.languageCode.value =
-                        controller.tempLanguageCode.value;
+                    controller.languageServices.switchLanguage(
+                      languageCode: controller.tempLanguageCode.value,
+                    );
                     Get.back();
                   },
                   style: ElevatedButton.styleFrom(

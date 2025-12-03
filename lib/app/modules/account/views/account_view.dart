@@ -166,11 +166,40 @@ class AccountView extends GetView<AccountController> {
                                   Spacer(),
                                   Row(
                                     children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/icon_flag_id.svg",
-                                        width: 16,
-                                        height: 16,
-                                      ),
+                                      if (controller
+                                              .languageServices
+                                              .languageCode
+                                              .value ==
+                                          "ZH_CN") ...[
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_flag_cn.svg",
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                      ],
+                                      if (controller
+                                              .languageServices
+                                              .languageCode
+                                              .value ==
+                                          "EN") ...[
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_flag_en.svg",
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                      ],
+                                      if (controller
+                                              .languageServices
+                                              .languageCode
+                                              .value ==
+                                          "ID") ...[
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_flag_id.svg",
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                      ],
+
                                       SizedBox(width: 13),
                                       SvgPicture.asset(
                                         "assets/icons/icon_arrow_right.svg",

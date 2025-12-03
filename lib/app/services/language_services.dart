@@ -3,16 +3,25 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/language_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageServices extends GetxService {
-  final languageCode = "ID".obs;
-  final languageCodeSystem = 3.obs;
+  final languageCode = "EN".obs;
+  final languageCodeSystem = 2.obs;
   final language = Language().obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    await loadLanguageAssets(languageCode: "EN");
+
+    var prefs = await SharedPreferences.getInstance();
+    var languageCode = prefs.getString('language_code');
+
+    if (languageCode != null) {
+      await switchLanguage(languageCode: languageCode);
+    } else {
+      await switchLanguage(languageCode: "EN");
+    }
   }
 
   @override
@@ -25,8 +34,11 @@ class LanguageServices extends GetxService {
     super.onClose();
   }
 
-  Future<void> loadLanguageAssets({required String languageCode}) async {
+  Future<void> switchLanguage({required String languageCode}) async {
     this.languageCode.value = languageCode;
+
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('language_code', languageCode);
 
     switch (languageCode) {
       case "ZH_CN":
