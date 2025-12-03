@@ -1,0 +1,22 @@
+{
+    "ONBOARDING_INTRO_TITLE_1": "Perjalanan, Pengiriman, dan Kuliner dalam Genggaman",
+    "ONBOARDING_INTRO_DESCRIPTION_1": "Pesan EV Moto untuk perjalanan, nikmati makanan favorit, dan kirim paket dengan mudah, semuanya dalam satu aplikasi!",
+    "ONBOARDING_INTRO_TITLE_2": "Melaju Tanpa Polusi, Berkendara Lebih Asri",
+    "ONBOARDING_INTRO_DESCRIPTION_2": "Perjalanan ramah lingkungan dengan EV Moto. Tanpa asap, tanpa bising, hanya perjalanan nyaman dan bebas polusi!",
+    "BUTTON_NEXT": "Lanjutkan",
+    "LOGIN_TITLE": "Hai, Yuk Join Sekarang",
+    "LOGIN_DESCRIPTION": "Masukkan nomor handphone Anda untuk melanjutkan.",
+    "MOBILE_PHONE": "Nomor Handphone",
+    "LOGIN_BUTTON": "Join Sekarang",
+    "LOGIN_OR": "Atau Lanjut Dengan",
+    "TERM_AND_CONDITION": "Syarat Ketentuan",
+    "PRIVACY_POLICY": "Kebijakan Privasi",
+    "TNC_PRIVACY_CONFIRMATION_1": "Dengan Mendaftar / Masuk, kamu menyetujui",
+    "TNC_PRIVACY_CONFIRMATION_2": "&",
+    "TNC_PRIVACY_CONFIRMATION_3": "berlaku",
+    "VERIFICATION_OTP_TITLE": "Verifikasi OTP",
+    "VERIFICATION_OTP_DESCRIPTION": "Kami telah mengirimkan 6 digit OTP ke nomor",
+    "VERIFICATION_OTP_NOT_RECEIVE": "Tidak Menerima Kode?",
+    "VERIFICATION_OTP_RESEND": "Kirim Ulang",
+    "VERIFICATION_OTP_NOT_MATCH": "Kode yang anda masukkan salah"
+}
