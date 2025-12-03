@@ -13,7 +13,7 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Syarat Ketentuan",
+            controller.languageServices.language.value.termAndCondition ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -33,9 +33,11 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
                   ),
                 ),
               )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Html(data: controller.agreement.value.content),
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Html(data: controller.agreement.value.content),
+                ),
               ),
       ),
     );

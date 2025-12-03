@@ -13,7 +13,7 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Kebijakan Privasi",
+            controller.languageServices.language.value.privacyPolicy ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
