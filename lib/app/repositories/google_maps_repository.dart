@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:new_evmoto_user/app/data/google_direction_model.dart';
 import 'package:new_evmoto_user/app/data/google_geo_code_search_model.dart';
 import 'package:new_evmoto_user/app/data/google_place_text_search_model.dart';
@@ -14,7 +15,11 @@ class GoogleMapsRepository {
       var dio = Dio();
       var response = await dio.get(
         url,
-        queryParameters: {"query": query, "language": language, "key": ""},
+        queryParameters: {
+          "query": query,
+          "language": language,
+          "key": dotenv.get("GOOGLE_KEY"),
+        },
       );
 
       var result = <GooglePlaceTextSearch>[];
@@ -44,7 +49,7 @@ class GoogleMapsRepository {
         queryParameters: {
           "latlng": "$latitude,$longitude",
           "language": language,
-          "key": "",
+          "key": dotenv.get("GOOGLE_KEY"),
         },
       );
 
@@ -77,7 +82,7 @@ class GoogleMapsRepository {
           "origin": "$originLatitude,$originLongitude",
           "destination": "$destinationLatitude,$destinationLongitude",
           "language": "en",
-          "key": "",
+          "key": dotenv.get("GOOGLE_KEY"),
         },
       );
 

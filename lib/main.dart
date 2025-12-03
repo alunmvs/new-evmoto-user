@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -10,7 +11,7 @@ import 'app/routes/app_pages.dart';
 
 final baseUrl = "http://api-dev.evmotoapp.com:8500";
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setSystemUIOverlayStyle(
@@ -21,6 +22,8 @@ void main() {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+
+  await dotenv.load(fileName: ".env");
 
   Get.put(ThemeColorServices(), permanent: true);
   Get.put(TypographyServices(), permanent: true);
