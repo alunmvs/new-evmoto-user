@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/views/account_view.dart';
@@ -36,7 +37,7 @@ class HomeView extends GetView<HomeController> {
               ],
               if (controller.indexNavigationBar.value == 1) ...[
                 Text(
-                  "Aktivitas",
+                  controller.languageServices.language.value.activity ?? "-",
                   style: controller.typographyServices.headingSmallBold.value
                       .copyWith(
                         color: controller
@@ -48,7 +49,7 @@ class HomeView extends GetView<HomeController> {
               ],
               if (controller.indexNavigationBar.value == 2) ...[
                 Text(
-                  "Akun",
+                  controller.languageServices.language.value.account ?? "-",
                   style: controller.typographyServices.headingSmallBold.value
                       .copyWith(
                         color: controller
@@ -84,7 +85,9 @@ class HomeView extends GetView<HomeController> {
                           .themeColorServices
                           .neutralsColorGrey0
                           .value,
-                      onRefresh: () async {},
+                      onRefresh: () async {
+                        await controller.refreshAll();
+                      },
                       child: SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),
                         child: Stack(
@@ -148,7 +151,12 @@ class HomeView extends GetView<HomeController> {
                                                     horizontal: 16,
                                                   ),
                                               child: Text(
-                                                "Siap jalan? tentukan tujuanmu",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .homeRideReadyToGoTitle ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallRegular
@@ -196,12 +204,22 @@ class HomeView extends GetView<HomeController> {
                                                       height: 21,
                                                     ),
                                                     SizedBox(width: 11),
-                                                    Text(
-                                                      "Mau kemana hari ini?",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .bodyLargeBold
-                                                          .value,
+                                                    Expanded(
+                                                      child: Text(
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .homeRideReadyToGoHint ??
+                                                            "-",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodyLargeBold
+                                                            .value,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -259,7 +277,12 @@ class HomeView extends GetView<HomeController> {
                                                           ),
                                                           SizedBox(width: 6),
                                                           Text(
-                                                            "Tambah Rumah",
+                                                            controller
+                                                                    .languageServices
+                                                                    .language
+                                                                    .value
+                                                                    .addLocationHome ??
+                                                                "-",
                                                             style: controller
                                                                 .typographyServices
                                                                 .captionLargeRegular
@@ -322,7 +345,12 @@ class HomeView extends GetView<HomeController> {
                                                           ),
                                                           SizedBox(width: 6),
                                                           Text(
-                                                            "Tambah Kantor",
+                                                            controller
+                                                                    .languageServices
+                                                                    .language
+                                                                    .value
+                                                                    .addLocationOffice ??
+                                                                "-",
                                                             style: controller
                                                                 .typographyServices
                                                                 .captionLargeRegular
@@ -385,7 +413,12 @@ class HomeView extends GetView<HomeController> {
                                                           ),
                                                           SizedBox(width: 6),
                                                           Text(
-                                                            "Lokasi Lainnya",
+                                                            controller
+                                                                    .languageServices
+                                                                    .language
+                                                                    .value
+                                                                    .addLocationOther ??
+                                                                "-",
                                                             style: controller
                                                                 .typographyServices
                                                                 .captionLargeRegular
@@ -503,7 +536,12 @@ class HomeView extends GetView<HomeController> {
                                                                 height: 4,
                                                               ),
                                                               Text(
-                                                                "Antar",
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .delivery ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodySmallBold
@@ -563,7 +601,12 @@ class HomeView extends GetView<HomeController> {
                                                               ),
                                                         ),
                                                         child: Text(
-                                                          "Diskon 50%",
+                                                          controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .discount50 ??
+                                                              "-",
                                                           style: controller
                                                               .typographyServices
                                                               .captionSmallBold
@@ -626,7 +669,12 @@ class HomeView extends GetView<HomeController> {
                                                                 height: 4,
                                                               ),
                                                               Text(
-                                                                "Paket",
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .package ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodySmallBold
@@ -666,7 +714,12 @@ class HomeView extends GetView<HomeController> {
                                                               ),
                                                         ),
                                                         child: Text(
-                                                          "Segera Hadir",
+                                                          controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .comingSoon ??
+                                                              "-",
                                                           style: controller
                                                               .typographyServices
                                                               .captionSmallBold
@@ -724,7 +777,12 @@ class HomeView extends GetView<HomeController> {
                                                                 height: 4,
                                                               ),
                                                               Text(
-                                                                "Makanan",
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .food ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodySmallBold
@@ -764,7 +822,12 @@ class HomeView extends GetView<HomeController> {
                                                               ),
                                                         ),
                                                         child: Text(
-                                                          "Segera Hadir",
+                                                          controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .comingSoon ??
+                                                              "-",
                                                           style: controller
                                                               .typographyServices
                                                               .captionSmallBold
@@ -832,7 +895,12 @@ class HomeView extends GetView<HomeController> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        "Saldo Kamu",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .myBalance ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -846,7 +914,17 @@ class HomeView extends GetView<HomeController> {
                                                       ),
                                                       SizedBox(height: 2),
                                                       Text(
-                                                        "Rp150.000",
+                                                        NumberFormat.currency(
+                                                          locale: 'id_ID',
+                                                          symbol: 'Rp',
+                                                          decimalDigits: 0,
+                                                        ).format(
+                                                          controller
+                                                                  .userInfo
+                                                                  .value
+                                                                  .balance ??
+                                                              0.0,
+                                                        ),
                                                         style: controller
                                                             .typographyServices
                                                             .bodySmallBold
@@ -870,7 +948,12 @@ class HomeView extends GetView<HomeController> {
                                                         ),
                                                         SizedBox(height: 4),
                                                         Text(
-                                                          "Topup",
+                                                          controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .topup ??
+                                                              "-",
                                                           style: controller
                                                               .typographyServices
                                                               .captionLargeRegular
@@ -898,7 +981,12 @@ class HomeView extends GetView<HomeController> {
                                                           ),
                                                           SizedBox(height: 4),
                                                           Text(
-                                                            "Riwayat",
+                                                            controller
+                                                                    .languageServices
+                                                                    .language
+                                                                    .value
+                                                                    .history ??
+                                                                "-",
                                                             style: controller
                                                                 .typographyServices
                                                                 .captionLargeRegular
@@ -924,7 +1012,12 @@ class HomeView extends GetView<HomeController> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              "Promosi hari ini",
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .promoToday ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .bodyLargeBold
@@ -935,7 +1028,12 @@ class HomeView extends GetView<HomeController> {
                                                 Get.toNamed(Routes.PROMOTION);
                                               },
                                               child: Text(
-                                                "Lihat Semua",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .seeAll ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold
@@ -1112,7 +1210,8 @@ class HomeView extends GetView<HomeController> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Beranda",
+                          controller.languageServices.language.value.home ??
+                              "-",
                           style: controller
                               .typographyServices
                               .captionLargeBold
@@ -1172,7 +1271,8 @@ class HomeView extends GetView<HomeController> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Aktivitas",
+                          controller.languageServices.language.value.activity ??
+                              "-",
                           style: controller
                               .typographyServices
                               .captionLargeBold
@@ -1232,7 +1332,8 @@ class HomeView extends GetView<HomeController> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Akun",
+                          controller.languageServices.language.value.account ??
+                              "-",
                           style: controller
                               .typographyServices
                               .captionLargeBold
