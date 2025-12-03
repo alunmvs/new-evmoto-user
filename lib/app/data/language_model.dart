@@ -37,6 +37,13 @@ class Language {
   String? home;
   String? activity;
   String? account;
+  String? settingLanguage;
+  String? settingPayment;
+  String? settingSavedLocation;
+  String? customerService;
+  String? rateUs;
+  String? logout;
+  String? appVersion;
 
   Language({
     this.onboardingIntroTitle1,
@@ -77,6 +84,13 @@ class Language {
     this.home,
     this.activity,
     this.account,
+    this.settingLanguage,
+    this.settingPayment,
+    this.settingSavedLocation,
+    this.customerService,
+    this.rateUs,
+    this.logout,
+    this.appVersion,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -118,6 +132,13 @@ class Language {
     home = json['home'];
     activity = json['activity'];
     account = json['account'];
+    settingLanguage = json['setting_language'];
+    settingPayment = json['setting_payment'];
+    settingSavedLocation = json['setting_saved_location'];
+    customerService = json['customer_service'];
+    rateUs = json['rate_us'];
+    logout = json['logout'];
+    appVersion = json['app_version'];
   }
 
   Map<String, dynamic> toJson() {
@@ -160,6 +181,13 @@ class Language {
     data['home'] = this.home;
     data['activity'] = this.activity;
     data['account'] = this.account;
+    data['setting_language'] = this.settingLanguage;
+    data['setting_payment'] = this.settingPayment;
+    data['setting_saved_location'] = this.settingSavedLocation;
+    data['customer_service'] = this.customerService;
+    data['rate_us'] = this.rateUs;
+    data['logout'] = this.logout;
+    data['app_version'] = this.appVersion;
     return data;
   }
 }

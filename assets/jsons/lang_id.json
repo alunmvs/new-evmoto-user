@@ -36,5 +36,12 @@
     "promo_today": "Promosi hari ini",
     "home": "Beranda",
     "activity": "Aktivitas",
-    "account": "Akun"
+    "account": "Akun",
+    "setting_language": "Pilih Bahasa",
+    "setting_payment": "Pengaturan Pembayaran",
+    "setting_saved_location": "Pengaturan Lokasi Favorit",
+    "customer_service": "Customer Service",
+    "rate_us": "Beri Kami Nilai",
+    "logout": "Keluar",
+    "app_version": "APPS Version"
 }

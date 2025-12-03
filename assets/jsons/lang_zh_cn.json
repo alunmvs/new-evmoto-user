@@ -36,5 +36,12 @@
     "promo_today": "今日促销",
     "home": "首页",
     "activity": "活动",
-    "account": "帐户"
+    "account": "帐户",
+    "setting_language": "选择语言",
+    "setting_payment": "支付设置",
+    "setting_saved_location": "收藏位置设置",
+    "customer_service": "客户服务",
+    "rate_us": "给我们评分",
+    "logout": "注销",
+    "app_version": "应用程序版本"
 }
