@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/repositories/login_register_repository.dart';
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
@@ -20,6 +21,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final isOTPInvalid = false.obs;
 
@@ -57,7 +59,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
   Future<void> requestOTP() async {
     try {
       await otpRepository.requestOTP(
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         phone: mobilePhone.value,
         type: 2,
       );
@@ -105,7 +107,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
       var loginData = await loginRegisterRepository.loginByOtp(
         phone: mobilePhone.value,
         code: otpCode.value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         lat: latitude.value,
         lng: longitude.value,
       );

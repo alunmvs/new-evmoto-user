@@ -44,7 +44,8 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                   SizedBox(height: 24),
                   Center(
                     child: Text(
-                      "Hai, Yuk Join Sekarang",
+                      controller.languageServices.language.value.loginTitle ??
+                          "-",
                       style:
                           controller.typographyServices.headingSmallBold.value,
                       textAlign: TextAlign.center,
@@ -53,7 +54,12 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                   SizedBox(height: 8),
                   Center(
                     child: Text(
-                      "Masukkan nomor handphone Anda untuk melanjutkan.",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .loginDescription ??
+                          "-",
                       style:
                           controller.typographyServices.bodySmallRegular.value,
                       textAlign: TextAlign.center,
@@ -97,71 +103,94 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            text:
-                                                'Dengan Mendaftar / Masuk, kamu menyetujui\n',
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(color: Colors.white),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: 'Syarat Ketentuan',
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                                recognizer: TapGestureRecognizer()
-                                                  ..onTap = () {
-                                                    Get.toNamed(
-                                                      Routes
-                                                          .TERMS_AND_CONDITIONS,
-                                                    );
-                                                  },
-                                              ),
-                                              TextSpan(
-                                                text: ' & ',
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                              ),
-                                              TextSpan(
-                                                text: 'Kebijakan Privasi',
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        Get.toNamed(
-                                                          Routes.PRIVACY_POLICY,
-                                                        );
-                                                      },
-                                              ),
-                                              TextSpan(
-                                                text: ' berlaku',
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                              ),
-                                            ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 24,
+                                          ),
+                                          child: RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                              text:
+                                                  "${controller.languageServices.language.value.tncPrivacyConfirmation1 ?? "-"} ",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: Colors.white,
+                                                  ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                  text:
+                                                      controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .termAndCondition ??
+                                                      "-",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                  recognizer: TapGestureRecognizer()
+                                                    ..onTap = () {
+                                                      Get.toNamed(
+                                                        Routes
+                                                            .TERMS_AND_CONDITIONS,
+                                                      );
+                                                    },
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      " ${controller.languageServices.language.value.tncPrivacyConfirmation2 ?? "-"} ",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .privacyPolicy ??
+                                                      "-",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          Get.toNamed(
+                                                            Routes
+                                                                .PRIVACY_POLICY,
+                                                          );
+                                                        },
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      " ${controller.languageServices.language.value.tncPrivacyConfirmation3 ?? "-"}",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
 
@@ -207,7 +236,12 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Nomor Handphone",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .mobilePhone ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold
@@ -342,7 +376,12 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                 ),
                                               ),
                                               child: Text(
-                                                "Join Sekarang",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .loginButton ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodyLargeBold
@@ -362,7 +401,12 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                     SizedBox(height: 16),
                                     Center(
                                       child: Text(
-                                        "Atau Lanjut Dengan",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .loginOr ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular

@@ -17,7 +17,8 @@ class LoginRegisterVerificationOtpView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            'Verifikasi OTP',
+            controller.languageServices.language.value.verificationOtpTitle ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -51,14 +52,21 @@ class LoginRegisterVerificationOtpView
                       SizedBox(height: 24),
                       RichText(
                         text: TextSpan(
-                          text: 'Kami telah mengirimkan 6 digit OTP ke nomor ',
+                          text:
+                              "${controller.languageServices.language.value.verificationOtpDescription ?? "-"} ",
                           style: controller
                               .typographyServices
                               .bodyLargeRegular
-                              .value,
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey600
+                                    .value,
+                              ),
                           children: <TextSpan>[
                             TextSpan(
-                              text: '+6281234567890',
+                              text: "+${controller.mobilePhone.value}",
                               style: controller
                                   .typographyServices
                                   .bodyLargeBold
@@ -107,7 +115,12 @@ class LoginRegisterVerificationOtpView
                       if (controller.isOTPInvalid.value == true) ...[
                         SizedBox(height: 16),
                         Text(
-                          "Kode yang anda masukkan salah",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .verificationOtpNotMatch ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodyLargeRegular
@@ -146,7 +159,8 @@ class LoginRegisterVerificationOtpView
                         child: Center(
                           child: RichText(
                             text: TextSpan(
-                              text: "Tidak Menerima Kode? ",
+                              text:
+                                  "${controller.languageServices.language.value.verificationOtpNotReceive ?? "-"} ",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -163,7 +177,13 @@ class LoginRegisterVerificationOtpView
                                         .value ==
                                     0) ...[
                                   TextSpan(
-                                    text: 'Kirim Ulang',
+                                    text:
+                                        controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .verificationOtpResend ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeBold

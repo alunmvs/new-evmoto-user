@@ -1,0 +1,22 @@
+{
+    "onboarding_intro_title_1": "Travel, Delivery, and Culinary in the Palm of Your Hand",
+    "onboarding_intro_description_1": "Order an EV Moto for a ride, enjoy your favorite food, and send packages easily, all in one app!",
+    "onboarding_intro_title_2": "Travel Pollution-Free, Drive More Environmentally Friendly",
+    "onboarding_intro_description_2": "Eco-friendly travel with EV Moto. No smoke, no noise, just a comfortable, pollution-free ride!",
+    "button_next": "Continue",
+    "login_title": "Hi, Come Join Now",
+    "login_description": "Enter your mobile number to continue.",
+    "mobile_phone": "Mobile phone number",
+    "login_button": "Join Now",
+    "login_or": "Or Continue With",
+    "term_and_condition": "Terms and Conditions",
+    "privacy_policy": "Privacy Policy",
+    "tnc_privacy_confirmation_1": "By Registering / Logging in, you agree to",
+    "tnc_privacy_confirmation_2": "&",
+    "tnc_privacy_confirmation_3": "valid",
+    "verification_otp_title": "OTP Verification",
+    "verification_otp_description": "We have sent a 6 digit OTP to your number",
+    "verification_otp_not_receive": "Didn't Receive the Code?",
+    "verification_otp_resend": "Resend",
+    "verification_otp_not_match": "The code you entered is incorrect"
+}

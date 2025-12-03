@@ -60,7 +60,12 @@ class OnboardingIntroductionView
                           child: Column(
                             children: [
                               Text(
-                                "Perjalanan, Pengiriman, dan Kuliner dalam Genggaman",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .onboardingIntroTitle1 ??
+                                    "-",
                                 textAlign: TextAlign.center,
                                 style: controller
                                     .typographyServices
@@ -69,7 +74,12 @@ class OnboardingIntroductionView
                               ),
                               SizedBox(height: 16),
                               Text(
-                                "Pesan EV Moto untuk perjalanan, nikmati makanan favorit, dan kirim paket dengan mudah, semuanya dalam satu aplikasi!",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .onboardingIntroDescription1 ??
+                                    "-",
                                 textAlign: TextAlign.center,
                                 style: controller
                                     .typographyServices
@@ -102,7 +112,12 @@ class OnboardingIntroductionView
                           child: Column(
                             children: [
                               Text(
-                                "Melaju Tanpa Polusi, Berkendara Lebih Asri",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .onboardingIntroTitle2 ??
+                                    "-",
                                 textAlign: TextAlign.center,
                                 style: controller
                                     .typographyServices
@@ -111,7 +126,12 @@ class OnboardingIntroductionView
                               ),
                               SizedBox(height: 16),
                               Text(
-                                "Perjalanan ramah lingkungan dengan EV Moto. Tanpa asap, tanpa bising, hanya perjalanan nyaman dan bebas polusi!",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .onboardingIntroDescription2 ??
+                                    "-",
                                 textAlign: TextAlign.center,
                                 style: controller
                                     .typographyServices
@@ -192,7 +212,12 @@ class OnboardingIntroductionView
                               ),
                             ),
                             child: Text(
-                              "Lanjutkan",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .buttonNext ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeBold

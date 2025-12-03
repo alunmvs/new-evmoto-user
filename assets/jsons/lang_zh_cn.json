@@ -1,0 +1,22 @@
+{
+    "onboarding_intro_title_1": "旅行、配送和美食，尽在掌握",
+    "onboarding_intro_description_1": "在一个应用程序中即可轻松订购电动摩托车出行、享用您最爱的美食并寄送包裹！",
+    "onboarding_intro_title_2": "出行无污染，驾驶更环保",
+    "onboarding_intro_description_2": "骑上电动摩托，开启环保出行。无烟无噪音，只有舒适无污染的骑行体验！",
+    "button_next": "继续",
+    "login_title": "嗨，快来加入吧！",
+    "login_description": "请输入您的手机号码以继续。",
+    "mobile_phone": "手机号码",
+    "login_button": "立即加入",
+    "login_or": "或者继续",
+    "term_and_condition": "条款和条件",
+    "privacy_policy": "隐私政策",
+    "tnc_privacy_confirmation_1": "注册/登录即表示您同意",
+    "tnc_privacy_confirmation_2": "&",
+    "tnc_privacy_confirmation_3": "有效的",
+    "verification_otp_title": "一次性密码验证",
+    "verification_otp_description": "我们已向您的手机号码发送了一个 6 位数的验证码。",
+    "verification_otp_not_receive": "没有收到验证码？",
+    "verification_otp_resend": "重新发送",
+    "verification_otp_not_match": "您输入的验证码不正确"
+}
