@@ -2,11 +2,11 @@ class OrderRidePricing {
   int? id;
   String? name;
   String? img;
-  int? amount;
-  int? price;
+  double? amount;
+  double? price;
   double? mileage;
-  int? duration;
-  int? discountMoney;
+  double? duration;
+  double? discountMoney;
   int? type;
 
   OrderRidePricing({

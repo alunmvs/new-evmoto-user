@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:new_evmoto_user/app/data/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
@@ -19,8 +20,20 @@ class OrderRideRepository {
         "language": language,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = Dio();
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -77,8 +90,20 @@ class OrderRideRepository {
         "language": language,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = Dio();
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -106,8 +131,20 @@ class OrderRideRepository {
         "language": language,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = Dio();
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -139,8 +176,20 @@ class OrderRideRepository {
         "language": language,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = Dio();
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
