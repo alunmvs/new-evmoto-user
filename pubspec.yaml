@@ -37,7 +37,6 @@ dependencies:
   get: ^4.7.3
   google_fonts: ^6.3.2
   flutter_svg: ^2.2.3
-  flutter_otp_text_field: ^1.5.1+1
   carousel_slider: ^5.1.1
   dots_indicator: ^4.0.1
   timelines_plus: ^1.0.8
@@ -56,6 +55,7 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_polyline_points: ^3.1.0
   flutter_dotenv: ^6.0.0
+  pinput: ^6.0.1
 
 dev_dependencies:
   get_cli: ^1.9.1

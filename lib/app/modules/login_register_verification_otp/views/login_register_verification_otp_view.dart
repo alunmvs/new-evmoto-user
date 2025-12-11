@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
+import 'package:pinput/pinput.dart';
 
 import '../controllers/login_register_verification_otp_controller.dart';
 
@@ -76,39 +76,32 @@ class LoginRegisterVerificationOtpView
                         ),
                       ),
                       SizedBox(height: 16),
-                      OtpTextField(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        numberOfFields: 4,
-                        autoFocus: true,
-                        borderColor: controller
-                            .themeColorServices
-                            .neutralsColorGrey400
-                            .value,
-                        focusedBorderColor: controller.isOTPInvalid.value
-                            ? controller
+                      Pinput(
+                        defaultPinTheme: PinTheme(
+                          textStyle: controller
+                              .typographyServices
+                              .headingMediumBold
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                          width: 48,
+                          height: 52 + 5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: controller
                                   .themeColorServices
-                                  .sematicColorRed500
-                                  .value
-                            : controller.themeColorServices.primaryBlue.value,
-                        enabledBorderColor: controller.isOTPInvalid.value
-                            ? controller
-                                  .themeColorServices
-                                  .sematicColorRed500
-                                  .value
-                            : controller.themeColorServices.primaryBlue.value,
-                        showFieldAsBox: true,
-                        fieldHeight: 52 + 5,
-                        fieldWidth: 48,
-                        borderWidth: 1,
-                        borderRadius: BorderRadius.circular(8),
-                        textStyle: controller
-                            .typographyServices
-                            .headingMediumBold
-                            .value,
-                        onCodeChanged: null,
-                        onSubmit: (String verificationCode) async {
-                          controller.otpCode.value = verificationCode;
+                                  .primaryBlue
+                                  .value,
+                            ),
+                          ),
+                        ),
+                        onCompleted: (pin) async {
+                          controller.otpCode.value = pin;
                           await controller.onSubmitOTP();
                         },
                       ),
