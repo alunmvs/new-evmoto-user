@@ -12,9 +12,8 @@ class BitmapDescriptorHelper {
   ]) async {
     final pictureInfo = await vg.loadPicture(SvgAssetLoader(assetName), null);
 
-    double devicePixelRatio = ui.window.devicePixelRatio;
-    int width = (size.width * devicePixelRatio).toInt();
-    int height = (size.height * devicePixelRatio).toInt();
+    int width = size.width.toInt();
+    int height = size.height.toInt();
 
     final scaleFactor = math.min(
       width / pictureInfo.size.width,
@@ -33,5 +32,26 @@ class BitmapDescriptorHelper {
     final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
 
     return BitmapDescriptor.bytes(bytes.buffer.asUint8List());
+  }
+
+  static Future<BitmapDescriptor> getBitmapDescriptorFromPngAsset(
+    String assetName, [
+    Size size = const Size(48, 48),
+  ]) async {
+    final byteData = await rootBundle.load(assetName);
+    final bytes = byteData.buffer.asUint8List();
+
+    final codec = await ui.instantiateImageCodec(
+      bytes,
+      targetWidth: size.width.toInt(),
+      targetHeight: size.height.toInt(),
+    );
+
+    final frame = await codec.getNextFrame();
+    final resizedBytes = (await frame.image.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
+
+    return BitmapDescriptor.bytes(resizedBytes);
   }
 }

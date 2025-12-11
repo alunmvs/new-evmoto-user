@@ -36,6 +36,10 @@ import '../modules/ride_call/bindings/ride_call_binding.dart';
 import '../modules/ride_call/views/ride_call_view.dart';
 import '../modules/ride_chat/bindings/ride_chat_binding.dart';
 import '../modules/ride_chat/views/ride_chat_view.dart';
+import '../modules/ride_order_detail/bindings/ride_order_detail_binding.dart';
+import '../modules/ride_order_detail/views/ride_order_detail_view.dart';
+import '../modules/ride_order_done/bindings/ride_order_done_binding.dart';
+import '../modules/ride_order_done/views/ride_order_done_view.dart';
 import '../modules/search_address/bindings/search_address_binding.dart';
 import '../modules/search_address/views/search_address_view.dart';
 import '../modules/select_promo/bindings/select_promo_binding.dart';
@@ -193,6 +197,16 @@ class AppPages {
       name: _Paths.TERMS_AND_CONDITIONS,
       page: () => const TermsAndConditionsView(),
       binding: TermsAndConditionsBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIDE_ORDER_DETAIL,
+      page: () => const RideOrderDetailView(),
+      binding: RideOrderDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIDE_ORDER_DONE,
+      page: () => const RideOrderDoneView(),
+      binding: RideOrderDoneBinding(),
     ),
   ];
 }

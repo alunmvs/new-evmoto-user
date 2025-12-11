@@ -56,6 +56,10 @@ dependencies:
   flutter_polyline_points: ^3.1.0
   flutter_dotenv: ^6.0.0
   pinput: ^6.0.1
+  avatar_glow: ^3.0.1
+  turf: ^0.0.10
+  cached_network_image: ^3.4.1
+  intl: ^0.20.2
 
 dev_dependencies:
   get_cli: ^1.9.1

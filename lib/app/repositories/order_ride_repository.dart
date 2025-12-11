@@ -1,11 +1,93 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:new_evmoto_user/app/data/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
+import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class OrderRideRepository {
+  Future<OrderRideServer> getOrderRideServerDetail({
+    required String orderId,
+    required int orderType,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/pushSingle/api/netty/queryOrderServer";
+
+      var formData = FormData.fromMap({
+        "language": language,
+        "orderId": orderId,
+        "orderType": orderType,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = Dio();
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      print({"language": language, "orderId": orderId, "orderType": orderType});
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return OrderRideServer.fromJson(response.data['data']);
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<ActiveOrder>> getActiveOrderList({int? language}) async {
+    try {
+      var url = "$baseUrl/orderServer/api/order/queryServingOrder";
+
+      var formData = FormData.fromMap({"language": language});
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = Dio();
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var result = <ActiveOrder>[];
+
+      for (var activeOrder in response.data['data']) {
+        result.add(ActiveOrder.fromJson(activeOrder));
+      }
+
+      print(response.data);
+
+      return result;
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
   Future<OrderRide> getOrderRideDetailbyOrderId({
     String? orderId,
     int? language,
@@ -38,6 +120,8 @@ class OrderRideRepository {
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
+
+      print(response.data);
 
       return OrderRide.fromJson(response.data['data']);
     } on DioException catch (e) {

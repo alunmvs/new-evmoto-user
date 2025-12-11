@@ -171,8 +171,9 @@ class HomeView extends GetView<HomeController> {
                                             ),
                                             SizedBox(height: 16),
                                             GestureDetector(
-                                              onTap: () {
-                                                Get.toNamed(Routes.RIDE);
+                                              onTap: () async {
+                                                await controller
+                                                    .onTapRideService();
                                               },
                                               child: Container(
                                                 margin: EdgeInsets.symmetric(
@@ -479,24 +480,8 @@ class HomeView extends GetView<HomeController> {
                                           children: [
                                             GestureDetector(
                                               onTap: () async {
-                                                var prefs =
-                                                    await SharedPreferences.getInstance();
-
-                                                var isIntroductionDeliveryServiceShown =
-                                                    prefs.getBool(
-                                                      'is_introduction_delivery_service_shown',
-                                                    ) ??
-                                                    false;
-
-                                                if (isIntroductionDeliveryServiceShown ==
-                                                    false) {
-                                                  Get.toNamed(
-                                                    Routes
-                                                        .INTRODUCTION_DELIVERY_SERVICE,
-                                                  );
-                                                } else {
-                                                  Get.toNamed(Routes.RIDE);
-                                                }
+                                                await controller
+                                                    .onTapRideService();
                                               },
                                               child: Stack(
                                                 children: [

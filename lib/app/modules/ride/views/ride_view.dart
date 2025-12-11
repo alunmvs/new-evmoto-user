@@ -2182,25 +2182,20 @@ class RideView extends GetView<RideController> {
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           await controller.requestOrderRide();
-                                          controller.status.value =
-                                              "finding_driver_nearby";
-                                          // await Future.delayed(
-                                          //   Duration(seconds: 3),
-                                          // ).whenComplete(() {
-                                          //   controller.status.value =
-                                          //       "driver_on_the_way";
-                                          // });
-                                          // await Future.delayed(
-                                          //   Duration(seconds: 3),
-                                          // ).whenComplete(() {
-                                          //   controller.status.value =
-                                          //       "in_transit";
-                                          // });
-                                          // await Future.delayed(
-                                          //   Duration(seconds: 5),
-                                          // ).whenComplete(() {
-                                          //   controller.status.value = "done";
-                                          // });
+                                          // controller.status.value =
+                                          //     "finding_driver_nearby";
+                                          Get.back();
+                                          Get.toNamed(
+                                            Routes.RIDE_ORDER_DETAIL,
+                                            arguments: {
+                                              "order_id": controller
+                                                  .requestedOrderRide
+                                                  .value
+                                                  .id
+                                                  .toString(),
+                                              "order_type": 1,
+                                            },
+                                          );
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: controller
