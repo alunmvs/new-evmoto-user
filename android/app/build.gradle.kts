@@ -1,3 +1,14 @@
+import java.util.Properties
+
+val localProps = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(localFile.inputStream())
+    }
+}
+
+val mapsApiKey: String = localProps.getProperty("MAPS_API_KEY") ?: ""
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -28,6 +39,8 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
     }
 
     buildTypes {

@@ -31,7 +31,7 @@ Future<void> main() async {
 
   runApp(
     GetMaterialApp(
-      title: "Application",
+      title: "Evmoto",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       theme: ThemeData(
