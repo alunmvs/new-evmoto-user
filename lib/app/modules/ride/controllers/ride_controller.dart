@@ -1,22 +1,66 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:new_evmoto_user/app/data/google_place_text_search_model.dart';
+import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
+import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
+import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:intl/intl.dart';
 
 class RideController extends GetxController {
+  final GoogleMapsRepository googleMapsRepository;
+  final OrderRideRepository orderRideRepository;
+
+  RideController({
+    required this.googleMapsRepository,
+    required this.orderRideRepository,
+  });
+
+  final homeController = Get.find<HomeController>();
+
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
+  final initialCameraPosition = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  ).obs;
+  late GoogleMapController googleMapController;
+
+  final markers = <Marker>{}.obs;
+  final polylines = <Polyline>{}.obs;
+
+  final currentLatitude = "".obs;
+  final currentLongitude = "".obs;
+
+  final originTextEditingController = TextEditingController();
   final focusNodeOrigin = FocusNode();
-  final focusNodeDestination = FocusNode();
+  final originGooglePlaceTextSearch = GooglePlaceTextSearch().obs;
+  final originLatitude = "".obs;
+  final originLongitude = "".obs;
+  final originAddress = "".obs;
 
-  final latitudeOrigin = "".obs;
-  final longitudeOrigin = "".obs;
-  final latitudeDestination = "".obs;
-  final longitudeDestination = "".obs;
+  final destinationTextEditingController = TextEditingController();
+  final focusNodeDestination = FocusNode();
+  final destinationGooglePlaceTextSearch = GooglePlaceTextSearch().obs;
+  final destinationLatitude = "".obs;
+  final destinationLongitude = "".obs;
+  final destinationAddress = "".obs;
 
   final keywordOrigin = "".obs;
   late TextEditingController textEditingControllerOrigin;
@@ -38,9 +82,36 @@ class RideController extends GetxController {
 
   final status = "fill_origin_and_destination".obs;
 
+  final fillOriginAndDestinationPanelController = PanelController();
+  final fillOriginAndDestinationPanelMinHeight = 0.0.obs;
+  final fillOriginAndDestinationPanelMaxHeight = 0.0.obs;
+
+  final originGooglePlaceTextSearchList = <GooglePlaceTextSearch>[].obs;
+  final destinationGooglePlaceTextSearchList = <GooglePlaceTextSearch>[].obs;
+
+  final orderRidePricingList = <OrderRidePricing>[].obs;
+  final selectedOrderRidePricing = OrderRidePricing().obs;
+  final requestedOrderRide = RequestedOrderRide().obs;
+
+  late Timer? orderStatusRefreshTimer;
+
+  final isFetch = false.obs;
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    isFetch.value = true;
+    await requestLocation();
+    initialCameraPosition.value = CameraPosition(
+      target: LatLng(
+        double.parse(currentLatitude.value),
+        double.parse(currentLongitude.value),
+      ),
+      zoom: 15,
+    );
+
+    fillOriginAndDestinationPanelMinHeight.value = Get.height * 0.8;
+    fillOriginAndDestinationPanelMaxHeight.value = Get.height * 0.8;
 
     focusNodeOrigin.addListener(() {
       isOriginHasPrimaryFocus.value = focusNodeOrigin.hasPrimaryFocus;
@@ -51,7 +122,7 @@ class RideController extends GetxController {
       isDestinationHasPrimaryFocus.refresh();
     });
 
-    focusNodeOrigin.requestFocus();
+    isFetch.value = false;
   }
 
   @override
@@ -64,12 +135,148 @@ class RideController extends GetxController {
     super.onClose();
   }
 
+  Future<void> getOriginPlaceLocationList({String? keyword}) async {
+    Future.delayed(Duration(seconds: 1)).whenComplete(() async {
+      if (keywordOrigin.value == keyword) {
+        originGooglePlaceTextSearchList.value = await googleMapsRepository
+            .getRecommendationPlaceListByTextSearch(
+              query: keywordOrigin.value,
+              language: "en",
+            );
+
+        for (var location in originGooglePlaceTextSearchList) {
+          var distanceMeter = Geolocator.distanceBetween(
+            double.parse(currentLatitude.value),
+            double.parse(currentLongitude.value),
+            location.geometry!.location!.lat!,
+            location.geometry!.location!.lng!,
+          );
+          var distanceKm = (distanceMeter / 1000);
+
+          location.customDistanceKm = distanceKm;
+          location.customDistanceM = distanceMeter;
+
+          if (distanceKm < 1) {
+            highlightedWordAddressOrigin["${distanceMeter.round()}m ⬩"] =
+                HighlightedWord(
+                  onTap: () {},
+                  textStyle: typographyServices.captionLargeBold.value.copyWith(
+                    color: themeColorServices.neutralsColorGrey500.value,
+                  ),
+                );
+          } else {
+            highlightedWordAddressOrigin["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+                HighlightedWord(
+                  onTap: () {},
+                  textStyle: typographyServices.captionLargeBold.value.copyWith(
+                    color: themeColorServices.neutralsColorGrey500.value,
+                  ),
+                );
+          }
+        }
+      }
+    });
+  }
+
+  Future<void> getDestinationPlaceLocationList({String? keyword}) async {
+    Future.delayed(Duration(seconds: 1)).whenComplete(() async {
+      if (keywordDestination.value == keyword) {
+        destinationGooglePlaceTextSearchList.value = await googleMapsRepository
+            .getRecommendationPlaceListByTextSearch(
+              query: keywordDestination.value,
+              language: "en",
+            );
+
+        for (var location in destinationGooglePlaceTextSearchList) {
+          var distanceMeter = Geolocator.distanceBetween(
+            double.parse(currentLatitude.value),
+            double.parse(currentLongitude.value),
+            location.geometry!.location!.lat!,
+            location.geometry!.location!.lng!,
+          );
+          var distanceKm = (distanceMeter / 1000);
+
+          location.customDistanceKm = distanceKm;
+          location.customDistanceM = distanceMeter;
+
+          if (distanceKm < 1) {
+            highlightedWordAddressDestination["${distanceMeter.round()}m ⬩"] =
+                HighlightedWord(
+                  onTap: () {},
+                  textStyle: typographyServices.captionLargeBold.value.copyWith(
+                    color: themeColorServices.neutralsColorGrey500.value,
+                  ),
+                );
+          } else {
+            highlightedWordAddressDestination["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+                HighlightedWord(
+                  onTap: () {},
+                  textStyle: typographyServices.captionLargeBold.value.copyWith(
+                    color: themeColorServices.neutralsColorGrey500.value,
+                  ),
+                );
+          }
+        }
+      }
+    });
+  }
+
+  Future<void> requestLocation() async {
+    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    var permission = await Geolocator.requestPermission();
+
+    if (isLocationServiceEnabled == false ||
+        (permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever)) {
+      return;
+    }
+
+    var locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    var position = await Geolocator.getCurrentPosition(
+      locationSettings: locationSettings,
+    );
+
+    currentLatitude.value = position.latitude.toString();
+    currentLongitude.value = position.longitude.toString();
+    originLatitude.value = position.latitude.toString();
+    originLongitude.value = position.longitude.toString();
+
+    var googleGeoCodeSearch = await googleMapsRepository
+        .getRecommendationPlaceListByLatitudeLongitude(
+          latitude: originLatitude.value,
+          longitude: originLongitude.value,
+        );
+
+    originTextEditingController.text =
+        googleGeoCodeSearch.first.formattedAddress ?? "";
+    keywordOrigin.value = googleGeoCodeSearch.first.formattedAddress ?? "";
+    originAddress.value = googleGeoCodeSearch.first.formattedAddress ?? "";
+
+    markers.add(
+      Marker(
+        markerId: MarkerId("origin"),
+        position: LatLng(
+          double.parse(currentLatitude.value),
+          double.parse(currentLongitude.value),
+        ),
+        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+          'assets/icons/icon_origin.svg',
+          Size(22.67, 22.67),
+        ),
+      ),
+    );
+  }
+
   bool isLatLngOriginFilled() {
-    return latitudeOrigin.value != "" && longitudeOrigin.value != "";
+    return originLatitude.value != "" && originLongitude.value != "";
   }
 
   bool isLatLngDestinationFilled() {
-    return latitudeDestination.value != "" && longitudeDestination.value != "";
+    return destinationLatitude.value != "" && destinationLongitude.value != "";
   }
 
   void onTapSelectPaymentBottomSheet() async {
@@ -528,5 +735,103 @@ class RideController extends GetxController {
         ],
       ),
     );
+  }
+
+  Future<void> refocusMapsBound() async {
+    LatLngBounds bounds;
+
+    var originLatitude = double.parse(this.originLatitude.value);
+    var originLongitude = double.parse(this.originLongitude.value);
+    var destinationLatitude = double.parse(this.destinationLatitude.value);
+    var destinationLongitude = double.parse(this.destinationLongitude.value);
+
+    if (originLatitude > destinationLatitude &&
+        originLongitude > destinationLongitude) {
+      bounds = LatLngBounds(
+        southwest: LatLng(destinationLatitude, destinationLongitude),
+        northeast: LatLng(originLatitude, originLongitude),
+      );
+    } else if (originLongitude > destinationLongitude) {
+      bounds = LatLngBounds(
+        southwest: LatLng(originLatitude, destinationLongitude),
+        northeast: LatLng(destinationLatitude, originLongitude),
+      );
+    } else if (originLatitude > destinationLatitude) {
+      bounds = LatLngBounds(
+        southwest: LatLng(destinationLatitude, originLongitude),
+        northeast: LatLng(originLatitude, destinationLongitude),
+      );
+    } else {
+      bounds = LatLngBounds(
+        southwest: LatLng(originLatitude, originLongitude),
+        northeast: LatLng(destinationLatitude, destinationLongitude),
+      );
+    }
+
+    await googleMapController.animateCamera(
+      CameraUpdate.newLatLngBounds(bounds, 200),
+    );
+  }
+
+  Future<void> generatePolylines() async {
+    var googleDirectionList = await googleMapsRepository.getDirection(
+      originLatitude: originLatitude.value,
+      originLongitude: originLongitude.value,
+      destinationLatitude: destinationLatitude.value,
+      destinationLongitude: destinationLongitude.value,
+      region: "en",
+    );
+
+    var result = PolylinePoints.decodePolyline(
+      googleDirectionList.first.overviewPolyline!.points!,
+    );
+    var polylineCoordinates = result
+        .map((p) => LatLng(p.latitude, p.longitude))
+        .toList();
+
+    polylines.add(
+      Polyline(
+        polylineId: PolylineId("route"),
+        points: polylineCoordinates,
+        color: themeColorServices.sematicColorBlue200.value,
+        width: 6,
+      ),
+    );
+  }
+
+  Future<void> getOrderRidePricingList() async {
+    orderRidePricingList.value = (await orderRideRepository
+        .getOrderRidePricingList(
+          startLonLat: "${originLongitude.value},${originLatitude.value}",
+          endLonLat:
+              "${destinationLongitude.value},${destinationLatitude.value}",
+          language: languageServices.languageCodeSystem.value,
+          type: 1,
+        ));
+  }
+
+  Future<void> requestOrderRide() async {
+    requestedOrderRide.value = (await orderRideRepository.requestOrderRide(
+      language: languageServices.languageCodeSystem.value,
+      endAddress: destinationAddress.value,
+      endLat: destinationLatitude.value,
+      endLon: destinationLongitude.value,
+      startAddress: originAddress.value,
+      startLat: originLatitude.value,
+      startLon: originLongitude.value,
+      orderSource: "1", // statis 1
+      orderType: 1, // 1 = normal, 2 = appointment
+      passengers: homeController.userInfo.value.name,
+      passengersPhone: homeController.userInfo.value.phone,
+      placementLat: currentLatitude.value,
+      placementLon: currentLongitude.value,
+      tipMoney: "0",
+      serverCarModelId: selectedOrderRidePricing.value.id.toString(),
+      substitute: "0", // 0 = no, 1 = yes
+      travelTime: DateFormat('yyyy-MM-dd HH:mm').format(
+        DateTime.now(),
+      ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
+      type: "1", // 1 = Ride, 2 = Intercity
+    ));
   }
 }

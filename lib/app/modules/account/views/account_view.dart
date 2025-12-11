@@ -33,7 +33,9 @@ class AccountView extends GetView<AccountController> {
             color: controller.themeColorServices.primaryBlue.value,
             backgroundColor:
                 controller.themeColorServices.neutralsColorGrey0.value,
-            onRefresh: () async {},
+            onRefresh: () async {
+              await controller.homeController.refreshAll();
+            },
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Column(

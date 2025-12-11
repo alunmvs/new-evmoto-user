@@ -32,6 +32,6 @@ class BitmapDescriptorHelper {
     final image = rasterPicture.toImageSync(width, height);
     final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
 
-    return BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+    return BitmapDescriptor.bytes(bytes.buffer.asUint8List());
   }
 }
