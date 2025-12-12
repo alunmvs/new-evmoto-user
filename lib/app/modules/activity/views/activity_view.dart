@@ -195,99 +195,79 @@ class ActivityView extends GetView<ActivityController> {
                           physics: AlwaysScrollableScrollPhysics(),
                           child: Column(
                             children: [
-                              if (controller.latestActivityList.isEmpty) ...[
-                                Expanded(
-                                  child: RefreshIndicator(
-                                    color: controller
-                                        .themeColorServices
-                                        .primaryBlue
-                                        .value,
-                                    backgroundColor: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                    onRefresh: () async {},
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 24,
-                                      ),
-                                      child: SingleChildScrollView(
-                                        physics:
-                                            AlwaysScrollableScrollPhysics(),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(height: 134),
-                                            SvgPicture.asset(
-                                              "assets/images/img_latest_activity_not_found.svg",
-                                              height: 120,
-                                              width: 120,
-                                            ),
-                                            SizedBox(height: 16),
-                                            Text(
-                                              "Kamu sudah mencoba EV Moto?",
-                                              style: controller
-                                                  .typographyServices
-                                                  .bodyLargeBold
-                                                  .value,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            SizedBox(height: 8),
-                                            Text(
-                                              "Kamu bisa berpergian dengan nyaman, aman dan tentunya gak nambahin polusi di jakarta dong!",
-                                              style: controller
-                                                  .typographyServices
-                                                  .bodySmallRegular
-                                                  .value,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            SizedBox(height: 16),
-                                            SizedBox(
-                                              height: 46,
-                                              child: ElevatedButton(
-                                                onPressed: () {},
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: controller
-                                                      .themeColorServices
-                                                      .primaryBlue
-                                                      .value,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                    side: BorderSide(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .sematicColorBlue200
-                                                          .value,
-                                                      width: 2,
-                                                    ),
-                                                  ),
-                                                ),
-                                                child: Text(
-                                                  "Pesan EV Moto",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodyLargeBold
-                                                      .value
-                                                      .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                              if (controller.isFetch.value) ...[
+                                SizedBox(height: 134),
+                                Center(
+                                  child: SizedBox(
+                                    width: 25,
+                                    height: 25,
+                                    child: CircularProgressIndicator(
+                                      color: controller
+                                          .themeColorServices
+                                          .primaryBlue
+                                          .value,
                                     ),
                                   ),
                                 ),
                               ],
-                              if (controller.latestActivityList.isNotEmpty) ...[
+                              if (controller.activeOrderList.isEmpty) ...[
+                                SizedBox(height: 134),
+                                SvgPicture.asset(
+                                  "assets/images/img_latest_activity_not_found.svg",
+                                  height: 120,
+                                  width: 120,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  "Kamu sudah mencoba EV Moto?",
+                                  style: controller
+                                      .typographyServices
+                                      .bodyLargeBold
+                                      .value,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Kamu bisa berpergian dengan nyaman, aman dan tentunya gak nambahin polusi di jakarta dong!",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 16),
+                                SizedBox(
+                                  height: 46,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: controller
+                                          .themeColorServices
+                                          .primaryBlue
+                                          .value,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        side: BorderSide(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue200
+                                              .value,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Pesan EV Moto",
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              if (controller.activeOrderList.isNotEmpty) ...[
                                 for (var latestActivity
                                     in controller.latestActivityList) ...[
                                   Container(
@@ -533,99 +513,112 @@ class ActivityView extends GetView<ActivityController> {
                                 .neutralsColorGrey300
                                 .value,
                           ),
-                          if (controller.historyActivityList.isNotEmpty) ...[
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 12),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(width: 16),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey700
-                                              .value,
-                                          width: 2,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Text(
-                                        "Antar",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallBold
-                                            .value,
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey400
-                                              .value,
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Text(
-                                        "Paket",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value,
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey400
-                                              .value,
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Text(
-                                        "Makanan",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value,
-                                      ),
-                                    ),
-                                  ],
+                          if (controller.isFetch.value) ...[
+                            SizedBox(height: 134),
+                            Center(
+                              child: SizedBox(
+                                width: 25,
+                                height: 25,
+                                child: CircularProgressIndicator(
+                                  color: controller
+                                      .themeColorServices
+                                      .primaryBlue
+                                      .value,
                                 ),
                               ),
                             ),
-                            Divider(
-                              height: 0,
-                              color: controller
-                                  .themeColorServices
-                                  .neutralsColorGrey300
-                                  .value,
-                            ),
                           ],
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(width: 16),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey700
+                                            .value,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      "Antar",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      "Paket",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      "Makanan",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Divider(
+                            height: 0,
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey300
+                                .value,
+                          ),
                           Expanded(
                             child: RefreshIndicator(
                               color: controller
@@ -643,7 +636,7 @@ class ActivityView extends GetView<ActivityController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     if (controller
-                                        .historyActivityList
+                                        .historyOrderList
                                         .isEmpty) ...[
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -684,11 +677,10 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                     ],
                                     if (controller
-                                        .historyActivityList
+                                        .historyOrderList
                                         .isNotEmpty) ...[
-                                      for (var historyActivity
-                                          in controller
-                                              .historyActivityList) ...[
+                                      for (var historyOrder
+                                          in controller.historyOrderList) ...[
                                         GestureDetector(
                                           onTap: () {
                                             Get.toNamed(Routes.ACTIVITY_DETAIL);
@@ -772,7 +764,8 @@ class ActivityView extends GetView<ActivityController> {
                                                     ),
                                                     SizedBox(height: 8),
                                                     Text(
-                                                      "Jalan Haji Jian ke Plaza Pondok Gede",
+                                                      historyOrder.endAddress ??
+                                                          "-",
                                                       style: controller
                                                           .typographyServices
                                                           .bodySmallBold

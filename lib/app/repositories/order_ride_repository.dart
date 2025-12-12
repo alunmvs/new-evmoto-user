@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:new_evmoto_user/app/data/active_order_model.dart';
+import 'package:new_evmoto_user/app/data/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
@@ -76,6 +77,53 @@ class OrderRideRepository {
 
       for (var activeOrder in response.data['data']) {
         result.add(ActiveOrder.fromJson(activeOrder));
+      }
+
+      return result;
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<HistoryOrder>> getHistoryOrderList({
+    int? language,
+    int? pageNum,
+    int? size,
+    int? type,
+  }) async {
+    try {
+      var url = "$baseUrl/orderServer/api/order/queryMyOrderList";
+
+      var formData = FormData.fromMap({
+        "language": language,
+        "pageNum": pageNum,
+        "size": size,
+        "type": type,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = Dio();
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var result = <HistoryOrder>[];
+
+      for (var activeOrder in response.data['data']) {
+        result.add(HistoryOrder.fromJson(activeOrder));
       }
 
       return result;
@@ -244,6 +292,8 @@ class OrderRideRepository {
     String? orderId,
     int? orderType,
     int? language,
+    String? reason,
+    String? remark,
   }) async {
     try {
       var url = "$baseUrl/cancelOrder/api/taxi/addCancle";
@@ -252,6 +302,8 @@ class OrderRideRepository {
         "id": orderId,
         "orderType": orderType,
         "language": language,
+        "reason": reason,
+        "remark": remark,
       });
 
       var storage = FlutterSecureStorage();

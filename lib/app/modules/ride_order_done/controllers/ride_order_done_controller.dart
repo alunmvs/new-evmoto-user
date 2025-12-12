@@ -83,24 +83,49 @@ class RideOrderDoneController extends GetxController {
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
+    try {
+      await Future.wait([
+        orderRideRepository.submitRatingAndReviewOrder(
+          orderType: orderType.value,
+          orderId: orderId.value,
+          content: null,
+          fraction: rating.value,
+          language: languageServices.languageCodeSystem.value,
+        ),
+        orderRideRepository.paidOrder(
+          orderId: orderId.value,
+          payType: 3,
+          type: 1,
+          orderType: orderType.value,
+          language: languageServices.languageCodeSystem.value,
+        ),
+      ]);
 
-    await Future.wait([
-      orderRideRepository.submitRatingAndReviewOrder(
-        orderType: orderType.value,
-        orderId: orderId.value,
-        content: null,
-        fraction: rating.value,
-        language: languageServices.languageCodeSystem.value,
-      ),
-      orderRideRepository.paidOrder(
-        orderId: orderId.value,
-        payType: 3,
-        type: 1,
-        orderType: orderType.value,
-        language: languageServices.languageCodeSystem.value,
-      ),
-    ]);
+      Get.back();
 
-    Get.back();
+      var snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorGreen400.value,
+        content: Text(
+          "Berhasil menyelesaikan pesanan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } catch (e) {
+      var snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    }
   }
 }

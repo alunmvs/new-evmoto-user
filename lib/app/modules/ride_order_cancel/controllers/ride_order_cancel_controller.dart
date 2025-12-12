@@ -48,11 +48,30 @@ class RideOrderCancelController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
+    formGroup.markAllAsTouched();
+
+    if (formGroup.valid == false) {
+      var snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Harap lengkapi data yang dibutuhkan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      return;
+    }
+
     try {
       await orderRideRepository.cancelOrderRide(
         language: languageServices.languageCodeSystem.value,
         orderId: orderId.value,
         orderType: orderType.value,
+        reason: formGroup.control("reason").value,
+        remark: formGroup.control("remark").value,
       );
 
       Get.back();

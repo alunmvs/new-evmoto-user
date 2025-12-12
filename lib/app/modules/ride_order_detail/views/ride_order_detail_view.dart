@@ -47,6 +47,26 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                   },
                               markers: controller.markers,
                               polylines: controller.polylines,
+                              tiltGesturesEnabled:
+                                  controller
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
+                              zoomGesturesEnabled:
+                                  controller
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
+                              rotateGesturesEnabled:
+                                  controller
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
+                              scrollGesturesEnabled:
+                                  controller
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
                             ),
                             if (controller
                                     .isPinLocationWaitingForDriverHide
@@ -388,7 +408,10 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                               height: 46,
                               width: MediaQuery.of(context).size.width,
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await controller
+                                      .onTapOrderRideCancelBeforeDriver();
+                                },
                                 style: ButtonStyle(
                                   overlayColor: WidgetStateProperty.all(
                                     controller
@@ -412,7 +435,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                       .copyWith(
                                         color: controller
                                             .themeColorServices
-                                            .sematicColorRed500
+                                            .sematicColorRed400
                                             .value,
                                       ),
                                 ),

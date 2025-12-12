@@ -71,6 +71,13 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
               await Get.find<RideOrderDetailController>().refreshAll();
             }
             break;
+          case 'OFFLINE':
+            var storage = FlutterSecureStorage();
+            await storage.deleteAll();
+            await closeWebsocket();
+
+            Get.offAndToNamed(Routes.LOGIN_REGISTER);
+            break;
           default:
             break;
         }
