@@ -36,6 +36,8 @@ import '../modules/ride_call/bindings/ride_call_binding.dart';
 import '../modules/ride_call/views/ride_call_view.dart';
 import '../modules/ride_chat/bindings/ride_chat_binding.dart';
 import '../modules/ride_chat/views/ride_chat_view.dart';
+import '../modules/ride_order_cancel/bindings/ride_order_cancel_binding.dart';
+import '../modules/ride_order_cancel/views/ride_order_cancel_view.dart';
 import '../modules/ride_order_detail/bindings/ride_order_detail_binding.dart';
 import '../modules/ride_order_detail/views/ride_order_detail_view.dart';
 import '../modules/ride_order_done/bindings/ride_order_done_binding.dart';
@@ -207,6 +209,11 @@ class AppPages {
       name: _Paths.RIDE_ORDER_DONE,
       page: () => const RideOrderDoneView(),
       binding: RideOrderDoneBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIDE_ORDER_CANCEL,
+      page: () => const RideOrderCancelView(),
+      binding: RideOrderCancelBinding(),
     ),
   ];
 }

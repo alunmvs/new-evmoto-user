@@ -135,7 +135,7 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                   .copyWith(
                                     color: controller
                                         .themeColorServices
-                                        .neutralsColorGrey700
+                                        .neutralsColorGrey400
                                         .value,
                                   ),
                               border: OutlineInputBorder(
@@ -295,7 +295,7 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                               .copyWith(
                                                 color: controller
                                                     .themeColorServices
-                                                    .neutralsColorGrey700
+                                                    .neutralsColorGrey400
                                                     .value,
                                               ),
                                           border: OutlineInputBorder(

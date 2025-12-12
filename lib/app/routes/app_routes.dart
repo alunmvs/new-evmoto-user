@@ -34,6 +34,7 @@ abstract class Routes {
   static const TERMS_AND_CONDITIONS = _Paths.TERMS_AND_CONDITIONS;
   static const RIDE_ORDER_DETAIL = _Paths.RIDE_ORDER_DETAIL;
   static const RIDE_ORDER_DONE = _Paths.RIDE_ORDER_DONE;
+  static const RIDE_ORDER_CANCEL = _Paths.RIDE_ORDER_CANCEL;
 }
 
 abstract class _Paths {
@@ -67,4 +68,5 @@ abstract class _Paths {
   static const TERMS_AND_CONDITIONS = '/terms-and-conditions';
   static const RIDE_ORDER_DETAIL = '/ride-order-detail';
   static const RIDE_ORDER_DONE = '/ride-order-done';
+  static const RIDE_ORDER_CANCEL = '/ride-order-cancel';
 }

@@ -282,7 +282,7 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                   .copyWith(
                                                     color: controller
                                                         .themeColorServices
-                                                        .neutralsColorGrey500
+                                                        .neutralsColorGrey400
                                                         .value,
                                                   ),
                                               errorStyle: controller

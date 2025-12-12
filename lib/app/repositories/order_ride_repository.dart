@@ -37,8 +37,6 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      print({"language": language, "orderId": orderId, "orderType": orderType});
-
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
@@ -80,8 +78,6 @@ class OrderRideRepository {
         result.add(ActiveOrder.fromJson(activeOrder));
       }
 
-      print(response.data);
-
       return result;
     } on DioException catch (e) {
       rethrow;
@@ -120,8 +116,6 @@ class OrderRideRepository {
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
-
-      print(response.data);
 
       return OrderRide.fromJson(response.data['data']);
     } on DioException catch (e) {
@@ -338,7 +332,7 @@ class OrderRideRepository {
         "orderType": orderType,
         "orderId": orderId,
         "content": content,
-        "fraction": fraction,
+        "fraction": fraction.toInt(),
         "language": language,
       });
 

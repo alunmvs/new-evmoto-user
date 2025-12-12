@@ -10,7 +10,7 @@ class GooglePlaceTextSearch {
   List<Photos>? photos;
   String? placeId;
   int? priceLevel;
-  double? rating;
+  num? rating;
   String? reference;
   List<String>? types;
   int? userRatingsTotal;

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/socket_driver_position_data_model.dart';
@@ -11,7 +12,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 
-class SocketServices extends GetxService {
+class SocketServices extends GetxService with WidgetsBindingObserver {
   late Socket socket;
   late Timer schedulerDataSocketTimer;
 
@@ -21,6 +22,16 @@ class SocketServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setupWebsocket();
+    } else if (state == AppLifecycleState.paused) {
+      socket.close();
+    }
   }
 
   Future<void> setupWebsocket() async {
@@ -39,12 +50,19 @@ class SocketServices extends GetxService {
 
               var rideOrderDetailController =
                   Get.find<RideOrderDetailController>();
-              rideOrderDetailController.driverLatitude.value =
-                  socketDriverPositionDataModel.lat.toString();
-              rideOrderDetailController.driverLongitude.value =
-                  socketDriverPositionDataModel.lon.toString();
-
-              await Get.find<RideOrderDetailController>().refreshAll();
+              if (rideOrderDetailController.driverLatitude.value == "0" &&
+                  rideOrderDetailController.driverLongitude.value == "0") {
+                rideOrderDetailController.driverLatitude.value =
+                    socketDriverPositionDataModel.lat.toString();
+                rideOrderDetailController.driverLongitude.value =
+                    socketDriverPositionDataModel.lon.toString();
+                await Get.find<RideOrderDetailController>().refreshAll();
+              } else {
+                rideOrderDetailController.driverLatitude.value =
+                    socketDriverPositionDataModel.lat.toString();
+                rideOrderDetailController.driverLongitude.value =
+                    socketDriverPositionDataModel.lon.toString();
+              }
             }
 
             break;
@@ -72,6 +90,7 @@ class SocketServices extends GetxService {
   }
 
   Future<void> closeWebsocket() async {
+    WidgetsBinding.instance.removeObserver(this);
     await socket.close();
   }
 

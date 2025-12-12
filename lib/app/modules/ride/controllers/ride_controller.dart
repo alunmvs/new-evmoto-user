@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:new_evmoto_user/app/data/google_geo_code_search_model.dart';
 import 'package:new_evmoto_user/app/data/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
@@ -37,8 +38,8 @@ class RideController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
 
   final initialCameraPosition = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    target: LatLng(-6.1744651, 106.822745),
+    zoom: 14,
   ).obs;
   late GoogleMapController googleMapController;
 
@@ -61,6 +62,17 @@ class RideController extends GetxController {
   final destinationLatitude = "".obs;
   final destinationLongitude = "".obs;
   final destinationAddress = "".obs;
+
+  final originGoogleGeoCodeSearch = GoogleGeoCodeSearch().obs;
+  final destinationGoogleGeoCodeSearch = GoogleGeoCodeSearch().obs;
+  final originSearchLatitude = "".obs;
+  final originSearchLongitude = "".obs;
+  final destinationSearchLatitude = "".obs;
+  final destinationSearchLongitude = "".obs;
+  final originSearchIsLoading = false.obs;
+  final destinationSearchIsLoading = false.obs;
+
+  final isHideMarkersAndPolylines = false.obs;
 
   final keywordOrigin = "".obs;
   late TextEditingController textEditingControllerOrigin;
@@ -242,33 +254,35 @@ class RideController extends GetxController {
 
     currentLatitude.value = position.latitude.toString();
     currentLongitude.value = position.longitude.toString();
-    originLatitude.value = position.latitude.toString();
-    originLongitude.value = position.longitude.toString();
 
-    var googleGeoCodeSearch = await googleMapsRepository
-        .getRecommendationPlaceListByLatitudeLongitude(
-          latitude: originLatitude.value,
-          longitude: originLongitude.value,
-        );
+    focusNodeOrigin.requestFocus();
+    // originLatitude.value = position.latitude.toString();
+    // originLongitude.value = position.longitude.toString();
 
-    originTextEditingController.text =
-        googleGeoCodeSearch.first.formattedAddress ?? "";
-    keywordOrigin.value = googleGeoCodeSearch.first.formattedAddress ?? "";
-    originAddress.value = googleGeoCodeSearch.first.formattedAddress ?? "";
+    // var googleGeoCodeSearch = await googleMapsRepository
+    //     .getRecommendationPlaceListByLatitudeLongitude(
+    //       latitude: originLatitude.value,
+    //       longitude: originLongitude.value,
+    //     );
 
-    markers.add(
-      Marker(
-        markerId: MarkerId("origin"),
-        position: LatLng(
-          double.parse(currentLatitude.value),
-          double.parse(currentLongitude.value),
-        ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_origin.svg',
-          Size(22.67, 22.67),
-        ),
-      ),
-    );
+    // originTextEditingController.text =
+    //     googleGeoCodeSearch.first.formattedAddress ?? "";
+    // keywordOrigin.value = googleGeoCodeSearch.first.formattedAddress ?? "";
+    // originAddress.value = googleGeoCodeSearch.first.formattedAddress ?? "";
+
+    // markers.add(
+    //   Marker(
+    //     markerId: MarkerId("origin"),
+    //     position: LatLng(
+    //       double.parse(currentLatitude.value),
+    //       double.parse(currentLongitude.value),
+    //     ),
+    //     icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+    //       'assets/icons/icon_origin.svg',
+    //       Size(22.67, 22.67),
+    //     ),
+    //   ),
+    // );
   }
 
   bool isLatLngOriginFilled() {
@@ -768,8 +782,16 @@ class RideController extends GetxController {
       );
     }
 
+    final basePadding = Get.width * 0.1;
+    double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
+        .abs();
+    double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
+        .abs();
+    double areaFactor = (latDiff + lngDiff) * 80000;
+    var dynamicPadding = (basePadding + areaFactor).clamp(0, 250);
+
     await googleMapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, 200),
+      CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
     );
   }
 
@@ -833,5 +855,172 @@ class RideController extends GetxController {
       ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
       type: "1", // 1 = Ride, 2 = Intercity
     ));
+  }
+
+  Future<void> onTapSelectViaMap() async {
+    if (focusNodeOrigin.hasPrimaryFocus) {
+      isHideMarkersAndPolylines.value = true;
+      status.value = "origin_select_via_map";
+    } else if (focusNodeDestination.hasPrimaryFocus) {
+      isHideMarkersAndPolylines.value = true;
+      status.value = "destination_select_via_map";
+    } else {
+      if (originTextEditingController.text == "" &&
+          destinationTextEditingController.text == "") {
+        isHideMarkersAndPolylines.value = true;
+        status.value = "origin_select_via_map";
+      } else if (originTextEditingController.text == "" &&
+          destinationTextEditingController.text != "") {
+        isHideMarkersAndPolylines.value = true;
+        status.value = "origin_select_via_map";
+      } else if (originTextEditingController.text != "" &&
+          destinationTextEditingController.text == "") {
+        isHideMarkersAndPolylines.value = true;
+        status.value = "destination_select_via_map";
+      } else if (originTextEditingController.text != "" &&
+          destinationTextEditingController.text != "") {}
+    }
+
+    await onMapMoveOriginGoogleGeoCodeSearch(
+      latitude: currentLatitude.value,
+      longitude: currentLongitude.value,
+    );
+  }
+
+  Future<void> onMapMoveOriginGoogleGeoCodeSearch({
+    required String latitude,
+    required String longitude,
+  }) async {
+    originSearchLatitude.value = latitude;
+    originSearchLongitude.value = longitude;
+    Future.delayed(Duration(seconds: 1), () async {
+      if (originSearchLatitude.value == latitude &&
+          originSearchLongitude.value == longitude) {
+        if (originSearchIsLoading.value == false) {
+          originSearchIsLoading.value = true;
+          originGoogleGeoCodeSearch.value =
+              (await googleMapsRepository
+                      .getRecommendationPlaceListByLatitudeLongitude(
+                        latitude: latitude,
+                        longitude: longitude,
+                        language: "en",
+                      ))
+                  .first;
+          originSearchIsLoading.value = false;
+        }
+      }
+    });
+  }
+
+  Future<void> onMapMoveDestinationGoogleGeoCodeSearch({
+    required String latitude,
+    required String longitude,
+  }) async {
+    destinationSearchLatitude.value = latitude;
+    destinationSearchLongitude.value = longitude;
+    Future.delayed(Duration(seconds: 1), () async {
+      if (destinationSearchLatitude.value == latitude &&
+          destinationSearchLongitude.value == longitude) {
+        if (destinationSearchIsLoading.value == false) {
+          destinationSearchIsLoading.value = true;
+          destinationGoogleGeoCodeSearch.value =
+              (await googleMapsRepository
+                      .getRecommendationPlaceListByLatitudeLongitude(
+                        latitude: latitude,
+                        longitude: longitude,
+                        language: "en",
+                      ))
+                  .first;
+          destinationSearchIsLoading.value = false;
+        }
+      }
+    });
+  }
+
+  Future<void> onTapSubmitViaMap() async {
+    if (status.value == "origin_select_via_map") {
+      status.value = "fill_origin_and_destination";
+      originAddress.value = originGoogleGeoCodeSearch.value.formattedAddress!;
+      originLatitude.value = originGoogleGeoCodeSearch
+          .value
+          .geometry!
+          .location!
+          .lat
+          .toString();
+      originLongitude.value = originGoogleGeoCodeSearch
+          .value
+          .geometry!
+          .location!
+          .lng
+          .toString();
+      originTextEditingController.text =
+          originGoogleGeoCodeSearch.value.formattedAddress!;
+
+      markers.removeWhere((m) => m.markerId.value == 'origin');
+      markers.add(
+        Marker(
+          markerId: MarkerId("origin"),
+          position: LatLng(
+            double.parse(originLatitude.value),
+            double.parse(originLongitude.value),
+          ),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_origin.svg',
+            Size(22.67, 22.67),
+          ),
+        ),
+      );
+
+      focusNodeDestination.requestFocus();
+      isOriginHasPrimaryFocus.value = false;
+      isDestinationHasPrimaryFocus.value = true;
+    } else if (status.value == "destination_select_via_map") {
+      status.value = "fill_origin_and_destination";
+      destinationAddress.value =
+          destinationGoogleGeoCodeSearch.value.formattedAddress!;
+      destinationLatitude.value = destinationGoogleGeoCodeSearch
+          .value
+          .geometry!
+          .location!
+          .lat
+          .toString();
+      destinationLongitude.value = destinationGoogleGeoCodeSearch
+          .value
+          .geometry!
+          .location!
+          .lng
+          .toString();
+      destinationTextEditingController.text =
+          destinationGoogleGeoCodeSearch.value.formattedAddress!;
+
+      markers.removeWhere((m) => m.markerId.value == 'destination');
+      markers.add(
+        Marker(
+          markerId: MarkerId("destination"),
+          position: LatLng(
+            double.parse(destinationLatitude.value),
+            double.parse(destinationLongitude.value),
+          ),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_pinpoint.svg',
+            Size(27, 31),
+          ),
+        ),
+      );
+    }
+
+    if (originAddress.value != "" && destinationAddress.value != "") {
+      await Future.wait([
+        generatePolylines(),
+        refocusMapsBound(),
+        getOrderRidePricingList(),
+      ]);
+      selectedOrderRidePricing.value = orderRidePricingList.first;
+      status.value = "checkout";
+      isOriginHasPrimaryFocus.value = false;
+      isDestinationHasPrimaryFocus.value = false;
+    }
+
+    isHideMarkersAndPolylines.value = false;
   }
 }

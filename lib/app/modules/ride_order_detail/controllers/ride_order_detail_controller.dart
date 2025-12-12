@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/order_ride_model.dart';
@@ -34,8 +33,8 @@ class RideOrderDetailController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
 
   final initialCameraPosition = CameraPosition(
-    target: LatLng(106.822745, -6.1744651),
-    zoom: 14.4746,
+    target: LatLng(-6.1744651, 106.822745),
+    zoom: 14,
   ).obs;
   late GoogleMapController googleMapController;
 
@@ -70,8 +69,7 @@ class RideOrderDetailController extends GetxController {
 
     await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
     isFetch.value = false;
-
-    print("ini state ${orderRideDetail.value.state}");
+    await Future.delayed(Duration(seconds: 1));
 
     if (orderRideDetail.value.state == 1) {
       await setupMapWaitingForDriver();
@@ -150,8 +148,6 @@ class RideOrderDetailController extends GetxController {
     refocusMapBoundsTimer = null;
 
     await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
-
-    print("ini state ${orderRideDetail.value.state}");
 
     if (orderRideDetail.value.state == 1) {
       await setupMapWaitingForDriver();
@@ -336,16 +332,6 @@ class RideOrderDetailController extends GetxController {
         CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
       );
     } else {}
-
-    await googleMapController.animateCamera(
-      CameraUpdate.newLatLngZoom(
-        LatLng(
-          orderRideDetail.value.startLat!,
-          orderRideDetail.value.startLon!,
-        ),
-        16,
-      ),
-    );
   }
 
   Future<void> setupGoogleMapOriginToDestination() async {
@@ -392,7 +378,7 @@ class RideOrderDetailController extends GetxController {
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
         'assets/icons/icon_driver.svg',
-        Size(49, 49),
+        Size(32, 53),
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -487,18 +473,6 @@ class RideOrderDetailController extends GetxController {
     ) async {
       if (isSchedulerDriverCurrentLocationIsProcess.value == false) {
         isSchedulerDriverCurrentLocationIsProcess.value = true;
-        var locationSettings = LocationSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 100,
-        );
-
-        var position = await Geolocator.getCurrentPosition(
-          locationSettings: locationSettings,
-        );
-
-        driverLatitude.value = position.latitude.toString();
-        driverLongitude.value = position.longitude.toString();
-
         var markerId = MarkerId("driver_current_location");
         var newMarker = Marker(
           markerId: markerId,
@@ -506,11 +480,9 @@ class RideOrderDetailController extends GetxController {
             double.parse(driverLatitude.value),
             double.parse(driverLongitude.value),
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-            orderRideDetail.value.state == 2 || orderRideDetail.value.state == 3
-                ? 'assets/icons/icon_order_my_location.png'
-                : 'assets/icons/icon_order_scooter.png',
-            Size(53, 53),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_driver.svg',
+            Size(32, 53),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -552,9 +524,9 @@ class RideOrderDetailController extends GetxController {
             double.parse(driverLatitude.value),
             double.parse(driverLongitude.value),
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-            'assets/icons/icon_order_my_location.png',
-            Size(53, 53),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_driver.svg',
+            Size(32, 53),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -653,9 +625,9 @@ class RideOrderDetailController extends GetxController {
             double.parse(driverLatitude.value),
             double.parse(driverLongitude.value),
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-            'assets/icons/icon_order_scooter.png',
-            Size(53, 53),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_driver.svg',
+            Size(32, 53),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);

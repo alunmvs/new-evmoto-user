@@ -125,7 +125,7 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                     .copyWith(
                                       color: controller
                                           .themeColorServices
-                                          .neutralsColorGrey700
+                                          .neutralsColorGrey400
                                           .value,
                                     ),
                                 errorStyle: controller
@@ -227,7 +227,7 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                     .copyWith(
                                       color: controller
                                           .themeColorServices
-                                          .neutralsColorGrey700
+                                          .neutralsColorGrey400
                                           .value,
                                     ),
                                 errorStyle: controller

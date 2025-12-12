@@ -285,7 +285,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           initialRating: 0,
                                           minRating: 1,
                                           direction: Axis.horizontal,
-                                          allowHalfRating: true,
+                                          allowHalfRating: false,
                                           itemCount: 5,
                                           itemPadding: EdgeInsets.symmetric(
                                             horizontal: 4,
@@ -824,6 +824,42 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Surcharge",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodySmallRegular
+                                                  .value,
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          NumberFormat.currency(
+                                            locale: 'id_ID',
+                                            symbol: 'Rp ',
+                                            decimalDigits: 0,
+                                          ).format(
+                                            controller
+                                                .orderRideDetail
+                                                .value
+                                                .additionalCharge,
+                                          ),
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
                                         Text(
                                           "Collected by drivers",
                                           style: controller
@@ -840,7 +876,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                             controller
                                                 .orderRideDetail
                                                 .value
-                                                .collectionFees,
+                                                .payMoney,
                                           ),
                                           style: controller
                                               .typographyServices
