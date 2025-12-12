@@ -282,4 +282,86 @@ class OrderRideRepository {
       rethrow;
     }
   }
+
+  Future<void> paidOrder({
+    required String orderId,
+    required int payType,
+    required int type,
+    required int orderType,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/payment/api/taxi/payTaxiOrder";
+
+      var formData = FormData.fromMap({
+        "orderId": orderId,
+        "payType": payType,
+        "type": type,
+        "orderType": orderType,
+        "language": language,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = Dio();
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> submitRatingAndReviewOrder({
+    required int orderType,
+    required String orderId,
+    required String? content,
+    required int fraction,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/evaluation/api/taxi/orderEvaluate";
+
+      var formData = FormData.fromMap({
+        "orderType": orderType,
+        "orderId": orderId,
+        "content": content,
+        "fraction": fraction,
+        "language": language,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = Dio();
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
 }
