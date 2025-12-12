@@ -78,12 +78,11 @@ class HomeController extends GetxController {
         prefs.getBool('is_introduction_delivery_service_shown') ?? false;
 
     if (isIntroductionDeliveryServiceShown == false) {
-      Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
+      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
     } else {
       await refreshAll();
-
       if (activeOrderList.isNotEmpty) {
-        Get.toNamed(
+        await Get.toNamed(
           Routes.RIDE_ORDER_DETAIL,
           arguments: {
             "order_id": activeOrderList.first.orderId.toString(),
@@ -91,8 +90,9 @@ class HomeController extends GetxController {
           },
         );
       } else {
-        Get.toNamed(Routes.RIDE);
+        await Get.toNamed(Routes.RIDE);
       }
     }
+    await refreshAll();
   }
 }

@@ -316,7 +316,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                             ),
                                           ),
                                           onRatingUpdate: (rating) {
-                                            print(rating);
+                                            controller.rating.value = rating;
                                           },
                                           glow: false,
                                         ),
@@ -968,8 +968,8 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                 height: 46,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Get.back();
+                  onPressed: () async {
+                    await controller.onTapDone();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:

@@ -328,7 +328,7 @@ class OrderRideRepository {
     required int orderType,
     required String orderId,
     required String? content,
-    required int fraction,
+    required double fraction,
     required int language,
   }) async {
     try {

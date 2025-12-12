@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
@@ -6,6 +7,7 @@ import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/main.dart';
 
 class RideOrderDoneController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -22,6 +24,8 @@ class RideOrderDoneController extends GetxController {
   final orderRideServerDetail = OrderRideServer().obs;
   final orderId = "".obs;
   final orderType = 0.obs;
+
+  final rating = 0.0.obs;
 
   final isFetch = false.obs;
 
@@ -62,5 +66,41 @@ class RideOrderDoneController extends GetxController {
           orderId: orderId.value,
           orderType: orderType.value,
         ));
+  }
+
+  Future<void> onTapDone() async {
+    if (rating.value == 0.0) {
+      var snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Harap mengisi penilaian perjalanan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      return;
+    }
+
+    await Future.wait([
+      orderRideRepository.submitRatingAndReviewOrder(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        content: null,
+        fraction: rating.value,
+        language: languageServices.languageCodeSystem.value,
+      ),
+      orderRideRepository.paidOrder(
+        orderId: orderId.value,
+        payType: 3,
+        type: 1,
+        orderType: orderType.value,
+        language: languageServices.languageCodeSystem.value,
+      ),
+    ]);
+
+    Get.back();
   }
 }
