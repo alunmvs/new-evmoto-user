@@ -62,6 +62,11 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
                     socketDriverPositionDataModel.lat.toString();
                 rideOrderDetailController.driverLongitude.value =
                     socketDriverPositionDataModel.lon.toString();
+
+                if (rideOrderDetailController.orderRideDetail.value.state ==
+                    1) {
+                  await Get.find<RideOrderDetailController>().refreshAll();
+                }
               }
             }
 
