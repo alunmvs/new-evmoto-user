@@ -112,7 +112,7 @@ class AccountController extends GetxController {
                                   await storage.deleteAll();
                                   await socketServices.closeWebsocket();
 
-                                  Get.offAndToNamed(Routes.LOGIN_REGISTER);
+                                  Get.offAllNamed(Routes.LOGIN_REGISTER);
 
                                   var snackBar = SnackBar(
                                     behavior: SnackBarBehavior.fixed,
