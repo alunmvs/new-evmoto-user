@@ -59,6 +59,13 @@ class RideOrderDetailController extends GetxController {
 
   final isPinLocationWaitingForDriverHide = true.obs;
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
+
+  final estimatedTimeInMinutes = 0.0.obs;
+  final estimatedDistanceInKm = 0.0.obs;
+  final estimatedSpeedInKmh = 40.obs;
+
+  final payType = 3.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -109,6 +116,8 @@ class RideOrderDetailController extends GetxController {
       setupSchedulerDriverRefocusMapBound(),
     ]);
 
+    generateEstimatedDistanceAndTimeInMinutes();
+
     if (orderRideDetail.value.state == 7) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -137,6 +146,12 @@ class RideOrderDetailController extends GetxController {
     try {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
+  }
+
+  void generateEstimatedDistanceAndTimeInMinutes() {
+    estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
+    estimatedTimeInMinutes.value =
+        (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
   }
 
   Future<void> refreshAll() async {
@@ -186,6 +201,8 @@ class RideOrderDetailController extends GetxController {
       setupSchedulerDriverCurrentLocation(),
       setupSchedulerDriverRefocusMapBound(),
     ]);
+
+    generateEstimatedDistanceAndTimeInMinutes();
 
     if (orderRideDetail.value.state == 7) {
       // Driver Give Price
@@ -571,6 +588,8 @@ class RideOrderDetailController extends GetxController {
           ),
         );
 
+        generateEstimatedDistanceAndTimeInMinutes();
+
         LatLngBounds bounds;
 
         var originLatitude = double.parse(this.driverLatitude.value);
@@ -736,6 +755,8 @@ class RideOrderDetailController extends GetxController {
           points: polylinesCoordinate,
         ),
       );
+
+      generateEstimatedDistanceAndTimeInMinutes();
     }
   }
 
@@ -970,5 +991,16 @@ class RideOrderDetailController extends GetxController {
         ),
       ),
     );
+  }
+
+  String getEstimatedTimeInMinutesInText() {
+    int jam = estimatedTimeInMinutes.value ~/ 60;
+    int menit = (estimatedTimeInMinutes.value % 60).round();
+
+    if (jam > 0) {
+      return '$jam Jam $menit Menit';
+    } else {
+      return '$menit Menit';
+    }
   }
 }

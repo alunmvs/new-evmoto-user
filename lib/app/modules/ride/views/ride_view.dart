@@ -10,6 +10,7 @@ import 'package:new_evmoto_user/app/data/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
+import 'package:new_evmoto_user/main.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../controllers/ride_controller.dart';
@@ -2308,63 +2309,130 @@ class RideView extends GetView<RideController> {
                                                   ),
                                                   child: Row(
                                                     children: [
-                                                      Container(
-                                                        width: 16,
-                                                        height: 16,
-                                                        decoration: BoxDecoration(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue100
-                                                              .value,
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                4,
+                                                      if (controller
+                                                              .payType
+                                                              .value ==
+                                                          2) ...[
+                                                        Container(
+                                                          width: 16,
+                                                          height: 16,
+                                                          decoration: BoxDecoration(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .sematicColorBlue100
+                                                                .value,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  4,
+                                                                ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_wallet.svg",
+                                                                width: 8,
+                                                                height: 8,
                                                               ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                              "assets/icons/icon_wallet.svg",
-                                                              width: 8,
-                                                              height: 8,
-                                                            ),
-                                                          ],
+                                                        SizedBox(width: 4),
+                                                        Text(
+                                                          "Saldo ECGO",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodySmallBold
+                                                              .value,
                                                         ),
-                                                      ),
-                                                      SizedBox(width: 4),
-                                                      Text(
-                                                        "Saldo ECGO",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodySmallBold
-                                                            .value,
-                                                      ),
-                                                      SizedBox(width: 4),
-                                                      SizedBox(
-                                                        width: 16,
-                                                        height: 16,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                              "assets/icons/icon_arrow_down.svg",
-                                                              width: 8.67,
-                                                              height: 5,
-                                                            ),
-                                                          ],
+                                                        SizedBox(width: 4),
+                                                        SizedBox(
+                                                          width: 16,
+                                                          height: 16,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_arrow_down.svg",
+                                                                width: 8.67,
+                                                                height: 5,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
+                                                      if (controller
+                                                              .payType
+                                                              .value ==
+                                                          3) ...[
+                                                        Container(
+                                                          width: 16,
+                                                          height: 16,
+                                                          decoration: BoxDecoration(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .sematicColorBlue100
+                                                                .value,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  4,
+                                                                ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_cash.svg",
+                                                                width: 8,
+                                                                height: 8,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        Text(
+                                                          "Cash",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodySmallBold
+                                                              .value,
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        SizedBox(
+                                                          width: 16,
+                                                          height: 16,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_arrow_down.svg",
+                                                                width: 8.67,
+                                                                height: 5,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ],
                                                   ),
                                                 ),
@@ -2449,6 +2517,43 @@ class RideView extends GetView<RideController> {
                                         ).size.width,
                                         child: ElevatedButton(
                                           onPressed: () async {
+                                            if (controller.payType.value == 2) {
+                                              if (controller
+                                                      .homeController
+                                                      .userInfo
+                                                      .value
+                                                      .balance! <
+                                                  controller
+                                                      .selectedOrderRidePricing
+                                                      .value
+                                                      .amount!) {
+                                                var snackBar = SnackBar(
+                                                  behavior:
+                                                      SnackBarBehavior.fixed,
+                                                  backgroundColor: controller
+                                                      .themeColorServices
+                                                      .sematicColorRed400
+                                                      .value,
+                                                  content: Text(
+                                                    "Saldo ECGO tidak mencukupi",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey0
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                );
+                                                rootScaffoldMessengerKey
+                                                    .currentState
+                                                    ?.showSnackBar(snackBar);
+                                                return;
+                                              }
+                                            }
                                             await controller.requestOrderRide();
                                             // controller.status.value =
                                             //     "finding_driver_nearby";

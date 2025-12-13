@@ -349,46 +349,90 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                   ),
                                   child: Row(
                                     children: [
-                                      Container(
-                                        width: 24,
-                                        height: 24,
-                                        decoration: BoxDecoration(
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue100
-                                              .value,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(6),
+                                      if (controller.payType.value == 2) ...[
+                                        Container(
+                                          width: 24,
+                                          height: 24,
+                                          decoration: BoxDecoration(
+                                            color: controller
+                                                .themeColorServices
+                                                .sematicColorBlue100
+                                                .value,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(6),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_wallet.svg",
+                                                width: 12,
+                                                height: 12,
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              "assets/icons/icon_wallet.svg",
-                                              width: 12,
-                                              height: 12,
-                                            ),
-                                          ],
+                                        SizedBox(width: 11),
+                                        Text(
+                                          "Saldo ECGO",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey800
+                                                    .value,
+                                              ),
                                         ),
-                                      ),
-                                      SizedBox(width: 11),
-                                      Text(
-                                        "Saldo ECGO",
-                                        style: controller
-                                            .typographyServices
-                                            .bodyLargeBold
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey800
-                                                  .value,
+                                      ],
+                                      if (controller.payType.value == 3) ...[
+                                        Container(
+                                          width: 24,
+                                          height: 24,
+                                          decoration: BoxDecoration(
+                                            color: controller
+                                                .themeColorServices
+                                                .sematicColorBlue100
+                                                .value,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(6),
                                             ),
-                                      ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_cash.svg",
+                                                width: 12,
+                                                height: 12,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 11),
+                                        Text(
+                                          "Cash",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey800
+                                                    .value,
+                                              ),
+                                        ),
+                                      ],
                                     ],
                                   ),
                                 ),
@@ -545,7 +589,8 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                           ),
                                         ),
                                         child: Text(
-                                          "15 Menit",
+                                          controller
+                                              .getEstimatedTimeInMinutesInText(),
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -1337,7 +1382,8 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                           ),
                                         ),
                                         child: Text(
-                                          "6 Menit",
+                                          controller
+                                              .getEstimatedTimeInMinutesInText(),
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
