@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
@@ -269,6 +270,7 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                 .primaryBlue
                                                 .value,
                                             decoration: InputDecoration(
+                                              counterText: '',
                                               contentPadding:
                                                   EdgeInsets.symmetric(
                                                     horizontal: 12,
@@ -373,9 +375,23 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                   value;
                                               controller.validateForm();
                                             },
+                                            maxLength: 25,
                                             validator: (value) {
+                                              if (value != null) {
+                                                if (value.substring(0, 1) !=
+                                                    "8") {
+                                                  return 'Harus diawali dengan angka 8';
+                                                }
+                                                if (value.length < 8) {
+                                                  return 'Minimal nomor handphone 8 angka';
+                                                }
+                                              }
                                               return null;
                                             },
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly,
+                                            ],
                                           ),
                                           SizedBox(height: 16),
                                           SizedBox(
