@@ -1,14 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
+import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class OrderRideRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<OrderRideServer> getOrderRideServerDetail({
     required String orderId,
     required int orderType,
@@ -31,7 +35,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -62,7 +66,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -109,7 +113,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -154,7 +158,9 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      print(token);
+
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -224,7 +230,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -265,7 +271,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -314,7 +320,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -355,7 +361,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -396,7 +402,7 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,

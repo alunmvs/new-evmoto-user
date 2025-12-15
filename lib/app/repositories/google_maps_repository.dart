@@ -1,10 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/google_direction_model.dart';
 import 'package:new_evmoto_user/app/data/google_geo_code_search_model.dart';
 import 'package:new_evmoto_user/app/data/google_place_text_search_model.dart';
+import 'package:new_evmoto_user/app/services/api_services.dart';
 
 class GoogleMapsRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<List<GooglePlaceTextSearch>> getRecommendationPlaceListByTextSearch({
     String? query,
     String? language,
@@ -12,7 +16,7 @@ class GoogleMapsRepository {
     try {
       var url = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.get(
         url,
         queryParameters: {
@@ -43,7 +47,7 @@ class GoogleMapsRepository {
     try {
       var url = "https://maps.googleapis.com/maps/api/geocode/json";
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.get(
         url,
         queryParameters: {
@@ -75,7 +79,7 @@ class GoogleMapsRepository {
     try {
       var url = "https://maps.googleapis.com/maps/api/directions/json";
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.get(
         url,
         queryParameters: {

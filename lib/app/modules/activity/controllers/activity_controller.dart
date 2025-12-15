@@ -6,6 +6,7 @@ import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class ActivityController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -23,10 +24,19 @@ class ActivityController extends GetxController
   final latestActivityList = [1, 2].obs;
   final historyActivityList = [1, 2].obs;
 
+  final activeOrderRefreshController = RefreshController();
   final activeOrderList = <ActiveOrder>[].obs;
+  final activeOrderPageNum = 1.obs;
+  final activeOrderSize = 5.obs;
+  final activeOrderSeeMore = true.obs;
+
+  final historyOrderRefreshController = RefreshController();
   final historyOrderList = <HistoryOrder>[].obs;
   final historyOrderPageNum = 1.obs;
-  final historyOrderSize = 20.obs;
+  final historyOrderSize = 5.obs;
+  final historyOrderSeeMore = true.obs;
+
+  final historyOrderSelectedOrderType = 1.obs;
 
   final isFetch = false.obs;
 
@@ -56,12 +66,15 @@ class ActivityController extends GetxController
   }
 
   Future<void> getActiveOrderList() async {
+    activeOrderPageNum.value = 1;
+    activeOrderSeeMore.value = true;
+
     activeOrderList.value = (await orderRideRepository.getActiveOrderList(
       language: languageServices.languageCodeSystem.value,
     ));
 
     for (var activeOrder in activeOrderList) {
-      activeOrder.orderRideModel = await orderRideRepository
+      activeOrder.orderRide = await orderRideRepository
           .getOrderRideDetailbyOrderId(
             orderId: activeOrder.orderId.toString(),
             orderType: activeOrder.orderType,
@@ -72,13 +85,76 @@ class ActivityController extends GetxController
     activeOrderList.refresh();
   }
 
+  Future<void> seeMoreActiveOrderList() async {
+    activeOrderPageNum.value += 1;
+
+    var activeOrderList = (await orderRideRepository.getActiveOrderList(
+      language: languageServices.languageCodeSystem.value,
+    ));
+
+    for (var activeOrder in activeOrderList) {
+      activeOrder.orderRide = await orderRideRepository
+          .getOrderRideDetailbyOrderId(
+            orderId: activeOrder.orderId.toString(),
+            language: languageServices.languageCodeSystem.value,
+            orderType: activeOrder.orderType,
+          );
+    }
+
+    if (activeOrderList.isEmpty) {
+      activeOrderSeeMore.value = false;
+    }
+
+    this.activeOrderList.addAll(activeOrderList);
+  }
+
   Future<void> getHistoryOrderList() async {
-    historyOrderList.value = (await orderRideRepository.getHistoryOrderList(
+    historyOrderPageNum.value = 1;
+    historyOrderSeeMore.value = true;
+
+    var historyOrderList = (await orderRideRepository.getHistoryOrderList(
       language: languageServices.languageCodeSystem.value,
       pageNum: historyOrderPageNum.value,
       size: historyOrderSize.value,
-      type: 1,
+      type: historyOrderSelectedOrderType.value,
     ));
+
+    for (var historyOrder in historyOrderList) {
+      historyOrder.orderRide = await orderRideRepository
+          .getOrderRideDetailbyOrderId(
+            orderId: historyOrder.orderId.toString(),
+            language: languageServices.languageCodeSystem.value,
+            orderType: historyOrder.orderType,
+          );
+    }
+
+    this.historyOrderList.value = historyOrderList;
+  }
+
+  Future<void> seeMoreHistoryOrderList() async {
+    historyOrderPageNum.value += 1;
+
+    var historyOrderList = (await orderRideRepository.getHistoryOrderList(
+      language: languageServices.languageCodeSystem.value,
+      pageNum: historyOrderPageNum.value,
+      size: historyOrderSize.value,
+      type: historyOrderSelectedOrderType.value,
+    ));
+
+    for (var historyOrder in historyOrderList) {
+      historyOrder.orderRide = await orderRideRepository
+          .getOrderRideDetailbyOrderId(
+            orderId: historyOrder.orderId.toString(),
+            language: languageServices.languageCodeSystem.value,
+            orderType: historyOrder.orderType,
+          );
+    }
+
+    if (historyOrderList.isEmpty) {
+      historyOrderSeeMore.value = false;
+    }
+
+    this.historyOrderList.addAll(historyOrderList);
   }
 
   String getStatusActivityByState({required int state}) {

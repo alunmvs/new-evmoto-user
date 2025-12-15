@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/login_data_model.dart';
+import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class LoginRegisterRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<LoginData> loginByOtp({
     String? phone,
     int? language,
@@ -21,7 +25,7 @@ class LoginRegisterRepository {
         "language": language,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {

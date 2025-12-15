@@ -115,6 +115,7 @@ class RideController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
+
     await homeController.getUserInfo();
     await requestLocation();
     initialCameraPosition.value = CameraPosition(
@@ -148,6 +149,68 @@ class RideController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    try {
+      googleMapController.dispose();
+    } catch (e) {}
+  }
+
+  Future<void> prefillOrderAgain() async {
+    if (Get.arguments != null) {
+      originTextEditingController.text = Get.arguments['start_address'] ?? "-";
+      originLatitude.value = Get.arguments['start_lat'].toString();
+      originLongitude.value = Get.arguments['start_lon'].toString();
+      keywordOrigin.value = originTextEditingController.text;
+      originAddress.value = originTextEditingController.text;
+
+      markers.add(
+        Marker(
+          markerId: MarkerId("origin"),
+          position: LatLng(
+            double.parse(originLatitude.value),
+            double.parse(originLongitude.value),
+          ),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_origin.svg',
+            Size(22.67, 22.67),
+          ),
+        ),
+      );
+
+      destinationTextEditingController.text =
+          Get.arguments['end_address'] ?? "-";
+      destinationLatitude.value = Get.arguments['end_lat'].toString();
+      destinationLongitude.value = Get.arguments['end_lon'].toString();
+      keywordDestination.value = destinationTextEditingController.text;
+      destinationAddress.value = destinationTextEditingController.text;
+
+      markers.add(
+        Marker(
+          markerId: MarkerId("destination"),
+          position: LatLng(
+            double.parse(destinationLatitude.value),
+            double.parse(destinationLongitude.value),
+          ),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_pinpoint.svg',
+            Size(27, 31),
+          ),
+        ),
+      );
+
+      focusNodeDestination.requestFocus();
+
+      await Future.wait([
+        getOriginPlaceLocationList(keyword: originAddress.value),
+        getDestinationPlaceLocationList(keyword: destinationAddress.value),
+        generatePolylines(),
+        refocusMapsBound(),
+        getOrderRidePricingList(),
+      ]);
+
+      selectedOrderRidePricing.value = orderRidePricingList.first;
+
+      status.value = "checkout";
+    }
   }
 
   Future<void> getOriginPlaceLocationList({String? keyword}) async {

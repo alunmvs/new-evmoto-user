@@ -74,8 +74,8 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                                 padding: const EdgeInsets.all(16),
                                 child: Row(
                                   children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/icon_flag_cn.svg",
+                                    Image.asset(
+                                      "assets/icons/icon_flag_cn.png",
                                       width: 24,
                                       height: 24,
                                     ),

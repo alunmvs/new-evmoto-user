@@ -78,7 +78,7 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                             ),
                             child: Center(
                               child: SvgPicture.asset(
-                                "assets/images/img_transaction_not_found.svg",
+                                "assets/icons/icon_ride.svg",
                                 width: 32,
                                 height: 32,
                               ),

@@ -76,14 +76,6 @@ class PaymentRepository {
         "order_id": orderId,
       });
 
-      print(url);
-      print(headers);
-      print({
-        "transaction_status": transactionStatus,
-        "status_code": statusCode,
-        "order_id": orderId,
-      });
-
       var dio = apiServices.dio;
       await dio.post(
         url,
@@ -139,8 +131,6 @@ class PaymentRepository {
 
       return balanceHistoryDepositList;
     } on DioException catch (e) {
-      print("balance history list");
-      print(e.response!.data);
       rethrow;
     }
   }
@@ -189,8 +179,6 @@ class PaymentRepository {
 
       return balanceHistoryConsumptionList;
     } on DioException catch (e) {
-      print("balance consumption list");
-      print(e.response!.data);
       rethrow;
     }
   }

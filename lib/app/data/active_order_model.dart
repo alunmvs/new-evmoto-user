@@ -4,9 +4,9 @@ class ActiveOrder {
   int? orderId;
   int? orderType;
   int? state;
-  OrderRide? orderRideModel;
+  OrderRide? orderRide;
 
-  ActiveOrder({this.orderId, this.orderType, this.state, this.orderRideModel});
+  ActiveOrder({this.orderId, this.orderType, this.state, this.orderRide});
 
   ActiveOrder.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];

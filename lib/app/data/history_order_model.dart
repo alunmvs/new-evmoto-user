@@ -1,3 +1,5 @@
+import 'package:new_evmoto_user/app/data/order_ride_model.dart';
+
 class HistoryOrder {
   int? orderId;
   String? orderTime;
@@ -17,6 +19,7 @@ class HistoryOrder {
   String? orderName;
   int? orderType;
   int? insertTime;
+  OrderRide? orderRide;
 
   HistoryOrder({
     this.orderId,
@@ -37,6 +40,7 @@ class HistoryOrder {
     this.orderName,
     this.orderType,
     this.insertTime,
+    this.orderRide,
   });
 
   HistoryOrder.fromJson(Map<String, dynamic> json) {
