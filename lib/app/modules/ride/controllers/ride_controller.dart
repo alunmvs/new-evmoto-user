@@ -15,6 +15,7 @@ import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
@@ -361,592 +362,602 @@ class RideController extends GetxController {
 
   void onTapSelectPaymentBottomSheet() async {
     Get.bottomSheet(
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(16),
-              topLeft: Radius.circular(16),
-            ),
-            child: Material(
-              color: themeColorServices.neutralsColorGrey0.value,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      Obx(
+        () => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16),
+                topLeft: Radius.circular(16),
+              ),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Pilih Pembayaran",
+                            style: typographyServices.bodyLargeBold.value,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.close(1);
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              height: 24,
+                              width: 24,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_close.svg",
+                                    width: 18,
+                                    height: 18,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      height: 0,
+                      color: themeColorServices.neutralsColorGrey200.value,
+                    ),
+                    SizedBox(height: 16),
+                    Column(
                       children: [
-                        Text(
-                          "Pilih Pembayaran",
-                          style: typographyServices.bodyLargeBold.value,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.close(1);
-                          },
+                        Padding(
+                          padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
                           child: Container(
-                            color: Colors.transparent,
-                            height: 24,
-                            width: 24,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            decoration: BoxDecoration(
+                              color:
+                                  themeColorServices.sematicColorBlue100.value,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(16),
+                                topRight: Radius.circular(16),
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                              ),
+                            ),
+                            child: Column(
                               children: [
-                                SvgPicture.asset(
-                                  "assets/icons/icon_close.svg",
-                                  width: 18,
-                                  height: 18,
+                                GestureDetector(
+                                  onTap: () {
+                                    payType.value = 2;
+                                    Get.close(1);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(
+                                        color: themeColorServices
+                                            .neutralsColorGrey200
+                                            .value,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 32,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            color: themeColorServices
+                                                .neutralsColorGrey100
+                                                .value,
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_wallet.svg",
+                                                width: 16,
+                                                height: 16,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Saldo ECGO",
+                                                style: typographyServices
+                                                    .bodySmallBold
+                                                    .value
+                                                    .copyWith(
+                                                      color: themeColorServices
+                                                          .neutralsColorGrey700
+                                                          .value,
+                                                    ),
+                                              ),
+                                              SizedBox(height: 2),
+                                              if (homeController
+                                                      .userInfo
+                                                      .value
+                                                      .balance! <
+                                                  selectedOrderRidePricing
+                                                      .value
+                                                      .amount!) ...[
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 16,
+                                                      width: 16,
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_alert.svg",
+                                                            width: 12,
+                                                            height: 12,
+                                                            color: themeColorServices
+                                                                .sematicColorYellow400
+                                                                .value,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 2),
+                                                    Text(
+                                                      NumberFormat.currency(
+                                                        locale: 'id_ID',
+                                                        symbol: 'Rp',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        homeController
+                                                                .userInfo
+                                                                .value
+                                                                .balance ??
+                                                            0.0,
+                                                      ),
+                                                      style: typographyServices
+                                                          .captionLargeRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: themeColorServices
+                                                                .sematicColorYellow400
+                                                                .value,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                              if (homeController
+                                                      .userInfo
+                                                      .value
+                                                      .balance! >=
+                                                  selectedOrderRidePricing
+                                                      .value
+                                                      .amount!) ...[
+                                                Text(
+                                                  NumberFormat.currency(
+                                                    locale: 'id_ID',
+                                                    symbol: 'Rp',
+                                                    decimalDigits: 0,
+                                                  ).format(
+                                                    homeController
+                                                            .userInfo
+                                                            .value
+                                                            .balance ??
+                                                        0.0,
+                                                  ),
+                                                  style: typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: themeColorServices
+                                                            .neutralsColorGrey500
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ],
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        RadioGroup(
+                                          groupValue: payType.value,
+                                          onChanged: (value) {},
+                                          child: Radio(
+                                            value: 2,
+                                            activeColor: themeColorServices
+                                                .primaryBlue
+                                                .value,
+                                            backgroundColor: payType.value == 2
+                                                ? WidgetStateProperty.all(
+                                                    themeColorServices
+                                                        .sematicColorBlue100
+                                                        .value,
+                                                  )
+                                                : WidgetStateProperty.all(
+                                                    themeColorServices
+                                                        .neutralsColorGrey300
+                                                        .value,
+                                                  ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Get.toNamed(Routes.DEPOSIT_BALANCE);
+                                    await homeController.getUserInfo();
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      top: 4,
+                                      left: 12,
+                                      right: 12,
+                                      bottom: 8,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Tap disini untuk topup",
+                                          style: typographyServices
+                                              .captionLargeBold
+                                              .value
+                                              .copyWith(
+                                                color: themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                              ),
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_arrow_right.svg",
+                                                width: 8.67,
+                                                height: 5,
+                                                color: themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        // Padding(
+                        //   padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       Get.close(1);
+                        //     },
+                        //     child: Container(
+                        //       decoration: BoxDecoration(
+                        //         color: themeColorServices
+                        //             .sematicColorBlue100
+                        //             .value,
+                        //         borderRadius: BorderRadius.only(
+                        //           topLeft: Radius.circular(16),
+                        //           topRight: Radius.circular(16),
+                        //           bottomLeft: Radius.circular(16),
+                        //           bottomRight: Radius.circular(16),
+                        //         ),
+                        //       ),
+                        //       child: Column(
+                        //         children: [
+                        //           Container(
+                        //             padding: EdgeInsets.symmetric(
+                        //               horizontal: 12,
+                        //               vertical: 16,
+                        //             ),
+                        //             decoration: BoxDecoration(
+                        //               color: themeColorServices
+                        //                   .neutralsColorGrey0
+                        //                   .value,
+                        //               borderRadius: BorderRadius.circular(16),
+                        //               border: Border.all(
+                        //                 color: themeColorServices
+                        //                     .neutralsColorGrey200
+                        //                     .value,
+                        //               ),
+                        //             ),
+                        //             child: Row(
+                        //               children: [
+                        //                 Container(
+                        //                   width: 32,
+                        //                   height: 32,
+                        //                   decoration: BoxDecoration(
+                        //                     color: themeColorServices
+                        //                         .neutralsColorGrey100
+                        //                         .value,
+                        //                     borderRadius: BorderRadius.circular(
+                        //                       8,
+                        //                     ),
+                        //                   ),
+                        //                   child: Row(
+                        //                     mainAxisAlignment:
+                        //                         MainAxisAlignment.center,
+                        //                     crossAxisAlignment:
+                        //                         CrossAxisAlignment.center,
+                        //                     children: [
+                        //                       SvgPicture.asset(
+                        //                         "assets/logos/logo_dana.svg",
+                        //                         width: 16,
+                        //                         height: 16,
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //                 SizedBox(width: 8),
+                        //                 Expanded(
+                        //                   child: Column(
+                        //                     crossAxisAlignment:
+                        //                         CrossAxisAlignment.start,
+                        //                     children: [
+                        //                       Text(
+                        //                         "Saldo DANA",
+                        //                         style: typographyServices
+                        //                             .bodySmallBold
+                        //                             .value
+                        //                             .copyWith(
+                        //                               color: themeColorServices
+                        //                                   .neutralsColorGrey700
+                        //                                   .value,
+                        //                             ),
+                        //                       ),
+                        //                       SizedBox(height: 2),
+                        //                       Row(
+                        //                         children: [
+                        //                           SizedBox(
+                        //                             height: 16,
+                        //                             width: 16,
+                        //                             child: Row(
+                        //                               children: [
+                        //                                 SvgPicture.asset(
+                        //                                   "assets/icons/icon_alert.svg",
+                        //                                   width: 12,
+                        //                                   height: 12,
+                        //                                   color: themeColorServices
+                        //                                       .sematicColorYellow400
+                        //                                       .value,
+                        //                                 ),
+                        //                               ],
+                        //                             ),
+                        //                           ),
+                        //                           SizedBox(width: 2),
+                        //                           Text(
+                        //                             "Rp5.000",
+                        //                             style: typographyServices
+                        //                                 .captionLargeRegular
+                        //                                 .value
+                        //                                 .copyWith(
+                        //                                   color: themeColorServices
+                        //                                       .sematicColorYellow400
+                        //                                       .value,
+                        //                                 ),
+                        //                           ),
+                        //                         ],
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //                 SizedBox(width: 8),
+                        //                 Radio(
+                        //                   value: "dana",
+                        //                   activeColor: themeColorServices
+                        //                       .primaryBlue
+                        //                       .value,
+                        //                   enabled: false,
+                        //                   backgroundColor:
+                        //                       selectedPaymentMethod.value ==
+                        //                           "dana"
+                        //                       ? WidgetStateProperty.all(
+                        //                           themeColorServices
+                        //                               .sematicColorBlue100
+                        //                               .value,
+                        //                         )
+                        //                       : WidgetStateProperty.all(
+                        //                           themeColorServices
+                        //                               .neutralsColorGrey300
+                        //                               .value,
+                        //                         ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //           Container(
+                        //             padding: EdgeInsets.only(
+                        //               top: 4,
+                        //               left: 12,
+                        //               right: 12,
+                        //               bottom: 8,
+                        //             ),
+                        //             child: Row(
+                        //               children: [
+                        //                 Text(
+                        //                   "Tap disini untuk topup",
+                        //                   style: typographyServices
+                        //                       .captionLargeBold
+                        //                       .value
+                        //                       .copyWith(
+                        //                         color: themeColorServices
+                        //                             .primaryBlue
+                        //                             .value,
+                        //                       ),
+                        //                 ),
+                        //                 SizedBox(
+                        //                   width: 16,
+                        //                   height: 16,
+                        //                   child: Row(
+                        //                     mainAxisAlignment:
+                        //                         MainAxisAlignment.center,
+                        //                     crossAxisAlignment:
+                        //                         CrossAxisAlignment.center,
+                        //                     children: [
+                        //                       SvgPicture.asset(
+                        //                         "assets/icons/icon_arrow_right.svg",
+                        //                         width: 8.67,
+                        //                         height: 5,
+                        //                         color: themeColorServices
+                        //                             .primaryBlue
+                        //                             .value,
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(height: 16),
+                        Padding(
+                          padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
+                          child: GestureDetector(
+                            onTap: () {
+                              payType.value = 3;
+                              Get.close(1);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: themeColorServices
+                                      .neutralsColorGrey200
+                                      .value,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 32,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      color: themeColorServices
+                                          .neutralsColorGrey100
+                                          .value,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_cash.svg",
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Cash",
+                                          style: typographyServices
+                                              .bodySmallBold
+                                              .value
+                                              .copyWith(
+                                                color: themeColorServices
+                                                    .neutralsColorGrey700
+                                                    .value,
+                                              ),
+                                        ),
+                                        SizedBox(height: 2),
+                                        Text(
+                                          "Siapkan uang pas untuk perjalananmu",
+                                          style: typographyServices
+                                              .captionLargeRegular
+                                              .value
+                                              .copyWith(
+                                                color: themeColorServices
+                                                    .neutralsColorGrey500
+                                                    .value,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  RadioGroup(
+                                    groupValue: payType.value,
+                                    onChanged: (value) {},
+                                    child: Radio(
+                                      value: 3,
+                                      activeColor:
+                                          themeColorServices.primaryBlue.value,
+                                      backgroundColor: payType.value == 3
+                                          ? WidgetStateProperty.all(
+                                              themeColorServices
+                                                  .sematicColorBlue100
+                                                  .value,
+                                            )
+                                          : null,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  Divider(
-                    height: 0,
-                    color: themeColorServices.neutralsColorGrey200.value,
-                  ),
-                  SizedBox(height: 16),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: themeColorServices.sematicColorBlue100.value,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
-                              bottomLeft: Radius.circular(16),
-                              bottomRight: Radius.circular(16),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  payType.value = 2;
-                                  Get.close(1);
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 16,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: themeColorServices
-                                          .neutralsColorGrey200
-                                          .value,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 32,
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          color: themeColorServices
-                                              .neutralsColorGrey100
-                                              .value,
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              "assets/icons/icon_wallet.svg",
-                                              width: 16,
-                                              height: 16,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Saldo ECGO",
-                                              style: typographyServices
-                                                  .bodySmallBold
-                                                  .value
-                                                  .copyWith(
-                                                    color: themeColorServices
-                                                        .neutralsColorGrey700
-                                                        .value,
-                                                  ),
-                                            ),
-                                            SizedBox(height: 2),
-                                            if (homeController
-                                                    .userInfo
-                                                    .value
-                                                    .balance! <
-                                                selectedOrderRidePricing
-                                                    .value
-                                                    .amount!) ...[
-                                              Row(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 16,
-                                                    width: 16,
-                                                    child: Row(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "assets/icons/icon_alert.svg",
-                                                          width: 12,
-                                                          height: 12,
-                                                          color: themeColorServices
-                                                              .sematicColorYellow400
-                                                              .value,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 2),
-                                                  Text(
-                                                    NumberFormat.currency(
-                                                      locale: 'id_ID',
-                                                      symbol: 'Rp',
-                                                      decimalDigits: 0,
-                                                    ).format(
-                                                      homeController
-                                                              .userInfo
-                                                              .value
-                                                              .balance ??
-                                                          0.0,
-                                                    ),
-                                                    style: typographyServices
-                                                        .captionLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: themeColorServices
-                                                              .sematicColorYellow400
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                            if (homeController
-                                                    .userInfo
-                                                    .value
-                                                    .balance! >=
-                                                selectedOrderRidePricing
-                                                    .value
-                                                    .amount!) ...[
-                                              Text(
-                                                NumberFormat.currency(
-                                                  locale: 'id_ID',
-                                                  symbol: 'Rp',
-                                                  decimalDigits: 0,
-                                                ).format(
-                                                  homeController
-                                                          .userInfo
-                                                          .value
-                                                          .balance ??
-                                                      0.0,
-                                                ),
-                                                style: typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: themeColorServices
-                                                          .neutralsColorGrey500
-                                                          .value,
-                                                    ),
-                                              ),
-                                            ],
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      RadioGroup(
-                                        groupValue: payType.value,
-                                        onChanged: (value) {},
-                                        child: Radio(
-                                          value: 2,
-                                          activeColor: themeColorServices
-                                              .primaryBlue
-                                              .value,
-                                          backgroundColor: payType.value == 2
-                                              ? WidgetStateProperty.all(
-                                                  themeColorServices
-                                                      .sematicColorBlue100
-                                                      .value,
-                                                )
-                                              : WidgetStateProperty.all(
-                                                  themeColorServices
-                                                      .neutralsColorGrey300
-                                                      .value,
-                                                ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(
-                                  top: 4,
-                                  left: 12,
-                                  right: 12,
-                                  bottom: 8,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Tap disini untuk topup",
-                                      style: typographyServices
-                                          .captionLargeBold
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .primaryBlue
-                                                .value,
-                                          ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_arrow_right.svg",
-                                            width: 8.67,
-                                            height: 5,
-                                            color: themeColorServices
-                                                .primaryBlue
-                                                .value,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      // Padding(
-                      //   padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
-                      //   child: GestureDetector(
-                      //     onTap: () {
-                      //       Get.close(1);
-                      //     },
-                      //     child: Container(
-                      //       decoration: BoxDecoration(
-                      //         color: themeColorServices
-                      //             .sematicColorBlue100
-                      //             .value,
-                      //         borderRadius: BorderRadius.only(
-                      //           topLeft: Radius.circular(16),
-                      //           topRight: Radius.circular(16),
-                      //           bottomLeft: Radius.circular(16),
-                      //           bottomRight: Radius.circular(16),
-                      //         ),
-                      //       ),
-                      //       child: Column(
-                      //         children: [
-                      //           Container(
-                      //             padding: EdgeInsets.symmetric(
-                      //               horizontal: 12,
-                      //               vertical: 16,
-                      //             ),
-                      //             decoration: BoxDecoration(
-                      //               color: themeColorServices
-                      //                   .neutralsColorGrey0
-                      //                   .value,
-                      //               borderRadius: BorderRadius.circular(16),
-                      //               border: Border.all(
-                      //                 color: themeColorServices
-                      //                     .neutralsColorGrey200
-                      //                     .value,
-                      //               ),
-                      //             ),
-                      //             child: Row(
-                      //               children: [
-                      //                 Container(
-                      //                   width: 32,
-                      //                   height: 32,
-                      //                   decoration: BoxDecoration(
-                      //                     color: themeColorServices
-                      //                         .neutralsColorGrey100
-                      //                         .value,
-                      //                     borderRadius: BorderRadius.circular(
-                      //                       8,
-                      //                     ),
-                      //                   ),
-                      //                   child: Row(
-                      //                     mainAxisAlignment:
-                      //                         MainAxisAlignment.center,
-                      //                     crossAxisAlignment:
-                      //                         CrossAxisAlignment.center,
-                      //                     children: [
-                      //                       SvgPicture.asset(
-                      //                         "assets/logos/logo_dana.svg",
-                      //                         width: 16,
-                      //                         height: 16,
-                      //                       ),
-                      //                     ],
-                      //                   ),
-                      //                 ),
-                      //                 SizedBox(width: 8),
-                      //                 Expanded(
-                      //                   child: Column(
-                      //                     crossAxisAlignment:
-                      //                         CrossAxisAlignment.start,
-                      //                     children: [
-                      //                       Text(
-                      //                         "Saldo DANA",
-                      //                         style: typographyServices
-                      //                             .bodySmallBold
-                      //                             .value
-                      //                             .copyWith(
-                      //                               color: themeColorServices
-                      //                                   .neutralsColorGrey700
-                      //                                   .value,
-                      //                             ),
-                      //                       ),
-                      //                       SizedBox(height: 2),
-                      //                       Row(
-                      //                         children: [
-                      //                           SizedBox(
-                      //                             height: 16,
-                      //                             width: 16,
-                      //                             child: Row(
-                      //                               children: [
-                      //                                 SvgPicture.asset(
-                      //                                   "assets/icons/icon_alert.svg",
-                      //                                   width: 12,
-                      //                                   height: 12,
-                      //                                   color: themeColorServices
-                      //                                       .sematicColorYellow400
-                      //                                       .value,
-                      //                                 ),
-                      //                               ],
-                      //                             ),
-                      //                           ),
-                      //                           SizedBox(width: 2),
-                      //                           Text(
-                      //                             "Rp5.000",
-                      //                             style: typographyServices
-                      //                                 .captionLargeRegular
-                      //                                 .value
-                      //                                 .copyWith(
-                      //                                   color: themeColorServices
-                      //                                       .sematicColorYellow400
-                      //                                       .value,
-                      //                                 ),
-                      //                           ),
-                      //                         ],
-                      //                       ),
-                      //                     ],
-                      //                   ),
-                      //                 ),
-                      //                 SizedBox(width: 8),
-                      //                 Radio(
-                      //                   value: "dana",
-                      //                   activeColor: themeColorServices
-                      //                       .primaryBlue
-                      //                       .value,
-                      //                   enabled: false,
-                      //                   backgroundColor:
-                      //                       selectedPaymentMethod.value ==
-                      //                           "dana"
-                      //                       ? WidgetStateProperty.all(
-                      //                           themeColorServices
-                      //                               .sematicColorBlue100
-                      //                               .value,
-                      //                         )
-                      //                       : WidgetStateProperty.all(
-                      //                           themeColorServices
-                      //                               .neutralsColorGrey300
-                      //                               .value,
-                      //                         ),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //           Container(
-                      //             padding: EdgeInsets.only(
-                      //               top: 4,
-                      //               left: 12,
-                      //               right: 12,
-                      //               bottom: 8,
-                      //             ),
-                      //             child: Row(
-                      //               children: [
-                      //                 Text(
-                      //                   "Tap disini untuk topup",
-                      //                   style: typographyServices
-                      //                       .captionLargeBold
-                      //                       .value
-                      //                       .copyWith(
-                      //                         color: themeColorServices
-                      //                             .primaryBlue
-                      //                             .value,
-                      //                       ),
-                      //                 ),
-                      //                 SizedBox(
-                      //                   width: 16,
-                      //                   height: 16,
-                      //                   child: Row(
-                      //                     mainAxisAlignment:
-                      //                         MainAxisAlignment.center,
-                      //                     crossAxisAlignment:
-                      //                         CrossAxisAlignment.center,
-                      //                     children: [
-                      //                       SvgPicture.asset(
-                      //                         "assets/icons/icon_arrow_right.svg",
-                      //                         width: 8.67,
-                      //                         height: 5,
-                      //                         color: themeColorServices
-                      //                             .primaryBlue
-                      //                             .value,
-                      //                       ),
-                      //                     ],
-                      //                   ),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // SizedBox(height: 16),
-                      Padding(
-                        padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
-                        child: GestureDetector(
-                          onTap: () {
-                            payType.value = 3;
-                            Get.close(1);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 16,
-                            ),
-                            decoration: BoxDecoration(
-                              color:
-                                  themeColorServices.neutralsColorGrey0.value,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: themeColorServices
-                                    .neutralsColorGrey200
-                                    .value,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: BoxDecoration(
-                                    color: themeColorServices
-                                        .neutralsColorGrey100
-                                        .value,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/icon_cash.svg",
-                                        width: 16,
-                                        height: 16,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Cash",
-                                        style: typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey700
-                                                  .value,
-                                            ),
-                                      ),
-                                      SizedBox(height: 2),
-                                      Text(
-                                        "Siapkan uang pas untuk perjalananmu",
-                                        style: typographyServices
-                                            .captionLargeRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey500
-                                                  .value,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                RadioGroup(
-                                  groupValue: payType.value,
-                                  onChanged: (value) {},
-                                  child: Radio(
-                                    value: 3,
-                                    activeColor:
-                                        themeColorServices.primaryBlue.value,
-                                    backgroundColor: payType.value == 3
-                                        ? WidgetStateProperty.all(
-                                            themeColorServices
-                                                .sematicColorBlue100
-                                                .value,
-                                          )
-                                        : null,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
 
-                  SizedBox(height: 64),
-                ],
+                    SizedBox(height: 64),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1015,7 +1026,7 @@ class RideController extends GetxController {
       Polyline(
         polylineId: PolylineId("route"),
         points: polylineCoordinates,
-        color: themeColorServices.sematicColorBlue200.value,
+        color: Color(0XFF37C086),
         width: 6,
       ),
     );

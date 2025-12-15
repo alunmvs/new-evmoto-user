@@ -168,6 +168,12 @@ class HistoryBalanceController extends GetxController {
       balanceHistoryListByDate.entries.toList()
         ..sort((a, b) => b.key.compareTo(a.key)),
     );
+
+    for (var key in sortedBalanceHistoryListByDate.keys) {
+      sortedBalanceHistoryListByDate[key].sort((a, b) {
+        return b.createTimeDateTime.compareTo(a.createTimeDateTime) as int;
+      });
+    }
   }
 
   List getSortedBalanceHistoryList({required DateTime createTimeKey}) {

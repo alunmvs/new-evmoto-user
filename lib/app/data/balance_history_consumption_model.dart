@@ -1,8 +1,11 @@
-class BalanceHistoryConsumption {
+import 'package:new_evmoto_user/app/data/balance_history_deposit_model.dart';
+
+class BalanceHistoryConsumption implements HasCreatedAtDateTime {
+  @override
+  DateTime? createTimeDateTime;
   double? money;
   int? type;
   String? createTime;
-  DateTime? createTimeDateTime;
 
   BalanceHistoryConsumption({this.money, this.type, this.createTime});
 

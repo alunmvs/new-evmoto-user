@@ -74,7 +74,6 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                       ),
                     ),
                   ],
-
                   SmartRefresher(
                     header: MaterialClassicHeader(
                       color: controller.themeColorServices.primaryBlue.value,
@@ -197,7 +196,7 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                         children: [
                                           for (var balanceHistory
                                               in controller
-                                                  .balanceHistoryListByDate[createDate]) ...[
+                                                  .sortedBalanceHistoryListByDate[createDate]) ...[
                                             if (balanceHistory
                                                 is BalanceHistoryDeposit) ...[
                                               GestureDetector(
@@ -242,20 +241,43 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                                         ),
                                                       ),
                                                       SizedBox(width: 8),
-                                                      Text(
-                                                        "Topup Saldo",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodySmallRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .neutralsColorGrey700
-                                                                  .value,
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Topup Saldo",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodySmallRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey700
+                                                                        .value,
+                                                                  ),
                                                             ),
+                                                            Text(
+                                                              balanceHistory
+                                                                      .createTime ??
+                                                                  "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodySmallRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey700
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                      Spacer(),
                                                       SizedBox(width: 8),
                                                       Text(
                                                         NumberFormat.currency(
@@ -299,7 +321,7 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                                 ),
                                               ),
                                               if (controller
-                                                      .balanceHistoryListByDate[createDate]
+                                                      .sortedBalanceHistoryListByDate[createDate]
                                                       .last !=
                                                   balanceHistory) ...[
                                                 Divider(
@@ -355,22 +377,47 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                                         ),
                                                       ),
                                                       SizedBox(width: 8),
-                                                      Text(
-                                                        balanceHistory.type == 1
-                                                            ? "Layanan Antar"
-                                                            : "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodySmallRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .neutralsColorGrey700
-                                                                  .value,
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              balanceHistory
+                                                                          .type ==
+                                                                      1
+                                                                  ? "Layanan Antar"
+                                                                  : "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodySmallRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey700
+                                                                        .value,
+                                                                  ),
                                                             ),
+                                                            Text(
+                                                              balanceHistory
+                                                                      .createTime ??
+                                                                  "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodySmallRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey700
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                      Spacer(),
                                                       SizedBox(width: 8),
                                                       Text(
                                                         NumberFormat.currency(
@@ -414,7 +461,7 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                                 ),
                                               ),
                                               if (controller
-                                                      .balanceHistoryListByDate[createDate]
+                                                      .sortedBalanceHistoryListByDate[createDate]
                                                       .last !=
                                                   balanceHistory) ...[
                                                 Divider(

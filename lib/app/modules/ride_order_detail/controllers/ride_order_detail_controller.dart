@@ -750,7 +750,7 @@ class RideOrderDetailController extends GetxController {
       polylines.add(
         Polyline(
           polylineId: PolylineId("route"),
-          color: Colors.blue,
+          color: Color(0XFF37C086),
           width: 5,
           points: polylinesCoordinate,
         ),

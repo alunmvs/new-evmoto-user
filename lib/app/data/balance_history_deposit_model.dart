@@ -1,10 +1,16 @@
-class BalanceHistoryDeposit {
+abstract class HasCreatedAtDateTime {
+  DateTime? get createTimeDateTime;
+}
+
+class BalanceHistoryDeposit implements HasCreatedAtDateTime {
+  @override
+  DateTime? createTimeDateTime;
+
   double? lastBalance;
   double? amount;
   String? createTime;
   int? id;
   int? userId;
-  DateTime? createTimeDateTime;
 
   BalanceHistoryDeposit({
     this.lastBalance,
@@ -12,6 +18,7 @@ class BalanceHistoryDeposit {
     this.createTime,
     this.id,
     this.userId,
+    this.createTimeDateTime,
   });
 
   BalanceHistoryDeposit.fromJson(Map<String, dynamic> json) {
