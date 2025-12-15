@@ -1,7 +1,8 @@
 class BalanceHistoryConsumption {
-  int? money;
+  double? money;
   int? type;
   String? createTime;
+  DateTime? createTimeDateTime;
 
   BalanceHistoryConsumption({this.money, this.type, this.createTime});
 
@@ -9,6 +10,7 @@ class BalanceHistoryConsumption {
     money = json['money'];
     type = json['type'];
     createTime = json['createTime'];
+    createTimeDateTime = DateTime.parse(createTime!.replaceFirst(' ', 'T'));
   }
 
   Map<String, dynamic> toJson() {

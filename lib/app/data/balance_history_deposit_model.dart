@@ -1,9 +1,10 @@
 class BalanceHistoryDeposit {
-  int? lastBalance;
-  int? amount;
+  double? lastBalance;
+  double? amount;
   String? createTime;
   int? id;
   int? userId;
+  DateTime? createTimeDateTime;
 
   BalanceHistoryDeposit({
     this.lastBalance,
@@ -19,6 +20,7 @@ class BalanceHistoryDeposit {
     createTime = json['createTime'];
     id = json['id'];
     userId = json['userId'];
+    createTimeDateTime = DateTime.parse(createTime!.replaceFirst(' ', 'T'));
   }
 
   Map<String, dynamic> toJson() {

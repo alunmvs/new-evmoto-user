@@ -919,17 +919,18 @@ class HomeView extends GetView<HomeController> {
                                                   ),
                                                 ],
                                               ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                    Routes.DEPOSIT_BALANCE,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  color: Colors.transparent,
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(
+                                              Container(
+                                                color: Colors.transparent,
+                                                child: Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Get.toNamed(
+                                                          Routes
+                                                              .DEPOSIT_BALANCE,
+                                                        );
+                                                      },
+                                                      child: SizedBox(
                                                         width: 46,
                                                         height: 36,
                                                         child: Column(
@@ -955,45 +956,43 @@ class HomeView extends GetView<HomeController> {
                                                           ],
                                                         ),
                                                       ),
-                                                      SizedBox(width: 14),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          Get.toNamed(
-                                                            Routes
-                                                                .HISTORY_BALANCE,
-                                                          );
-                                                        },
-                                                        child: SizedBox(
-                                                          width: 46,
-                                                          height: 36,
-                                                          child: Column(
-                                                            children: [
-                                                              SvgPicture.asset(
-                                                                "assets/icons/icon_transaction_history.svg",
-                                                                width: 18,
-                                                                height: 18,
-                                                              ),
-                                                              SizedBox(
-                                                                height: 4,
-                                                              ),
-                                                              Text(
-                                                                controller
-                                                                        .languageServices
-                                                                        .language
-                                                                        .value
-                                                                        .history ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .captionLargeRegular
-                                                                    .value,
-                                                              ),
-                                                            ],
-                                                          ),
+                                                    ),
+                                                    SizedBox(width: 14),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Get.toNamed(
+                                                          Routes
+                                                              .HISTORY_BALANCE,
+                                                        );
+                                                      },
+                                                      child: SizedBox(
+                                                        width: 46,
+                                                        height: 36,
+                                                        child: Column(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_transaction_history.svg",
+                                                              width: 18,
+                                                              height: 18,
+                                                            ),
+                                                            SizedBox(height: 4),
+                                                            Text(
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .history ??
+                                                                  "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .captionLargeRegular
+                                                                  .value,
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],

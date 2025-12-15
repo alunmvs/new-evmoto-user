@@ -102,7 +102,7 @@ class PaymentRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/user/api/recharge/queryMyTravelRecord";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/user/api/recharge/queryRechargeRecord";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -139,6 +139,8 @@ class PaymentRepository {
 
       return balanceHistoryDepositList;
     } on DioException catch (e) {
+      print("balance history list");
+      print(e.response!.data);
       rethrow;
     }
   }
@@ -150,7 +152,7 @@ class PaymentRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/user/api/recharge/queryMyTravelRecord";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryMyTravelRecord";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -187,6 +189,8 @@ class PaymentRepository {
 
       return balanceHistoryConsumptionList;
     } on DioException catch (e) {
+      print("balance consumption list");
+      print(e.response!.data);
       rethrow;
     }
   }
