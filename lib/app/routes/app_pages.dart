@@ -8,6 +8,10 @@ import '../modules/activity_detail/bindings/activity_detail_binding.dart';
 import '../modules/activity_detail/views/activity_detail_view.dart';
 import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
+import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
+import '../modules/deposit_balance/views/deposit_balance_view.dart';
+import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
+import '../modules/deposit_balance_payment_webview/views/deposit_balance_payment_webview_view.dart';
 import '../modules/history_balance/bindings/history_balance_binding.dart';
 import '../modules/history_balance/views/history_balance_view.dart';
 import '../modules/history_balance_detail/bindings/history_balance_detail_binding.dart';
@@ -214,6 +218,16 @@ class AppPages {
       name: _Paths.RIDE_ORDER_CANCEL,
       page: () => const RideOrderCancelView(),
       binding: RideOrderCancelBinding(),
+    ),
+    GetPage(
+      name: _Paths.DEPOSIT_BALANCE,
+      page: () => const DepositBalanceView(),
+      binding: DepositBalanceBinding(),
+    ),
+    GetPage(
+      name: _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW,
+      page: () => const DepositBalancePaymentWebviewView(),
+      binding: DepositBalancePaymentWebviewBinding(),
     ),
   ];
 }

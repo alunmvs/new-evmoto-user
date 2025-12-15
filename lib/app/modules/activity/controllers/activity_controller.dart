@@ -59,6 +59,17 @@ class ActivityController extends GetxController
     activeOrderList.value = (await orderRideRepository.getActiveOrderList(
       language: languageServices.languageCodeSystem.value,
     ));
+
+    for (var activeOrder in activeOrderList) {
+      activeOrder.orderRideModel = await orderRideRepository
+          .getOrderRideDetailbyOrderId(
+            orderId: activeOrder.orderId.toString(),
+            orderType: activeOrder.orderType,
+            language: languageServices.languageCodeSystem.value,
+          );
+    }
+
+    activeOrderList.refresh();
   }
 
   Future<void> getHistoryOrderList() async {
@@ -68,5 +79,20 @@ class ActivityController extends GetxController
       size: historyOrderSize.value,
       type: 1,
     ));
+  }
+
+  String getStatusActivityByState({required int state}) {
+    switch (state) {
+      case 1:
+        return 'Pencarian Driver Evmoto';
+      case 2:
+        return 'Driver Menerima Pesanan';
+      case 3:
+        return 'Driver Berangkat ke Lokasi Penjemputan';
+      case 4:
+        return 'Driver Sampai di Lokasi Penjemputan';
+      default:
+        return '-';
+    }
   }
 }

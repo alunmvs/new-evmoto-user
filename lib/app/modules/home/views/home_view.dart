@@ -919,69 +919,82 @@ class HomeView extends GetView<HomeController> {
                                                   ),
                                                 ],
                                               ),
-                                              Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 46,
-                                                    height: 36,
-                                                    child: Column(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "assets/icons/icon_add_circle.svg",
-                                                          width: 18,
-                                                          height: 18,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                    Routes.DEPOSIT_BALANCE,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  color: Colors.transparent,
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 46,
+                                                        height: 36,
+                                                        child: Column(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_add_circle.svg",
+                                                              width: 18,
+                                                              height: 18,
+                                                            ),
+                                                            SizedBox(height: 4),
+                                                            Text(
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .topup ??
+                                                                  "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .captionLargeRegular
+                                                                  .value,
+                                                            ),
+                                                          ],
                                                         ),
-                                                        SizedBox(height: 4),
-                                                        Text(
-                                                          controller
-                                                                  .languageServices
-                                                                  .language
-                                                                  .value
-                                                                  .topup ??
-                                                              "-",
-                                                          style: controller
-                                                              .typographyServices
-                                                              .captionLargeRegular
-                                                              .value,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 14),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Get.toNamed(
-                                                        Routes.HISTORY_BALANCE,
-                                                      );
-                                                    },
-                                                    child: SizedBox(
-                                                      width: 46,
-                                                      height: 36,
-                                                      child: Column(
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_transaction_history.svg",
-                                                            width: 18,
-                                                            height: 18,
-                                                          ),
-                                                          SizedBox(height: 4),
-                                                          Text(
-                                                            controller
-                                                                    .languageServices
-                                                                    .language
-                                                                    .value
-                                                                    .history ??
-                                                                "-",
-                                                            style: controller
-                                                                .typographyServices
-                                                                .captionLargeRegular
-                                                                .value,
-                                                          ),
-                                                        ],
                                                       ),
-                                                    ),
+                                                      SizedBox(width: 14),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Get.toNamed(
+                                                            Routes
+                                                                .HISTORY_BALANCE,
+                                                          );
+                                                        },
+                                                        child: SizedBox(
+                                                          width: 46,
+                                                          height: 36,
+                                                          child: Column(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_transaction_history.svg",
+                                                                width: 18,
+                                                                height: 18,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 4,
+                                                              ),
+                                                              Text(
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .history ??
+                                                                    "-",
+                                                                style: controller
+                                                                    .typographyServices
+                                                                    .captionLargeRegular
+                                                                    .value,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
+                                                ),
                                               ),
                                             ],
                                           ),

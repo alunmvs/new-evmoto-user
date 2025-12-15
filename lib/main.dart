@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/services/api_services.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -33,6 +35,8 @@ Future<void> main() async {
   Get.put(TypographyServices(), permanent: true);
   Get.put(LanguageServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
+  Get.put(ApiServices(), permanent: true);
+  Get.put(FirebaseRemoteConfigServices(), permanent: true);
 
   runApp(
     GetMaterialApp(

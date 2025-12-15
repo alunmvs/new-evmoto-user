@@ -35,6 +35,9 @@ abstract class Routes {
   static const RIDE_ORDER_DETAIL = _Paths.RIDE_ORDER_DETAIL;
   static const RIDE_ORDER_DONE = _Paths.RIDE_ORDER_DONE;
   static const RIDE_ORDER_CANCEL = _Paths.RIDE_ORDER_CANCEL;
+  static const DEPOSIT_BALANCE = _Paths.DEPOSIT_BALANCE;
+  static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
+      _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW;
 }
 
 abstract class _Paths {
@@ -69,4 +72,7 @@ abstract class _Paths {
   static const RIDE_ORDER_DETAIL = '/ride-order-detail';
   static const RIDE_ORDER_DONE = '/ride-order-done';
   static const RIDE_ORDER_CANCEL = '/ride-order-cancel';
+  static const DEPOSIT_BALANCE = '/deposit-balance';
+  static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
+      '/deposit-balance-payment-webview';
 }

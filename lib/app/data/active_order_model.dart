@@ -1,9 +1,12 @@
+import 'package:new_evmoto_user/app/data/order_ride_model.dart';
+
 class ActiveOrder {
   int? orderId;
   int? orderType;
   int? state;
+  OrderRide? orderRideModel;
 
-  ActiveOrder({this.orderId, this.orderType, this.state});
+  ActiveOrder({this.orderId, this.orderType, this.state, this.orderRideModel});
 
   ActiveOrder.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];

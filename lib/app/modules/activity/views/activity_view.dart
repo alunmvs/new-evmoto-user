@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 
@@ -190,7 +191,9 @@ class ActivityView extends GetView<ActivityController> {
                             .themeColorServices
                             .neutralsColorGrey0
                             .value,
-                        onRefresh: () async {},
+                        onRefresh: () async {
+                          await controller.getActiveOrderList();
+                        },
                         child: SingleChildScrollView(
                           physics: AlwaysScrollableScrollPhysics(),
                           child: Column(
@@ -268,143 +271,118 @@ class ActivityView extends GetView<ActivityController> {
                                 ),
                               ],
                               if (controller.activeOrderList.isNotEmpty) ...[
-                                for (var latestActivity
-                                    in controller.latestActivityList) ...[
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                      left: 16,
-                                      right: 16,
-                                      top: 24,
-                                      bottom: 16,
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 4.31,
-                                            vertical: 7.34,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
+                                for (var activeOrder
+                                    in controller.activeOrderList) ...[
+                                  GestureDetector(
+                                    onTap: () async {
+                                      Get.toNamed(
+                                        Routes.RIDE_ORDER_DETAIL,
+                                        arguments: {
+                                          "order_id": activeOrder.orderId
+                                              .toString(),
+                                          "order_type": activeOrder.orderType,
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                        left: 16,
+                                        right: 16,
+                                        top: 24,
+                                        bottom: 16,
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 4.31,
+                                              vertical: 7.34,
                                             ),
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(0XFFF5F9FF),
-                                                Color(0XFFCDE2F8),
-                                              ],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              stops: [0.0, 1.0],
-                                            ),
-                                          ),
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_ride.svg",
-                                            width: 23.28,
-                                            height: 17.31,
-                                          ),
-                                        ),
-                                        SizedBox(width: 12),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (controller.latestActivityList
-                                                    .indexOf(latestActivity) !=
-                                                (controller
-                                                        .latestActivityList
-                                                        .length -
-                                                    1)) ...[
-                                              Text(
-                                                "Jalan Haji Jian ke Plaza Pondok Gede",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey700
-                                                          .value,
-                                                    ),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Text(
-                                                "08 February 2025 ⬩ 12:54",
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey600
-                                                          .value,
-                                                    ),
-                                              ),
-                                            ],
-                                            if (controller.latestActivityList
-                                                    .indexOf(latestActivity) ==
-                                                (controller
-                                                        .latestActivityList
-                                                        .length -
-                                                    1)) ...[
-                                              Text(
-                                                "Jalan Hankam ke Pondok Indah Permai",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey700
-                                                          .value,
-                                                    ),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "assets/icons/icon_alert.svg",
-                                                    width: 16,
-                                                    height: 16,
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .sematicColorRed500
-                                                        .value,
-                                                  ),
-                                                  SizedBox(width: 4),
-                                                  Text(
-                                                    "Perjalanan Dibatalkan",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .sematicColorRed500
-                                                              .value,
-                                                        ),
-                                                  ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color(0XFFF5F9FF),
+                                                  Color(0XFFCDE2F8),
                                                 ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                stops: [0.0, 1.0],
                                               ),
-                                            ],
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        SizedBox(width: 12),
-                                        Text(
-                                          "Rp56.000",
-                                          style: controller
-                                              .typographyServices
-                                              .bodySmallBold
-                                              .value,
-                                        ),
-                                      ],
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_ride.svg",
+                                              width: 23.28,
+                                              height: 17.31,
+                                            ),
+                                          ),
+                                          SizedBox(width: 12),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  activeOrder
+                                                          .orderRideModel
+                                                          ?.endAddress ??
+                                                      "-",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey700
+                                                            .value,
+                                                      ),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  activeOrder
+                                                          .orderRideModel
+                                                          ?.travelTime ??
+                                                      "-",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey600
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(width: 12),
+                                          Text(
+                                            NumberFormat.currency(
+                                              locale: 'id_ID',
+                                              symbol: 'Rp',
+                                              decimalDigits: 0,
+                                            ).format(
+                                              activeOrder
+                                                      .orderRideModel
+                                                      ?.collectionFees ??
+                                                  0.0,
+                                            ),
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallBold
+                                                .value,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   DashedLine(
@@ -722,34 +700,72 @@ class ActivityView extends GetView<ActivityController> {
                                                   ),
                                                 ),
                                                 SizedBox(width: 12),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                            horizontal: 8,
-                                                            vertical: 4,
-                                                          ),
-                                                      decoration: BoxDecoration(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .sematicColorGreen100
-                                                            .value,
-                                                        border: Border.all(
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                              horizontal: 8,
+                                                              vertical: 4,
+                                                            ),
+                                                        decoration: BoxDecoration(
                                                           color: controller
                                                               .themeColorServices
-                                                              .sematicColorGreen200
+                                                              .sematicColorGreen100
                                                               .value,
+                                                          border: Border.all(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .sematicColorGreen200
+                                                                .value,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
                                                         ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
+                                                        child: Text(
+                                                          "Order Selesai",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .captionLargeRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .sematicColorGreen500
+                                                                    .value,
+                                                              ),
+                                                        ),
                                                       ),
-                                                      child: Text(
-                                                        "Order Selesai",
+                                                      SizedBox(height: 8),
+                                                      Text(
+                                                        historyOrder
+                                                                .endAddress ??
+                                                            "-",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodySmallBold
+                                                            .value
+                                                            .copyWith(
+                                                              color: controller
+                                                                  .themeColorServices
+                                                                  .neutralsColorGrey700
+                                                                  .value,
+                                                            ),
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                      SizedBox(height: 8),
+                                                      Text(
+                                                        historyOrder
+                                                                .orderTime ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionLargeRegular
@@ -757,77 +773,47 @@ class ActivityView extends GetView<ActivityController> {
                                                             .copyWith(
                                                               color: controller
                                                                   .themeColorServices
-                                                                  .sematicColorGreen500
+                                                                  .neutralsColorGrey600
                                                                   .value,
                                                             ),
                                                       ),
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Text(
-                                                      historyOrder.endAddress ??
-                                                          "-",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .bodySmallBold
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .neutralsColorGrey700
-                                                                .value,
+                                                      SizedBox(height: 8),
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            "Order Lagi",
+                                                            style: controller
+                                                                .typographyServices
+                                                                .bodyLargeBold
+                                                                .value
+                                                                .copyWith(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .primaryBlue
+                                                                      .value,
+                                                                ),
                                                           ),
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Text(
-                                                      "08 February 2025 ⬩ 12:54",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .captionLargeRegular
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .neutralsColorGrey600
-                                                                .value,
-                                                          ),
-                                                    ),
-                                                    SizedBox(height: 8),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          "Order Lagi",
-                                                          style: controller
-                                                              .typographyServices
-                                                              .bodyLargeBold
-                                                              .value
-                                                              .copyWith(
+                                                          SizedBox(width: 2),
+                                                          SizedBox(
+                                                            width: 24,
+                                                            height: 24,
+                                                            child: Center(
+                                                              child: SvgPicture.asset(
+                                                                "assets/icons/icon_arrow_right.svg",
+                                                                width: 13,
+                                                                height: 7.5,
                                                                 color: controller
                                                                     .themeColorServices
                                                                     .primaryBlue
                                                                     .value,
                                                               ),
-                                                        ),
-                                                        SizedBox(width: 2),
-                                                        SizedBox(
-                                                          width: 24,
-                                                          height: 24,
-                                                          child: Center(
-                                                            child: SvgPicture.asset(
-                                                              "assets/icons/icon_arrow_right.svg",
-                                                              width: 13,
-                                                              height: 7.5,
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .primaryBlue
-                                                                  .value,
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                                Spacer(),
                                                 SizedBox(width: 12),
                                                 Text(
                                                   "Rp25.000",
