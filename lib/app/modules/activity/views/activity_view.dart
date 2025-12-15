@@ -277,7 +277,10 @@ class ActivityView extends GetView<ActivityController> {
                                   SizedBox(
                                     height: 46,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        await controller.homeController
+                                            .onTapRideService();
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: controller
                                             .themeColorServices

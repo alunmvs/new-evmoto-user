@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
+import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -15,6 +16,7 @@ class RideOrderDoneController extends GetxController {
   RideOrderDoneController({required this.orderRideRepository});
 
   final homeController = Get.find<HomeController>();
+  final activityController = Get.find<ActivityController>();
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -99,6 +101,11 @@ class RideOrderDoneController extends GetxController {
           orderType: orderType.value,
           language: languageServices.languageCodeSystem.value,
         ),
+      ]);
+
+      await Future.wait([
+        activityController.refreshAll(),
+        homeController.refreshAll(),
       ]);
 
       Get.back();

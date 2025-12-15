@@ -97,30 +97,27 @@ class IntroductionFoodServiceView
                         ),
                       ),
                       Center(
-                        child: Positioned(
-                          top: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: controller
-                                  .themeColorServices
-                                  .sematicColorYellow300
-                                  .value,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "Segera Hadir",
-                              style: controller
-                                  .typographyServices
-                                  .captionLargeBold
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorYellow100
-                                        .value,
-                                  ),
-                            ),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: controller
+                                .themeColorServices
+                                .sematicColorYellow300
+                                .value,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            "Segera Hadir",
+                            style: controller
+                                .typographyServices
+                                .captionLargeBold
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorYellow100
+                                      .value,
+                                ),
                           ),
                         ),
                       ),
