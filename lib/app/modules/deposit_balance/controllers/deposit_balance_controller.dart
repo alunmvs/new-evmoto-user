@@ -94,7 +94,7 @@ class DepositBalanceController extends GetxController {
           money: double.parse(
             formGroup.control("money").value.toString().replaceAll(".", ""),
           ),
-          type: 2,
+          type: 1,
         );
 
         await Get.toNamed(

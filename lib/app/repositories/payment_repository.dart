@@ -17,7 +17,7 @@ class PaymentRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/user/depositBalance";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/payment/api/user/depositBalance";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -58,7 +58,7 @@ class PaymentRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/base/wxCancelUserBalance";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/payment/base/wxCancelUserBalance";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -69,6 +69,14 @@ class PaymentRepository {
       };
 
       var formData = FormData.fromMap({
+        "transaction_status": transactionStatus,
+        "status_code": statusCode,
+        "order_id": orderId,
+      });
+
+      print(url);
+      print(headers);
+      print({
         "transaction_status": transactionStatus,
         "status_code": statusCode,
         "order_id": orderId,
