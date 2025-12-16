@@ -2536,9 +2536,11 @@ class RideView extends GetView<RideController> {
                                             controller.focusNodeOrigin
                                                 .requestFocus();
                                           },
-                                          child: Padding(
+                                          child: Container(
+                                            color: Colors.transparent,
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 8,
+                                              vertical: 8,
                                             ),
                                             child: Row(
                                               children: [
@@ -2595,9 +2597,11 @@ class RideView extends GetView<RideController> {
                                             controller.focusNodeDestination
                                                 .requestFocus();
                                           },
-                                          child: Padding(
+                                          child: Container(
+                                            color: Colors.transparent,
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 8,
+                                              vertical: 8,
                                             ),
                                             child: Row(
                                               children: [
