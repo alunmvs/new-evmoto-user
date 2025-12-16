@@ -71,37 +71,35 @@ class RideOrderDoneController extends GetxController {
   }
 
   Future<void> onTapDone() async {
-    if (rating.value == 0.0) {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Harap mengisi penilaian perjalanan",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-      return;
-    }
     try {
-      await Future.wait([
-        orderRideRepository.submitRatingAndReviewOrder(
-          orderType: orderType.value,
-          orderId: orderId.value,
-          content: null,
-          fraction: rating.value,
-          language: languageServices.languageCodeSystem.value,
-        ),
-        orderRideRepository.paidOrder(
-          orderId: orderId.value,
-          payType: 3,
-          type: 1,
-          orderType: orderType.value,
-          language: languageServices.languageCodeSystem.value,
-        ),
-      ]);
+      if (rating.value == 0.0) {
+        await Future.wait([
+          orderRideRepository.paidOrder(
+            orderId: orderId.value,
+            payType: 3,
+            type: 1,
+            orderType: orderType.value,
+            language: languageServices.languageCodeSystem.value,
+          ),
+        ]);
+      } else {
+        await Future.wait([
+          orderRideRepository.submitRatingAndReviewOrder(
+            orderType: orderType.value,
+            orderId: orderId.value,
+            content: null,
+            fraction: rating.value,
+            language: languageServices.languageCodeSystem.value,
+          ),
+          orderRideRepository.paidOrder(
+            orderId: orderId.value,
+            payType: 3,
+            type: 1,
+            orderType: orderType.value,
+            language: languageServices.languageCodeSystem.value,
+          ),
+        ]);
+      }
 
       await Future.wait([
         activityController.refreshAll(),
@@ -120,6 +118,7 @@ class RideOrderDoneController extends GetxController {
           ),
         ),
       );
+
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } catch (e) {
       var snackBar = SnackBar(
