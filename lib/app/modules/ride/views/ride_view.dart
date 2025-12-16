@@ -3163,8 +3163,6 @@ class RideView extends GetView<RideController> {
                                           }
                                         }
                                         await controller.requestOrderRide();
-                                        // controller.status.value =
-                                        //     "finding_driver_nearby";
                                         Get.back();
                                         Get.toNamed(
                                           Routes.RIDE_ORDER_DETAIL,

@@ -14,10 +14,12 @@ import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 
 class SocketServices extends GetxService with WidgetsBindingObserver {
   late Socket socket;
-  late Timer schedulerDataSocketTimer;
+  late Timer? schedulerDataSocketTimer;
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+
+  final isSocketClose = true.obs;
 
   @override
   Future<void> onInit() async {
@@ -36,6 +38,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> setupWebsocket() async {
     socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
+    isSocketClose.value = false;
 
     socket.listen(
       (data) async {
@@ -90,10 +93,12 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
       },
       onError: (error) {
         print('Error: $error');
+        isSocketClose.value = true;
         socket.destroy();
       },
       onDone: () {
         print('Server closed connection');
+        isSocketClose.value = true;
         socket.destroy();
       },
     );
@@ -117,33 +122,35 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   }
 
   Future<void> sendHeartBeat() async {
-    var storage = FlutterSecureStorage();
-    var token = await storage.read(key: 'token');
+    if (isSocketClose.value == false) {
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
 
-    // var dataUser = {
-    //   "code": 200,
-    //   "data": {
-    //     "token": token,
-    //     "type": 1,
-    //     "userId": Get.find<HomeController>().userInfo.value.id,
-    //   },
-    //   "method": "PING",
-    //   "msg": "SUCCESS",
-    // };
+      // var dataUser = {
+      //   "code": 200,
+      //   "data": {
+      //     "token": token,
+      //     "type": 1,
+      //     "userId": Get.find<HomeController>().userInfo.value.id,
+      //   },
+      //   "method": "PING",
+      //   "msg": "SUCCESS",
+      // };
 
-    var dataUser = {
-      "data": {
-        "userId": Get.find<HomeController>().userInfo.value.id,
-        "token": "$token",
-        "type": 1,
-      },
-      "method": "PING",
-      "code": 200,
-      "msg": "SUCCESS",
-    };
+      var dataUser = {
+        "data": {
+          "userId": Get.find<HomeController>().userInfo.value.id,
+          "token": "$token",
+          "type": 1,
+        },
+        "method": "PING",
+        "code": 200,
+        "msg": "SUCCESS",
+      };
 
-    socket.add(convertJsonToPacket(dataUser));
+      socket.add(convertJsonToPacket(dataUser));
 
-    await socket.flush();
+      await socket.flush();
+    }
   }
 }
