@@ -6,7 +6,7 @@ import 'package:new_evmoto_user/app/data/language_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageServices extends GetxService {
-  final languageCode = "EN".obs;
+  final languageCode = "ID".obs;
   final languageCodeSystem = 2.obs;
   final language = Language().obs;
 
@@ -20,7 +20,7 @@ class LanguageServices extends GetxService {
     if (languageCode != null) {
       await switchLanguage(languageCode: languageCode);
     } else {
-      await switchLanguage(languageCode: "EN");
+      await switchLanguage(languageCode: "ID");
     }
   }
 
