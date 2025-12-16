@@ -1127,8 +1127,9 @@ class ActivityView extends GetView<ActivityController> {
                                                       decimalDigits: 0,
                                                     ).format(
                                                       historyOrder
-                                                          .orderRide!
-                                                          .payMoney,
+                                                              .orderRide
+                                                              ?.payMoney ??
+                                                          0,
                                                     ),
                                                     style: controller
                                                         .typographyServices

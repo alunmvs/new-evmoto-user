@@ -105,8 +105,6 @@ class RideOrderDoneController extends GetxController {
 
       Get.back();
 
-      await Future.wait([activityController.refreshAll()]);
-
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorGreen400.value,
@@ -119,6 +117,8 @@ class RideOrderDoneController extends GetxController {
       );
 
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+      await Future.wait([activityController.refreshAll()]);
     } catch (e) {
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
