@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,7 +8,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/data/google_geo_code_search_model.dart';
 import 'package:new_evmoto_user/app/data/google_place_text_search_model.dart';
+import 'package:new_evmoto_user/app/data/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
+import 'package:new_evmoto_user/app/data/recommendation_location_model.dart';
 import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
@@ -106,6 +106,12 @@ class RideController extends GetxController {
   final selectedOrderRidePricing = OrderRidePricing().obs;
   final requestedOrderRide = RequestedOrderRide().obs;
 
+  final historyOrderList = <HistoryOrder>[].obs;
+  final recommendationOriginCurrentLocationList =
+      <RecommendationLocation>[].obs;
+  final recommendationOriginLocationList = <RecommendationLocation>[].obs;
+  final recommendationDestinationLocationList = <RecommendationLocation>[].obs;
+
   final payType = 2.obs;
 
   late Timer? orderStatusRefreshTimer;
@@ -118,6 +124,7 @@ class RideController extends GetxController {
     isFetch.value = true;
 
     await homeController.getUserInfo();
+    await getHistoryOrderList();
     await requestLocation();
     initialCameraPosition.value = CameraPosition(
       target: LatLng(
@@ -153,6 +160,55 @@ class RideController extends GetxController {
     try {
       googleMapController.dispose();
     } catch (e) {}
+  }
+
+  Future<void> getHistoryOrderList() async {
+    historyOrderList.value = (await orderRideRepository.getHistoryOrderList(
+      language: languageServices.languageCodeSystem.value,
+      pageNum: 1,
+      size: 3,
+      type: 1,
+    ));
+
+    for (var historyOrigin in historyOrderList) {
+      var orderDetail = await orderRideRepository.getOrderRideDetailbyOrderId(
+        orderId: historyOrigin.orderId.toString(),
+        orderType: historyOrigin.orderType!,
+        language: languageServices.languageCodeSystem.value,
+      );
+
+      var recommendationOriginLocation = RecommendationLocation(
+        id: "${historyOrigin.startAddress}_${orderDetail.startLat.toString()}_${orderDetail.startLon.toString()}",
+        addressDetail: historyOrigin.startAddress,
+        latitude: orderDetail.startLat.toString(),
+        longitude: orderDetail.startLon.toString(),
+      );
+
+      var isRecommendationOriginExists = recommendationOriginLocationList.any(
+        (e) => e.id == recommendationOriginLocation.id,
+      );
+
+      if (isRecommendationOriginExists == false) {
+        recommendationOriginLocationList.add(recommendationOriginLocation);
+      }
+
+      var recommendationDestinationLocation = RecommendationLocation(
+        id: "${historyOrigin.endAddress}_${orderDetail.endLat.toString()}_${orderDetail.endLon.toString()}",
+        addressDetail: historyOrigin.endAddress,
+        latitude: orderDetail.endLat.toString(),
+        longitude: orderDetail.endLon.toString(),
+      );
+
+      var isRecommendationDesinationExists =
+          recommendationDestinationLocationList.any(
+            (e) => e.id == recommendationDestinationLocation.id,
+          );
+      if (isRecommendationDesinationExists == false) {
+        recommendationDestinationLocationList.add(
+          recommendationDestinationLocation,
+        );
+      }
+    }
   }
 
   Future<void> prefillOrderAgain() async {
@@ -323,33 +379,24 @@ class RideController extends GetxController {
     currentLongitude.value = position.longitude.toString();
 
     focusNodeOrigin.requestFocus();
-    // originLatitude.value = position.latitude.toString();
-    // originLongitude.value = position.longitude.toString();
 
-    // var googleGeoCodeSearch = await googleMapsRepository
-    //     .getRecommendationPlaceListByLatitudeLongitude(
-    //       latitude: originLatitude.value,
-    //       longitude: originLongitude.value,
-    //     );
+    var currentLocationDetail = await googleMapsRepository
+        .getRecommendationPlaceListByLatitudeLongitude(
+          language: "en",
+          latitude: currentLatitude.value,
+          longitude: currentLongitude.value,
+        );
 
-    // originTextEditingController.text =
-    //     googleGeoCodeSearch.first.formattedAddress ?? "";
-    // keywordOrigin.value = googleGeoCodeSearch.first.formattedAddress ?? "";
-    // originAddress.value = googleGeoCodeSearch.first.formattedAddress ?? "";
-
-    // markers.add(
-    //   Marker(
-    //     markerId: MarkerId("origin"),
-    //     position: LatLng(
-    //       double.parse(currentLatitude.value),
-    //       double.parse(currentLongitude.value),
-    //     ),
-    //     icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-    //       'assets/icons/icon_origin.svg',
-    //       Size(22.67, 22.67),
-    //     ),
-    //   ),
-    // );
+    recommendationOriginCurrentLocationList.value = [];
+    recommendationOriginCurrentLocationList.add(
+      RecommendationLocation(
+        name: "Lokasi Saat Ini",
+        id: "${currentLocationDetail.first.formattedAddress}_${currentLatitude.value}_${currentLongitude.value}",
+        latitude: currentLatitude.value,
+        longitude: currentLongitude.value,
+        addressDetail: currentLocationDetail.first.formattedAddress,
+      ),
+    );
   }
 
   bool isLatLngOriginFilled() {
