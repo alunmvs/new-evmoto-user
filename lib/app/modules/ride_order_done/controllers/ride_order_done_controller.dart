@@ -101,12 +101,11 @@ class RideOrderDoneController extends GetxController {
         ]);
       }
 
-      await Future.wait([
-        activityController.refreshAll(),
-        homeController.refreshAll(),
-      ]);
+      await Future.wait([homeController.refreshAll()]);
 
       Get.back();
+
+      await Future.wait([activityController.refreshAll()]);
 
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,

@@ -176,11 +176,11 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: controller.recommendationAmountList.length,
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                           childAspectRatio: 2 / 1,
-                          maxCrossAxisExtent: 110,
+                          crossAxisCount: 3,
                         ),
                         itemBuilder: (context, index) {
                           return Obx(
