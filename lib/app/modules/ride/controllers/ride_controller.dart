@@ -178,7 +178,7 @@ class RideController extends GetxController {
       );
 
       var recommendationOriginLocation = RecommendationLocation(
-        id: "${historyOrigin.startAddress}_${orderDetail.startLat.toString()}_${orderDetail.startLon.toString()}",
+        id: "${historyOrigin.startAddress}",
         addressDetail: historyOrigin.startAddress,
         latitude: orderDetail.startLat.toString(),
         longitude: orderDetail.startLon.toString(),
@@ -193,7 +193,7 @@ class RideController extends GetxController {
       }
 
       var recommendationDestinationLocation = RecommendationLocation(
-        id: "${historyOrigin.endAddress}_${orderDetail.endLat.toString()}_${orderDetail.endLon.toString()}",
+        id: "${historyOrigin.endAddress}",
         addressDetail: historyOrigin.endAddress,
         latitude: orderDetail.endLat.toString(),
         longitude: orderDetail.endLon.toString(),
@@ -391,7 +391,7 @@ class RideController extends GetxController {
     recommendationOriginCurrentLocationList.add(
       RecommendationLocation(
         name: "Lokasi Saat Ini",
-        id: "${currentLocationDetail.first.formattedAddress}_${currentLatitude.value}_${currentLongitude.value}",
+        id: "${currentLocationDetail.first.formattedAddress}",
         latitude: currentLatitude.value,
         longitude: currentLongitude.value,
         addressDetail: currentLocationDetail.first.formattedAddress,
