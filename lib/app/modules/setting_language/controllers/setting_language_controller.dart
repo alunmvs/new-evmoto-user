@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/main.dart';
 
 class SettingLanguageController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -25,5 +27,21 @@ class SettingLanguageController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> onTapSave() async {
+    await languageServices.switchLanguage(languageCode: tempLanguageCode.value);
+    Get.back();
+    var snackBar = SnackBar(
+      behavior: SnackBarBehavior.fixed,
+      backgroundColor: themeColorServices.sematicColorGreen400.value,
+      content: Text(
+        "Berhasil mengganti bahasa",
+        style: typographyServices.bodySmallRegular.value.copyWith(
+          color: themeColorServices.neutralsColorGrey0.value,
+        ),
+      ),
+    );
+    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 }

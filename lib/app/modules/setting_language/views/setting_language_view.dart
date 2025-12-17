@@ -250,11 +250,8 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                 height: 46,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  onPressed: () {
-                    controller.languageServices.switchLanguage(
-                      languageCode: controller.tempLanguageCode.value,
-                    );
-                    Get.back();
+                  onPressed: () async {
+                    await controller.onTapSave();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
