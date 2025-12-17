@@ -8,10 +8,11 @@ import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
-import 'package:new_evmoto_user/main.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 
 class OrderRideRepository {
   final apiServices = Get.find<ApiServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   Future<OrderRideServer> getOrderRideServerDetail({
     required String orderId,
@@ -19,7 +20,8 @@ class OrderRideRepository {
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/pushSingle/api/netty/queryOrderServer";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/pushSingle/api/netty/queryOrderServer";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -54,7 +56,8 @@ class OrderRideRepository {
 
   Future<List<ActiveOrder>> getActiveOrderList({int? language}) async {
     try {
-      var url = "$baseUrl/orderServer/api/order/queryServingOrder";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryServingOrder";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -96,7 +99,8 @@ class OrderRideRepository {
     int? type,
   }) async {
     try {
-      var url = "$baseUrl/orderServer/api/order/queryMyOrderList";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryMyOrderList";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -142,7 +146,8 @@ class OrderRideRepository {
     int? orderType,
   }) async {
     try {
-      var url = "$baseUrl/orderServer/api/order/queryOrderInfo";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryOrderInfo";
 
       var formData = FormData.fromMap({
         "orderId": orderId,
@@ -199,7 +204,7 @@ class OrderRideRepository {
   }) async {
     try {
       var url =
-          "$baseUrl/businessProcess/api/orderPrivateCar/saveOrderPrivateCar";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/orderPrivateCar/saveOrderPrivateCar";
 
       var formData = FormData.fromMap({
         "passengersPhone": passengersPhone,
@@ -254,7 +259,8 @@ class OrderRideRepository {
     int? language,
   }) async {
     try {
-      var url = "$baseUrl/pricing/base/serverCarModel/queryServerCarModel";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/pricing/base/serverCarModel/queryServerCarModel";
 
       var formData = FormData.fromMap({
         "startLonLat": startLonLat,
@@ -302,7 +308,8 @@ class OrderRideRepository {
     String? remark,
   }) async {
     try {
-      var url = "$baseUrl/cancelOrder/api/taxi/addCancle";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/cancelOrder/api/taxi/addCancle";
 
       var formData = FormData.fromMap({
         "id": orderId,
@@ -343,7 +350,8 @@ class OrderRideRepository {
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/payment/api/taxi/payTaxiOrder";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/payment/api/taxi/payTaxiOrder";
 
       var formData = FormData.fromMap({
         "orderId": orderId,
@@ -384,7 +392,8 @@ class OrderRideRepository {
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/evaluation/api/taxi/orderEvaluate";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/evaluation/api/taxi/orderEvaluate";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
