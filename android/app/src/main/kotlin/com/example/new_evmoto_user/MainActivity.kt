@@ -1,4 +1,4 @@
-package com.evmoto.user
+package com.evmoto.user.app
 
 import io.flutter.embedding.android.FlutterActivity
 
