@@ -1410,6 +1410,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  unused_assets_removal:
+    dependency: "direct dev"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "95b966552e48b5ddd77305d307be248968bac0b9"
+      url: "https://github.com/3boodev/unused_assets_removal"
+    source: git
+    version: "0.0.6"
   uuid:
     dependency: transitive
     description:
