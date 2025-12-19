@@ -41,18 +41,18 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBYtFR5V5kB1ftldurSstLb8pKFGYIuQCM',
-    appId: '1:784665362923:web:f1e71cfab8bde1447f99ae',
+    apiKey: 'AIzaSyDxp8VL-T7WslRqgDP0svpVNPfqloSfwts',
+    appId: '1:784665362923:web:4115e3a0a1f8d0597f99ae',
     messagingSenderId: '784665362923',
     projectId: 'ecgo-new-apps',
     authDomain: 'ecgo-new-apps.firebaseapp.com',
     storageBucket: 'ecgo-new-apps.appspot.com',
-    measurementId: 'G-648XYR4VM4',
+    measurementId: 'G-N4E09519ZV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY',
-    appId: '1:784665362923:android:8a71b5fe01f805937f99ae',
+    appId: '1:784665362923:android:73982783da1b49e27f99ae',
     messagingSenderId: '784665362923',
     projectId: 'ecgo-new-apps',
     storageBucket: 'ecgo-new-apps.appspot.com',
@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAQdCMM96j2cZJ4WWB4tJqvHdlg69aOXvc',
-    appId: '1:784665362923:ios:61da3406d8f291967f99ae',
+    appId: '1:784665362923:ios:37f87413abc70a987f99ae',
     messagingSenderId: '784665362923',
     projectId: 'ecgo-new-apps',
     storageBucket: 'ecgo-new-apps.appspot.com',
-    iosBundleId: 'com.evmoto.user.development',
+    iosBundleId: 'com.evmoto.user.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'ecgo-new-apps.appspot.com',
     measurementId: 'G-N4E09519ZV',
   );
+
 }
