@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/data/models/user_info_model.dart';
+import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
@@ -13,10 +15,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeController extends GetxController {
   final UserRepository userRepository;
   final OrderRideRepository orderRideRepository;
+  final CouponRepository couponRepository;
 
   HomeController({
     required this.userRepository,
     required this.orderRideRepository,
+    required this.couponRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -33,6 +37,7 @@ class HomeController extends GetxController {
 
   final userInfo = UserInfo().obs;
   final activeOrderList = <ActiveOrder>[].obs;
+  final availableCouponList = <Coupon>[].obs;
 
   final isFetch = false.obs;
 
@@ -56,7 +61,11 @@ class HomeController extends GetxController {
   }
 
   Future<void> refreshAll() async {
-    await Future.wait([getUserInfo(), getActiveOrderList()]);
+    await Future.wait([
+      getUserInfo(),
+      getActiveOrderList(),
+      getAvailableCouponList(),
+    ]);
   }
 
   Future<void> getUserInfo() async {
@@ -69,6 +78,15 @@ class HomeController extends GetxController {
     activeOrderList.value = (await orderRideRepository.getActiveOrderList(
       language: languageServices.languageCodeSystem.value,
     ));
+  }
+
+  Future<void> getAvailableCouponList() async {
+    availableCouponList.value = await couponRepository.getCouponList(
+      pageNum: 1,
+      size: 7,
+      language: languageServices.languageCodeSystem.value,
+      state: 1,
+    );
   }
 
   Future<void> onTapRideService() async {

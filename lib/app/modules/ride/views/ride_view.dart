@@ -3053,8 +3053,17 @@ class RideView extends GetView<RideController> {
                                             ),
                                           ),
                                           GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(Routes.SELECT_PROMO);
+                                            onTap: () async {
+                                              var result = await Get.toNamed(
+                                                Routes.SELECT_PROMO,
+                                              );
+
+                                              if (result != null) {
+                                                controller
+                                                        .selectedCoupon
+                                                        .value =
+                                                    result;
+                                              }
                                             },
                                             child: Container(
                                               padding: EdgeInsets.all(12),
@@ -3081,7 +3090,17 @@ class RideView extends GetView<RideController> {
                                                   ),
                                                   SizedBox(width: 4),
                                                   Text(
-                                                    "Promo",
+                                                    controller
+                                                                .selectedCoupon
+                                                                .value
+                                                                .id ==
+                                                            null
+                                                        ? "Promo"
+                                                        : controller
+                                                              .selectedCoupon
+                                                              .value
+                                                              .id
+                                                              .toString(),
                                                     style: controller
                                                         .typographyServices
                                                         .bodySmallBold

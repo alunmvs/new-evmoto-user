@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/data/models/google_geo_code_search_model.dart';
 import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
@@ -113,6 +114,7 @@ class RideController extends GetxController {
   final recommendationDestinationLocationList = <RecommendationLocation>[].obs;
 
   final payType = 2.obs;
+  final selectedCoupon = Coupon().obs;
 
   late Timer? orderStatusRefreshTimer;
 

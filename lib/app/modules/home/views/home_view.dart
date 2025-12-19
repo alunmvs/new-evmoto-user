@@ -1048,48 +1048,53 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                       SizedBox(height: 12),
                                       CarouselSlider(
-                                        items: controller.bannerUrlList
-                                            .map(
-                                              (url) => Padding(
-                                                padding:
-                                                    controller.bannerUrlList
-                                                            .indexOf(url) ==
-                                                        0
-                                                    ? EdgeInsets.only(left: 16)
-                                                    : controller.bannerUrlList
-                                                              .indexOf(url) ==
-                                                          controller
-                                                              .bannerUrlList
-                                                              .length
-                                                    ? EdgeInsets.only(left: 12)
-                                                    : EdgeInsets.only(
-                                                        left: 12,
-                                                        right: 16,
-                                                      ),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                      Routes.VOUCHER_DETAIL,
-                                                    );
-                                                  },
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          12,
-                                                        ),
-                                                    child: Container(
-                                                      color: Colors.transparent,
-                                                      child: Image.asset(
-                                                        url,
-                                                        fit: BoxFit.cover,
-                                                      ),
+                                        items: [
+                                          for (var availableCoupon
+                                              in controller
+                                                  .availableCouponList) ...[
+                                            Padding(
+                                              padding:
+                                                  controller.availableCouponList
+                                                          .indexOf(
+                                                            availableCoupon,
+                                                          ) ==
+                                                      0
+                                                  ? EdgeInsets.only(left: 16)
+                                                  : controller
+                                                            .availableCouponList
+                                                            .indexOf(
+                                                              availableCoupon,
+                                                            ) ==
+                                                        controller
+                                                            .availableCouponList
+                                                            .length
+                                                  ? EdgeInsets.only(left: 12)
+                                                  : EdgeInsets.only(
+                                                      left: 12,
+                                                      right: 16,
                                                     ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                    Routes.VOUCHER_DETAIL,
+                                                    arguments: {
+                                                      "coupon_detail":
+                                                          availableCoupon,
+                                                    },
+                                                  );
+                                                },
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  child: Container(
+                                                    color: Colors.transparent,
+                                                    child: Placeholder(),
                                                   ),
                                                 ),
                                               ),
-                                            )
-                                            .toList(),
-
+                                            ),
+                                          ],
+                                        ],
                                         options: CarouselOptions(
                                           onPageChanged: (index, reason) {
                                             controller.indexBanner.value = index

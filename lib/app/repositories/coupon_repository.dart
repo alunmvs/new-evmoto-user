@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
@@ -25,11 +26,23 @@ class CouponRepository {
         "language": language,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = apiServices.dio;
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       var couponList = <Coupon>[];
-      for (var coupon in response.data['coupon']) {
+      for (var coupon in response.data['data']) {
         couponList.add(Coupon.fromJson(coupon));
       }
 

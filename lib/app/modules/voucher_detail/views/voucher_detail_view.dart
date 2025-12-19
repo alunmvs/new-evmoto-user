@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/voucher_detail_controller.dart';
 
@@ -77,7 +78,7 @@ class VoucherDetailView extends GetView<VoucherDetailController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Perjalanan ke Bandara Soekarno Hatta Cengkareng",
+                              controller.couponDetail.value.name ?? "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeBold
@@ -91,7 +92,7 @@ class VoucherDetailView extends GetView<VoucherDetailController> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              "21 Februari 2025 - 20 Mei 2025",
+                              "Berakhir pada : ${controller.couponDetail.value.time}",
                               style: controller
                                   .typographyServices
                                   .captionLargeRegular
@@ -137,7 +138,13 @@ class VoucherDetailView extends GetView<VoucherDetailController> {
                                           SizedBox(height: 24 - 8),
                                           Center(
                                             child: Text(
-                                              "Minimal Transaksi Rp50.000",
+                                              controller
+                                                          .couponDetail
+                                                          .value
+                                                          .type ==
+                                                      1
+                                                  ? "Tidak Ada Minimal Transaksi"
+                                                  : "Minimal Transaksi ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(controller.couponDetail.value.fullMoney)}",
                                               style: controller
                                                   .typographyServices
                                                   .captionLargeBold
@@ -461,36 +468,45 @@ class VoucherDetailView extends GetView<VoucherDetailController> {
             ),
           ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          height: 78,
-          padding: EdgeInsets.all(16),
-          color: controller.themeColorServices.neutralsColorGrey0.value,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+        bottomNavigationBar:
+            controller.isFetch.value || controller.isSelectCoupon.value == false
+            ? null
+            : BottomAppBar(
+                height: 78,
+                padding: EdgeInsets.all(16),
+                color: controller.themeColorServices.neutralsColorGrey0.value,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 46,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                          Get.back(result: controller.couponDetail.value);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              controller.themeColorServices.primaryBlue.value,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: Text(
+                          "Gunakan Promo",
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
+                              .value
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    "Gunakan Promo",
-                    style: controller.typographyServices.bodyLargeBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
