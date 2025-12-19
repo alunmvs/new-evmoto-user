@@ -122,7 +122,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   }
 
   Future<void> sendHeartBeat() async {
-    if (isSocketClose.value == false) {
+    if (isSocketClose.value == false && Get.isRegistered<HomeController>()) {
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
