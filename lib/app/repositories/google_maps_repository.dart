@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/data/google_direction_model.dart';
-import 'package:new_evmoto_user/app/data/google_geo_code_search_model.dart';
-import 'package:new_evmoto_user/app/data/google_place_text_search_model.dart';
+import 'package:new_evmoto_user/app/data/models/google_direction_model.dart';
+import 'package:new_evmoto_user/app/data/models/google_geo_code_search_model.dart';
+import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 
 class GoogleMapsRepository {

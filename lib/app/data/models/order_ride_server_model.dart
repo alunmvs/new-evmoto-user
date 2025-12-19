@@ -10,7 +10,6 @@ class OrderRideServer {
   String? laveMileage;
   String? laveTime;
   int? state;
-  Null? reassignNotice;
 
   OrderRideServer({
     this.orderId,
@@ -24,7 +23,6 @@ class OrderRideServer {
     this.laveMileage,
     this.laveTime,
     this.state,
-    this.reassignNotice,
   });
 
   OrderRideServer.fromJson(Map<String, dynamic> json) {
@@ -39,7 +37,6 @@ class OrderRideServer {
     laveMileage = json['laveMileage'];
     laveTime = json['laveTime'];
     state = json['state'];
-    reassignNotice = json['reassignNotice'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,7 +52,6 @@ class OrderRideServer {
     data['laveMileage'] = this.laveMileage;
     data['laveTime'] = this.laveTime;
     data['state'] = this.state;
-    data['reassignNotice'] = this.reassignNotice;
     return data;
   }
 }

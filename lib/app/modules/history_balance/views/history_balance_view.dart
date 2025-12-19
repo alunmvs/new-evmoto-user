@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:new_evmoto_user/app/data/balance_history_consumption_model.dart';
-import 'package:new_evmoto_user/app/data/balance_history_deposit_model.dart';
+import 'package:new_evmoto_user/app/data/models/balance_history_consumption_model.dart';
+import 'package:new_evmoto_user/app/data/models/balance_history_deposit_model.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 

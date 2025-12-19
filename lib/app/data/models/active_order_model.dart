@@ -1,4 +1,4 @@
-import 'package:new_evmoto_user/app/data/order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 
 class ActiveOrder {
   int? orderId;

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/data/balance_history_consumption_model.dart';
-import 'package:new_evmoto_user/app/data/balance_history_deposit_model.dart';
+import 'package:new_evmoto_user/app/data/models/balance_history_consumption_model.dart';
+import 'package:new_evmoto_user/app/data/models/balance_history_deposit_model.dart';
 import 'package:new_evmoto_user/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';

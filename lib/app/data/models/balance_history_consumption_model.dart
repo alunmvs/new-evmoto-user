@@ -1,4 +1,4 @@
-import 'package:new_evmoto_user/app/data/balance_history_deposit_model.dart';
+import 'package:new_evmoto_user/app/data/models/balance_history_deposit_model.dart';
 
 class BalanceHistoryConsumption implements HasCreatedAtDateTime {
   @override

@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
-import 'package:new_evmoto_user/app/data/active_order_model.dart';
-import 'package:new_evmoto_user/app/data/history_order_model.dart';
-import 'package:new_evmoto_user/app/data/order_ride_model.dart';
-import 'package:new_evmoto_user/app/data/order_ride_pricing_model.dart';
-import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
-import 'package:new_evmoto_user/app/data/requested_order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
+import 'package:new_evmoto_user/app/data/models/requested_order_ride_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 

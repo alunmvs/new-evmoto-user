@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/data/language_model.dart';
+import 'package:new_evmoto_user/app/data/models/language_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageServices extends GetxService {

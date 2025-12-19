@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/data/order_ride_model.dart';
-import 'package:new_evmoto_user/app/data/order_ride_server_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
