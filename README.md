@@ -1,6 +1,6 @@
 # new_evmoto_user
 
-A new Flutter project.
+Electric vehicle booking app for everyday needs.
 
 ## Getting Started
 
