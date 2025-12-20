@@ -1047,94 +1047,136 @@ class HomeView extends GetView<HomeController> {
                                         ),
                                       ),
                                       SizedBox(height: 12),
-                                      CarouselSlider(
-                                        items: [
-                                          for (var availableCoupon
-                                              in controller
-                                                  .availableCouponList) ...[
-                                            Padding(
-                                              padding:
-                                                  controller.availableCouponList
-                                                          .indexOf(
-                                                            availableCoupon,
-                                                          ) ==
-                                                      0
-                                                  ? EdgeInsets.only(left: 16)
-                                                  : controller
+                                      if (controller
+                                          .availableCouponList
+                                          .isEmpty) ...[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(height: 16),
+                                              Text(
+                                                "Belum Ada Promosi Tersedia",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodyLargeBold
+                                                    .value,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                "Tenang, promo menarik sedang kami siapkan. Stay tuned dan cek kembali ya!",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                      if (controller
+                                          .availableCouponList
+                                          .isNotEmpty) ...[
+                                        CarouselSlider(
+                                          items: [
+                                            for (var availableCoupon
+                                                in controller
+                                                    .availableCouponList) ...[
+                                              Padding(
+                                                padding:
+                                                    controller
                                                             .availableCouponList
                                                             .indexOf(
                                                               availableCoupon,
                                                             ) ==
-                                                        controller
-                                                            .availableCouponList
-                                                            .length
-                                                  ? EdgeInsets.only(left: 12)
-                                                  : EdgeInsets.only(
-                                                      left: 12,
-                                                      right: 16,
+                                                        0
+                                                    ? EdgeInsets.only(left: 16)
+                                                    : controller
+                                                              .availableCouponList
+                                                              .indexOf(
+                                                                availableCoupon,
+                                                              ) ==
+                                                          controller
+                                                              .availableCouponList
+                                                              .length
+                                                    ? EdgeInsets.only(left: 12)
+                                                    : EdgeInsets.only(
+                                                        left: 12,
+                                                        right: 16,
+                                                      ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                      Routes.VOUCHER_DETAIL,
+                                                      arguments: {
+                                                        "coupon_detail":
+                                                            availableCoupon,
+                                                      },
+                                                    );
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                    child: Container(
+                                                      color: Colors.transparent,
+                                                      child: Placeholder(),
                                                     ),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                    Routes.VOUCHER_DETAIL,
-                                                    arguments: {
-                                                      "coupon_detail":
-                                                          availableCoupon,
-                                                    },
-                                                  );
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  child: Container(
-                                                    color: Colors.transparent,
-                                                    child: Placeholder(),
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ],
-                                        ],
-                                        options: CarouselOptions(
-                                          onPageChanged: (index, reason) {
-                                            controller.indexBanner.value = index
-                                                .toDouble();
-                                          },
-                                          height: 155,
-                                          enableInfiniteScroll: false,
-                                          autoPlay: false,
-                                          disableCenter: true,
-                                          viewportFraction: 0.85,
-                                          aspectRatio: 311 / 155,
-                                          padEnds: false,
-                                        ),
-                                      ),
-                                      SizedBox(height: 12),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                        ),
-                                        child: DotsIndicator(
-                                          dotsCount:
-                                              controller.bannerUrlList.length,
-                                          position:
-                                              controller.indexBanner.value,
-                                          decorator: DotsDecorator(
-                                            spacing: EdgeInsets.symmetric(
-                                              horizontal: 3,
-                                              vertical: 4,
-                                            ),
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorGrey300
-                                                .value,
-                                            activeColor: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
+                                          options: CarouselOptions(
+                                            onPageChanged: (index, reason) {
+                                              controller.indexBanner.value =
+                                                  index.toDouble();
+                                            },
+                                            height: 155,
+                                            enableInfiniteScroll: false,
+                                            autoPlay: false,
+                                            disableCenter: true,
+                                            viewportFraction: 0.85,
+                                            aspectRatio: 311 / 155,
+                                            padEnds: false,
                                           ),
                                         ),
-                                      ),
+                                        SizedBox(height: 12),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: DotsIndicator(
+                                            dotsCount:
+                                                controller.bannerUrlList.length,
+                                            position:
+                                                controller.indexBanner.value,
+                                            decorator: DotsDecorator(
+                                              spacing: EdgeInsets.symmetric(
+                                                horizontal: 3,
+                                                vertical: 4,
+                                              ),
+                                              color: controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey300
+                                                  .value,
+                                              activeColor: controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                       SizedBox(height: 32),
                                     ],
                                   ),
