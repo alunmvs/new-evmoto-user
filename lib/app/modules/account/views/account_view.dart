@@ -534,7 +534,9 @@ class AccountView extends GetView<AccountController> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () async {
+                              await controller.onTapRatingAndReviewApp();
+                            },
                             child: Container(
                               padding: EdgeInsets.all(16),
                               color: Colors.transparent,
