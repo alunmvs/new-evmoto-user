@@ -1116,6 +1116,7 @@ class RideController extends GetxController {
         DateTime.now(),
       ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
       type: "1", // 1 = Ride, 2 = Intercity
+      amount: selectedOrderRidePricing.value.amount,
     ));
   }
 

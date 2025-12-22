@@ -163,8 +163,6 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
-      print(token);
-
       var dio = apiServices.dio;
       var response = await dio.post(
         url,
@@ -201,6 +199,7 @@ class OrderRideRepository {
     String? startLon,
     String? endAddress,
     String? placementLon,
+    required double? amount,
   }) async {
     try {
       var url =
@@ -225,6 +224,7 @@ class OrderRideRepository {
         "endAddress": endAddress,
         "placementLon": placementLon,
         "language": language,
+        "amount": amount,
       });
 
       var storage = FlutterSecureStorage();
