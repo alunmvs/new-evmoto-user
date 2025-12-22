@@ -784,7 +784,7 @@ class ActivityView extends GetView<ActivityController> {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       if (controller
                                           .historyOrderList
