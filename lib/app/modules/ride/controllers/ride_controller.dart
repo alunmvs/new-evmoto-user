@@ -659,6 +659,8 @@ class RideController extends GetxController {
                                     await homeController.getUserInfo();
                                   },
                                   child: Container(
+                                    width: Get.width,
+                                    color: Colors.transparent,
                                     padding: EdgeInsets.only(
                                       top: 4,
                                       left: 12,
