@@ -27,6 +27,8 @@ class SearchAddressController extends GetxController {
   final currentLatitude = "".obs;
   final currentLongitude = "".obs;
 
+  final isEdit = false.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -35,7 +37,11 @@ class SearchAddressController extends GetxController {
     isFetch.value = true;
     await requestLocation();
 
-    addressType.value = Get.arguments['address_type'] ?? "";
+    if (Get.arguments?['address_type'] == null) {
+      isEdit.value = true;
+    } else {
+      addressType.value = Get.arguments['address_type'] ?? "";
+    }
     textEditingController = TextEditingController();
 
     textEditingController.addListener(() {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -55,6 +53,52 @@ class SavedAddressRepository {
     }
   }
 
+  Future<void> updateSavedAddress({
+    required int id,
+    required String addressName,
+    required String addressTitle,
+    required String addressDetail,
+    required String latitude,
+    required String longitude,
+    required int addressType,
+  }) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/address";
+
+      var data = {
+        "id": id,
+        "addressName": addressName,
+        "addressTitle": addressTitle,
+        "addressDetail": addressDetail,
+        "latitude": latitude,
+        "longitude": longitude,
+        "addressType": addressType,
+      };
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.put(
+        url,
+        data: data,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<SavedAddress>> getSavedAddressList() async {
     try {
       var url =
@@ -82,6 +126,30 @@ class SavedAddressRepository {
       }
 
       return savedAddressList;
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteSavedAddress({required int id}) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/address/$id";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.delete(url, options: Options(headers: headers));
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
     } on DioException catch (e) {
       rethrow;
     }

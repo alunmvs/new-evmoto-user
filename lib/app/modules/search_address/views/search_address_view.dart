@@ -349,16 +349,23 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                               .googlePlaceTextSearchList) ...[
                                         GestureDetector(
                                           onTap: () {
-                                            Get.toNamed(
-                                              Routes.ADD_EDIT_ADDRESS,
-                                              arguments: {
-                                                "address_type": controller
-                                                    .addressType
-                                                    .value,
-                                                "google_place_text_search":
-                                                    googlePlaceTextSearch,
-                                              },
-                                            );
+                                            if (controller.isEdit.value ==
+                                                true) {
+                                              Get.back(
+                                                result: googlePlaceTextSearch,
+                                              );
+                                            } else {
+                                              Get.toNamed(
+                                                Routes.ADD_EDIT_ADDRESS,
+                                                arguments: {
+                                                  "address_type": controller
+                                                      .addressType
+                                                      .value,
+                                                  "google_place_text_search":
+                                                      googlePlaceTextSearch,
+                                                },
+                                              );
+                                            }
                                           },
                                           child: Container(
                                             color: Colors.transparent,
