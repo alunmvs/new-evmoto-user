@@ -46,53 +46,55 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
     socket?.listen(
       (data) async {
         var dataJson = convertBytesToJson(bytes: data);
-        var method = dataJson['method'] ?? "";
+        if (dataJson != null) {
+          var method = dataJson['method'] ?? "";
 
-        switch (method) {
-          case 'DRIVER_POSITION':
-            if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-              var socketDriverPositionDataModel =
-                  SocketDriverPositionData.fromJson(dataJson['data']);
+          switch (method) {
+            case 'DRIVER_POSITION':
+              if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                var socketDriverPositionDataModel =
+                    SocketDriverPositionData.fromJson(dataJson['data']);
 
-              var rideOrderDetailController =
-                  Get.find<RideOrderDetailController>();
-              if (rideOrderDetailController.driverLatitude.value == "0" &&
-                  rideOrderDetailController.driverLongitude.value == "0") {
-                rideOrderDetailController.driverLatitude.value =
-                    socketDriverPositionDataModel.lat.toString();
-                rideOrderDetailController.driverLongitude.value =
-                    socketDriverPositionDataModel.lon.toString();
-                await Get.find<RideOrderDetailController>().refreshAll();
-              } else {
-                rideOrderDetailController.driverLatitude.value =
-                    socketDriverPositionDataModel.lat.toString();
-                rideOrderDetailController.driverLongitude.value =
-                    socketDriverPositionDataModel.lon.toString();
-
-                if (rideOrderDetailController.orderRideDetail.value.state ==
-                    1) {
+                var rideOrderDetailController =
+                    Get.find<RideOrderDetailController>();
+                if (rideOrderDetailController.driverLatitude.value == "0" &&
+                    rideOrderDetailController.driverLongitude.value == "0") {
+                  rideOrderDetailController.driverLatitude.value =
+                      socketDriverPositionDataModel.lat.toString();
+                  rideOrderDetailController.driverLongitude.value =
+                      socketDriverPositionDataModel.lon.toString();
                   await Get.find<RideOrderDetailController>().refreshAll();
+                } else {
+                  rideOrderDetailController.driverLatitude.value =
+                      socketDriverPositionDataModel.lat.toString();
+                  rideOrderDetailController.driverLongitude.value =
+                      socketDriverPositionDataModel.lon.toString();
+
+                  if (rideOrderDetailController.orderRideDetail.value.state ==
+                      1) {
+                    await Get.find<RideOrderDetailController>().refreshAll();
+                  }
                 }
               }
-            }
 
-            break;
-          case 'ORDER_STATUS':
-            if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-              await Get.find<RideOrderDetailController>().refreshAll();
-            }
-            break;
-          case 'OFFLINE':
-            var storage = FlutterSecureStorage();
-            await storage.deleteAll();
-            await closeWebsocket();
+              break;
+            case 'ORDER_STATUS':
+              if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                await Get.find<RideOrderDetailController>().refreshAll();
+              }
+              break;
+            case 'OFFLINE':
+              var storage = FlutterSecureStorage();
+              await storage.deleteAll();
+              await closeWebsocket();
 
-            Get.offAllNamed(Routes.LOGIN_REGISTER);
-            break;
-          default:
-            break;
+              Get.offAllNamed(Routes.LOGIN_REGISTER);
+              break;
+            default:
+              break;
+          }
+          // print(dataJson);
         }
-        // print(dataJson);
       },
       onError: (error) {
         print('Error: $error');
