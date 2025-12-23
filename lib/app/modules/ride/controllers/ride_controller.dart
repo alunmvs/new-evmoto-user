@@ -13,6 +13,7 @@ import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/models/recommendation_location_model.dart';
 import 'package:new_evmoto_user/app/data/models/requested_order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -116,6 +117,8 @@ class RideController extends GetxController {
   final payType = 2.obs;
   final selectedCoupon = Coupon().obs;
 
+  final destinationSavedAddress = SavedAddress().obs;
+
   late Timer? orderStatusRefreshTimer;
 
   final isFetch = false.obs;
@@ -148,6 +151,14 @@ class RideController extends GetxController {
       isDestinationHasPrimaryFocus.refresh();
     });
 
+    if (Get.arguments?['destination_saved_address'] != null) {
+      destinationSavedAddress.value =
+          Get.arguments['destination_saved_address'];
+      fillDestinationBySavedAddress(
+        savedAddress: destinationSavedAddress.value,
+      );
+    }
+
     isFetch.value = false;
   }
 
@@ -162,6 +173,33 @@ class RideController extends GetxController {
     try {
       googleMapController.dispose();
     } catch (e) {}
+  }
+
+  void fillDestinationBySavedAddress({
+    required SavedAddress savedAddress,
+  }) async {
+    destinationTextEditingController.text = savedAddress.addressDetail!;
+    destinationLatitude.value = savedAddress.latitude!;
+    destinationLongitude.value = savedAddress.longitude!;
+    keywordDestination.value = savedAddress.addressTitle!;
+    destinationAddress.value = savedAddress.addressTitle!;
+
+    await getDestinationPlaceLocationList(keyword: keywordDestination.value);
+
+    markers.removeWhere((m) => m.markerId.value == 'destination');
+    markers.add(
+      Marker(
+        markerId: MarkerId("destination"),
+        position: LatLng(
+          double.parse(destinationLatitude.value),
+          double.parse(destinationLongitude.value),
+        ),
+        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+          'assets/icons/icon_pinpoint.svg',
+          Size(27, 31),
+        ),
+      ),
+    );
   }
 
   Future<void> getHistoryOrderList() async {
@@ -214,7 +252,7 @@ class RideController extends GetxController {
   }
 
   Future<void> prefillOrderAgain() async {
-    if (Get.arguments != null) {
+    if (Get.arguments['start_address'] != null) {
       originTextEditingController.text = Get.arguments['start_address'] ?? "-";
       originLatitude.value = Get.arguments['start_lat'].toString();
       originLongitude.value = Get.arguments['start_lon'].toString();

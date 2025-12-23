@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
+import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -16,11 +18,13 @@ class HomeController extends GetxController {
   final UserRepository userRepository;
   final OrderRideRepository orderRideRepository;
   final CouponRepository couponRepository;
+  final SavedAddressRepository savedAddressRepository;
 
   HomeController({
     required this.userRepository,
     required this.orderRideRepository,
     required this.couponRepository,
+    required this.savedAddressRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -38,6 +42,8 @@ class HomeController extends GetxController {
   final userInfo = UserInfo().obs;
   final activeOrderList = <ActiveOrder>[].obs;
   final availableCouponList = <Coupon>[].obs;
+
+  final savedAddressList = <SavedAddress>[].obs;
 
   final isFetch = false.obs;
 
@@ -65,6 +71,7 @@ class HomeController extends GetxController {
       getUserInfo(),
       getActiveOrderList(),
       getAvailableCouponList(),
+      getSavedAddressList(),
     ]);
   }
 
@@ -89,6 +96,11 @@ class HomeController extends GetxController {
     );
   }
 
+  Future<void> getSavedAddressList() async {
+    savedAddressList.value = (await savedAddressRepository
+        .getSavedAddressList());
+  }
+
   Future<void> onTapRideService() async {
     var prefs = await SharedPreferences.getInstance();
 
@@ -111,6 +123,28 @@ class HomeController extends GetxController {
         await Get.toNamed(Routes.RIDE);
       }
     }
+    await refreshAll();
+  }
+
+  Future<void> onTapShortcutSavedLocation({
+    required SavedAddress savedAddress,
+  }) async {
+    await refreshAll();
+    if (activeOrderList.isNotEmpty) {
+      await Get.toNamed(
+        Routes.RIDE_ORDER_DETAIL,
+        arguments: {
+          "order_id": activeOrderList.first.orderId.toString(),
+          "order_type": activeOrderList.first.orderType,
+        },
+      );
+    } else {
+      await Get.toNamed(
+        Routes.RIDE,
+        arguments: {"destination_saved_address": savedAddress},
+      );
+    }
+
     await refreshAll();
   }
 }

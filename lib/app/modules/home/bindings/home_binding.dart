@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 
 import '../controllers/home_controller.dart';
@@ -13,6 +14,7 @@ class HomeBinding extends Bindings {
         userRepository: UserRepository(),
         orderRideRepository: OrderRideRepository(),
         couponRepository: CouponRepository(),
+        savedAddressRepository: SavedAddressRepository(),
       ),
     );
   }

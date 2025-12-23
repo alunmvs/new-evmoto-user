@@ -232,21 +232,84 @@ class HomeView extends GetView<HomeController> {
                                               child: Row(
                                                 children: [
                                                   SizedBox(width: 16),
+                                                  for (var savedAddress
+                                                      in controller
+                                                          .savedAddressList) ...[
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        await controller
+                                                            .onTapShortcutSavedLocation(
+                                                              savedAddress:
+                                                                  savedAddress,
+                                                            );
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                              horizontal: 8,
+                                                              vertical: 8,
+                                                            ),
+                                                        decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .transparent,
+                                                          border: Border.all(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .neutralsColorGrey200
+                                                                .value,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              savedAddress.addressType ==
+                                                                      1
+                                                                  ? "assets/icons/icon_home.svg"
+                                                                  : savedAddress
+                                                                            .addressType ==
+                                                                        2
+                                                                  ? "assets/icons/icon_office.svg"
+                                                                  : "assets/icons/icon_add_square.svg",
+                                                              width: 12,
+                                                              height: 12,
+                                                            ),
+                                                            SizedBox(width: 6),
+                                                            Text(
+                                                              savedAddress
+                                                                      .addressName ??
+                                                                  "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .captionLargeRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey500
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 16),
+                                                  ],
                                                   GestureDetector(
-                                                    onTap: () {
-                                                      Get.toNamed(
+                                                    onTap: () async {
+                                                      await Get.toNamed(
                                                         Routes.SEARCH_ADDRESS,
                                                         arguments: {
                                                           "address_type": 1,
                                                         },
                                                       );
 
-                                                      // Get.toNamed(
-                                                      //   Routes.ADD_EDIT_ADDRESS,
-                                                      //   arguments: {
-                                                      //     "address_type": "home",
-                                                      //   },
-                                                      // );
+                                                      await controller
+                                                          .refreshAll();
                                                     },
                                                     child: Container(
                                                       padding:
@@ -300,20 +363,16 @@ class HomeView extends GetView<HomeController> {
                                                   ),
                                                   SizedBox(width: 16),
                                                   GestureDetector(
-                                                    onTap: () {
-                                                      Get.toNamed(
+                                                    onTap: () async {
+                                                      await Get.toNamed(
                                                         Routes.SEARCH_ADDRESS,
                                                         arguments: {
                                                           "address_type": 2,
                                                         },
                                                       );
 
-                                                      // Get.toNamed(
-                                                      //   Routes.ADD_EDIT_ADDRESS,
-                                                      //   arguments: {
-                                                      //     "address_type": "office",
-                                                      //   },
-                                                      // );
+                                                      await controller
+                                                          .refreshAll();
                                                     },
                                                     child: Container(
                                                       padding:
@@ -367,20 +426,16 @@ class HomeView extends GetView<HomeController> {
                                                   ),
                                                   SizedBox(width: 16),
                                                   GestureDetector(
-                                                    onTap: () {
-                                                      Get.toNamed(
+                                                    onTap: () async {
+                                                      await Get.toNamed(
                                                         Routes.SEARCH_ADDRESS,
                                                         arguments: {
                                                           "address_type": 3,
                                                         },
                                                       );
 
-                                                      // Get.toNamed(
-                                                      //   Routes.ADD_EDIT_ADDRESS,
-                                                      //   arguments: {
-                                                      //     "address_type": "other",
-                                                      //   },
-                                                      // );
+                                                      await controller
+                                                          .refreshAll();
                                                     },
                                                     child: Container(
                                                       padding:

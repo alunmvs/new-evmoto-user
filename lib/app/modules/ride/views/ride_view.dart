@@ -1723,7 +1723,6 @@ class RideView extends GetView<RideController> {
                                         ),
                                       ),
                                     ],
-
                                     if (controller
                                             .isDestinationHasPrimaryFocus
                                             .value ==
