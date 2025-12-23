@@ -1012,7 +1012,7 @@ class RideView extends GetView<RideController> {
                                                                             .addressType ==
                                                                         2
                                                                   ? "assets/icons/icon_office.svg"
-                                                                  : "assets/icons/icon_add_square.svg",
+                                                                  : "assets/icons/icon_pinpoint.svg",
                                                               height: 12,
                                                               width: 12,
                                                               color: controller

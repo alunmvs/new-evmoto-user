@@ -273,7 +273,7 @@ class HomeView extends GetView<HomeController> {
                                                                             .addressType ==
                                                                         2
                                                                   ? "assets/icons/icon_office.svg"
-                                                                  : "assets/icons/icon_add_square.svg",
+                                                                  : "assets/icons/icon_pinpoint.svg",
                                                               width: 12,
                                                               height: 12,
                                                             ),
