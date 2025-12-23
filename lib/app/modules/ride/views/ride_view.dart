@@ -947,220 +947,322 @@ class RideView extends GetView<RideController> {
                                       ),
                                     ),
                                     SizedBox(height: 12),
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(width: 16),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(
-                                                Routes.SEARCH_ADDRESS,
-                                                arguments: {"address_type": 0},
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 8,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.transparent,
-                                                border: Border.all(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey200
-                                                      .value,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 16,
-                                                    height: 16,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "assets/icons/icon_home.svg",
-                                                          height: 12,
-                                                          width: 12,
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .primaryBlue
-                                                              .value,
-                                                        ),
-                                                      ],
+                                    if (controller
+                                            .isOriginHasPrimaryFocus
+                                            .value ||
+                                        controller
+                                            .isDestinationHasPrimaryFocus
+                                            .value) ...[
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(width: 16),
+                                            for (var savedAddress
+                                                in controller
+                                                    .savedAddressList) ...[
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  await controller
+                                                      .onTapSavedLocation(
+                                                        savedAddress:
+                                                            savedAddress,
+                                                      );
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 8,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.transparent,
+                                                    border: Border.all(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey200
+                                                          .value,
                                                     ),
-                                                  ),
-                                                  SizedBox(width: 6),
-                                                  Text(
-                                                    "Tambah Rumah",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey500
-                                                              .value,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
                                                         ),
                                                   ),
-                                                ],
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 16,
+                                                        height: 16,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              savedAddress.addressType ==
+                                                                      1
+                                                                  ? "assets/icons/icon_home.svg"
+                                                                  : savedAddress
+                                                                            .addressType ==
+                                                                        2
+                                                                  ? "assets/icons/icon_office.svg"
+                                                                  : "assets/icons/icon_add_square.svg",
+                                                              height: 12,
+                                                              width: 12,
+                                                              color: controller
+                                                                  .themeColorServices
+                                                                  .primaryBlue
+                                                                  .value,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 6),
+                                                      Text(
+                                                        savedAddress
+                                                                .addressName ??
+                                                            "-",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .captionLargeRegular
+                                                            .value
+                                                            .copyWith(
+                                                              color: controller
+                                                                  .themeColorServices
+                                                                  .neutralsColorGrey500
+                                                                  .value,
+                                                            ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 8),
+                                            ],
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await Get.toNamed(
+                                                  Routes.SEARCH_ADDRESS,
+                                                  arguments: {
+                                                    "address_type": 1,
+                                                  },
+                                                );
+                                                await controller
+                                                    .getSavedAddressList();
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 8,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.transparent,
+                                                  border: Border.all(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey200
+                                                        .value,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 16,
+                                                      height: 16,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_home.svg",
+                                                            height: 12,
+                                                            width: 12,
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .primaryBlue
+                                                                .value,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 6),
+                                                    Text(
+                                                      "Tambah Rumah",
+                                                      style: controller
+                                                          .typographyServices
+                                                          .captionLargeRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .neutralsColorGrey500
+                                                                .value,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(width: 8),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(
-                                                Routes.SEARCH_ADDRESS,
-                                                arguments: {"address_type": 1},
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 8,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.transparent,
-                                                border: Border.all(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey200
-                                                      .value,
+                                            SizedBox(width: 8),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await Get.toNamed(
+                                                  Routes.SEARCH_ADDRESS,
+                                                  arguments: {
+                                                    "address_type": 2,
+                                                  },
+                                                );
+                                                await controller
+                                                    .getSavedAddressList();
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 8,
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 16,
-                                                    height: 16,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "assets/icons/icon_office.svg",
-                                                          height: 14,
-                                                          width: 10,
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .primaryBlue
-                                                              .value,
-                                                        ),
-                                                      ],
+                                                decoration: BoxDecoration(
+                                                  color: Colors.transparent,
+                                                  border: Border.all(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey200
+                                                        .value,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 16,
+                                                      height: 16,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_office.svg",
+                                                            height: 14,
+                                                            width: 10,
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .primaryBlue
+                                                                .value,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(width: 6),
-                                                  Text(
-                                                    "Tambah Kantor",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey500
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                ],
+                                                    SizedBox(width: 6),
+                                                    Text(
+                                                      "Tambah Kantor",
+                                                      style: controller
+                                                          .typographyServices
+                                                          .captionLargeRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .neutralsColorGrey500
+                                                                .value,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(width: 8),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(
-                                                Routes.SEARCH_ADDRESS,
-                                                arguments: {"address_type": 3},
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 8,
-                                                vertical: 8,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.transparent,
-                                                border: Border.all(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey200
-                                                      .value,
+                                            SizedBox(width: 8),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await Get.toNamed(
+                                                  Routes.SEARCH_ADDRESS,
+                                                  arguments: {
+                                                    "address_type": 3,
+                                                  },
+                                                );
+                                                await controller
+                                                    .getSavedAddressList();
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 8,
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 16,
-                                                    height: 16,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "assets/icons/icon_add_square.svg",
-                                                          height: 12,
-                                                          width: 12,
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .primaryBlue
-                                                              .value,
-                                                        ),
-                                                      ],
+                                                decoration: BoxDecoration(
+                                                  color: Colors.transparent,
+                                                  border: Border.all(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey200
+                                                        .value,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 16,
+                                                      height: 16,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_add_square.svg",
+                                                            height: 12,
+                                                            width: 12,
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .primaryBlue
+                                                                .value,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(width: 6),
-                                                  Text(
-                                                    "Lokasi Lainnya",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey500
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                ],
+                                                    SizedBox(width: 6),
+                                                    Text(
+                                                      "Lokasi Lainnya",
+                                                      style: controller
+                                                          .typographyServices
+                                                          .captionLargeRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .neutralsColorGrey500
+                                                                .value,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(width: 16),
-                                        ],
+                                            SizedBox(width: 16),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 12),
+                                      SizedBox(height: 12),
+                                    ],
                                     DashedLine(
                                       color: controller
                                           .themeColorServices

@@ -17,6 +17,7 @@ import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -28,10 +29,12 @@ import 'package:intl/intl.dart';
 class RideController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
+  final SavedAddressRepository savedAddressRepository;
 
   RideController({
     required this.googleMapsRepository,
     required this.orderRideRepository,
+    required this.savedAddressRepository,
   });
 
   final homeController = Get.find<HomeController>();
@@ -117,6 +120,7 @@ class RideController extends GetxController {
   final payType = 2.obs;
   final selectedCoupon = Coupon().obs;
 
+  final savedAddressList = <SavedAddress>[].obs;
   final destinationSavedAddress = SavedAddress().obs;
 
   late Timer? orderStatusRefreshTimer;
@@ -129,7 +133,7 @@ class RideController extends GetxController {
     isFetch.value = true;
 
     await homeController.getUserInfo();
-    await getHistoryOrderList();
+    await Future.wait([getHistoryOrderList(), getSavedAddressList()]);
     await requestLocation();
     initialCameraPosition.value = CameraPosition(
       target: LatLng(
@@ -154,7 +158,7 @@ class RideController extends GetxController {
     if (Get.arguments?['destination_saved_address'] != null) {
       destinationSavedAddress.value =
           Get.arguments['destination_saved_address'];
-      fillDestinationBySavedAddress(
+      await fillDestinationBySavedAddress(
         savedAddress: destinationSavedAddress.value,
       );
     }
@@ -175,14 +179,66 @@ class RideController extends GetxController {
     } catch (e) {}
   }
 
-  void fillDestinationBySavedAddress({
+  Future<void> getSavedAddressList() async {
+    savedAddressList.value = (await savedAddressRepository
+        .getSavedAddressList());
+  }
+
+  Future<void> onTapSavedLocation({required SavedAddress savedAddress}) async {
+    if (isOriginHasPrimaryFocus.value == true) {
+      await fillOriginBySavedAddress(savedAddress: savedAddress);
+
+      focusNodeDestination.requestFocus();
+    } else if (isDestinationHasPrimaryFocus.value == true) {
+      await fillDestinationBySavedAddress(savedAddress: savedAddress);
+
+      focusNodeDestination.requestFocus();
+      status.value = "checkout";
+
+      await Future.wait([
+        generatePolylines(),
+        refocusMapsBound(),
+        getOrderRidePricingList(),
+      ]);
+      selectedOrderRidePricing.value = orderRidePricingList.first;
+    }
+  }
+
+  Future<void> fillOriginBySavedAddress({
+    required SavedAddress savedAddress,
+  }) async {
+    originTextEditingController.text = savedAddress.addressDetail!;
+    originLatitude.value = savedAddress.latitude!;
+    originLongitude.value = savedAddress.longitude!;
+    keywordOrigin.value = savedAddress.addressTitle!;
+    originAddress.value = savedAddress.addressDetail!;
+
+    await getOriginPlaceLocationList(keyword: keywordOrigin.value);
+
+    markers.removeWhere((m) => m.markerId.value == 'origin');
+    markers.add(
+      Marker(
+        markerId: MarkerId("origin"),
+        position: LatLng(
+          double.parse(originLatitude.value),
+          double.parse(originLongitude.value),
+        ),
+        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+          'assets/icons/icon_origin.svg',
+          Size(22.67, 22.67),
+        ),
+      ),
+    );
+  }
+
+  Future<void> fillDestinationBySavedAddress({
     required SavedAddress savedAddress,
   }) async {
     destinationTextEditingController.text = savedAddress.addressDetail!;
     destinationLatitude.value = savedAddress.latitude!;
     destinationLongitude.value = savedAddress.longitude!;
     keywordDestination.value = savedAddress.addressTitle!;
-    destinationAddress.value = savedAddress.addressTitle!;
+    destinationAddress.value = savedAddress.addressDetail!;
 
     await getDestinationPlaceLocationList(keyword: keywordDestination.value);
 
