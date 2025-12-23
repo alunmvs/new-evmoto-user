@@ -84,7 +84,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
             await storage.deleteAll();
             await closeWebsocket();
 
-            Get.offAndToNamed(Routes.LOGIN_REGISTER);
+            Get.offAllNamed(Routes.LOGIN_REGISTER);
             break;
           default:
             break;
