@@ -17,9 +17,11 @@ class SearchAddressView extends GetView<SearchAddressController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            controller.addressType.value == 0
-                ? "Tambah Rumah"
+            controller.isFetch.value
+                ? ""
                 : controller.addressType.value == 1
+                ? "Tambah Rumah"
+                : controller.addressType.value == 2
                 ? "Tambah Kantor"
                 : "Tambah Lokasi Lainnya",
             style: controller.typographyServices.bodyLargeBold.value,
@@ -105,9 +107,9 @@ class SearchAddressView extends GetView<SearchAddressController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            controller.addressType.value == 0
+                            controller.addressType.value == 1
                                 ? "Masukkan Alamat Rumah"
-                                : controller.addressType.value == 1
+                                : controller.addressType.value == 2
                                 ? "Masukkan Alamat Kantor"
                                 : "Masukkan Alamat",
                             style: controller
@@ -225,12 +227,12 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           SvgPicture.asset(
-                                            controller.addressType.value == 0
+                                            controller.addressType.value == 1
                                                 ? "assets/icons/icon_home.svg"
                                                 : controller
                                                           .addressType
                                                           .value ==
-                                                      1
+                                                      2
                                                 ? "assets/icons/icon_office.svg"
                                                 : "assets/icons/icon_pinpoint.svg",
                                             width: 18,
@@ -245,9 +247,9 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                     ),
                                     SizedBox(height: 8),
                                     Text(
-                                      controller.addressType.value == 0
+                                      controller.addressType.value == 1
                                           ? "Masukkan Alamat Rumah"
-                                          : controller.addressType.value == 1
+                                          : controller.addressType.value == 2
                                           ? "Masukkan Alamat Kantor"
                                           : "Masukkan Alamat",
                                       style: controller

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -18,29 +20,29 @@ class SavedAddressRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/useraddress/save";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/address";
 
-      var formData = FormData.fromMap({
+      var data = {
         "addressName": addressName,
         "addressTitle": addressTitle,
         "addressDetail": addressDetail,
         "latitude": latitude,
         "longitude": longitude,
         "addressType": addressType,
-      });
+      };
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
       var headers = {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
         'Authorization': "Bearer $token",
       };
 
       var dio = apiServices.dio;
       var response = await dio.post(
         url,
-        data: formData,
+        data: data,
         options: Options(headers: headers),
       );
 
