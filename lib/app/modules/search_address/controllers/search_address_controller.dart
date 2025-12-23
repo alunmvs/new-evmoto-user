@@ -15,7 +15,7 @@ class SearchAddressController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
 
-  final addressType = "".obs;
+  final addressType = 0.obs;
   final keyword = "".obs;
   late TextEditingController textEditingController;
 

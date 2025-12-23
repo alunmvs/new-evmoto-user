@@ -960,9 +960,7 @@ class RideView extends GetView<RideController> {
                                             onTap: () {
                                               Get.toNamed(
                                                 Routes.SEARCH_ADDRESS,
-                                                arguments: {
-                                                  "address_type": "home",
-                                                },
+                                                arguments: {"address_type": 0},
                                               );
                                             },
                                             child: Container(
@@ -1029,9 +1027,7 @@ class RideView extends GetView<RideController> {
                                             onTap: () {
                                               Get.toNamed(
                                                 Routes.SEARCH_ADDRESS,
-                                                arguments: {
-                                                  "address_type": "office",
-                                                },
+                                                arguments: {"address_type": 1},
                                               );
                                             },
                                             child: Container(
@@ -1098,9 +1094,7 @@ class RideView extends GetView<RideController> {
                                             onTap: () {
                                               Get.toNamed(
                                                 Routes.SEARCH_ADDRESS,
-                                                arguments: {
-                                                  "address_type": "other",
-                                                },
+                                                arguments: {"address_type": 3},
                                               );
                                             },
                                             child: Container(

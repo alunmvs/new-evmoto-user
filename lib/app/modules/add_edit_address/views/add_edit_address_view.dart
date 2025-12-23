@@ -213,7 +213,7 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   .themeColorServices
                                   .primaryBlue
                                   .value,
-                              formControlName: 'address',
+                              formControlName: 'address_detail',
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 12,
@@ -327,9 +327,8 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
               height: 46,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                onPressed: () {
-                  Get.back();
-                  Get.back();
+                onPressed: () async {
+                  await controller.onTapSaveAddress();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:

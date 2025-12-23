@@ -405,7 +405,7 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
                   onPressed: () {
                     Get.toNamed(
                       Routes.SEARCH_ADDRESS,
-                      arguments: {"address_type": "other"},
+                      arguments: {"address_type": 3},
                     );
                   },
                   style: ElevatedButton.styleFrom(

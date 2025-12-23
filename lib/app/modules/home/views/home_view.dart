@@ -237,8 +237,7 @@ class HomeView extends GetView<HomeController> {
                                                       Get.toNamed(
                                                         Routes.SEARCH_ADDRESS,
                                                         arguments: {
-                                                          "address_type":
-                                                              "home",
+                                                          "address_type": 1,
                                                         },
                                                       );
 
@@ -305,8 +304,7 @@ class HomeView extends GetView<HomeController> {
                                                       Get.toNamed(
                                                         Routes.SEARCH_ADDRESS,
                                                         arguments: {
-                                                          "address_type":
-                                                              "office",
+                                                          "address_type": 2,
                                                         },
                                                       );
 
@@ -373,8 +371,7 @@ class HomeView extends GetView<HomeController> {
                                                       Get.toNamed(
                                                         Routes.SEARCH_ADDRESS,
                                                         arguments: {
-                                                          "address_type":
-                                                              "other",
+                                                          "address_type": 3,
                                                         },
                                                       );
 
