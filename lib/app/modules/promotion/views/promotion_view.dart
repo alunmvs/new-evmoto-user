@@ -50,29 +50,32 @@ class PromotionView extends GetView<PromotionController> {
                       children: [
                         SizedBox(height: 16),
                         if (controller.availableCouponList.isEmpty) ...[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 134),
-                              Text(
-                                "Belum Ada Promosi Tersedia",
-                                style: controller
-                                    .typographyServices
-                                    .bodyLargeBold
-                                    .value,
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Tenang, promo menarik sedang kami siapkan. Stay tuned dan cek kembali ya!",
-                                style: controller
-                                    .typographyServices
-                                    .bodySmallRegular
-                                    .value,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 134),
+                                Text(
+                                  "Belum Ada Promosi Tersedia",
+                                  style: controller
+                                      .typographyServices
+                                      .bodyLargeBold
+                                      .value,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Tenang, promo menarik sedang kami siapkan. Stay tuned dan cek kembali ya!",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                         for (var availableCoupon
