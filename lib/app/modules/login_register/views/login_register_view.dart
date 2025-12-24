@@ -387,6 +387,9 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                 if (value.length < 8) {
                                                   return 'Minimal nomor handphone 8 angka';
                                                 }
+                                                if (value.length > 15) {
+                                                  return 'Maksimal nomor handphone 15 angka';
+                                                }
                                               }
                                               return null;
                                             },
