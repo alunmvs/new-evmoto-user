@@ -392,10 +392,6 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                                 "assets/icons/icon_origin.svg",
                                                 width: 20,
                                                 height: 20,
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorSlate700
-                                                    .value,
                                               ),
                                             ),
                                           ),
