@@ -1277,8 +1277,55 @@ class RideView extends GetView<RideController> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               if (controller
-                                                  .originGooglePlaceTextSearchList
-                                                  .isEmpty) ...[
+                                                      .originGooglePlaceTextSearchList
+                                                      .isEmpty &&
+                                                  controller
+                                                          .keywordOrigin
+                                                          .value !=
+                                                      "") ...[
+                                                Container(
+                                                  padding: EdgeInsets.all(16),
+                                                  width: MediaQuery.of(
+                                                    context,
+                                                  ).size.width,
+                                                  child: Column(
+                                                    children: [
+                                                      Image.asset(
+                                                        "assets/images/img_location_not_found.png",
+                                                        width: 72,
+                                                        height: 72,
+                                                      ),
+                                                      SizedBox(height: 16),
+                                                      Text(
+                                                        "Lokasi Tidak Ditemukan",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodySmallBold
+                                                            .value
+                                                            .copyWith(),
+                                                      ),
+                                                      SizedBox(height: 8),
+                                                      Text(
+                                                        "Pastikan alamat yang dimasukkan sudah benar atau pilih titik terdekat yang bisa dijangkau driver",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodySmallRegular
+                                                            .value
+                                                            .copyWith(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                              if (controller
+                                                      .originGooglePlaceTextSearchList
+                                                      .isEmpty &&
+                                                  controller
+                                                          .keywordOrigin
+                                                          .value ==
+                                                      "") ...[
                                                 for (var recommendationOriginCurrentLocation
                                                     in controller
                                                         .recommendationOriginCurrentLocationList) ...[
@@ -1831,6 +1878,47 @@ class RideView extends GetView<RideController> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              if (controller
+                                                      .destinationGooglePlaceTextSearchList
+                                                      .isEmpty &&
+                                                  controller
+                                                          .keywordDestination
+                                                          .value !=
+                                                      "") ...[
+                                                Container(
+                                                  padding: EdgeInsets.all(16),
+                                                  width: MediaQuery.of(
+                                                    context,
+                                                  ).size.width,
+                                                  child: Column(
+                                                    children: [
+                                                      Image.asset(
+                                                        "assets/images/img_location_not_found.png",
+                                                        width: 72,
+                                                        height: 72,
+                                                      ),
+                                                      SizedBox(height: 16),
+                                                      Text(
+                                                        "Lokasi Tidak Ditemukan",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodySmallBold
+                                                            .value,
+                                                      ),
+                                                      SizedBox(height: 8),
+                                                      Text(
+                                                        "Pastikan alamat yang dimasukkan sudah benar atau pilih titik terdekat yang bisa dijangkau driver",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodySmallRegular
+                                                            .value,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                               if (controller
                                                   .destinationGooglePlaceTextSearchList
                                                   .isEmpty) ...[
