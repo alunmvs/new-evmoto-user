@@ -559,14 +559,17 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                         ),
                                       ),
                                       SizedBox(width: 4),
-                                      Text(
-                                        "Drivermu sampai dalam",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallBold
-                                            .value,
+                                      Expanded(
+                                        child: Text(
+                                          "Drivermu sampai dalam",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                      Spacer(),
                                       SizedBox(width: 4),
                                       Container(
                                         padding: EdgeInsets.symmetric(

@@ -23,6 +23,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
+import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:intl/intl.dart';
 
@@ -51,6 +52,7 @@ class RideController extends GetxController {
 
   final markers = <Marker>{}.obs;
   final polylines = <Polyline>{}.obs;
+  final polylinesCoordinate = <LatLng>[].obs;
 
   final currentLatitude = "".obs;
   final currentLongitude = "".obs;
@@ -124,6 +126,10 @@ class RideController extends GetxController {
   final destinationSavedAddress = SavedAddress().obs;
 
   late Timer? orderStatusRefreshTimer;
+
+  final estimatedTimeInMinutes = 0.0.obs;
+  final estimatedDistanceInKm = 0.0.obs;
+  final estimatedSpeedInKmh = 40.obs;
 
   final isFetch = false.obs;
 
@@ -1166,6 +1172,7 @@ class RideController extends GetxController {
     var polylineCoordinates = result
         .map((p) => LatLng(p.latitude, p.longitude))
         .toList();
+    polylinesCoordinate.value = polylineCoordinates;
 
     polylines.add(
       Polyline(
@@ -1379,5 +1386,22 @@ class RideController extends GetxController {
     }
 
     isHideMarkersAndPolylines.value = false;
+  }
+
+  void generateEstimatedDistanceAndTimeInMinutes() {
+    estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
+    estimatedTimeInMinutes.value =
+        (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
+  }
+
+  String getEstimatedTimeInMinutesInText() {
+    int jam = estimatedTimeInMinutes.value ~/ 60;
+    int menit = (estimatedTimeInMinutes.value % 60).round();
+
+    if (jam > 0) {
+      return '$jam Jam $menit Menit';
+    } else {
+      return '$menit Menit';
+    }
   }
 }
