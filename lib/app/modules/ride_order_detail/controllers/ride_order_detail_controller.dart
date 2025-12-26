@@ -56,6 +56,7 @@ class RideOrderDetailController extends GetxController {
 
   late Timer? driverCurrentLocationTimer;
   late Timer? refocusMapBoundsTimer;
+  late Timer? refreshStatusDriverGivePriceTimer;
 
   final isPinLocationWaitingForDriverHide = true.obs;
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
@@ -114,6 +115,7 @@ class RideOrderDetailController extends GetxController {
     await Future.wait([
       setupSchedulerDriverCurrentLocation(),
       setupSchedulerDriverRefocusMapBound(),
+      setupRefreshStatusDriverGivePrice(),
     ]);
 
     generateEstimatedDistanceAndTimeInMinutes();
@@ -152,6 +154,28 @@ class RideOrderDetailController extends GetxController {
     estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
     estimatedTimeInMinutes.value =
         (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
+  }
+
+  Future<void> setupRefreshStatusDriverGivePrice() async {
+    refreshStatusDriverGivePriceTimer = Timer.periodic(Duration(seconds: 5), (
+      timer,
+    ) async {
+      if (orderRideDetail.value.state == 6) {
+        await getOrderRideDetail();
+      }
+
+      if (orderRideDetail.value.state == 7) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Get.offAndToNamed(
+            Routes.RIDE_ORDER_DONE,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        });
+      }
+    });
   }
 
   Future<void> refreshAll() async {
