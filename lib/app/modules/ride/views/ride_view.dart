@@ -2864,7 +2864,7 @@ class RideView extends GetView<RideController> {
                               width: MediaQuery.of(context).size.width,
                               padding: EdgeInsets.symmetric(
                                 horizontal: 16,
-                                vertical: 8,
+                                vertical: 12,
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
