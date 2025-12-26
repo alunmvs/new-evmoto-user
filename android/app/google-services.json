@@ -1,0 +1,181 @@
+{
+  "project_info": {
+    "project_number": "784665362923",
+    "project_id": "ecgo-new-apps",
+    "storage_bucket": "ecgo-new-apps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:1d4c5554ea96fc2d7f99ae",
+        "android_client_info": {
+          "package_name": "com.driver.evmototrip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:3e23f7bd93ab38d27f99ae",
+        "android_client_info": {
+          "package_name": "com.ecgo.branchManage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:42ee5d86ed78b1187f99ae",
+        "android_client_info": {
+          "package_name": "com.ecgo.onlineDriver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:cd51e6653036f17a7f99ae",
+        "android_client_info": {
+          "package_name": "com.ecgo.surveyor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:73fd0e00c9d363877f99ae",
+        "android_client_info": {
+          "package_name": "com.evmoto.driver.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:8a71b5fe01f805937f99ae",
+        "android_client_info": {
+          "package_name": "com.evmoto.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:73982783da1b49e27f99ae",
+        "android_client_info": {
+          "package_name": "com.evmoto.user.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:c6275b5ae55e0df97f99ae",
+        "android_client_info": {
+          "package_name": "com.example.ecgo_surveyor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:3b5d94cca6772b9e7f99ae",
+        "android_client_info": {
+          "package_name": "com.example.online_driver_registration"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
