@@ -314,7 +314,7 @@ class RideController extends GetxController {
   }
 
   Future<void> prefillOrderAgain() async {
-    if (Get.arguments['start_address'] != null) {
+    if (Get.arguments?['start_address'] != null) {
       originTextEditingController.text = Get.arguments['start_address'] ?? "-";
       originLatitude.value = Get.arguments['start_lat'].toString();
       originLongitude.value = Get.arguments['start_lon'].toString();
