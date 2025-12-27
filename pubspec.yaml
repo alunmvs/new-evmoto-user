@@ -68,6 +68,8 @@ dependencies:
   firebase_crashlytics: ^5.0.6
   in_app_review: ^2.0.11
   cloud_firestore: ^6.1.1
+  image_picker: ^1.2.1
+  photo_view: ^0.15.0
 
 dev_dependencies:
   get_cli: ^1.9.1
