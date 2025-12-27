@@ -67,6 +67,7 @@ dependencies:
   webview_flutter: ^4.13.0
   firebase_crashlytics: ^5.0.6
   in_app_review: ^2.0.11
+  cloud_firestore: ^6.1.1
 
 dev_dependencies:
   get_cli: ^1.9.1

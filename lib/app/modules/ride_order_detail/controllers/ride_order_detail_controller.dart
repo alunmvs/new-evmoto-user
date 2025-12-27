@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
@@ -18,7 +20,8 @@ import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 
-class RideOrderDetailController extends GetxController {
+class RideOrderDetailController extends GetxController
+    with WidgetsBindingObserver {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
 
@@ -67,6 +70,8 @@ class RideOrderDetailController extends GetxController {
 
   final payType = 3.obs;
 
+  final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
+
   final isFetch = false.obs;
 
   @override
@@ -77,6 +82,8 @@ class RideOrderDetailController extends GetxController {
     orderType.value = Get.arguments['order_type'] ?? 1;
 
     await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+    await joinFirestoreChatRooms();
+    WidgetsBinding.instance.addObserver(this);
     isFetch.value = false;
     await Future.delayed(Duration(seconds: 1));
 
@@ -148,6 +155,58 @@ class RideOrderDetailController extends GetxController {
     try {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(orderRideDetail.value.orderId.toString())
+          .set({
+            "userId": orderRideDetail.value.userId,
+            "userName": homeController.userInfo.value.name,
+            "userIsOnline": true,
+            "userLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    } else if (state == AppLifecycleState.paused) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(orderRideDetail.value.orderId.toString())
+          .set({
+            "userId": orderRideDetail.value.userId,
+            "userName": homeController.userInfo.value.name,
+            "userIsOnline": false,
+            "userLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    }
+  }
+
+  Future<void> joinFirestoreChatRooms() async {
+    var docs = await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderRideDetail.value.orderId.toString())
+        .get();
+
+    if (docs.exists == true) {
+      evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
+        docs.data()!,
+      );
+    }
+
+    if (docs.exists == false ||
+        (docs.exists == true && docs.data()?['userId'] == null)) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(orderRideDetail.value.orderId.toString())
+          .set({
+            "userId": orderRideDetail.value.userId,
+            "userName": homeController.userInfo.value.name,
+            "userIsOnline": true,
+            "userLastSeen": FieldValue.serverTimestamp(),
+            "userJoinedAt": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    }
   }
 
   void generateEstimatedDistanceAndTimeInMinutes() {
