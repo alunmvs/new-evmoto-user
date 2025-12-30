@@ -44,6 +44,23 @@ class Language {
   String? rateUs;
   String? logout;
   String? appVersion;
+  String? selectLanguage;
+  String? save;
+  String? dialogCoachmarkTitle;
+  String? dialogCoachmarkDescription;
+  String? dialogCoachmarkButton;
+  String? coachmarkTitle1;
+  String? coachmarkDescription1;
+  String? buttonNext1;
+  String? coachmarkTitle2;
+  String? coachmarkDescription2;
+  String? coachmarkTitle3;
+  String? coachmarkDescription3;
+  String? coachmarkTitle4;
+  String? coachmarkDescription4;
+  String? coachmarkTitle5;
+  String? coachmarkDescription5;
+  String? coachmarkButton5;
 
   Language({
     this.onboardingIntroTitle1,
@@ -91,6 +108,23 @@ class Language {
     this.rateUs,
     this.logout,
     this.appVersion,
+    this.selectLanguage,
+    this.save,
+    this.dialogCoachmarkTitle,
+    this.dialogCoachmarkDescription,
+    this.dialogCoachmarkButton,
+    this.coachmarkTitle1,
+    this.coachmarkDescription1,
+    this.buttonNext1,
+    this.coachmarkTitle2,
+    this.coachmarkDescription2,
+    this.coachmarkTitle3,
+    this.coachmarkDescription3,
+    this.coachmarkTitle4,
+    this.coachmarkDescription4,
+    this.coachmarkTitle5,
+    this.coachmarkDescription5,
+    this.coachmarkButton5,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -139,6 +173,23 @@ class Language {
     rateUs = json['rate_us'];
     logout = json['logout'];
     appVersion = json['app_version'];
+    selectLanguage = json['select_language'];
+    save = json['save'];
+    dialogCoachmarkTitle = json['dialog_coachmark_title'];
+    dialogCoachmarkDescription = json['dialog_coachmark_description'];
+    dialogCoachmarkButton = json['dialog_coachmark_button'];
+    coachmarkTitle1 = json['coachmark_title_1'];
+    coachmarkDescription1 = json['coachmark_description_1'];
+    buttonNext1 = json['button_next_1'];
+    coachmarkTitle2 = json['coachmark_title_2'];
+    coachmarkDescription2 = json['coachmark_description_2'];
+    coachmarkTitle3 = json['coachmark_title_3'];
+    coachmarkDescription3 = json['coachmark_description_3'];
+    coachmarkTitle4 = json['coachmark_title_4'];
+    coachmarkDescription4 = json['coachmark_description_4'];
+    coachmarkTitle5 = json['coachmark_title_5'];
+    coachmarkDescription5 = json['coachmark_description_5'];
+    coachmarkButton5 = json['coachmark_button_5'];
   }
 
   Map<String, dynamic> toJson() {
@@ -188,6 +239,23 @@ class Language {
     data['rate_us'] = this.rateUs;
     data['logout'] = this.logout;
     data['app_version'] = this.appVersion;
+    data['select_language'] = this.selectLanguage;
+    data['save'] = this.save;
+    data['dialog_coachmark_title'] = this.dialogCoachmarkTitle;
+    data['dialog_coachmark_description'] = this.dialogCoachmarkDescription;
+    data['dialog_coachmark_button'] = this.dialogCoachmarkButton;
+    data['coachmark_title_1'] = this.coachmarkTitle1;
+    data['coachmark_description_1'] = this.coachmarkDescription1;
+    data['button_next_1'] = this.buttonNext1;
+    data['coachmark_title_2'] = this.coachmarkTitle2;
+    data['coachmark_description_2'] = this.coachmarkDescription2;
+    data['coachmark_title_3'] = this.coachmarkTitle3;
+    data['coachmark_description_3'] = this.coachmarkDescription3;
+    data['coachmark_title_4'] = this.coachmarkTitle4;
+    data['coachmark_description_4'] = this.coachmarkDescription4;
+    data['coachmark_title_5'] = this.coachmarkTitle5;
+    data['coachmark_description_5'] = this.coachmarkDescription5;
+    data['coachmark_button_5'] = this.coachmarkButton5;
     return data;
   }
 }

@@ -43,5 +43,22 @@
     "customer_service": "Customer Service",
     "rate_us": "Rate Us",
     "logout": "Logout",
-    "app_version": "APPS Version"
+    "app_version": "APPS Version",
+    "select_language": "Select Language",
+    "save": "Save",
+    "dialog_coachmark_title": "Welcome to EVmoto \ud83d\udc4b",
+    "dialog_coachmark_description": "Ready to hit the road? EVmoto is ready to make your journey easier, faster, and safer. Let's explore its key features.",
+    "dialog_coachmark_button": "From now on",
+    "coachmark_title_1": "Determine Travel Destination",
+    "coachmark_description_1": "Enter your destination location to start ordering EVmoto services.",
+    "button_next_1": "Carry on",
+    "coachmark_title_2": "Save Favorite Locations",
+    "coachmark_description_2": "Save your home or office address to make your next order faster.",
+    "coachmark_title_3": "Select Service",
+    "coachmark_description_3": "Use EVmoto to transport passengers, send packages, or order food.",
+    "coachmark_title_4": "Manage Balance & Transactions",
+    "coachmark_description_4": "Your balance is used to pay for services. Tap Top Up to add to your balance and History to view your transactions.",
+    "coachmark_title_5": "Ready to Use EVmoto",
+    "coachmark_description_5": "Now you're ready to use EVmoto. Set your destination and start your journey.",
+    "coachmark_button_5": "To the Front Page"
 }

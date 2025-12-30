@@ -295,7 +295,12 @@ class HomeView extends GetView<HomeController> {
                                                                           .start,
                                                                   children: <Widget>[
                                                                     Text(
-                                                                      "Tentukan Tujuan Perjalanan",
+                                                                      controller
+                                                                              .languageServices
+                                                                              .language
+                                                                              .value
+                                                                              .coachmarkTitle1 ??
+                                                                          "-",
                                                                       style: controller
                                                                           .typographyServices
                                                                           .bodyLargeBold
@@ -306,7 +311,12 @@ class HomeView extends GetView<HomeController> {
                                                                       height: 4,
                                                                     ),
                                                                     Text(
-                                                                      'Masukkan lokasi tujuan Anda untuk mulai memesan layanan EVmoto.',
+                                                                      controller
+                                                                              .languageServices
+                                                                              .language
+                                                                              .value
+                                                                              .coachmarkDescription1 ??
+                                                                          "-",
                                                                       style: controller
                                                                           .typographyServices
                                                                           .bodySmallRegular
@@ -353,7 +363,8 @@ class HomeView extends GetView<HomeController> {
                                                                             ),
                                                                             child: Center(
                                                                               child: Text(
-                                                                                "Lanjut",
+                                                                                controller.languageServices.language.value.buttonNext ??
+                                                                                    "-",
                                                                                 style: controller.typographyServices.bodySmallBold.value.copyWith(
                                                                                   color: controller.themeColorServices.neutralsColorGrey0.value,
                                                                                 ),
@@ -521,7 +532,12 @@ class HomeView extends GetView<HomeController> {
                                                                         .start,
                                                                 children: <Widget>[
                                                                   Text(
-                                                                    "Simpan Lokasi Favorit",
+                                                                    controller
+                                                                            .languageServices
+                                                                            .language
+                                                                            .value
+                                                                            .coachmarkTitle2 ??
+                                                                        "-",
                                                                     style: controller
                                                                         .typographyServices
                                                                         .bodyLargeBold
@@ -532,7 +548,12 @@ class HomeView extends GetView<HomeController> {
                                                                     height: 4,
                                                                   ),
                                                                   Text(
-                                                                    'Simpan alamat rumah atau kantor agar pemesanan berikutnya lebih cepat.',
+                                                                    controller
+                                                                            .languageServices
+                                                                            .language
+                                                                            .value
+                                                                            .coachmarkDescription2 ??
+                                                                        "-",
                                                                     style: controller
                                                                         .typographyServices
                                                                         .bodySmallRegular
@@ -579,7 +600,8 @@ class HomeView extends GetView<HomeController> {
                                                                           ),
                                                                           child: Center(
                                                                             child: Text(
-                                                                              "Lanjut",
+                                                                              controller.languageServices.language.value.buttonNext ??
+                                                                                  "-",
                                                                               style: controller.typographyServices.bodySmallBold.value.copyWith(
                                                                                 color: controller.themeColorServices.neutralsColorGrey0.value,
                                                                               ),
@@ -992,7 +1014,12 @@ class HomeView extends GetView<HomeController> {
                                                                     .start,
                                                             children: <Widget>[
                                                               Text(
-                                                                "Pilih Layanan",
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .coachmarkTitle3 ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodyLargeBold
@@ -1003,7 +1030,12 @@ class HomeView extends GetView<HomeController> {
                                                                 height: 4,
                                                               ),
                                                               Text(
-                                                                'Gunakan EVmoto untuk antar penumpang, kirim paket, atau pesan makanan.',
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .coachmarkDescription3 ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodySmallRegular
@@ -1058,7 +1090,8 @@ class HomeView extends GetView<HomeController> {
                                                                       ),
                                                                       child: Center(
                                                                         child: Text(
-                                                                          "Lanjut",
+                                                                          controller.languageServices.language.value.buttonNext ??
+                                                                              "-",
                                                                           style: controller
                                                                               .typographyServices
                                                                               .bodySmallBold
@@ -1535,7 +1568,12 @@ class HomeView extends GetView<HomeController> {
                                                                     .start,
                                                             children: <Widget>[
                                                               Text(
-                                                                "Kelola Saldo & Transaksi",
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .coachmarkTitle4 ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodyLargeBold
@@ -1546,7 +1584,12 @@ class HomeView extends GetView<HomeController> {
                                                                 height: 4,
                                                               ),
                                                               Text(
-                                                                'Saldo digunakan untuk membayar layanan. Tekan Top Up untuk menambah saldo dan Riwayat untuk melihat transaksi.',
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .coachmarkDescription4 ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodySmallRegular
@@ -1618,14 +1661,16 @@ class HomeView extends GetView<HomeController> {
                                                                                               Widget
                                                                                             >[
                                                                                               Text(
-                                                                                                "Siap Menggunakan EVmoto",
+                                                                                                controller.languageServices.language.value.coachmarkDescription5 ??
+                                                                                                    "-",
                                                                                                 style: controller.typographyServices.bodyLargeBold.value.copyWith(),
                                                                                               ),
                                                                                               SizedBox(
                                                                                                 height: 4,
                                                                                               ),
                                                                                               Text(
-                                                                                                'Sekarang Anda siap menggunakan EVmoto. Tentukan tujuan dan mulai perjalanan Anda.',
+                                                                                                controller.languageServices.language.value.coachmarkDescription5 ??
+                                                                                                    "-",
                                                                                                 style: controller.typographyServices.bodySmallRegular.value.copyWith(),
                                                                                               ),
                                                                                               SizedBox(
@@ -1668,7 +1713,8 @@ class HomeView extends GetView<HomeController> {
                                                                                                       ),
                                                                                                       child: Center(
                                                                                                         child: Text(
-                                                                                                          "Menuju Halaman Depan",
+                                                                                                          controller.languageServices.language.value.coachmarkButton5 ??
+                                                                                                              "-",
                                                                                                           style: controller.typographyServices.bodySmallBold.value.copyWith(
                                                                                                             color: controller.themeColorServices.neutralsColorGrey0.value,
                                                                                                           ),
@@ -1708,7 +1754,8 @@ class HomeView extends GetView<HomeController> {
                                                                       ),
                                                                       child: Center(
                                                                         child: Text(
-                                                                          "Lanjut",
+                                                                          controller.languageServices.language.value.buttonNext ??
+                                                                              "-",
                                                                           style: controller
                                                                               .typographyServices
                                                                               .bodySmallBold

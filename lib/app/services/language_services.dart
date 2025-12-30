@@ -44,18 +44,22 @@ class LanguageServices extends GetxService {
       case "ZH_CN":
         languageCodeSystem.value = 1;
         var jsonData = await rootBundle.loadString(
-          'assets/jsons/lang_zh_cn.json',
+          'assets/jsons/user_lang_zh_cn.json',
         );
         language.value = Language.fromJson(jsonDecode(jsonData));
         break;
       case "EN":
         languageCodeSystem.value = 2;
-        var jsonData = await rootBundle.loadString('assets/jsons/lang_en.json');
+        var jsonData = await rootBundle.loadString(
+          'assets/jsons/user_lang_en.json',
+        );
         language.value = Language.fromJson(jsonDecode(jsonData));
         break;
       case "ID":
         languageCodeSystem.value = 3;
-        var jsonData = await rootBundle.loadString('assets/jsons/lang_id.json');
+        var jsonData = await rootBundle.loadString(
+          'assets/jsons/user_lang_id.json',
+        );
         language.value = Language.fromJson(jsonDecode(jsonData));
         break;
     }

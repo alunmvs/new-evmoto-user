@@ -43,5 +43,22 @@
     "customer_service": "Customer Service",
     "rate_us": "Beri Kami Nilai",
     "logout": "Keluar",
-    "app_version": "APPS Version"
+    "app_version": "APPS Version",
+    "select_language": "Pilih Bahasa",
+    "save": "Simpan",
+    "dialog_coachmark_title": "Selamat Datang di EVmoto \ud83d\udc4b",
+    "dialog_coachmark_description": "Siap jalan? EVmoto siap membantu perjalanan Anda jadi lebih mudah, cepat, dan aman. Mari kenali fitur utamanya.",
+    "dialog_coachmark_button": "Mulai Sekarang",
+    "coachmark_title_1": "Tentukan Tujuan Perjalanan",
+    "coachmark_description_1": "Masukkan lokasi tujuan Anda untuk mulai memesan layanan EVmoto.",
+    "button_next_1": "Lanjut",
+    "coachmark_title_2": "Simpan Lokasi Favorit",
+    "coachmark_description_2": "Simpan alamat rumah atau kantor agar pemesanan berikutnya lebih cepat.",
+    "coachmark_title_3": "Pilih Layanan",
+    "coachmark_description_3": "Gunakan EVmoto untuk antar penumpang, kirim paket, atau pesan makanan.",
+    "coachmark_title_4": "Kelola Saldo & Transaksi",
+    "coachmark_description_4": "Saldo digunakan untuk membayar layanan. Tekan Top Up untuk menambah saldo dan Riwayat untuk melihat transaksi.",
+    "coachmark_title_5": "Siap Menggunakan EVmoto",
+    "coachmark_description_5": "Sekarang Anda siap menggunakan EVmoto. Tentukan tujuan dan mulai perjalanan Anda.",
+    "coachmark_button_5": "Menuju Halaman Depan"
 }

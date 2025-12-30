@@ -196,14 +196,22 @@ class HomeController extends GetxController {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Selamat Datang di EVmoto 👋",
+                              languageServices
+                                      .language
+                                      .value
+                                      .dialogCoachmarkTitle ??
+                                  "-",
                               style: typographyServices.bodyLargeBold.value
                                   .copyWith(),
                               textAlign: TextAlign.left,
                             ),
                             SizedBox(height: 8),
                             Text(
-                              "Siap jalan? EVmoto siap membantu perjalanan Anda jadi lebih mudah, cepat, dan aman. Mari kenali fitur utamanya.",
+                              languageServices
+                                      .language
+                                      .value
+                                      .dialogCoachmarkDescription ??
+                                  "-",
                               style: typographyServices.bodySmallRegular.value
                                   .copyWith(),
                               textAlign: TextAlign.left,
@@ -233,7 +241,11 @@ class HomeController extends GetxController {
                                   ),
                                 ),
                                 child: Text(
-                                  "Mulai Sekarang",
+                                  languageServices
+                                          .language
+                                          .value
+                                          .dialogCoachmarkButton ??
+                                      "-",
                                   style: typographyServices.bodySmallBold.value
                                       .copyWith(
                                         color: themeColorServices

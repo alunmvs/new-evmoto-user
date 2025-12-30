@@ -43,5 +43,22 @@
     "customer_service": "客户服务",
     "rate_us": "给我们评分",
     "logout": "注销",
-    "app_version": "应用程序版本"
+    "app_version": "应用程序版本",
+    "select_language": "选择语言",
+    "save": "节省",
+    "dialog_coachmark_title": "欢迎来到 EVmoto 👋",
+    "dialog_coachmark_description": "准备好出发了吗？EVmoto 将让您的旅程更轻松、更快捷、更安全。让我们一起来了解它的主要功能。",
+    "dialog_coachmark_button": "今后",
+    "coachmark_title_1": "确定旅行目的地",
+    "coachmark_description_1": "输入您的目的地即可开始订购 EVmoto 服务。",
+    "button_next_1": "继续",
+    "coachmark_title_2": "保存收藏地点",
+    "coachmark_description_2": "保存您的家庭或办公地址，以便下次订购更快捷。",
+    "coachmark_title_3": "选择服务",
+    "coachmark_description_3": "使用 EVmoto 运送乘客、寄送包裹或订购食物。",
+    "coachmark_title_4": "管理余额和交易",
+    "coachmark_description_4": "您的余额用于支付服务费用。点击“充值”即可增加余额，点击“交易记录”即可查看交易记录。",
+    "coachmark_title_5": "即用型 EVmoto",
+    "coachmark_description_5": "现在您已准备好使用EVmoto。设置目的地，开始您的旅程吧。",
+    "coachmark_button_5": "返回首页"
 }
