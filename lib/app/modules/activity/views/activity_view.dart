@@ -81,7 +81,8 @@ class ActivityView extends GetView<ActivityController> {
                         ),
                         child: Center(
                           child: Text(
-                            "Terkini",
+                            controller.languageServices.language.value.latest ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallBold
@@ -139,7 +140,12 @@ class ActivityView extends GetView<ActivityController> {
                         ),
                         child: Center(
                           child: Text(
-                            "Riwayat",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .history ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallBold
@@ -517,7 +523,12 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                       SizedBox(width: 8),
                                       Text(
-                                        "Lihat Riwayat Topup",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .viewTopupHistory ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular
@@ -600,7 +611,12 @@ class ActivityView extends GetView<ActivityController> {
                                           ),
                                         ),
                                         child: Text(
-                                          "Antar",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .delivery ??
+                                              "-",
                                           style:
                                               controller
                                                       .historyOrderSelectedOrderType
@@ -656,7 +672,12 @@ class ActivityView extends GetView<ActivityController> {
                                           ),
                                         ),
                                         child: Text(
-                                          "Paket",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .package ??
+                                              "-",
                                           style:
                                               controller
                                                       .historyOrderSelectedOrderType
@@ -712,7 +733,12 @@ class ActivityView extends GetView<ActivityController> {
                                           ),
                                         ),
                                         child: Text(
-                                          "Makanan",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .food ??
+                                              "-",
                                           style:
                                               controller
                                                       .historyOrderSelectedOrderType
@@ -993,12 +1019,27 @@ class ActivityView extends GetView<ActivityController> {
                                                                   historyOrder
                                                                       .state,
                                                                 )
-                                                                ? "Dalam Proses"
+                                                                ? controller
+                                                                          .languageServices
+                                                                          .language
+                                                                          .value
+                                                                          .inProcess ??
+                                                                      "-"
                                                                 : historyOrder
                                                                           .state ==
                                                                       10
-                                                                ? "Dibatalkan"
-                                                                : "Order Selesai",
+                                                                ? controller
+                                                                          .languageServices
+                                                                          .language
+                                                                          .value
+                                                                          .canceled ??
+                                                                      "-"
+                                                                : controller
+                                                                          .languageServices
+                                                                          .language
+                                                                          .value
+                                                                          .orderCompleted ??
+                                                                      "-",
                                                             style: controller.typographyServices.captionLargeRegular.value.copyWith(
                                                               color:
                                                                   [
@@ -1083,7 +1124,12 @@ class ActivityView extends GetView<ActivityController> {
                                                           Row(
                                                             children: [
                                                               Text(
-                                                                "Order Lagi",
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .orderAgain ??
+                                                                    "-",
                                                                 style: controller
                                                                     .typographyServices
                                                                     .bodyLargeBold

@@ -577,7 +577,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                             SizedBox(width: 4),
                                             Expanded(
                                               child: Text(
-                                                "Drivermu sampai dalam",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .driverArrivedIn ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold
@@ -910,7 +915,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                       ),
                                                       SizedBox(width: 4),
                                                       Text(
-                                                        "Telpon",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .telephone ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .bodyLargeBold
@@ -952,7 +962,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                       ),
                                                     ),
                                                     child: Text(
-                                                      "Chat Driver",
+                                                      controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .chatDriver ??
+                                                          "-",
                                                       style: controller
                                                           .typographyServices
                                                           .bodyLargeBold
@@ -1147,7 +1162,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Metode Pembayaran",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .paymentMethod ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallBold
@@ -1234,7 +1254,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Order ID",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .orderId ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallBold
@@ -1340,7 +1365,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                 ),
                                               ),
                                               child: Text(
-                                                "Batalkan",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .cancel ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodyLargeBold

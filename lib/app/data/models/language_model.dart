@@ -61,6 +61,44 @@ class Language {
   String? coachmarkTitle5;
   String? coachmarkDescription5;
   String? coachmarkButton5;
+  String? noPromotionTitle;
+  String? noPromotionDescription;
+  String? latest;
+  String? allPromotion;
+  String? inProcess;
+  String? orderCompleted;
+  String? canceled;
+  String? viewTopupHistory;
+  String? pickup;
+  String? objective;
+  String? total;
+  String? rating;
+  String? orderAgain;
+  String? addPaymentMethod;
+  String? selected;
+  String? driverArrivedIn;
+  String? telephone;
+  String? chatDriver;
+  String? paymentMethod;
+  String? orderId;
+  String? cancel;
+  String? minute;
+  String? hour;
+  String? typeMessage;
+  String? gallery;
+  String? camera;
+  String? cancelOrder;
+  String? cancelOrderConfirmationTitle;
+  String? cancelOrderConfirmationDescription;
+  String? cancelOrderReason1;
+  String? cancelOrderReason2;
+  String? cancelOrderReason3;
+  String? cancelOrderReason4;
+  String? cancelOrderReason5;
+  String? cancelOrderReason6;
+  String? cancelOrderReason7;
+  String? cancelOrderReasonOther;
+  String? cancelOrderReasonManualHint;
 
   Language({
     this.onboardingIntroTitle1,
@@ -125,6 +163,44 @@ class Language {
     this.coachmarkTitle5,
     this.coachmarkDescription5,
     this.coachmarkButton5,
+    this.noPromotionTitle,
+    this.noPromotionDescription,
+    this.latest,
+    this.allPromotion,
+    this.inProcess,
+    this.orderCompleted,
+    this.canceled,
+    this.viewTopupHistory,
+    this.pickup,
+    this.objective,
+    this.total,
+    this.rating,
+    this.orderAgain,
+    this.addPaymentMethod,
+    this.selected,
+    this.driverArrivedIn,
+    this.telephone,
+    this.chatDriver,
+    this.paymentMethod,
+    this.orderId,
+    this.cancel,
+    this.minute,
+    this.hour,
+    this.typeMessage,
+    this.gallery,
+    this.camera,
+    this.cancelOrder,
+    this.cancelOrderConfirmationTitle,
+    this.cancelOrderConfirmationDescription,
+    this.cancelOrderReason1,
+    this.cancelOrderReason2,
+    this.cancelOrderReason3,
+    this.cancelOrderReason4,
+    this.cancelOrderReason5,
+    this.cancelOrderReason6,
+    this.cancelOrderReason7,
+    this.cancelOrderReasonOther,
+    this.cancelOrderReasonManualHint,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -190,6 +266,45 @@ class Language {
     coachmarkTitle5 = json['coachmark_title_5'];
     coachmarkDescription5 = json['coachmark_description_5'];
     coachmarkButton5 = json['coachmark_button_5'];
+    noPromotionTitle = json['no_promotion_title'];
+    noPromotionDescription = json['no_promotion_description'];
+    latest = json['latest'];
+    allPromotion = json['all_promotion'];
+    inProcess = json['in_process'];
+    orderCompleted = json['order_completed'];
+    canceled = json['canceled'];
+    viewTopupHistory = json['view_topup_history'];
+    pickup = json['pickup'];
+    objective = json['objective'];
+    total = json['total'];
+    rating = json['rating'];
+    orderAgain = json['order_again'];
+    addPaymentMethod = json['add_payment_method'];
+    selected = json['selected'];
+    driverArrivedIn = json['driver_arrived_in'];
+    telephone = json['telephone'];
+    chatDriver = json['chat_driver'];
+    paymentMethod = json['payment_method'];
+    orderId = json['order_id'];
+    cancel = json['cancel'];
+    minute = json['minute'];
+    hour = json['hour'];
+    typeMessage = json['type_message'];
+    gallery = json['gallery'];
+    camera = json['camera'];
+    cancelOrder = json['cancel_order'];
+    cancelOrderConfirmationTitle = json['cancel_order_confirmation_title'];
+    cancelOrderConfirmationDescription =
+        json['cancel_order_confirmation_description'];
+    cancelOrderReason1 = json['cancel_order_reason_1'];
+    cancelOrderReason2 = json['cancel_order_reason_2'];
+    cancelOrderReason3 = json['cancel_order_reason_3'];
+    cancelOrderReason4 = json['cancel_order_reason_4'];
+    cancelOrderReason5 = json['cancel_order_reason_5'];
+    cancelOrderReason6 = json['cancel_order_reason_6'];
+    cancelOrderReason7 = json['cancel_order_reason_7'];
+    cancelOrderReasonOther = json['cancel_order_reason_other'];
+    cancelOrderReasonManualHint = json['cancel_order_reason_manual_hint'];
   }
 
   Map<String, dynamic> toJson() {
@@ -256,6 +371,45 @@ class Language {
     data['coachmark_title_5'] = this.coachmarkTitle5;
     data['coachmark_description_5'] = this.coachmarkDescription5;
     data['coachmark_button_5'] = this.coachmarkButton5;
+    data['no_promotion_title'] = this.noPromotionTitle;
+    data['no_promotion_description'] = this.noPromotionDescription;
+    data['latest'] = this.latest;
+    data['all_promotion'] = this.allPromotion;
+    data['in_process'] = this.inProcess;
+    data['order_completed'] = this.orderCompleted;
+    data['canceled'] = this.canceled;
+    data['view_topup_history'] = this.viewTopupHistory;
+    data['pickup'] = this.pickup;
+    data['objective'] = this.objective;
+    data['total'] = this.total;
+    data['rating'] = this.rating;
+    data['order_again'] = this.orderAgain;
+    data['add_payment_method'] = this.addPaymentMethod;
+    data['selected'] = this.selected;
+    data['driver_arrived_in'] = this.driverArrivedIn;
+    data['telephone'] = this.telephone;
+    data['chat_driver'] = this.chatDriver;
+    data['payment_method'] = this.paymentMethod;
+    data['order_id'] = this.orderId;
+    data['cancel'] = this.cancel;
+    data['minute'] = this.minute;
+    data['hour'] = this.hour;
+    data['type_message'] = this.typeMessage;
+    data['gallery'] = this.gallery;
+    data['camera'] = this.camera;
+    data['cancel_order'] = this.cancelOrder;
+    data['cancel_order_confirmation_title'] = this.cancelOrderConfirmationTitle;
+    data['cancel_order_confirmation_description'] =
+        this.cancelOrderConfirmationDescription;
+    data['cancel_order_reason_1'] = this.cancelOrderReason1;
+    data['cancel_order_reason_2'] = this.cancelOrderReason2;
+    data['cancel_order_reason_3'] = this.cancelOrderReason3;
+    data['cancel_order_reason_4'] = this.cancelOrderReason4;
+    data['cancel_order_reason_5'] = this.cancelOrderReason5;
+    data['cancel_order_reason_6'] = this.cancelOrderReason6;
+    data['cancel_order_reason_7'] = this.cancelOrderReason7;
+    data['cancel_order_reason_other'] = this.cancelOrderReasonOther;
+    data['cancel_order_reason_manual_hint'] = this.cancelOrderReasonManualHint;
     return data;
   }
 }

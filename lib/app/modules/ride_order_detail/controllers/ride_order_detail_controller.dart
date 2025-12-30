@@ -1081,9 +1081,9 @@ class RideOrderDetailController extends GetxController
     int menit = (estimatedTimeInMinutes.value % 60).round();
 
     if (jam > 0) {
-      return '$jam Jam $menit Menit';
+      return '$jam ${languageServices.language.value.hour} $menit ${languageServices.language.value.minute}';
     } else {
-      return '$menit Menit';
+      return '$menit ${languageServices.language.value.minute}';
     }
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../controllers/activity_detail_controller.dart';
@@ -20,7 +19,10 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
           title: Text(
             controller.isFetch.value
                 ? ""
-                : DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
+                : DateFormat(
+                    'dd MMMM yyyy ⬩ HH:mm',
+                    controller.languageServices.languageCode.value,
+                  ).format(
                     DateTime.parse(
                       controller.orderRideDetail.value.insertTime!.replaceFirst(
                         ' ',
@@ -239,7 +241,12 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                     Row(
                                       children: [
                                         Text(
-                                          "Penjemputan",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .pickup ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .captionLargeBold
@@ -317,7 +324,12 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                     Row(
                                       children: [
                                         Text(
-                                          "Tujuan",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .objective ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .captionLargeBold
@@ -399,7 +411,12 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Total",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .total ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold
@@ -437,7 +454,12 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Rating",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .rating ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold
@@ -515,7 +537,8 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                     ),
                   ),
                   child: Text(
-                    "Order Lagi",
+                    controller.languageServices.language.value.orderAgain ??
+                        "-",
                     style: controller.typographyServices.bodyLargeBold.value
                         .copyWith(color: Colors.white),
                   ),

@@ -17,7 +17,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Order Selesai",
+            controller.languageServices.language.value.orderCompleted ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,

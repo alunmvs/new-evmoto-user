@@ -363,7 +363,7 @@ class HomeView extends GetView<HomeController> {
                                                                             ),
                                                                             child: Center(
                                                                               child: Text(
-                                                                                controller.languageServices.language.value.buttonNext ??
+                                                                                controller.languageServices.language.value.buttonNext1 ??
                                                                                     "-",
                                                                                 style: controller.typographyServices.bodySmallBold.value.copyWith(
                                                                                   color: controller.themeColorServices.neutralsColorGrey0.value,
@@ -600,7 +600,7 @@ class HomeView extends GetView<HomeController> {
                                                                           ),
                                                                           child: Center(
                                                                             child: Text(
-                                                                              controller.languageServices.language.value.buttonNext ??
+                                                                              controller.languageServices.language.value.buttonNext1 ??
                                                                                   "-",
                                                                               style: controller.typographyServices.bodySmallBold.value.copyWith(
                                                                                 color: controller.themeColorServices.neutralsColorGrey0.value,
@@ -1090,7 +1090,7 @@ class HomeView extends GetView<HomeController> {
                                                                       ),
                                                                       child: Center(
                                                                         child: Text(
-                                                                          controller.languageServices.language.value.buttonNext ??
+                                                                          controller.languageServices.language.value.buttonNext1 ??
                                                                               "-",
                                                                           style: controller
                                                                               .typographyServices
@@ -1754,7 +1754,7 @@ class HomeView extends GetView<HomeController> {
                                                                       ),
                                                                       child: Center(
                                                                         child: Text(
-                                                                          controller.languageServices.language.value.buttonNext ??
+                                                                          controller.languageServices.language.value.buttonNext1 ??
                                                                               "-",
                                                                           style: controller
                                                                               .typographyServices
@@ -2028,7 +2028,12 @@ class HomeView extends GetView<HomeController> {
                                                   children: [
                                                     SizedBox(height: 16),
                                                     Text(
-                                                      "Belum Ada Promosi Tersedia",
+                                                      controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .noPromotionTitle ??
+                                                          "-",
                                                       style: controller
                                                           .typographyServices
                                                           .bodyLargeBold
@@ -2038,7 +2043,12 @@ class HomeView extends GetView<HomeController> {
                                                     ),
                                                     SizedBox(height: 8),
                                                     Text(
-                                                      "Tenang, promo menarik sedang kami siapkan. Stay tuned dan cek kembali ya!",
+                                                      controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .noPromotionDescription ??
+                                                          "-",
                                                       style: controller
                                                           .typographyServices
                                                           .bodySmallRegular

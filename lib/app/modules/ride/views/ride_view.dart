@@ -2781,7 +2781,12 @@ class RideView extends GetView<RideController> {
                                   SizedBox(width: 4),
                                   Expanded(
                                     child: Text(
-                                      "Drivermu sampai dalam",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .driverArrivedIn ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallBold

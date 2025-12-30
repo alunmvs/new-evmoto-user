@@ -13,7 +13,7 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pilih Bahasa",
+            controller.languageServices.language.value.selectLanguage ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -261,7 +261,7 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                     ),
                   ),
                   child: Text(
-                    "Simpan",
+                    controller.languageServices.language.value.save ?? "-",
                     style: controller.typographyServices.bodyLargeBold.value
                         .copyWith(color: Colors.white),
                   ),
