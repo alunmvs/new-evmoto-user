@@ -36,7 +36,7 @@ class SettingLanguageController extends GetxController {
       behavior: SnackBarBehavior.fixed,
       backgroundColor: themeColorServices.sematicColorGreen400.value,
       content: Text(
-        "Berhasil mengganti bahasa",
+        languageServices.language.value.snackbarChangeLanguageSuccess ?? "-",
         style: typographyServices.bodySmallRegular.value.copyWith(
           color: themeColorServices.neutralsColorGrey0.value,
         ),

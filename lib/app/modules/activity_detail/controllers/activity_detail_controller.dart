@@ -203,7 +203,7 @@ class ActivityDetailController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
         content: Text(
-          "Anda memiliki pesanan yang masih aktif",
+          languageServices.language.value.snackbarOrderNotSuccess ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),

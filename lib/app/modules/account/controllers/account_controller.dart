@@ -64,7 +64,8 @@ class AccountController extends GetxController {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Apakah Anda yakin ingin keluar akun?",
+                        languageServices.language.value.logoutConfirmation ??
+                            "-",
                         style: typographyServices.bodyLargeBold.value,
                         textAlign: TextAlign.center,
                       ),
@@ -121,7 +122,11 @@ class AccountController extends GetxController {
                                         .sematicColorGreen400
                                         .value,
                                     content: Text(
-                                      "Berhasil keluar akun",
+                                      languageServices
+                                              .language
+                                              .value
+                                              .snackbarLogoutSuccess ??
+                                          "-",
                                       style: typographyServices
                                           .bodySmallRegular
                                           .value

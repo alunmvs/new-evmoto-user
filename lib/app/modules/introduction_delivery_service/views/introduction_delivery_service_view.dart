@@ -16,7 +16,7 @@ class IntroductionDeliveryServiceView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Layanan Antar",
+            controller.languageServices.language.value.deliveryService ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,

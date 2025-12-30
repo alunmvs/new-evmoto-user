@@ -13,7 +13,7 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Detail Transaksi",
+          controller.languageServices.language.value.transactionDetails ?? "-",
           style: controller.typographyServices.bodyLargeBold.value,
         ),
         centerTitle: false,
@@ -87,7 +87,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                           SizedBox(height: 24),
                           Text(
                             controller.balanceHistoryConsumption.value.type == 1
-                                ? "Layanan Antar"
+                                ? controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .deliveryService ??
+                                      "-"
                                 : "-",
                             style: controller
                                 .typographyServices
@@ -198,7 +203,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                                             .value
                                             .type ==
                                         1
-                                    ? "Layanan Antar"
+                                    ? controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .deliveryService ??
+                                          "-"
                                     : "-",
                                 style: controller
                                     .typographyServices

@@ -1029,7 +1029,11 @@ class RideOrderDetailController extends GetxController
                                         .sematicColorGreen400
                                         .value,
                                     content: Text(
-                                      "Berhasil membatalkan transaksi",
+                                      languageServices
+                                              .language
+                                              .value
+                                              .snackbarCancelTransactionSuccess ??
+                                          "-",
                                       style: typographyServices
                                           .bodySmallRegular
                                           .value

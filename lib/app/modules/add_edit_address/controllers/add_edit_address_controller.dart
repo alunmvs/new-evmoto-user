@@ -5,6 +5,7 @@ import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/modules/setting_saved_location/controllers/setting_saved_location_controller.dart';
 import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/main.dart';
@@ -17,6 +18,7 @@ class AddEditAddressController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final formKey = GlobalKey<FormState>();
 
@@ -98,7 +100,7 @@ class AddEditAddressController extends GetxController {
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorGreen400.value,
             content: Text(
-              "Berhasil menambah alamat",
+              languageServices.language.value.logoutConfirmation ?? "-",
               style: typographyServices.bodySmallRegular.value.copyWith(
                 color: themeColorServices.neutralsColorGrey0.value,
               ),
@@ -135,7 +137,7 @@ class AddEditAddressController extends GetxController {
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorGreen400.value,
             content: Text(
-              "Berhasil mengedit alamat",
+              languageServices.language.value.snackbarAddressEditSuccess ?? "-",
               style: typographyServices.bodySmallRegular.value.copyWith(
                 color: themeColorServices.neutralsColorGrey0.value,
               ),

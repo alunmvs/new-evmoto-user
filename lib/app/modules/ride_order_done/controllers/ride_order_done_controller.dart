@@ -108,7 +108,7 @@ class RideOrderDoneController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorGreen400.value,
         content: Text(
-          "Berhasil menyelesaikan pesanan",
+          languageServices.language.value.snackbarCompleteOrderSuccess ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),

@@ -425,7 +425,11 @@ class SettingSavedLocationController extends GetxController {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Apakah Anda yakin ingin menghapus alamat?",
+                        languageServices
+                                .language
+                                .value
+                                .deleteAddressConfirmation ??
+                            "-",
                         style: typographyServices.bodyLargeBold.value,
                         textAlign: TextAlign.center,
                       ),
@@ -482,7 +486,11 @@ class SettingSavedLocationController extends GetxController {
                                           .sematicColorGreen400
                                           .value,
                                       content: Text(
-                                        "Berhasil menghapus alamat",
+                                        languageServices
+                                                .language
+                                                .value
+                                                .snackbarDeleteAddressSuccess ??
+                                            "-",
                                         style: typographyServices
                                             .bodySmallRegular
                                             .value
@@ -528,7 +536,7 @@ class SettingSavedLocationController extends GetxController {
                                   ),
                                 ),
                                 child: Text(
-                                  "Hapus",
+                                  languageServices.language.value.delete ?? "-",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color: themeColorServices

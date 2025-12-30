@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
@@ -14,6 +15,7 @@ class SearchAddressController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final addressType = 0.obs;
   final keyword = "".obs;

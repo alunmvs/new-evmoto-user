@@ -14,7 +14,7 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Detail Lokasi",
+          controller.languageServices.language.value.locationDetails ?? "-",
           style: controller.typographyServices.bodyLargeBold.value,
         ),
         centerTitle: false,
@@ -80,7 +80,12 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                             Row(
                               children: [
                                 Text(
-                                  "Nama",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .name ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodyLargeBold
@@ -118,7 +123,13 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   horizontal: 12,
                                   vertical: 12,
                                 ),
-                                hintText: 'Masukkan Nama',
+                                hintText:
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterName ??
+                                    "-",
                                 hintStyle: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -181,7 +192,12 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                             Row(
                               children: [
                                 Text(
-                                  "Alamat",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .address ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodyLargeBold
@@ -235,7 +251,13 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   horizontal: 12,
                                   vertical: 12,
                                 ),
-                                hintText: 'Masukkan Alamat Kamu',
+                                hintText:
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterYourAddress ??
+                                    "-",
                                 hintStyle: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -354,7 +376,12 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                   ),
                 ),
                 child: Text(
-                  "Simpan Alamat",
+                  controller
+                          .languageServices
+                          .language
+                          .value
+                          .snackbarAddressAddSuccess ??
+                      "-",
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(color: Colors.white),
                 ),

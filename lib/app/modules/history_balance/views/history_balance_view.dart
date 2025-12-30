@@ -18,7 +18,7 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Riwayat Saldo",
+            controller.languageServices.language.value.balanceHistory ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -387,7 +387,12 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                                               balanceHistory
                                                                           .type ==
                                                                       1
-                                                                  ? "Layanan Antar"
+                                                                  ? controller
+                                                                            .languageServices
+                                                                            .language
+                                                                            .value
+                                                                            .deliveryService ??
+                                                                        "-"
                                                                   : "-",
                                                               style: controller
                                                                   .typographyServices

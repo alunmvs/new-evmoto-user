@@ -1063,7 +1063,12 @@ class RideView extends GetView<RideController> {
                                                 ),
                                                 SizedBox(width: 6),
                                                 Text(
-                                                  "Tambah Rumah",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .addHome ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeRegular
@@ -3392,7 +3397,12 @@ class RideView extends GetView<RideController> {
                                                         .sematicColorRed400
                                                         .value,
                                                     content: Text(
-                                                      "Saldo ECGO tidak mencukupi",
+                                                      controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .snackbarBalanceNotSuccess ??
+                                                          "-",
                                                       style: controller
                                                           .typographyServices
                                                           .bodySmallRegular

@@ -99,6 +99,41 @@ class Language {
   String? cancelOrderReason7;
   String? cancelOrderReasonOther;
   String? cancelOrderReasonManualHint;
+  String? topupBalance;
+  String? myBalance1;
+  String? pleaseSelect;
+  String? enterAmount;
+  String? numberOfRefill;
+  String? minimumTopupBalance10000;
+  String? refillNow;
+  String? balanceHistory;
+  String? deliveryService;
+  String? transactionDetails;
+  String? addHome;
+  String? enterHomeAddress;
+  String? enterYourAddress;
+  String? name;
+  String? enterName;
+  String? locationDetails;
+  String? address;
+  String? saveAddress;
+  String? snackbarLogoutSuccess;
+  String? logoutConfirmation;
+  String? snackbarOrderNotSuccess;
+  String? snackbarAddressAddSuccess;
+  String? snackbarAddressEditSuccess;
+  String? snackbarMinimumRecharge;
+  String? snackbarRechargeSuccess;
+  String? snackbarOtpSuccess;
+  String? snackbarBalanceNotSuccess;
+  String? snackbarRequiredNotSuccess;
+  String? snackbarCancelOrderSuccess;
+  String? snackbarCancelTransactionSuccess;
+  String? snackbarCompleteOrderSuccess;
+  String? snackbarChangeLanguageSuccess;
+  String? snackbarDeleteAddressSuccess;
+  String? delete;
+  String? deleteAddressConfirmation;
 
   Language({
     this.onboardingIntroTitle1,
@@ -201,6 +236,41 @@ class Language {
     this.cancelOrderReason7,
     this.cancelOrderReasonOther,
     this.cancelOrderReasonManualHint,
+    this.topupBalance,
+    this.myBalance1,
+    this.pleaseSelect,
+    this.enterAmount,
+    this.numberOfRefill,
+    this.minimumTopupBalance10000,
+    this.refillNow,
+    this.balanceHistory,
+    this.deliveryService,
+    this.transactionDetails,
+    this.addHome,
+    this.enterHomeAddress,
+    this.enterYourAddress,
+    this.name,
+    this.enterName,
+    this.locationDetails,
+    this.address,
+    this.saveAddress,
+    this.snackbarLogoutSuccess,
+    this.logoutConfirmation,
+    this.snackbarOrderNotSuccess,
+    this.snackbarAddressAddSuccess,
+    this.snackbarAddressEditSuccess,
+    this.snackbarMinimumRecharge,
+    this.snackbarRechargeSuccess,
+    this.snackbarOtpSuccess,
+    this.snackbarBalanceNotSuccess,
+    this.snackbarRequiredNotSuccess,
+    this.snackbarCancelOrderSuccess,
+    this.snackbarCancelTransactionSuccess,
+    this.snackbarCompleteOrderSuccess,
+    this.snackbarChangeLanguageSuccess,
+    this.snackbarDeleteAddressSuccess,
+    this.delete,
+    this.deleteAddressConfirmation,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -305,6 +375,42 @@ class Language {
     cancelOrderReason7 = json['cancel_order_reason_7'];
     cancelOrderReasonOther = json['cancel_order_reason_other'];
     cancelOrderReasonManualHint = json['cancel_order_reason_manual_hint'];
+    topupBalance = json['topup_balance'];
+    myBalance1 = json['my_balance_1'];
+    pleaseSelect = json['please_select'];
+    enterAmount = json['enter_amount'];
+    numberOfRefill = json['number_of_refill'];
+    minimumTopupBalance10000 = json['minimum_topup_balance_10000'];
+    refillNow = json['refill_now'];
+    balanceHistory = json['balance_history'];
+    deliveryService = json['delivery_service'];
+    transactionDetails = json['transaction_details'];
+    addHome = json['add_home'];
+    enterHomeAddress = json['enter_home_address'];
+    enterYourAddress = json['enter_your_address'];
+    name = json['name'];
+    enterName = json['enter_name'];
+    locationDetails = json['location_details'];
+    address = json['address'];
+    saveAddress = json['save_address'];
+    snackbarLogoutSuccess = json['snackbar_logout_success'];
+    logoutConfirmation = json['logout_confirmation'];
+    snackbarOrderNotSuccess = json['snackbar_order_not_success'];
+    snackbarAddressAddSuccess = json['snackbar_address_add_success'];
+    snackbarAddressEditSuccess = json['snackbar_address_edit_success'];
+    snackbarMinimumRecharge = json['snackbar_minimum_recharge'];
+    snackbarRechargeSuccess = json['snackbar_recharge_success'];
+    snackbarOtpSuccess = json['snackbar_otp_success'];
+    snackbarBalanceNotSuccess = json['snackbar_balance_not_success'];
+    snackbarRequiredNotSuccess = json['snackbar_required_not_success'];
+    snackbarCancelOrderSuccess = json['snackbar_cancel_order_success'];
+    snackbarCancelTransactionSuccess =
+        json['snackbar_cancel_transaction_success'];
+    snackbarCompleteOrderSuccess = json['snackbar_complete_order_success'];
+    snackbarChangeLanguageSuccess = json['snackbar_change_language_success'];
+    snackbarDeleteAddressSuccess = json['snackbar_delete_address_success'];
+    delete = json['delete'];
+    deleteAddressConfirmation = json['delete_address_confirmation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -410,6 +516,43 @@ class Language {
     data['cancel_order_reason_7'] = this.cancelOrderReason7;
     data['cancel_order_reason_other'] = this.cancelOrderReasonOther;
     data['cancel_order_reason_manual_hint'] = this.cancelOrderReasonManualHint;
+    data['topup_balance'] = this.topupBalance;
+    data['my_balance_1'] = this.myBalance1;
+    data['please_select'] = this.pleaseSelect;
+    data['enter_amount'] = this.enterAmount;
+    data['number_of_refill'] = this.numberOfRefill;
+    data['minimum_topup_balance_10000'] = this.minimumTopupBalance10000;
+    data['refill_now'] = this.refillNow;
+    data['balance_history'] = this.balanceHistory;
+    data['delivery_service'] = this.deliveryService;
+    data['transaction_details'] = this.transactionDetails;
+    data['add_home'] = this.addHome;
+    data['enter_home_address'] = this.enterHomeAddress;
+    data['enter_your_address'] = this.enterYourAddress;
+    data['name'] = this.name;
+    data['enter_name'] = this.enterName;
+    data['location_details'] = this.locationDetails;
+    data['address'] = this.address;
+    data['save_address'] = this.saveAddress;
+    data['snackbar_logout_success'] = this.snackbarLogoutSuccess;
+    data['logout_confirmation'] = this.logoutConfirmation;
+    data['snackbar_order_not_success'] = this.snackbarOrderNotSuccess;
+    data['snackbar_address_add_success'] = this.snackbarAddressAddSuccess;
+    data['snackbar_address_edit_success'] = this.snackbarAddressEditSuccess;
+    data['snackbar_minimum_recharge'] = this.snackbarMinimumRecharge;
+    data['snackbar_recharge_success'] = this.snackbarRechargeSuccess;
+    data['snackbar_otp_success'] = this.snackbarOtpSuccess;
+    data['snackbar_balance_not_success'] = this.snackbarBalanceNotSuccess;
+    data['snackbar_required_not_success'] = this.snackbarRequiredNotSuccess;
+    data['snackbar_cancel_order_success'] = this.snackbarCancelOrderSuccess;
+    data['snackbar_cancel_transaction_success'] =
+        this.snackbarCancelTransactionSuccess;
+    data['snackbar_complete_order_success'] = this.snackbarCompleteOrderSuccess;
+    data['snackbar_change_language_success'] =
+        this.snackbarChangeLanguageSuccess;
+    data['snackbar_delete_address_success'] = this.snackbarDeleteAddressSuccess;
+    data['delete'] = this.delete;
+    data['delete_address_confirmation'] = this.deleteAddressConfirmation;
     return data;
   }
 }

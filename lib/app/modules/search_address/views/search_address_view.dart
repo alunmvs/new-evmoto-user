@@ -20,9 +20,14 @@ class SearchAddressView extends GetView<SearchAddressController> {
             controller.isFetch.value
                 ? ""
                 : controller.addressType.value == 1
-                ? "Tambah Rumah"
+                ? controller.languageServices.language.value.addHome ?? "-"
                 : controller.addressType.value == 2
-                ? "Tambah Kantor"
+                ? controller
+                          .languageServices
+                          .language
+                          .value
+                          .addLocationOffice ??
+                      "-"
                 : "Tambah Lokasi Lainnya",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
@@ -108,7 +113,12 @@ class SearchAddressView extends GetView<SearchAddressController> {
                         children: [
                           Text(
                             controller.addressType.value == 1
-                                ? "Masukkan Alamat Rumah"
+                                ? controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .enterHomeAddress ??
+                                      "-"
                                 : controller.addressType.value == 2
                                 ? "Masukkan Alamat Kantor"
                                 : "Masukkan Alamat",
@@ -129,7 +139,13 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                 vertical: 12,
                                 horizontal: 12,
                               ),
-                              hintText: "Masukkan Alamat Kamu",
+                              hintText:
+                                  controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .enterYourAddress ??
+                                  "-",
                               hintStyle: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -248,7 +264,12 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                     SizedBox(height: 8),
                                     Text(
                                       controller.addressType.value == 1
-                                          ? "Masukkan Alamat Rumah"
+                                          ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterHomeAddress ??
+                                                "-"
                                           : controller.addressType.value == 2
                                           ? "Masukkan Alamat Kantor"
                                           : "Masukkan Alamat",
@@ -287,7 +308,13 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                             vertical: 12,
                                             horizontal: 12,
                                           ),
-                                          hintText: "Masukkan Alamat Kamu",
+                                          hintText:
+                                              controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .enterYourAddress ??
+                                              "-",
                                           hintStyle: controller
                                               .typographyServices
                                               .bodySmallRegular
