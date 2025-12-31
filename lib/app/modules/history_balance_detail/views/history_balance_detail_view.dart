@@ -105,7 +105,10 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
+                            DateFormat(
+                              'dd MMMM yyyy ⬩ HH:mm',
+                              controller.languageServices.languageCode.value,
+                            ).format(
                               controller
                                   .balanceHistoryConsumption
                                   .value
@@ -251,7 +254,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Total",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .total ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallBold
@@ -347,7 +355,10 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
+                            DateFormat(
+                              'dd MMMM yyyy ⬩ HH:mm',
+                              controller.languageServices.languageCode.value,
+                            ).format(
                               controller
                                   .balanceHistoryDeposit
                                   .value

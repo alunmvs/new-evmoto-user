@@ -20,7 +20,7 @@
     "verification_otp_resend": "Kirim Ulang",
     "verification_otp_not_match": "Kode yang anda masukkan salah",
     "home_ride_ready_to_go_title": "Siap jalan? tentukan tujuanmu",
-    "home_ride_ready_to_go_hint": "Mau Kemana Hari Ini?",
+    "home_ride_ready_to_go_hint": "Mau kemana hari Ini?",
     "add_location_home": "Tambah Rumah",
     "add_location_office": "Tambah Kantor",
     "add_location_other": "Lokasi Lainnya",
@@ -90,7 +90,7 @@
     "cancel_order": "Batalkan Pesanan",
     "cancel_order_confirmation_title": "Mengapa Anda membatalkan pesanan Anda?",
     "cancel_order_confirmation_description": "Mohon beri tahu kami agar kami dapat melakukan perbaikan.",
-    "cancel_order_reason_1": "Saya tidak membutuhkan mobil untuk sementara waktu karena perubahan jadwal perjalanan.",
+    "cancel_order_reason_1": "Saya tidak membutuhkan mobil untuk sementara waktu karena adanya perubahan rencana perjalanan.",
     "cancel_order_reason_2": "Karena terburu-buru, saya perlu berganti menggunakan alat transportasi lain.",
     "cancel_order_reason_3": "Kendaraan yang dikirim oleh platform tersebut terlalu jauh.",
     "cancel_order_reason_4": "Sopir itu tidak datang menjemput saya karena berbagai alasan.",
@@ -180,5 +180,12 @@
     "long_distance_fee": "Biaya panggilan jarak jauh",
     "surcharge": "Biaya tambahan",
     "collected_by_drivers": "Dikumpulkan oleh pengemudi",
-    "finished": "Selesai"
+    "finished": "Selesai",
+    "meter": "M",
+    "enter_the_destination_location": "Masukkan lokasi tujuan",
+    "ends_on": "Berakhir pada",
+    "no_minimum_transaction": "Tidak Ada Minimal Transaksi",
+    "minimum_transaction": "Minimal Transaksi",
+    "saved_address_not_found_title": "Tidak Memiliki Alamat Tersimpan",
+    "saved_address_not_found_description": "Simpan alamat agar pemesanan berikutnya lebih cepat."
 }

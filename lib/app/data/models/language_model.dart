@@ -181,6 +181,13 @@ class Language {
   String? surcharge;
   String? collectedByDrivers;
   String? finished;
+  String? meter;
+  String? enterTheDestinationLocation;
+  String? endsOn;
+  String? noMinimumTransaction;
+  String? minimumTransaction;
+  String? savedAddressNotFoundTitle;
+  String? savedAddressNotFoundDescription;
 
   Language({
     this.onboardingIntroTitle1,
@@ -365,6 +372,13 @@ class Language {
     this.surcharge,
     this.collectedByDrivers,
     this.finished,
+    this.meter,
+    this.enterTheDestinationLocation,
+    this.endsOn,
+    this.noMinimumTransaction,
+    this.minimumTransaction,
+    this.savedAddressNotFoundTitle,
+    this.savedAddressNotFoundDescription,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -554,6 +568,14 @@ class Language {
     surcharge = json['surcharge'];
     collectedByDrivers = json['collected_by_drivers'];
     finished = json['finished'];
+    meter = json['meter'];
+    enterTheDestinationLocation = json['enter_the_destination_location'];
+    endsOn = json['ends_on'];
+    noMinimumTransaction = json['no_minimum_transaction'];
+    minimumTransaction = json['minimum_transaction'];
+    savedAddressNotFoundTitle = json['saved_address_not_found_title'];
+    savedAddressNotFoundDescription =
+        json['saved_address_not_found_description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -747,6 +769,14 @@ class Language {
     data['surcharge'] = this.surcharge;
     data['collected_by_drivers'] = this.collectedByDrivers;
     data['finished'] = this.finished;
+    data['meter'] = this.meter;
+    data['enter_the_destination_location'] = this.enterTheDestinationLocation;
+    data['ends_on'] = this.endsOn;
+    data['no_minimum_transaction'] = this.noMinimumTransaction;
+    data['minimum_transaction'] = this.minimumTransaction;
+    data['saved_address_not_found_title'] = this.savedAddressNotFoundTitle;
+    data['saved_address_not_found_description'] =
+        this.savedAddressNotFoundDescription;
     return data;
   }
 }

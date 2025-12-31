@@ -90,7 +90,7 @@
     "cancel_order": "取消订单",
     "cancel_order_confirmation_title": "你为什么取消订单？",
     "cancel_order_confirmation_description": "请告知我们，以便我们改进。",
-    "cancel_order_reason_1": "由于行程安排有所变动，我暂时不需要用车。",
+    "cancel_order_reason_1": "由于旅行计划有变，我暂时不需要用车。",
     "cancel_order_reason_2": "因为我赶时间，所以需要换乘另一种交通工具。",
     "cancel_order_reason_3": "平台派出的车辆距离太远了。",
     "cancel_order_reason_4": "由于各种原因，司机没有来接我。",
@@ -110,7 +110,7 @@
     "delivery_service": "送货服务",
     "transaction_details": "交易详情",
     "add_home": "添加首页",
-    "enter_home_address": "输入家庭住址",
+    "enter_home_address": "请输入家庭住址",
     "enter_your_address": "请输入您的地址",
     "name": "姓名",
     "enter_name": "输入姓名",
@@ -180,5 +180,12 @@
     "long_distance_fee": "长途电话费用",
     "surcharge": "额外费用",
     "collected_by_drivers": "由司机收取",
-    "finished": "完成的"
+    "finished": "完成的",
+    "meter": "米",
+    "enter_the_destination_location": "输入目的地",
+    "ends_on": "结束于",
+    "no_minimum_transaction": "无最低交易额限制",
+    "minimum_transaction": "最低交易额",
+    "saved_address_not_found_title": "未保存地址",
+    "saved_address_not_found_description": "保存此地址，以便下次订购更快捷。"
 }

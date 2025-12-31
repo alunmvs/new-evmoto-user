@@ -279,7 +279,13 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                                       .arriveTime ==
                                                   ""
                                               ? "-"
-                                              : DateFormat('HH:mm').format(
+                                              : DateFormat(
+                                                  'HH:mm',
+                                                  controller
+                                                      .languageServices
+                                                      .languageCode
+                                                      .value,
+                                                ).format(
                                                   DateTime.parse(
                                                     controller
                                                         .orderRideDetail

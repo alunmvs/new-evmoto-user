@@ -92,7 +92,7 @@ class AccountController extends GetxController {
                                   Get.close(1);
                                 },
                                 child: Text(
-                                  "Batal",
+                                  languageServices.language.value.cancel ?? "-",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color: themeColorServices
@@ -149,7 +149,7 @@ class AccountController extends GetxController {
                                   ),
                                 ),
                                 child: Text(
-                                  "Keluar",
+                                  languageServices.language.value.logout ?? "-",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color: themeColorServices

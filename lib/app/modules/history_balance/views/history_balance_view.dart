@@ -171,6 +171,10 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                     child: Text(
                                       DateFormat(
                                         'dd MMMM yyyy',
+                                        controller
+                                            .languageServices
+                                            .languageCode
+                                            .value,
                                       ).format(createDate),
                                       style: controller
                                           .typographyServices

@@ -229,7 +229,13 @@ class RideChatView extends GetView<RideChatController> {
                                             null) ...[
                                           SizedBox(height: 8),
                                           Text(
-                                            DateFormat('HH:mm').format(
+                                            DateFormat(
+                                              'HH:mm',
+                                              controller
+                                                  .languageServices
+                                                  .languageCode
+                                                  .value,
+                                            ).format(
                                               messageList[i]['createdAt']
                                                   .toDate(),
                                             ),
@@ -322,7 +328,13 @@ class RideChatView extends GetView<RideChatController> {
                                               null) ...[
                                             SizedBox(height: 8),
                                             Text(
-                                              DateFormat('HH:mm').format(
+                                              DateFormat(
+                                                'HH:mm',
+                                                controller
+                                                    .languageServices
+                                                    .languageCode
+                                                    .value,
+                                              ).format(
                                                 messageList[i]['createdAt']
                                                     .toDate(),
                                               ),
@@ -470,7 +482,13 @@ class RideChatView extends GetView<RideChatController> {
                                   horizontal: 12,
                                   vertical: 12,
                                 ),
-                                hintText: 'Ketik Pesan...',
+                                hintText:
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .typeMessage ??
+                                    "-",
                                 hintStyle: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -617,7 +635,12 @@ class RideChatView extends GetView<RideChatController> {
                                         ),
                                         SizedBox(height: 8),
                                         Text(
-                                          "Galeri",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .gallery ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -684,7 +707,12 @@ class RideChatView extends GetView<RideChatController> {
                                         ),
                                         SizedBox(height: 8),
                                         Text(
-                                          "Kamera",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .camera ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular

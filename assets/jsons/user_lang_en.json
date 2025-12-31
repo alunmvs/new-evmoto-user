@@ -180,5 +180,12 @@
     "long_distance_fee": "Long distance fee",
     "surcharge": "Surcharge",
     "collected_by_drivers": "Collected by drivers",
-    "finished": "Finished"
+    "finished": "Finished",
+    "meter": "M",
+    "enter_the_destination_location": "Enter the destination location",
+    "ends_on": "Ends on",
+    "no_minimum_transaction": "No Minimum Transaction",
+    "minimum_transaction": "Minimum Transaction",
+    "saved_address_not_found_title": "No Address Saved",
+    "saved_address_not_found_description": "Save the address to make your next order faster."
 }

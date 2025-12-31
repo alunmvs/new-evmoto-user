@@ -14,7 +14,8 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pengaturan Lokasi Favorit",
+            controller.languageServices.language.value.settingSavedLocation ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -84,6 +85,44 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 16),
+                            if (controller.savedAddressList.isEmpty) ...[
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .savedAddressNotFoundTitle ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .savedAddressNotFoundDescription ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                             ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Container(
