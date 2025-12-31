@@ -187,5 +187,7 @@
     "no_minimum_transaction": "无最低交易额限制",
     "minimum_transaction": "最低交易额",
     "saved_address_not_found_title": "未保存地址",
-    "saved_address_not_found_description": "保存此地址，以便下次订购更快捷。"
+    "saved_address_not_found_description": "保存此地址，以便下次订购更快捷。",
+    "activity_not_found_title": "暂无历史记录",
+    "activity_not_found_description": "请完成第一个练习，并查看这里的笔记！"
 }

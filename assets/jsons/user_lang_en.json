@@ -187,5 +187,7 @@
     "no_minimum_transaction": "No Minimum Transaction",
     "minimum_transaction": "Minimum Transaction",
     "saved_address_not_found_title": "No Address Saved",
-    "saved_address_not_found_description": "Save the address to make your next order faster."
+    "saved_address_not_found_description": "Save the address to make your next order faster.",
+    "activity_not_found_title": "No History Activity Yet",
+    "activity_not_found_description": "Do the first activity and see the notes here!"
 }

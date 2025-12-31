@@ -838,7 +838,12 @@ class ActivityView extends GetView<ActivityController> {
                                               ),
                                               SizedBox(height: 16),
                                               Text(
-                                                "Belum Ada Aktivitas Riwayat",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .activityNotFoundTitle ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodyLargeBold
@@ -847,7 +852,12 @@ class ActivityView extends GetView<ActivityController> {
                                               ),
                                               SizedBox(height: 8),
                                               Text(
-                                                "Lakukan aktivitas pertama dan lihat catatannya di sini!",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .activityNotFoundDescription ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallRegular

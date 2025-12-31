@@ -188,6 +188,8 @@ class Language {
   String? minimumTransaction;
   String? savedAddressNotFoundTitle;
   String? savedAddressNotFoundDescription;
+  String? activityNotFoundTitle;
+  String? activityNotFoundDescription;
 
   Language({
     this.onboardingIntroTitle1,
@@ -379,6 +381,8 @@ class Language {
     this.minimumTransaction,
     this.savedAddressNotFoundTitle,
     this.savedAddressNotFoundDescription,
+    this.activityNotFoundTitle,
+    this.activityNotFoundDescription,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -576,6 +580,8 @@ class Language {
     savedAddressNotFoundTitle = json['saved_address_not_found_title'];
     savedAddressNotFoundDescription =
         json['saved_address_not_found_description'];
+    activityNotFoundTitle = json['activity_not_found_title'];
+    activityNotFoundDescription = json['activity_not_found_description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -777,6 +783,8 @@ class Language {
     data['saved_address_not_found_title'] = this.savedAddressNotFoundTitle;
     data['saved_address_not_found_description'] =
         this.savedAddressNotFoundDescription;
+    data['activity_not_found_title'] = this.activityNotFoundTitle;
+    data['activity_not_found_description'] = this.activityNotFoundDescription;
     return data;
   }
 }
