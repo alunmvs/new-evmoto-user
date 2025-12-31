@@ -402,7 +402,7 @@ class RideController extends GetxController {
                   ),
                 );
           } else {
-            highlightedWordAddressOrigin["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+            highlightedWordAddressOrigin["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -445,7 +445,7 @@ class RideController extends GetxController {
                   ),
                 );
           } else {
-            highlightedWordAddressDestination["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+            highlightedWordAddressDestination["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -492,7 +492,7 @@ class RideController extends GetxController {
     recommendationOriginCurrentLocationList.value = [];
     recommendationOriginCurrentLocationList.add(
       RecommendationLocation(
-        name: "Lokasi Saat Ini",
+        name: languageServices.language.value.currentLocation ?? "-",
         id: "${currentLocationDetail.first.formattedAddress}",
         latitude: currentLatitude.value,
         longitude: currentLongitude.value,
@@ -530,7 +530,8 @@ class RideController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Pilih Pembayaran",
+                            languageServices.language.value.selectPayment ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value,
                           ),
                           GestureDetector(
@@ -770,7 +771,11 @@ class RideController extends GetxController {
                                     child: Row(
                                       children: [
                                         Text(
-                                          "Tap disini untuk topup",
+                                          languageServices
+                                                  .language
+                                                  .value
+                                                  .tapHereToTopUp ??
+                                              "-",
                                           style: typographyServices
                                               .captionLargeBold
                                               .value
@@ -1052,7 +1057,11 @@ class RideController extends GetxController {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Cash",
+                                          languageServices
+                                                  .language
+                                                  .value
+                                                  .cash ??
+                                              "-",
                                           style: typographyServices
                                               .bodySmallBold
                                               .value
@@ -1064,7 +1073,11 @@ class RideController extends GetxController {
                                         ),
                                         SizedBox(height: 2),
                                         Text(
-                                          "Siapkan uang pas untuk perjalananmu",
+                                          languageServices
+                                                  .language
+                                                  .value
+                                                  .prepareTheExactAmountOfMoney ??
+                                              "-",
                                           style: typographyServices
                                               .captionLargeRegular
                                               .value
@@ -1399,9 +1412,9 @@ class RideController extends GetxController {
     int menit = (estimatedTimeInMinutes.value % 60).round();
 
     if (jam > 0) {
-      return '$jam Jam $menit Menit';
+      return '$jam ${languageServices.language.value.hour} $menit ${languageServices.language.value.minute}';
     } else {
-      return '$menit Menit';
+      return '$menit ${languageServices.language.value.minute}';
     }
   }
 }

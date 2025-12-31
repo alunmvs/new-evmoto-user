@@ -134,6 +134,53 @@ class Language {
   String? snackbarDeleteAddressSuccess;
   String? delete;
   String? deleteAddressConfirmation;
+  String? addOtherAddress;
+  String? insertOfficeAddress;
+  String? insertAddress;
+  String? introRideTitle;
+  String? introRideDescription;
+  String? introRideButton;
+  String? foodDelivery;
+  String? introFoodDeliveryTitle;
+  String? introFoodDeliveryDescription;
+  String? introFoodDeliveryButton;
+  String? packageDelivery;
+  String? introPackageDeliveryTitle;
+  String? introPackageDeliveryDescription;
+  String? introPackageDeliveryButton;
+  String? enterPickupLocation;
+  String? enterYourDestinationLocation;
+  String? currentLocation;
+  String? selectViaMap;
+  String? confirmation;
+  String? location;
+  String? locationNotFound;
+  String? makeSureTheAddressEnteredIsCorrect;
+  String? orderEvMoto;
+  String? promo;
+  String? havePromoCode;
+  String? enterPromoCode;
+  String? usePromo;
+  String? voucherDetail;
+  String? selectPayment;
+  String? tapHereToTopUp;
+  String? cash;
+  String? prepareTheExactAmountOfMoney;
+  String? km;
+  String? evMotorcycleDriverSearch;
+  String? passenger;
+  String? noMessagesYet;
+  String? yourEstimateToYourDestination;
+  String? howTravelExperience;
+  String? scoreTravelExperience;
+  String? startingPrice;
+  String? waitFee;
+  String? mileageFee;
+  String? timeCost;
+  String? longDistanceFee;
+  String? surcharge;
+  String? collectedByDrivers;
+  String? finished;
 
   Language({
     this.onboardingIntroTitle1,
@@ -271,6 +318,53 @@ class Language {
     this.snackbarDeleteAddressSuccess,
     this.delete,
     this.deleteAddressConfirmation,
+    this.addOtherAddress,
+    this.insertOfficeAddress,
+    this.insertAddress,
+    this.introRideTitle,
+    this.introRideDescription,
+    this.introRideButton,
+    this.foodDelivery,
+    this.introFoodDeliveryTitle,
+    this.introFoodDeliveryDescription,
+    this.introFoodDeliveryButton,
+    this.packageDelivery,
+    this.introPackageDeliveryTitle,
+    this.introPackageDeliveryDescription,
+    this.introPackageDeliveryButton,
+    this.enterPickupLocation,
+    this.enterYourDestinationLocation,
+    this.currentLocation,
+    this.selectViaMap,
+    this.confirmation,
+    this.location,
+    this.locationNotFound,
+    this.makeSureTheAddressEnteredIsCorrect,
+    this.orderEvMoto,
+    this.promo,
+    this.havePromoCode,
+    this.enterPromoCode,
+    this.usePromo,
+    this.voucherDetail,
+    this.selectPayment,
+    this.tapHereToTopUp,
+    this.cash,
+    this.prepareTheExactAmountOfMoney,
+    this.km,
+    this.evMotorcycleDriverSearch,
+    this.passenger,
+    this.noMessagesYet,
+    this.yourEstimateToYourDestination,
+    this.howTravelExperience,
+    this.scoreTravelExperience,
+    this.startingPrice,
+    this.waitFee,
+    this.mileageFee,
+    this.timeCost,
+    this.longDistanceFee,
+    this.surcharge,
+    this.collectedByDrivers,
+    this.finished,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -411,6 +505,55 @@ class Language {
     snackbarDeleteAddressSuccess = json['snackbar_delete_address_success'];
     delete = json['delete'];
     deleteAddressConfirmation = json['delete_address_confirmation'];
+    addOtherAddress = json['add_other_address'];
+    insertOfficeAddress = json['insert_office_address'];
+    insertAddress = json['insert_address'];
+    introRideTitle = json['intro_ride_title'];
+    introRideDescription = json['intro_ride_description'];
+    introRideButton = json['intro_ride_button'];
+    foodDelivery = json['food_delivery'];
+    introFoodDeliveryTitle = json['intro_food_delivery_title'];
+    introFoodDeliveryDescription = json['intro_food_delivery_description'];
+    introFoodDeliveryButton = json['intro_food_delivery_button'];
+    packageDelivery = json['package_delivery'];
+    introPackageDeliveryTitle = json['intro_package_delivery_title'];
+    introPackageDeliveryDescription =
+        json['intro_package_delivery_description'];
+    introPackageDeliveryButton = json['intro_package_delivery_button'];
+    enterPickupLocation = json['enter_pickup_location'];
+    enterYourDestinationLocation = json['enter_your_destination_location'];
+    currentLocation = json['current_location'];
+    selectViaMap = json['select_via_map'];
+    confirmation = json['confirmation'];
+    location = json['location'];
+    locationNotFound = json['location_not_found'];
+    makeSureTheAddressEnteredIsCorrect =
+        json['make_sure_the_address_entered_is_correct'];
+    orderEvMoto = json['order_ev_moto'];
+    promo = json['promo'];
+    havePromoCode = json['have_promo_code'];
+    enterPromoCode = json['enter_promo_code'];
+    usePromo = json['use_promo'];
+    voucherDetail = json['voucher_detail'];
+    selectPayment = json['select_payment'];
+    tapHereToTopUp = json['tap_here_to_top_up'];
+    cash = json['cash'];
+    prepareTheExactAmountOfMoney = json['prepare_the_exact_amount_of_money'];
+    km = json['km'];
+    evMotorcycleDriverSearch = json['ev_motorcycle_driver_search'];
+    passenger = json['passenger'];
+    noMessagesYet = json['no_messages_yet'];
+    yourEstimateToYourDestination = json['your_estimate_to_your_destination'];
+    howTravelExperience = json['how_travel_experience'];
+    scoreTravelExperience = json['score_travel_experience'];
+    startingPrice = json['starting_price'];
+    waitFee = json['wait_fee'];
+    mileageFee = json['mileage_fee'];
+    timeCost = json['time_cost'];
+    longDistanceFee = json['long_distance_fee'];
+    surcharge = json['surcharge'];
+    collectedByDrivers = json['collected_by_drivers'];
+    finished = json['finished'];
   }
 
   Map<String, dynamic> toJson() {
@@ -553,6 +696,57 @@ class Language {
     data['snackbar_delete_address_success'] = this.snackbarDeleteAddressSuccess;
     data['delete'] = this.delete;
     data['delete_address_confirmation'] = this.deleteAddressConfirmation;
+    data['add_other_address'] = this.addOtherAddress;
+    data['insert_office_address'] = this.insertOfficeAddress;
+    data['insert_address'] = this.insertAddress;
+    data['intro_ride_title'] = this.introRideTitle;
+    data['intro_ride_description'] = this.introRideDescription;
+    data['intro_ride_button'] = this.introRideButton;
+    data['food_delivery'] = this.foodDelivery;
+    data['intro_food_delivery_title'] = this.introFoodDeliveryTitle;
+    data['intro_food_delivery_description'] = this.introFoodDeliveryDescription;
+    data['intro_food_delivery_button'] = this.introFoodDeliveryButton;
+    data['package_delivery'] = this.packageDelivery;
+    data['intro_package_delivery_title'] = this.introPackageDeliveryTitle;
+    data['intro_package_delivery_description'] =
+        this.introPackageDeliveryDescription;
+    data['intro_package_delivery_button'] = this.introPackageDeliveryButton;
+    data['enter_pickup_location'] = this.enterPickupLocation;
+    data['enter_your_destination_location'] = this.enterYourDestinationLocation;
+    data['current_location'] = this.currentLocation;
+    data['select_via_map'] = this.selectViaMap;
+    data['confirmation'] = this.confirmation;
+    data['location'] = this.location;
+    data['location_not_found'] = this.locationNotFound;
+    data['make_sure_the_address_entered_is_correct'] =
+        this.makeSureTheAddressEnteredIsCorrect;
+    data['order_ev_moto'] = this.orderEvMoto;
+    data['promo'] = this.promo;
+    data['have_promo_code'] = this.havePromoCode;
+    data['enter_promo_code'] = this.enterPromoCode;
+    data['use_promo'] = this.usePromo;
+    data['voucher_detail'] = this.voucherDetail;
+    data['select_payment'] = this.selectPayment;
+    data['tap_here_to_top_up'] = this.tapHereToTopUp;
+    data['cash'] = this.cash;
+    data['prepare_the_exact_amount_of_money'] =
+        this.prepareTheExactAmountOfMoney;
+    data['km'] = this.km;
+    data['ev_motorcycle_driver_search'] = this.evMotorcycleDriverSearch;
+    data['passenger'] = this.passenger;
+    data['no_messages_yet'] = this.noMessagesYet;
+    data['your_estimate_to_your_destination'] =
+        this.yourEstimateToYourDestination;
+    data['how_travel_experience'] = this.howTravelExperience;
+    data['score_travel_experience'] = this.scoreTravelExperience;
+    data['starting_price'] = this.startingPrice;
+    data['wait_fee'] = this.waitFee;
+    data['mileage_fee'] = this.mileageFee;
+    data['time_cost'] = this.timeCost;
+    data['long_distance_fee'] = this.longDistanceFee;
+    data['surcharge'] = this.surcharge;
+    data['collected_by_drivers'] = this.collectedByDrivers;
+    data['finished'] = this.finished;
     return data;
   }
 }

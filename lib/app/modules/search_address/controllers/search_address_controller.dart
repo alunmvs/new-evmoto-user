@@ -130,7 +130,7 @@ class SearchAddressController extends GetxController {
           location.customDistanceM = distanceMeter;
 
           if (distanceKm < 1) {
-            highlightedWordAddress["${distanceMeter.round()}m ⬩"] =
+            highlightedWordAddress["${distanceMeter.round()} m ⬩"] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -138,7 +138,7 @@ class SearchAddressController extends GetxController {
                   ),
                 );
           } else {
-            highlightedWordAddress["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+            highlightedWordAddress["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -155,9 +155,9 @@ class SearchAddressController extends GetxController {
     required GooglePlaceTextSearch googlePlaceTextSearch,
   }) {
     if (googlePlaceTextSearch.customDistanceKm! < 1) {
-      return "${googlePlaceTextSearch.customDistanceM!.round()}m";
+      return "${googlePlaceTextSearch.customDistanceM!.round()} m";
     } else {
-      return "${googlePlaceTextSearch.customDistanceKm!.toStringAsFixed(2)}km";
+      return "${googlePlaceTextSearch.customDistanceKm!.toStringAsFixed(2)} ${languageServices.language.value.km}";
     }
   }
 }

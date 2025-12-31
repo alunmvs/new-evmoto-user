@@ -15,7 +15,7 @@ class SelectPromoView extends GetView<SelectPromoController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Promo",
+            controller.languageServices.language.value.promo ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -68,7 +68,12 @@ class SelectPromoView extends GetView<SelectPromoController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Punya Kode Promosi?",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .havePromoCode ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodyLargeBold
@@ -97,7 +102,13 @@ class SelectPromoView extends GetView<SelectPromoController> {
                               horizontal: 12,
                               vertical: 12,
                             ),
-                            hintText: "Masukkan Kode Promosi",
+                            hintText:
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .enterPromoCode ??
+                                "-",
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -334,7 +345,12 @@ class SelectPromoView extends GetView<SelectPromoController> {
                                                       ),
                                                 ),
                                                 child: Text(
-                                                  "Gunakan Promo",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .usePromo ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeBold

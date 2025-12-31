@@ -213,7 +213,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Pencarian Driver EV Moto...",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .evMotorcycleDriverSearch ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodyLargeBold
@@ -318,7 +323,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                           ),
                                           SizedBox(width: 4),
                                           Text(
-                                            "1 Penumpang",
+                                            "1 ${controller.languageServices.language.value.passenger}",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular
@@ -420,7 +425,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                         ),
                                         SizedBox(width: 11),
                                         Text(
-                                          "Cash",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .cash ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodyLargeBold
@@ -1454,7 +1464,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                       ),
                                       SizedBox(width: 8),
                                       Text(
-                                        "Estimasi Kamu sampai Tujuanmu",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .yourEstimateToYourDestination ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallBold

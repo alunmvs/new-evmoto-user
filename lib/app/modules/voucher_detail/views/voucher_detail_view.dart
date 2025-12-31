@@ -14,7 +14,7 @@ class VoucherDetailView extends GetView<VoucherDetailController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Detail Voucher",
+            controller.languageServices.language.value.voucherDetail ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -495,7 +495,8 @@ class VoucherDetailView extends GetView<VoucherDetailController> {
                           ),
                         ),
                         child: Text(
-                          "Gunakan Promo",
+                          controller.languageServices.language.value.usePromo ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodyLargeBold

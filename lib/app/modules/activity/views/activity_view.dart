@@ -306,7 +306,12 @@ class ActivityView extends GetView<ActivityController> {
                                         ),
                                       ),
                                       child: Text(
-                                        "Pesan EV Moto",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .orderEvMoto ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodyLargeBold

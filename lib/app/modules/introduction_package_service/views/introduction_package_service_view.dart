@@ -24,7 +24,7 @@ class IntroductionPackageServiceView
             ),
           ),
           title: Text(
-            "Layanan Paket",
+            controller.languageServices.language.value.packageDelivery ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -77,7 +77,12 @@ class IntroductionPackageServiceView
                         child: Column(
                           children: [
                             Text(
-                              "Layanan Pengiriman\nPaket Segera Tiba!",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .introPackageDeliveryTitle ??
+                                  "-",
                               textAlign: TextAlign.center,
                               style: controller
                                   .typographyServices
@@ -86,7 +91,12 @@ class IntroductionPackageServiceView
                             ),
                             SizedBox(height: 16),
                             Text(
-                              "Kami sedang menyiapkan layanan pengiriman yang lebih cepat, mudah, & ramah lingkungan! Bersiaplah untuk pengalaman kirim paket tanpa ribet!",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .introPackageDeliveryDescription ??
+                                  "-",
                               textAlign: TextAlign.center,
                               style: controller
                                   .typographyServices
@@ -107,7 +117,12 @@ class IntroductionPackageServiceView
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            "Segera Hadir",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .comingSoon ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .captionLargeBold
@@ -146,7 +161,12 @@ class IntroductionPackageServiceView
                           ),
                         ),
                         child: Text(
-                          "Ingatkan Saya Kalau Sudah Siap",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .introPackageDeliveryButton ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodyLargeBold

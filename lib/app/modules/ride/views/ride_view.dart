@@ -50,7 +50,12 @@ class RideView extends GetView<RideController> {
             appBar: controller.status.value == "done"
                 ? AppBar(
                     title: Text(
-                      "Order Selesai",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .orderCompleted ??
+                          "-",
                       style: controller.typographyServices.bodyLargeBold.value,
                     ),
                     centerTitle: false,
@@ -324,7 +329,12 @@ class RideView extends GetView<RideController> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "Mau Kemana Hari Ini?",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .homeRideReadyToGoHint ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodyLargeBold
@@ -369,7 +379,12 @@ class RideView extends GetView<RideController> {
                                               ),
                                               SizedBox(width: 4),
                                               Text(
-                                                "Pilih Lewat Peta",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .selectViaMap ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .captionLargeRegular
@@ -444,7 +459,12 @@ class RideView extends GetView<RideController> {
                                                   vertical: 8,
                                                 ),
                                             hintText:
-                                                'Masukkan lokasi penjemputan',
+                                                controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterPickupLocation ??
+                                                "-",
                                             hintStyle: controller
                                                 .typographyServices
                                                 .bodySmallRegular
@@ -1137,7 +1157,12 @@ class RideView extends GetView<RideController> {
                                                 ),
                                                 SizedBox(width: 6),
                                                 Text(
-                                                  "Tambah Kantor",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .addLocationOffice ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeRegular
@@ -1206,7 +1231,12 @@ class RideView extends GetView<RideController> {
                                                 ),
                                                 SizedBox(width: 6),
                                                 Text(
-                                                  "Lokasi Lainnya",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .addLocationOther ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeRegular
@@ -1254,7 +1284,12 @@ class RideView extends GetView<RideController> {
                                                 ),
                                                 SizedBox(height: 16),
                                                 Text(
-                                                  "Lokasi Tidak Ditemukan",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .locationNotFound ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallBold
@@ -1263,7 +1298,12 @@ class RideView extends GetView<RideController> {
                                                 ),
                                                 SizedBox(height: 8),
                                                 Text(
-                                                  "Pastikan alamat yang dimasukkan sudah benar atau pilih titik terdekat yang bisa dijangkau driver",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .makeSureTheAddressEnteredIsCorrect ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallRegular
@@ -1810,7 +1850,12 @@ class RideView extends GetView<RideController> {
                                                 ),
                                                 SizedBox(height: 16),
                                                 Text(
-                                                  "Lokasi Tidak Ditemukan",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .locationNotFound ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallBold
@@ -1818,7 +1863,12 @@ class RideView extends GetView<RideController> {
                                                 ),
                                                 SizedBox(height: 8),
                                                 Text(
-                                                  "Pastikan alamat yang dimasukkan sudah benar atau pilih titik terdekat yang bisa dijangkau driver",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .makeSureTheAddressEnteredIsCorrect ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallRegular
@@ -1830,8 +1880,12 @@ class RideView extends GetView<RideController> {
                                           ),
                                         ],
                                         if (controller
-                                            .destinationGooglePlaceTextSearchList
-                                            .isEmpty) ...[
+                                                .destinationGooglePlaceTextSearchList
+                                                .isEmpty &&
+                                            controller
+                                                    .keywordDestination
+                                                    .value ==
+                                                "") ...[
                                           for (var recommendationDestinationLocation
                                               in controller
                                                   .recommendationDestinationLocationList) ...[
@@ -2474,7 +2528,12 @@ class RideView extends GetView<RideController> {
                                         ),
                                       ),
                                       child: Text(
-                                        "Konfirmasi",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .confirmation ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodyLargeBold
@@ -2820,7 +2879,7 @@ class RideView extends GetView<RideController> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      "${formatDoubleToString(controller.estimatedDistanceInKm.value)} Km",
+                                      "${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km}",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -3021,7 +3080,7 @@ class RideView extends GetView<RideController> {
                                                               width: 2.5,
                                                             ),
                                                             Text(
-                                                              "1 Penumpang",
+                                                              "1 ${controller.languageServices.language.value.passenger}",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodySmallRegular
@@ -3249,7 +3308,12 @@ class RideView extends GetView<RideController> {
                                                           ),
                                                           SizedBox(width: 4),
                                                           Text(
-                                                            "Cash",
+                                                            controller
+                                                                    .languageServices
+                                                                    .language
+                                                                    .value
+                                                                    .cash ??
+                                                                "-",
                                                             style: controller
                                                                 .typographyServices
                                                                 .bodySmallBold
@@ -3326,7 +3390,12 @@ class RideView extends GetView<RideController> {
                                                                       .value
                                                                       .id ==
                                                                   null
-                                                              ? "Promo"
+                                                              ? controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .promo ??
+                                                                    "-"
                                                               : controller
                                                                     .selectedCoupon
                                                                     .value
@@ -3447,7 +3516,12 @@ class RideView extends GetView<RideController> {
                                               ),
                                             ),
                                             child: Text(
-                                              "Pesan EV Moto",
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .orderEvMoto ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .bodyLargeBold

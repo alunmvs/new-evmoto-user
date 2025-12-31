@@ -28,7 +28,8 @@ class SearchAddressView extends GetView<SearchAddressController> {
                           .value
                           .addLocationOffice ??
                       "-"
-                : "Tambah Lokasi Lainnya",
+                : controller.languageServices.language.value.addOtherAddress ??
+                      "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -120,8 +121,18 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                           .enterHomeAddress ??
                                       "-"
                                 : controller.addressType.value == 2
-                                ? "Masukkan Alamat Kantor"
-                                : "Masukkan Alamat",
+                                ? controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .insertOfficeAddress ??
+                                      "-"
+                                : controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .insertAddress ??
+                                      "-",
                             style: controller
                                 .typographyServices
                                 .bodyLargeBold
@@ -271,8 +282,18 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                     .enterHomeAddress ??
                                                 "-"
                                           : controller.addressType.value == 2
-                                          ? "Masukkan Alamat Kantor"
-                                          : "Masukkan Alamat",
+                                          ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .insertOfficeAddress ??
+                                                "-"
+                                          : controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .insertAddress ??
+                                                "-",
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold

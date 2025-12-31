@@ -135,10 +135,21 @@ class RideChatView extends GetView<RideChatController> {
                           .toString(),
                     ),
                     builder: (context, snapshot) {
-                      // return Center(child: Text('Belum ada pesan'));
-
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                        return Center(child: Text('Belum ada pesan'));
+                        return Center(
+                          child: Text(
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .noMessagesYet ??
+                                "-",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value,
+                          ),
+                        );
                       }
 
                       var messageList = snapshot.data?.docs;

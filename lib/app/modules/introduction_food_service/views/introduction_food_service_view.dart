@@ -24,7 +24,7 @@ class IntroductionFoodServiceView
             ),
           ),
           title: Text(
-            "Layanan Antar Makanan",
+            controller.languageServices.language.value.foodDelivery ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -77,7 +77,12 @@ class IntroductionFoodServiceView
                         child: Column(
                           children: [
                             Text(
-                              "Layanan Antar Makanan?\nSebentar Lagi Matang!",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .introFoodDeliveryTitle ??
+                                  "-",
                               textAlign: TextAlign.center,
                               style: controller
                                   .typographyServices
@@ -86,7 +91,12 @@ class IntroductionFoodServiceView
                             ),
                             SizedBox(height: 16),
                             Text(
-                              "Kami lagi masak sesuatu yang spesial buat kamu! Tunggu sebentar ya...sebentar lagi layanan antar makanan kami siap disajikan hangat-hangat! 😋🔥",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .introFoodDeliveryDescription ??
+                                  "-",
                               textAlign: TextAlign.center,
                               style: controller
                                   .typographyServices
@@ -107,7 +117,12 @@ class IntroductionFoodServiceView
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            "Segera Hadir",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .comingSoon ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .captionLargeBold
@@ -146,7 +161,12 @@ class IntroductionFoodServiceView
                           ),
                         ),
                         child: Text(
-                          "Ingatkan Saya Kalau Sudah Siap",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .introFoodDeliveryButton ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodyLargeBold

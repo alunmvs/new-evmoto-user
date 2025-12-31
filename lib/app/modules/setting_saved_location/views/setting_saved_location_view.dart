@@ -271,7 +271,12 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
                       ),
                       SizedBox(width: 6),
                       Text(
-                        "Tambah Lokasi Lainnya",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .addOtherAddress ??
+                            "-",
                         style: controller.typographyServices.bodyLargeBold.value
                             .copyWith(color: Colors.white),
                       ),

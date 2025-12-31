@@ -314,7 +314,12 @@ class SettingPaymentView extends GetView<SettingPaymentController> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Cash",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .cash ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallBold

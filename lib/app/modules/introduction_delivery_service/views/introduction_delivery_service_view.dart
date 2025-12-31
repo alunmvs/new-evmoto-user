@@ -61,7 +61,12 @@ class IntroductionDeliveryServiceView
                     child: Column(
                       children: [
                         Text(
-                          "Kenalan Yuk! EV Moto,\nSi Paling Antar-Antar!",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .introRideTitle ??
+                              "-",
                           textAlign: TextAlign.center,
                           style: controller
                               .typographyServices
@@ -70,7 +75,12 @@ class IntroductionDeliveryServiceView
                         ),
                         SizedBox(height: 16),
                         Text(
-                          "Si gesit yang siap nganterin kamu ke mana aja! Mau jalan, kirim paket, atau pesan makanan? EV Moto selalu on, bebas polusi, dan pastinya paling bisa diandalkan! 🚀⚡",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .introRideDescription ??
+                              "-",
                           textAlign: TextAlign.center,
                           style: controller
                               .typographyServices
@@ -112,7 +122,12 @@ class IntroductionDeliveryServiceView
                           ),
                         ),
                         child: Text(
-                          "Lanjutkan Antar Saya",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .introRideButton ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodyLargeBold

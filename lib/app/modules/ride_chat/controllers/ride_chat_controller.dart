@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/upload_image_repository.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
@@ -15,6 +16,7 @@ class RideChatController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final rideOrderDetailController = Get.find<RideOrderDetailController>();
 

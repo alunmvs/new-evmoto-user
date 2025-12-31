@@ -15,7 +15,7 @@ class PromotionView extends GetView<PromotionController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Semua Promosi",
+            controller.languageServices.language.value.allPromotion ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -58,7 +58,12 @@ class PromotionView extends GetView<PromotionController> {
                               children: [
                                 SizedBox(height: 134),
                                 Text(
-                                  "Belum Ada Promosi Tersedia",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .noPromotionTitle ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodyLargeBold
@@ -67,7 +72,12 @@ class PromotionView extends GetView<PromotionController> {
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  "Tenang, promo menarik sedang kami siapkan. Stay tuned dan cek kembali ya!",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .noPromotionDescription ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
