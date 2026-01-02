@@ -61,11 +61,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
                       controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReason1
+                              "I don't need car for the time being due to a change in intinerary"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
@@ -92,11 +88,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
                       controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReason2
+                              "In a hurry, I need to change use other means of transportation"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
@@ -123,11 +115,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
                       controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReason3
+                              "The vehicle dispatched by the platform is too far"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
@@ -153,11 +141,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
                       controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReason4
+                              "The driver didn't come pick me up for various reasons"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
@@ -183,12 +167,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     formControlName: 'reason',
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
-                      controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReason5
+                      controller.reason.value == "Can't contact the driver"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
@@ -214,11 +193,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
                       controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReason6
+                              "Driver asks for fare increase or transact by cash"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
@@ -243,12 +218,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     formControlName: 'reason',
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
-                      controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReason7
+                      controller.reason.value == "Driver is late"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
@@ -273,12 +243,7 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                     formControlName: 'reason',
                     contentPadding: EdgeInsets.all(0),
                     fillColor: WidgetStatePropertyAll(
-                      controller.reason.value ==
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelOrderReasonOther
+                      controller.reason.value == "Other"
                           ? controller.themeColorServices.primaryBlue.value
                           : controller
                                 .themeColorServices
