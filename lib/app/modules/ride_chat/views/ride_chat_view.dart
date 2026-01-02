@@ -154,109 +154,17 @@ class RideChatView extends GetView<RideChatController> {
 
                       var messageList = snapshot.data?.docs;
 
-                      return SingleChildScrollView(
-                        reverse: true,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 20),
-                            for (var i = 0; i < messageList!.length; i++) ...[
-                              if (messageList[i]['senderType'] == 'driver') ...[
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                  ),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(16),
-                                        topLeft: Radius.circular(16),
-                                        bottomRight: Radius.circular(16),
-                                      ),
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        if (messageList[i]['senderAttachmentUrl'] !=
-                                            null) ...[
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(
-                                                Routes.PHOTO_VIEWER,
-                                                arguments: {
-                                                  "photo_attachment_url":
-                                                      messageList[i]['senderAttachmentUrl'],
-                                                },
-                                              );
-                                            },
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: CachedNetworkImage(
-                                                imageUrl:
-                                                    messageList[i]['senderAttachmentUrl'],
-                                                width: 100,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                        ],
-                                        Text(
-                                          messageList[i]['senderMessage']
-                                              .toString(),
-                                          style: controller
-                                              .typographyServices
-                                              .bodyLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey900
-                                                    .value,
-                                              ),
-                                        ),
-                                        if (messageList[i]['createdAt'] !=
-                                            null) ...[
-                                          SizedBox(height: 8),
-                                          Text(
-                                            DateFormat(
-                                              'HH:mm',
-                                              controller
-                                                  .languageServices
-                                                  .languageCode
-                                                  .value,
-                                            ).format(
-                                              messageList[i]['createdAt']
-                                                  .toDate(),
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: Color(0XFFD0D1DB),
-                                                ),
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              if (messageList[i]['senderType'] == 'user') ...[
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
+                      return Obx(
+                        () => SingleChildScrollView(
+                          reverse: true,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20),
+                              for (var i = 0; i < messageList!.length; i++) ...[
+                                if (messageList[i]['senderType'] ==
+                                    'driver') ...[
+                                  Padding(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 14,
                                     ),
@@ -269,21 +177,16 @@ class RideChatView extends GetView<RideChatController> {
                                         borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(16),
                                           topLeft: Radius.circular(16),
-                                          bottomLeft: Radius.circular(16),
+                                          bottomRight: Radius.circular(16),
                                         ),
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Color(0XFF2D74BF),
-                                            Color(0XFF114E8E),
-                                          ],
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          stops: [0.0, 1.0],
-                                        ),
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
                                       ),
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                            CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           if (messageList[i]['senderAttachmentUrl'] !=
@@ -320,7 +223,7 @@ class RideChatView extends GetView<RideChatController> {
                                                 .copyWith(
                                                   color: controller
                                                       .themeColorServices
-                                                      .neutralsColorGrey0
+                                                      .neutralsColorGrey900
                                                       .value,
                                                 ),
                                           ),
@@ -343,10 +246,7 @@ class RideChatView extends GetView<RideChatController> {
                                                   .captionLargeRegular
                                                   .value
                                                   .copyWith(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey0
-                                                        .value,
+                                                    color: Color(0XFFD0D1DB),
                                                   ),
                                             ),
                                           ],
@@ -354,21 +254,167 @@ class RideChatView extends GetView<RideChatController> {
                                       ),
                                     ),
                                   ),
-                                ),
+                                ],
+                                if (messageList[i]['senderType'] == 'user') ...[
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                      ),
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                          vertical: 12,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(16),
+                                            topLeft: Radius.circular(16),
+                                            bottomLeft: Radius.circular(16),
+                                          ),
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Color(0XFF2D74BF),
+                                              Color(0XFF114E8E),
+                                            ],
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            stops: [0.0, 1.0],
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            if (messageList[i]['senderAttachmentUrl'] !=
+                                                null) ...[
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                    Routes.PHOTO_VIEWER,
+                                                    arguments: {
+                                                      "photo_attachment_url":
+                                                          messageList[i]['senderAttachmentUrl'],
+                                                    },
+                                                  );
+                                                },
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        messageList[i]['senderAttachmentUrl'],
+                                                    width: 100,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 8),
+                                            ],
+                                            Text(
+                                              messageList[i]['senderMessage']
+                                                  .toString(),
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey0
+                                                        .value,
+                                                  ),
+                                            ),
+                                            if ((messageList[i].data()
+                                                    as Map<String, dynamic>)
+                                                .containsKey("sendAt")) ...[
+                                              if (messageList[i]['sendAt'] !=
+                                                  null) ...[
+                                                SizedBox(height: 8),
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      DateFormat(
+                                                        'HH:mm',
+                                                      ).format(
+                                                        messageList[i]['sendAt']
+                                                            .toDate(),
+                                                      ),
+                                                      style: controller
+                                                          .typographyServices
+                                                          .captionLargeRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: Color(
+                                                              0XFFD0D1DB,
+                                                            ),
+                                                          ),
+                                                    ),
+                                                    if (messageList[i]['createdAt'] ==
+                                                        null) ...[
+                                                      SizedBox(width: 4),
+                                                      SvgPicture.asset(
+                                                        "assets/icons/icon_msg_pending.svg",
+                                                        width: 16,
+                                                        height: 16,
+                                                      ),
+                                                    ],
+                                                    if (messageList[i]['createdAt'] !=
+                                                        null) ...[
+                                                      SizedBox(width: 4),
+                                                      SvgPicture.asset(
+                                                        controller
+                                                                    .rideOrderDetailController
+                                                                    .evmotoOrderChatParticipants
+                                                                    .value
+                                                                    .driverIsOnChatScreen ==
+                                                                true
+                                                            ? "assets/icons/icon_msg_read.svg"
+                                                            : controller
+                                                                      .rideOrderDetailController
+                                                                      .evmotoOrderChatParticipants
+                                                                      .value
+                                                                      .driverChatScreenLastSeen
+                                                                      ?.isAfter(
+                                                                        messageList[i]['createdAt']
+                                                                            .toDate(),
+                                                                      ) ??
+                                                                  false
+                                                            ? "assets/icons/icon_msg_read.svg"
+                                                            : "assets/icons/icon_msg_delivery.svg",
+                                                        width: 20,
+                                                        height: 20,
+                                                      ),
+                                                    ],
+                                                  ],
+                                                ),
+                                              ],
+                                            ],
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                if ((i + 1) < messageList.length &&
+                                    messageList[i + 1]['senderType'] ==
+                                        messageList[i]['senderType']) ...[
+                                  SizedBox(height: 8),
+                                ],
+                                if ((i + 1) < messageList.length &&
+                                    messageList[i + 1]['senderType'] !=
+                                        messageList[i]['senderType']) ...[
+                                  SizedBox(height: 16),
+                                ],
                               ],
-                              if ((i + 1) < messageList.length &&
-                                  messageList[i + 1]['senderType'] ==
-                                      messageList[i]['senderType']) ...[
-                                SizedBox(height: 8),
-                              ],
-                              if ((i + 1) < messageList.length &&
-                                  messageList[i + 1]['senderType'] !=
-                                      messageList[i]['senderType']) ...[
-                                SizedBox(height: 16),
-                              ],
+                              SizedBox(height: 20),
                             ],
-                            SizedBox(height: 20),
-                          ],
+                          ),
                         ),
                       );
                     },

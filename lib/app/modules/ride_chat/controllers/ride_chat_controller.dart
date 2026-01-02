@@ -9,7 +9,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
 
-class RideChatController extends GetxController {
+class RideChatController extends GetxController with WidgetsBindingObserver {
   final UploadImageRepository uploadImageRepository;
 
   RideChatController({required this.uploadImageRepository});
@@ -26,8 +26,21 @@ class RideChatController extends GetxController {
   final attachmentUrl = "".obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(rideOrderDetailController.orderRideDetail.value.orderId.toString())
+        .set({
+          "userId": rideOrderDetailController.orderRideDetail.value.driverId,
+          "userName":
+              rideOrderDetailController.homeController.userInfo.value.name,
+          "userIsOnChatScreen": true,
+          "userChatScreenLastSeen": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -36,8 +49,50 @@ class RideChatController extends GetxController {
   }
 
   @override
-  void onClose() {
+  Future<void> onClose() async {
     super.onClose();
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(rideOrderDetailController.orderRideDetail.value.orderId.toString())
+        .set({
+          "userId": rideOrderDetailController.orderRideDetail.value.driverId,
+          "userName":
+              rideOrderDetailController.homeController.userInfo.value.name,
+          "userIsOnChatScreen": false,
+          "userChatScreenLastSeen": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(
+            rideOrderDetailController.orderRideDetail.value.orderId.toString(),
+          )
+          .set({
+            "userId": rideOrderDetailController.orderRideDetail.value.driverId,
+            "userName":
+                rideOrderDetailController.homeController.userInfo.value.name,
+            "userIsOnChatScreen": true,
+            "userChatScreenLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    } else if (state == AppLifecycleState.paused) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(
+            rideOrderDetailController.orderRideDetail.value.orderId.toString(),
+          )
+          .set({
+            "userId": rideOrderDetailController.orderRideDetail.value.driverId,
+            "userName":
+                rideOrderDetailController.homeController.userInfo.value.name,
+            "userIsOnChatScreen": false,
+            "userChatScreenLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    }
   }
 
   Stream<QuerySnapshot> getMessagesStream({required String roomId}) {
@@ -49,22 +104,21 @@ class RideChatController extends GetxController {
   }
 
   Future<void> sendMessage({required String message}) async {
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_messages')
-        .add({
-          "evmotoOrderChatParticipantsDocumentId": rideOrderDetailController
-              .orderRideDetail
-              .value
-              .orderId
-              .toString(),
-          "senderId": rideOrderDetailController.orderRideDetail.value.userId,
-          "senderType": "user",
-          "senderMessage": message,
-          "senderAttachmentUrl": attachmentUrl.value == ""
-              ? null
-              : attachmentUrl.value,
-          "createdAt": FieldValue.serverTimestamp(),
-        });
+    FirebaseFirestore.instance.collection('evmoto_order_chat_messages').add({
+      "evmotoOrderChatParticipantsDocumentId": rideOrderDetailController
+          .orderRideDetail
+          .value
+          .orderId
+          .toString(),
+      "senderId": rideOrderDetailController.orderRideDetail.value.userId,
+      "senderType": "user",
+      "senderMessage": message,
+      "senderAttachmentUrl": attachmentUrl.value == ""
+          ? null
+          : attachmentUrl.value,
+      "sendAt": Timestamp.now(),
+      "createdAt": FieldValue.serverTimestamp(),
+    }).ignore();
 
     attachmentUrl.value = "";
     isAttachmentOptionOpen.value = false;

@@ -144,8 +144,19 @@ class RideOrderDetailController extends GetxController
   }
 
   @override
-  void onClose() {
+  Future<void> onClose() async {
     super.onClose();
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderRideDetail.value.orderId.toString())
+        .set({
+          "userId": orderRideDetail.value.userId,
+          "userName": homeController.userInfo.value.name,
+          "userIsOnline": false,
+          "userLastSeen": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+
     try {
       googleMapController.dispose();
     } catch (e) {}
@@ -189,24 +200,26 @@ class RideOrderDetailController extends GetxController
         .get();
 
     if (docs.exists == true) {
-      evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
-        docs.data()!,
-      );
-    }
-
-    if (docs.exists == false ||
-        (docs.exists == true && docs.data()?['userId'] == null)) {
-      await FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
           .doc(orderRideDetail.value.orderId.toString())
-          .set({
-            "userId": orderRideDetail.value.userId,
-            "userName": homeController.userInfo.value.name,
-            "userIsOnline": true,
-            "userLastSeen": FieldValue.serverTimestamp(),
-            "userJoinedAt": FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
+          .snapshots()
+          .listen((event) {
+            evmotoOrderChatParticipants.value =
+                EvmotoOrderChatParticipants.fromJson(event.data()!);
+          });
     }
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderRideDetail.value.orderId.toString())
+        .set({
+          "userId": orderRideDetail.value.userId,
+          "userName": homeController.userInfo.value.name,
+          "userIsOnline": true,
+          "userLastSeen": FieldValue.serverTimestamp(),
+          "userJoinedAt": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
   }
 
   void generateEstimatedDistanceAndTimeInMinutes() {
