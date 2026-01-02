@@ -228,7 +228,8 @@ class SettingSavedLocationController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Pilih Jenis Lokasi",
+                          languageServices.language.value.selectLocationType ??
+                              "-",
                           style: typographyServices.bodyLargeBold.value,
                         ),
                         GestureDetector(

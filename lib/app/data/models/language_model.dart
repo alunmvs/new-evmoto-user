@@ -190,6 +190,7 @@ class Language {
   String? savedAddressNotFoundDescription;
   String? activityNotFoundTitle;
   String? activityNotFoundDescription;
+  String? selectLocationType;
 
   Language({
     this.onboardingIntroTitle1,
@@ -383,6 +384,7 @@ class Language {
     this.savedAddressNotFoundDescription,
     this.activityNotFoundTitle,
     this.activityNotFoundDescription,
+    this.selectLocationType,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -582,6 +584,7 @@ class Language {
         json['saved_address_not_found_description'];
     activityNotFoundTitle = json['activity_not_found_title'];
     activityNotFoundDescription = json['activity_not_found_description'];
+    selectLocationType = json['select_location_type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -785,6 +788,7 @@ class Language {
         this.savedAddressNotFoundDescription;
     data['activity_not_found_title'] = this.activityNotFoundTitle;
     data['activity_not_found_description'] = this.activityNotFoundDescription;
+    data['select_location_type'] = this.selectLocationType;
     return data;
   }
 }

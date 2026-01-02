@@ -189,5 +189,6 @@
     "saved_address_not_found_title": "Tidak Memiliki Alamat Tersimpan",
     "saved_address_not_found_description": "Simpan alamat agar pemesanan berikutnya lebih cepat.",
     "activity_not_found_title": "Belum Ada Aktivitas Riwayat",
-    "activity_not_found_description": "Lakukan aktivitas pertama dan lihat catatannya di sini!"
+    "activity_not_found_description": "Lakukan aktivitas pertama dan lihat catatannya di sini!",
+    "select_location_type": "Pilih Jenis Lokasi"
 }
