@@ -79,7 +79,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorGreen400.value,
         content: Text(
-          "OTP berhasil dikirim",
+          languageServices.language.value.snackbarOtpSuccess ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),
