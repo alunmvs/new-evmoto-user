@@ -130,10 +130,16 @@ class RideOrderDetailController extends GetxController
     if (orderRideDetail.value.state == 7) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAndToNamed(
-          Routes.RIDE_ORDER_DONE,
-          arguments: {"order_id": orderId.value, "order_type": orderType.value},
-        );
+        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+            Get.currentRoute != Routes.HOME) {
+          Get.offAndToNamed(
+            Routes.RIDE_ORDER_DONE,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        }
       });
     }
   }
@@ -165,6 +171,9 @@ class RideOrderDetailController extends GetxController
     } catch (e) {}
     try {
       refocusMapBoundsTimer?.cancel();
+    } catch (e) {}
+    try {
+      refreshStatusDriverGivePriceTimer?.cancel();
     } catch (e) {}
   }
 
@@ -237,15 +246,20 @@ class RideOrderDetailController extends GetxController
       }
 
       if (orderRideDetail.value.state == 7) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Get.offAndToNamed(
-            Routes.RIDE_ORDER_DONE,
-            arguments: {
-              "order_id": orderId.value,
-              "order_type": orderType.value,
-            },
-          );
-        });
+        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+            Get.currentRoute != Routes.HOME) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Get.currentRoute != Routes.RIDE_ORDER_DONE) {
+              Get.offAndToNamed(
+                Routes.RIDE_ORDER_DONE,
+                arguments: {
+                  "order_id": orderId.value,
+                  "order_type": orderType.value,
+                },
+              );
+            }
+          });
+        }
       }
     });
   }
@@ -303,10 +317,16 @@ class RideOrderDetailController extends GetxController
     if (orderRideDetail.value.state == 7) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAndToNamed(
-          Routes.RIDE_ORDER_DONE,
-          arguments: {"order_id": orderId.value, "order_type": orderType.value},
-        );
+        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+            Get.currentRoute != Routes.HOME) {
+          Get.offAndToNamed(
+            Routes.RIDE_ORDER_DONE,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        }
       });
     }
   }

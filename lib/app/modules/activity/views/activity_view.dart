@@ -33,7 +33,6 @@ class ActivityView extends GetView<ActivityController> {
                 indicatorColor: Colors.transparent,
                 dividerColor:
                     controller.themeColorServices.neutralsColorGrey200.value,
-
                 onTap: (value) async {
                   controller.indexTabBar.value = value;
 
