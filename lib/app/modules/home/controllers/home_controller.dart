@@ -54,6 +54,7 @@ class HomeController extends GetxController {
   final balanceGlobalKey = GlobalKey();
 
   final isCoachmarkActive = false.obs;
+  final lastPressedBackDateTime = DateTime.now().obs;
 
   final isFetch = false.obs;
 
