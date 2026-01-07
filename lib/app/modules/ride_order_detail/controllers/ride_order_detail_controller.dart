@@ -203,21 +203,14 @@ class RideOrderDetailController extends GetxController
   }
 
   Future<void> joinFirestoreChatRooms() async {
-    var docs = await FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('evmoto_order_chat_participants')
         .doc(orderRideDetail.value.orderId.toString())
-        .get();
-
-    if (docs.exists == true) {
-      FirebaseFirestore.instance
-          .collection('evmoto_order_chat_participants')
-          .doc(orderRideDetail.value.orderId.toString())
-          .snapshots()
-          .listen((event) {
-            evmotoOrderChatParticipants.value =
-                EvmotoOrderChatParticipants.fromJson(event.data()!);
-          });
-    }
+        .snapshots()
+        .listen((event) {
+          evmotoOrderChatParticipants.value =
+              EvmotoOrderChatParticipants.fromJson(event.data()!);
+        });
 
     await FirebaseFirestore.instance
         .collection('evmoto_order_chat_participants')

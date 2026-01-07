@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
@@ -22,6 +25,22 @@ class UploadImageRepository {
 
       return response.data["url"];
     } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String?> uploadCall({
+    required File file,
+    required String fileName,
+  }) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref().child(
+        'evmoto_calls/$fileName',
+      );
+
+      await storageRef.putFile(file);
+      return await storageRef.getDownloadURL();
+    } catch (e) {
       rethrow;
     }
   }

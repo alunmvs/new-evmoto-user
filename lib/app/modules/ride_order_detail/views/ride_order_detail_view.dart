@@ -879,7 +879,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                               SizedBox(
                                                 height: 46,
                                                 child: OutlinedButton(
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     Get.toNamed(
                                                       Routes.RIDE_CALL,
                                                     );
