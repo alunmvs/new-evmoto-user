@@ -105,7 +105,7 @@ class IntroductionDeliveryServiceView
                           );
 
                           Get.back();
-                          Get.toNamed(Routes.RIDE);
+                          await controller.homeController.onTapRideService();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
