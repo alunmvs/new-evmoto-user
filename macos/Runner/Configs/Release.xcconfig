@@ -1,2 +1,4 @@
 #include "../../Flutter/Flutter-Release.xcconfig"
 #include "Warnings.xcconfig"
+
+MAPS_API_KEY=AIzaSyBNgMRPVj8zt4OEGrUoyHifEDE9SCHYSLE
