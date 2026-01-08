@@ -78,6 +78,7 @@ dependencies:
   path_provider: ^2.1.5
   ffmpeg_kit_flutter_new: ^4.1.0
   firebase_storage: ^13.0.5
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   get_cli: ^1.9.1

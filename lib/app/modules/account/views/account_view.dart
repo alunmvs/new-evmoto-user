@@ -371,7 +371,9 @@ class AccountView extends GetView<AccountController> {
                       child: Column(
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () async {
+                              await controller.onTapContactCs();
+                            },
                             child: Container(
                               padding: EdgeInsets.all(16),
                               color: Colors.transparent,

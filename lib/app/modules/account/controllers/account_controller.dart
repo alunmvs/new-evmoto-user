@@ -4,18 +4,21 @@ import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
   final socketServices = Get.find<SocketServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final homeController = Get.find<HomeController>();
 
@@ -44,6 +47,28 @@ class AccountController extends GetxController {
   Future<void> getPackageInfo() async {
     var packageInfo = await PackageInfo.fromPlatform();
     packageVersion.value = packageInfo.version;
+  }
+
+  Future<void> onTapContactCs() async {
+    var customerCsWhatsapp = firebaseRemoteConfigServices.remoteConfig
+        .getString("customer_cs_whatsapp");
+    final Uri url = Uri.parse("https://wa.me/$customerCsWhatsapp");
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Tidak dapat membuka whatsapp",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    }
   }
 
   Future<void> onTapLogout() async {
