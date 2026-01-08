@@ -34,14 +34,14 @@ class DepositBalancePaymentWebviewController extends GetxController {
           var uri = Uri.parse(request.url);
           if (uri.queryParameters['transaction_status'].toString() ==
               "settlement") {
-            try {
-              await paymentRepository.redirectUrlDepositBalance(
-                orderId: uri.queryParameters['order_id'].toString(),
-                statusCode: uri.queryParameters['status_code'].toString(),
-                transactionStatus: uri.queryParameters['transaction_status']
-                    .toString(),
-              );
-            } catch (e) {}
+            // try {
+            //   await paymentRepository.redirectUrlDepositBalance(
+            //     orderId: uri.queryParameters['order_id'].toString(),
+            //     statusCode: uri.queryParameters['status_code'].toString(),
+            //     transactionStatus: uri.queryParameters['transaction_status']
+            //         .toString(),
+            //   );
+            // } catch (e) {}
             Get.back();
             Get.back();
             final SnackBar snackBar = SnackBar(
