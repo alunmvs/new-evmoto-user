@@ -1906,11 +1906,14 @@ class HomeView extends GetView<HomeController> {
                                                           child: Row(
                                                             children: [
                                                               GestureDetector(
-                                                                onTap: () {
-                                                                  Get.toNamed(
+                                                                onTap: () async {
+                                                                  await Get.toNamed(
                                                                     Routes
                                                                         .DEPOSIT_BALANCE,
                                                                   );
+
+                                                                  await controller
+                                                                      .refreshAll();
                                                                 },
                                                                 child: SizedBox(
                                                                   width: 46,
