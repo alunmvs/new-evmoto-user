@@ -410,5 +410,10 @@ class RideCallController extends GetxController {
         .collection('evmoto_order_chat_calls')
         .doc(docsId.value)
         .set({'user_call_file_url': callFileUrl}, SetOptions(merge: true));
+
+    var file = File(outputFilePath);
+    if (await file.exists()) {
+      await file.delete();
+    }
   }
 }
