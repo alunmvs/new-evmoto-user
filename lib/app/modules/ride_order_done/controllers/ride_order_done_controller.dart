@@ -16,7 +16,6 @@ class RideOrderDoneController extends GetxController {
   RideOrderDoneController({required this.orderRideRepository});
 
   final homeController = Get.find<HomeController>();
-  final activityController = Get.find<ActivityController>();
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -109,7 +108,7 @@ class RideOrderDoneController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorGreen400.value,
         content: Text(
-          "Berhasil menyelesaikan pesanan",
+          languageServices.language.value.snackbarCompleteOrderSuccess ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),
@@ -118,7 +117,10 @@ class RideOrderDoneController extends GetxController {
 
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 
-      await Future.wait([activityController.refreshAll()]);
+      if (Get.isRegistered<ActivityController>()) {
+        var activityController = Get.find<ActivityController>();
+        await Future.wait([activityController.refreshAll()]);
+      }
     } catch (e) {
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,

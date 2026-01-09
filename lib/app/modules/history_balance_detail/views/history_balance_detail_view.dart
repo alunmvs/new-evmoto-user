@@ -13,7 +13,7 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Detail Transaksi",
+          controller.languageServices.language.value.transactionDetails ?? "-",
           style: controller.typographyServices.bodyLargeBold.value,
         ),
         centerTitle: false,
@@ -87,7 +87,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                           SizedBox(height: 24),
                           Text(
                             controller.balanceHistoryConsumption.value.type == 1
-                                ? "Layanan Antar"
+                                ? controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .deliveryService ??
+                                      "-"
                                 : "-",
                             style: controller
                                 .typographyServices
@@ -100,7 +105,10 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
+                            DateFormat(
+                              'dd MMMM yyyy ⬩ HH:mm',
+                              controller.languageServices.languageCode.value,
+                            ).format(
                               controller
                                   .balanceHistoryConsumption
                                   .value
@@ -198,7 +206,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                                             .value
                                             .type ==
                                         1
-                                    ? "Layanan Antar"
+                                    ? controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .deliveryService ??
+                                          "-"
                                     : "-",
                                 style: controller
                                     .typographyServices
@@ -241,7 +254,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Total",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .total ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallBold
@@ -337,7 +355,10 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
+                            DateFormat(
+                              'dd MMMM yyyy ⬩ HH:mm',
+                              controller.languageServices.languageCode.value,
+                            ).format(
                               controller
                                   .balanceHistoryDeposit
                                   .value

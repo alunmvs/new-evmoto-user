@@ -103,25 +103,25 @@ class AccountView extends GetView<AccountController> {
                             ],
                           ),
                           Spacer(),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: controller
-                                  .themeColorServices
-                                  .sematicColorBlue100
-                                  .value,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/icons/icon_edit.svg",
-                              width: 16,
-                              height: 16,
-                              color: controller
-                                  .themeColorServices
-                                  .sematicColorBlue500
-                                  .value,
-                            ),
-                          ),
+                          // Container(
+                          //   padding: EdgeInsets.all(8),
+                          //   decoration: BoxDecoration(
+                          //     color: controller
+                          //         .themeColorServices
+                          //         .sematicColorBlue100
+                          //         .value,
+                          //     borderRadius: BorderRadius.circular(8),
+                          //   ),
+                          //   child: SvgPicture.asset(
+                          //     "assets/icons/icon_edit.svg",
+                          //     width: 16,
+                          //     height: 16,
+                          //     color: controller
+                          //         .themeColorServices
+                          //         .sematicColorBlue500
+                          //         .value,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -236,61 +236,61 @@ class AccountView extends GetView<AccountController> {
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Get.toNamed(Routes.SETTING_PAYMENT);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(16),
-                              color: Colors.transparent,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue100
-                                          .value,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_wallet.svg",
-                                      width: 16,
-                                      height: 16,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue500
-                                          .value,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .settingPayment ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value,
-                                  ),
-                                  Spacer(),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/icon_arrow_right.svg",
-                                        width: 6,
-                                        height: 12,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     Get.toNamed(Routes.SETTING_PAYMENT);
+                          //   },
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(16),
+                          //     color: Colors.transparent,
+                          //     child: Row(
+                          //       children: [
+                          //         Container(
+                          //           padding: EdgeInsets.all(4),
+                          //           decoration: BoxDecoration(
+                          //             color: controller
+                          //                 .themeColorServices
+                          //                 .sematicColorBlue100
+                          //                 .value,
+                          //             borderRadius: BorderRadius.circular(8),
+                          //           ),
+                          //           child: SvgPicture.asset(
+                          //             "assets/icons/icon_wallet.svg",
+                          //             width: 16,
+                          //             height: 16,
+                          //             color: controller
+                          //                 .themeColorServices
+                          //                 .sematicColorBlue500
+                          //                 .value,
+                          //           ),
+                          //         ),
+                          //         SizedBox(width: 8),
+                          //         Text(
+                          //           controller
+                          //                   .languageServices
+                          //                   .language
+                          //                   .value
+                          //                   .settingPayment ??
+                          //               "-",
+                          //           style: controller
+                          //               .typographyServices
+                          //               .bodySmallBold
+                          //               .value,
+                          //         ),
+                          //         Spacer(),
+                          //         Row(
+                          //           children: [
+                          //             SvgPicture.asset(
+                          //               "assets/icons/icon_arrow_right.svg",
+                          //               width: 6,
+                          //               height: 12,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                           InkWell(
                             onTap: () {
                               Get.toNamed(Routes.SETTING_SAVED_LOCATION);
@@ -371,7 +371,9 @@ class AccountView extends GetView<AccountController> {
                       child: Column(
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () async {
+                              await controller.onTapContactCs();
+                            },
                             child: Container(
                               padding: EdgeInsets.all(16),
                               color: Colors.transparent,
@@ -534,7 +536,9 @@ class AccountView extends GetView<AccountController> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () async {
+                              await controller.onTapRatingAndReviewApp();
+                            },
                             child: Container(
                               padding: EdgeInsets.all(16),
                               color: Colors.transparent,

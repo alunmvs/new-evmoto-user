@@ -13,24 +13,29 @@ import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/models/recommendation_location_model.dart';
 import 'package:new_evmoto_user/app/data/models/requested_order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
+import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:intl/intl.dart';
 
 class RideController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
+  final SavedAddressRepository savedAddressRepository;
 
   RideController({
     required this.googleMapsRepository,
     required this.orderRideRepository,
+    required this.savedAddressRepository,
   });
 
   final homeController = Get.find<HomeController>();
@@ -47,6 +52,7 @@ class RideController extends GetxController {
 
   final markers = <Marker>{}.obs;
   final polylines = <Polyline>{}.obs;
+  final polylinesCoordinate = <LatLng>[].obs;
 
   final currentLatitude = "".obs;
   final currentLongitude = "".obs;
@@ -116,7 +122,14 @@ class RideController extends GetxController {
   final payType = 2.obs;
   final selectedCoupon = Coupon().obs;
 
+  final savedAddressList = <SavedAddress>[].obs;
+  final destinationSavedAddress = SavedAddress().obs;
+
   late Timer? orderStatusRefreshTimer;
+
+  final estimatedTimeInMinutes = 0.0.obs;
+  final estimatedDistanceInKm = 0.0.obs;
+  final estimatedSpeedInKmh = 40.obs;
 
   final isFetch = false.obs;
 
@@ -126,7 +139,7 @@ class RideController extends GetxController {
     isFetch.value = true;
 
     await homeController.getUserInfo();
-    await getHistoryOrderList();
+    await Future.wait([getHistoryOrderList(), getSavedAddressList()]);
     await requestLocation();
     initialCameraPosition.value = CameraPosition(
       target: LatLng(
@@ -148,6 +161,14 @@ class RideController extends GetxController {
       isDestinationHasPrimaryFocus.refresh();
     });
 
+    if (Get.arguments?['destination_saved_address'] != null) {
+      destinationSavedAddress.value =
+          Get.arguments['destination_saved_address'];
+      await fillDestinationBySavedAddress(
+        savedAddress: destinationSavedAddress.value,
+      );
+    }
+
     isFetch.value = false;
   }
 
@@ -162,6 +183,85 @@ class RideController extends GetxController {
     try {
       googleMapController.dispose();
     } catch (e) {}
+  }
+
+  Future<void> getSavedAddressList() async {
+    savedAddressList.value = (await savedAddressRepository
+        .getSavedAddressList());
+  }
+
+  Future<void> onTapSavedLocation({required SavedAddress savedAddress}) async {
+    if (isOriginHasPrimaryFocus.value == true) {
+      await fillOriginBySavedAddress(savedAddress: savedAddress);
+
+      focusNodeDestination.requestFocus();
+    } else if (isDestinationHasPrimaryFocus.value == true) {
+      await fillDestinationBySavedAddress(savedAddress: savedAddress);
+
+      focusNodeDestination.requestFocus();
+      status.value = "checkout";
+
+      await Future.wait([
+        generatePolylines(),
+        refocusMapsBound(),
+        getOrderRidePricingList(),
+      ]);
+      selectedOrderRidePricing.value = orderRidePricingList.first;
+    }
+  }
+
+  Future<void> fillOriginBySavedAddress({
+    required SavedAddress savedAddress,
+  }) async {
+    originTextEditingController.text = savedAddress.addressDetail!;
+    originLatitude.value = savedAddress.latitude!;
+    originLongitude.value = savedAddress.longitude!;
+    keywordOrigin.value = savedAddress.addressTitle!;
+    originAddress.value = savedAddress.addressDetail!;
+
+    await getOriginPlaceLocationList(keyword: keywordOrigin.value);
+
+    markers.removeWhere((m) => m.markerId.value == 'origin');
+    markers.add(
+      Marker(
+        markerId: MarkerId("origin"),
+        position: LatLng(
+          double.parse(originLatitude.value),
+          double.parse(originLongitude.value),
+        ),
+        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+          'assets/icons/icon_origin.svg',
+          Size(22.67, 22.67),
+        ),
+      ),
+    );
+  }
+
+  Future<void> fillDestinationBySavedAddress({
+    required SavedAddress savedAddress,
+  }) async {
+    destinationTextEditingController.text = savedAddress.addressDetail!;
+    destinationLatitude.value = savedAddress.latitude!;
+    destinationLongitude.value = savedAddress.longitude!;
+    keywordDestination.value = savedAddress.addressTitle!;
+    destinationAddress.value = savedAddress.addressDetail!;
+
+    await getDestinationPlaceLocationList(keyword: keywordDestination.value);
+
+    markers.removeWhere((m) => m.markerId.value == 'destination');
+    markers.add(
+      Marker(
+        markerId: MarkerId("destination"),
+        position: LatLng(
+          double.parse(destinationLatitude.value),
+          double.parse(destinationLongitude.value),
+        ),
+        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+          'assets/icons/icon_pinpoint.svg',
+          Size(27, 31),
+        ),
+      ),
+    );
   }
 
   Future<void> getHistoryOrderList() async {
@@ -214,7 +314,7 @@ class RideController extends GetxController {
   }
 
   Future<void> prefillOrderAgain() async {
-    if (Get.arguments != null) {
+    if (Get.arguments?['start_address'] != null) {
       originTextEditingController.text = Get.arguments['start_address'] ?? "-";
       originLatitude.value = Get.arguments['start_lat'].toString();
       originLongitude.value = Get.arguments['start_lon'].toString();
@@ -302,7 +402,7 @@ class RideController extends GetxController {
                   ),
                 );
           } else {
-            highlightedWordAddressOrigin["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+            highlightedWordAddressOrigin["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -345,7 +445,7 @@ class RideController extends GetxController {
                   ),
                 );
           } else {
-            highlightedWordAddressDestination["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+            highlightedWordAddressDestination["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -392,7 +492,7 @@ class RideController extends GetxController {
     recommendationOriginCurrentLocationList.value = [];
     recommendationOriginCurrentLocationList.add(
       RecommendationLocation(
-        name: "Lokasi Saat Ini",
+        name: languageServices.language.value.currentLocation ?? "-",
         id: "${currentLocationDetail.first.formattedAddress}",
         latitude: currentLatitude.value,
         longitude: currentLongitude.value,
@@ -430,7 +530,8 @@ class RideController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Pilih Pembayaran",
+                            languageServices.language.value.selectPayment ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value,
                           ),
                           GestureDetector(
@@ -659,6 +760,8 @@ class RideController extends GetxController {
                                     await homeController.getUserInfo();
                                   },
                                   child: Container(
+                                    width: Get.width,
+                                    color: Colors.transparent,
                                     padding: EdgeInsets.only(
                                       top: 4,
                                       left: 12,
@@ -668,7 +771,11 @@ class RideController extends GetxController {
                                     child: Row(
                                       children: [
                                         Text(
-                                          "Tap disini untuk topup",
+                                          languageServices
+                                                  .language
+                                                  .value
+                                                  .tapHereToTopUp ??
+                                              "-",
                                           style: typographyServices
                                               .captionLargeBold
                                               .value
@@ -950,7 +1057,11 @@ class RideController extends GetxController {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Cash",
+                                          languageServices
+                                                  .language
+                                                  .value
+                                                  .cash ??
+                                              "-",
                                           style: typographyServices
                                               .bodySmallBold
                                               .value
@@ -962,7 +1073,11 @@ class RideController extends GetxController {
                                         ),
                                         SizedBox(height: 2),
                                         Text(
-                                          "Siapkan uang pas untuk perjalananmu",
+                                          languageServices
+                                                  .language
+                                                  .value
+                                                  .prepareTheExactAmountOfMoney ??
+                                              "-",
                                           style: typographyServices
                                               .captionLargeRegular
                                               .value
@@ -1070,6 +1185,7 @@ class RideController extends GetxController {
     var polylineCoordinates = result
         .map((p) => LatLng(p.latitude, p.longitude))
         .toList();
+    polylinesCoordinate.value = polylineCoordinates;
 
     polylines.add(
       Polyline(
@@ -1114,6 +1230,7 @@ class RideController extends GetxController {
         DateTime.now(),
       ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
       type: "1", // 1 = Ride, 2 = Intercity
+      amount: selectedOrderRidePricing.value.amount,
     ));
   }
 
@@ -1282,5 +1399,22 @@ class RideController extends GetxController {
     }
 
     isHideMarkersAndPolylines.value = false;
+  }
+
+  void generateEstimatedDistanceAndTimeInMinutes() {
+    estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
+    estimatedTimeInMinutes.value =
+        (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
+  }
+
+  String getEstimatedTimeInMinutesInText() {
+    int jam = estimatedTimeInMinutes.value ~/ 60;
+    int menit = (estimatedTimeInMinutes.value % 60).round();
+
+    if (jam > 0) {
+      return '$jam ${languageServices.language.value.hour} $menit ${languageServices.language.value.minute}';
+    } else {
+      return '$menit ${languageServices.language.value.minute}';
+    }
   }
 }

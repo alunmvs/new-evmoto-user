@@ -51,3 +51,10 @@
     public static int w(...);
     public static int e(...);
 }
+
+#ffmpeg_kit
+-keep class com.arthenica.ffmpegkit.** { *; }
+-keep class org.ffmpeg.** { *; }
+-dontwarn com.arthenica.ffmpegkit.**
+-dontwarn org.ffmpeg.**
+-keep class com.antonkarpenko.ffmpegkit.** { *; }

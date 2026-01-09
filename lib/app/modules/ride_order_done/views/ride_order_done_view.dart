@@ -17,7 +17,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Order Selesai",
+            controller.languageServices.language.value.orderCompleted ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -267,14 +267,24 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Gimana Pengalaman Perjalanan Kamu?",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .howTravelExperience ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodyLargeBold
                                               .value,
                                         ),
                                         Text(
-                                          "(1 Mengecewakan, 5 Paripurna)",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .scoreTravelExperience ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodyLargeBold
@@ -392,10 +402,6 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                                 "assets/icons/icon_origin.svg",
                                                 width: 20,
                                                 height: 20,
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorSlate700
-                                                    .value,
                                               ),
                                             ),
                                           ),
@@ -675,7 +681,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Starting price (${controller.orderRideDetail.value.startMileage!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.startingPrice} (${controller.orderRideDetail.value.startMileage!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -705,7 +711,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Wait fee (${controller.orderRideDetail.value.wait!.toStringAsPrecision(2)}) minutes",
+                                          "${controller.languageServices.language.value.waitFee} (${controller.orderRideDetail.value.wait!.toStringAsPrecision(2)}) minutes",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -735,7 +741,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Mileage fee (${controller.orderRideDetail.value.mileage!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderRideDetail.value.mileage!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -765,7 +771,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Time cost (${controller.orderRideDetail.value.duration!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.timeCost} (${controller.orderRideDetail.value.duration!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -795,7 +801,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Long distance fee (${controller.orderRideDetail.value.longDistance!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderRideDetail.value.longDistance!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -829,7 +835,12 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Surcharge",
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .surcharge ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .bodySmallRegular
@@ -861,7 +872,12 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Collected by drivers",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .collectedByDrivers ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -1015,7 +1031,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                     ),
                   ),
                   child: Text(
-                    "Selesai",
+                    controller.languageServices.language.value.finished ?? "-",
                     style: controller.typographyServices.bodyLargeBold.value
                         .copyWith(color: Colors.white),
                   ),

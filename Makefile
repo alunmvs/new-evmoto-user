@@ -8,3 +8,5 @@ scan-unused-assets:
 	dart run unused_assets_removal --dry-run
 delete-unused-assets:
 	dart run unused_assets_removal --delete
+clean-cache-ios:
+	flutter clean && flutter pub get && cd ios && rm -rf Pods Podfile.lock && rm -rf ~/Library/Developer/Xcode/DerivedData && pod install

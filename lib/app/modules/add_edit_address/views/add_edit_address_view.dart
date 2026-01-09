@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/add_edit_address_controller.dart';
@@ -13,7 +14,7 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Detail Lokasi",
+          controller.languageServices.language.value.locationDetails ?? "-",
           style: controller.typographyServices.bodyLargeBold.value,
         ),
         centerTitle: false,
@@ -79,7 +80,12 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                             Row(
                               children: [
                                 Text(
-                                  "Nama",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .name ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodyLargeBold
@@ -117,7 +123,13 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   horizontal: 12,
                                   vertical: 12,
                                 ),
-                                hintText: 'Masukkan Nama',
+                                hintText:
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterName ??
+                                    "-",
                                 hintStyle: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -180,7 +192,12 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                             Row(
                               children: [
                                 Text(
-                                  "Alamat",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .address ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodyLargeBold
@@ -213,13 +230,34 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   .themeColorServices
                                   .primaryBlue
                                   .value,
-                              formControlName: 'address',
+                              formControlName: 'address_detail',
+                              onTap: (control) async {
+                                var googlePlaceTextSearch = await Get.toNamed(
+                                  Routes.SEARCH_ADDRESS,
+                                );
+
+                                if (googlePlaceTextSearch != null) {
+                                  controller.googlePlaceTextSearch.value =
+                                      googlePlaceTextSearch;
+
+                                  controller.formGroup
+                                          .control("address_detail")
+                                          .value =
+                                      googlePlaceTextSearch.formattedAddress;
+                                }
+                              },
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 12,
                                   vertical: 12,
                                 ),
-                                hintText: 'Masukkan Alamat Kamu',
+                                hintText:
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterYourAddress ??
+                                    "-",
                                 hintStyle: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -327,9 +365,8 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
               height: 46,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                onPressed: () {
-                  Get.back();
-                  Get.back();
+                onPressed: () async {
+                  await controller.onTapSaveAddress();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
@@ -339,7 +376,12 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                   ),
                 ),
                 child: Text(
-                  "Simpan Alamat",
+                  controller
+                          .languageServices
+                          .language
+                          .value
+                          .snackbarAddressAddSuccess ??
+                      "-",
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(color: Colors.white),
                 ),

@@ -18,7 +18,7 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Riwayat Saldo",
+            controller.languageServices.language.value.balanceHistory ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -171,6 +171,10 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                     child: Text(
                                       DateFormat(
                                         'dd MMMM yyyy',
+                                        controller
+                                            .languageServices
+                                            .languageCode
+                                            .value,
                                       ).format(createDate),
                                       style: controller
                                           .typographyServices
@@ -387,7 +391,12 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                                               balanceHistory
                                                                           .type ==
                                                                       1
-                                                                  ? "Layanan Antar"
+                                                                  ? controller
+                                                                            .languageServices
+                                                                            .language
+                                                                            .value
+                                                                            .deliveryService ??
+                                                                        "-"
                                                                   : "-",
                                                               style: controller
                                                                   .typographyServices

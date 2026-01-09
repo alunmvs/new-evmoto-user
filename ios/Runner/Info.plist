@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>New Evmoto User</string>
+	<string>Evmoto</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,6 +26,16 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Use the camera to quickly upload driver registration documents and easily communicate with customers about their orders</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Use the location to get accurate distance and travel time estimates to keep customers informed and in control</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Use the location to get accurate distance and travel time estimates to keep customers informed and in control</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Use the microphone to easily communicate with customers about their orders</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Use the photo library to quickly upload driver registration documents and easily communicate with customers about their orders</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -34,16 +44,12 @@
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>MAPS_API_KEY</key>
+	<string>$(MAPS_API_KEY)</string>
 </dict>
 </plist>

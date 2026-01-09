@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/repositories/upload_image_repository.dart';
 
 import '../controllers/ride_call_controller.dart';
 
@@ -6,7 +7,7 @@ class RideCallBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<RideCallController>(
-      () => RideCallController(),
+      () => RideCallController(uploadImageRepository: UploadImageRepository()),
     );
   }
 }

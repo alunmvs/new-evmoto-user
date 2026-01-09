@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/payment_repository.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/main.dart';
@@ -14,6 +15,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
   final homeController = Get.find<HomeController>();
 
   final webViewController = WebViewController();
@@ -24,34 +26,50 @@ class DepositBalancePaymentWebviewController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     redirectUrl.value = Get.arguments['redirect_url'] ?? "";
+
     await webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
     await webViewController.setNavigationDelegate(
       NavigationDelegate(
         onNavigationRequest: (request) async {
           var uri = Uri.parse(request.url);
-          try {
-            await paymentRepository.redirectUrlDepositBalance(
-              orderId: uri.queryParameters['order_id'].toString(),
-              statusCode: uri.queryParameters['status_code'].toString(),
-              transactionStatus: uri.queryParameters['transaction_status']
-                  .toString(),
-            );
-          } catch (e) {}
-          await homeController.getUserInfo();
-          Get.back();
-          Get.back();
-          final SnackBar snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorGreen400.value,
-            content: Text(
-              "Saldo berhasil ditambah",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
+          if (uri.queryParameters['transaction_status'].toString() ==
+              "settlement") {
+            // try {
+            //   await paymentRepository.redirectUrlDepositBalance(
+            //     orderId: uri.queryParameters['order_id'].toString(),
+            //     statusCode: uri.queryParameters['status_code'].toString(),
+            //     transactionStatus: uri.queryParameters['transaction_status']
+            //         .toString(),
+            //   );
+            // } catch (e) {}
+            Get.back();
+            Get.back();
+            final SnackBar snackBar = SnackBar(
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: themeColorServices.sematicColorGreen400.value,
+              content: Text(
+                "Saldo berhasil ditambah",
+                style: typographyServices.bodySmallRegular.value.copyWith(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                ),
               ),
-            ),
-          );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-          return NavigationDecision.prevent;
+            );
+            rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+          } else if (uri.queryParameters['action'].toString() == "abandoned") {
+            Get.back();
+            final SnackBar snackBar = SnackBar(
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: themeColorServices.sematicColorRed400.value,
+              content: Text(
+                "Transaksi kedaluwarsa",
+                style: typographyServices.bodySmallRegular.value.copyWith(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                ),
+              ),
+            );
+            rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+          }
+          return NavigationDecision.navigate;
         },
       ),
     );

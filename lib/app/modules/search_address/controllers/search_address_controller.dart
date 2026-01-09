@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
@@ -14,8 +15,9 @@ class SearchAddressController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
-  final addressType = "".obs;
+  final addressType = 0.obs;
   final keyword = "".obs;
   late TextEditingController textEditingController;
 
@@ -27,6 +29,8 @@ class SearchAddressController extends GetxController {
   final currentLatitude = "".obs;
   final currentLongitude = "".obs;
 
+  final isEdit = false.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -35,7 +39,11 @@ class SearchAddressController extends GetxController {
     isFetch.value = true;
     await requestLocation();
 
-    addressType.value = Get.arguments['address_type'] ?? "";
+    if (Get.arguments?['address_type'] == null) {
+      isEdit.value = true;
+    } else {
+      addressType.value = Get.arguments['address_type'] ?? "";
+    }
     textEditingController = TextEditingController();
 
     textEditingController.addListener(() {
@@ -122,7 +130,7 @@ class SearchAddressController extends GetxController {
           location.customDistanceM = distanceMeter;
 
           if (distanceKm < 1) {
-            highlightedWordAddress["${distanceMeter.round()}m ⬩"] =
+            highlightedWordAddress["${distanceMeter.round()} m ⬩"] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -130,7 +138,7 @@ class SearchAddressController extends GetxController {
                   ),
                 );
           } else {
-            highlightedWordAddress["${distanceKm.toStringAsFixed(2)}km ⬩ "] =
+            highlightedWordAddress["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
                 HighlightedWord(
                   onTap: () {},
                   textStyle: typographyServices.captionLargeBold.value.copyWith(
@@ -147,9 +155,9 @@ class SearchAddressController extends GetxController {
     required GooglePlaceTextSearch googlePlaceTextSearch,
   }) {
     if (googlePlaceTextSearch.customDistanceKm! < 1) {
-      return "${googlePlaceTextSearch.customDistanceM!.round()}m";
+      return "${googlePlaceTextSearch.customDistanceM!.round()} m";
     } else {
-      return "${googlePlaceTextSearch.customDistanceKm!.toStringAsFixed(2)}km";
+      return "${googlePlaceTextSearch.customDistanceKm!.toStringAsFixed(2)} ${languageServices.language.value.km}";
     }
   }
 }

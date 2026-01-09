@@ -55,7 +55,7 @@ class RideOrderCancelController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
         content: Text(
-          "Harap lengkapi data yang dibutuhkan",
+          languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),
@@ -81,7 +81,7 @@ class RideOrderCancelController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorGreen400.value,
         content: Text(
-          "Berhasil membatalkan pesanan",
+          languageServices.language.value.snackbarCancelOrderSuccess ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),

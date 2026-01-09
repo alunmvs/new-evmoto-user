@@ -13,7 +13,7 @@ class SettingPaymentView extends GetView<SettingPaymentController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pengaturan Pembayaran",
+            controller.languageServices.language.value.settingPayment ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -314,7 +314,12 @@ class SettingPaymentView extends GetView<SettingPaymentController> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Cash",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .cash ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallBold
@@ -399,7 +404,12 @@ class SettingPaymentView extends GetView<SettingPaymentController> {
                       ),
                       SizedBox(width: 6),
                       Text(
-                        "Tambah Metode Pembayaran",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .addPaymentMethod ??
+                            "-",
                         style: controller.typographyServices.bodyLargeBold.value
                             .copyWith(color: Colors.white),
                       ),

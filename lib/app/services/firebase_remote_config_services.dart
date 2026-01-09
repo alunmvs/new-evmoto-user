@@ -15,7 +15,8 @@ class FirebaseRemoteConfigServices extends GetxService {
     );
 
     await remoteConfig.setDefaults({
-      "user_base_url": "http://api-dev.evmotoapp.com:8500",
+      "user_base_url": "https://api-dev.evmotoapp.com",
+      "customer_cs_whatsapp": "6285167020937",
     });
 
     await remoteConfig.fetchAndActivate();

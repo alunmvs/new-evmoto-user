@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-Map<String, dynamic> convertBytesToJson({required List<int> bytes}) {
+Map<String, dynamic>? convertBytesToJson({required List<int> bytes}) {
+  if (bytes.length < 4) return null;
+
   int payloadLength =
       (bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3];
   List<int> payloadBytes = bytes.sublist(4, 4 + payloadLength);

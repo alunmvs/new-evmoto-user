@@ -16,7 +16,7 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Isi Ulang Saldo",
+            controller.languageServices.language.value.topupBalance ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: true,
@@ -112,7 +112,12 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                         child: Column(
                           children: [
                             Text(
-                              "Saldo Saya",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .myBalance1 ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -153,7 +158,12 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Silahkan Pilih",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .pleaseSelect ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -291,7 +301,12 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Masukan Jumlah",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .enterAmount ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -334,7 +349,13 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                                 ),
 
                                 suffix: SizedBox(width: 12),
-                                hintText: 'Jumlah isi ulang',
+                                hintText:
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .numberOfRefill ??
+                                    "-",
                                 hintStyle: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -418,7 +439,12 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              "*Minimal pengisian saldo Rp10.000",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .minimumTopupBalance10000 ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -455,7 +481,7 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                     ),
                   ),
                   child: Text(
-                    "Isi Ulang Sekarang",
+                    controller.languageServices.language.value.refillNow ?? "-",
                     style: controller.typographyServices.bodyLargeBold.value
                         .copyWith(color: Colors.white),
                   ),

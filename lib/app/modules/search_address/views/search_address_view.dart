@@ -17,11 +17,19 @@ class SearchAddressView extends GetView<SearchAddressController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            controller.addressType.value == "home"
-                ? "Tambah Rumah"
-                : controller.addressType.value == "office"
-                ? "Tambah Kantor"
-                : "Tambah Lokasi Lainnya",
+            controller.isFetch.value
+                ? ""
+                : controller.addressType.value == 1
+                ? controller.languageServices.language.value.addHome ?? "-"
+                : controller.addressType.value == 2
+                ? controller
+                          .languageServices
+                          .language
+                          .value
+                          .addLocationOffice ??
+                      "-"
+                : controller.languageServices.language.value.addOtherAddress ??
+                      "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -105,11 +113,26 @@ class SearchAddressView extends GetView<SearchAddressController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            controller.addressType.value == "home"
-                                ? "Masukkan Alamat Rumah"
-                                : controller.addressType.value == "office"
-                                ? "Masukkan Alamat Kantor"
-                                : "Masukkan Alamat",
+                            controller.addressType.value == 1
+                                ? controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .enterHomeAddress ??
+                                      "-"
+                                : controller.addressType.value == 2
+                                ? controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .insertOfficeAddress ??
+                                      "-"
+                                : controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .insertAddress ??
+                                      "-",
                             style: controller
                                 .typographyServices
                                 .bodyLargeBold
@@ -127,7 +150,13 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                 vertical: 12,
                                 horizontal: 12,
                               ),
-                              hintText: "Masukkan Alamat Kamu",
+                              hintText:
+                                  controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .enterYourAddress ??
+                                  "-",
                               hintStyle: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -225,13 +254,12 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           SvgPicture.asset(
-                                            controller.addressType.value ==
-                                                    "home"
+                                            controller.addressType.value == 1
                                                 ? "assets/icons/icon_home.svg"
                                                 : controller
                                                           .addressType
                                                           .value ==
-                                                      "office"
+                                                      2
                                                 ? "assets/icons/icon_office.svg"
                                                 : "assets/icons/icon_pinpoint.svg",
                                             width: 18,
@@ -246,12 +274,26 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                     ),
                                     SizedBox(height: 8),
                                     Text(
-                                      controller.addressType.value == "home"
-                                          ? "Masukkan Alamat Rumah"
-                                          : controller.addressType.value ==
-                                                "office"
-                                          ? "Masukkan Alamat Kantor"
-                                          : "Masukkan Alamat",
+                                      controller.addressType.value == 1
+                                          ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterHomeAddress ??
+                                                "-"
+                                          : controller.addressType.value == 2
+                                          ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .insertOfficeAddress ??
+                                                "-"
+                                          : controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .insertAddress ??
+                                                "-",
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold
@@ -287,7 +329,13 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                             vertical: 12,
                                             horizontal: 12,
                                           ),
-                                          hintText: "Masukkan Alamat Kamu",
+                                          hintText:
+                                              controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .enterYourAddress ??
+                                              "-",
                                           hintStyle: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -349,16 +397,23 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                               .googlePlaceTextSearchList) ...[
                                         GestureDetector(
                                           onTap: () {
-                                            Get.toNamed(
-                                              Routes.ADD_EDIT_ADDRESS,
-                                              arguments: {
-                                                "address_type": controller
-                                                    .addressType
-                                                    .value,
-                                                "google_place_text_search":
-                                                    googlePlaceTextSearch,
-                                              },
-                                            );
+                                            if (controller.isEdit.value ==
+                                                true) {
+                                              Get.back(
+                                                result: googlePlaceTextSearch,
+                                              );
+                                            } else {
+                                              Get.toNamed(
+                                                Routes.ADD_EDIT_ADDRESS,
+                                                arguments: {
+                                                  "address_type": controller
+                                                      .addressType
+                                                      .value,
+                                                  "google_place_text_search":
+                                                      googlePlaceTextSearch,
+                                                },
+                                              );
+                                            }
                                           },
                                           child: Container(
                                             color: Colors.transparent,

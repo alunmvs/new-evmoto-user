@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
@@ -18,7 +20,8 @@ import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 
-class RideOrderDetailController extends GetxController {
+class RideOrderDetailController extends GetxController
+    with WidgetsBindingObserver {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
 
@@ -56,6 +59,7 @@ class RideOrderDetailController extends GetxController {
 
   late Timer? driverCurrentLocationTimer;
   late Timer? refocusMapBoundsTimer;
+  late Timer? refreshStatusDriverGivePriceTimer;
 
   final isPinLocationWaitingForDriverHide = true.obs;
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
@@ -65,6 +69,8 @@ class RideOrderDetailController extends GetxController {
   final estimatedSpeedInKmh = 40.obs;
 
   final payType = 3.obs;
+
+  final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
 
   final isFetch = false.obs;
 
@@ -76,6 +82,8 @@ class RideOrderDetailController extends GetxController {
     orderType.value = Get.arguments['order_type'] ?? 1;
 
     await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+    await joinFirestoreChatRooms();
+    WidgetsBinding.instance.addObserver(this);
     isFetch.value = false;
     await Future.delayed(Duration(seconds: 1));
 
@@ -114,6 +122,7 @@ class RideOrderDetailController extends GetxController {
     await Future.wait([
       setupSchedulerDriverCurrentLocation(),
       setupSchedulerDriverRefocusMapBound(),
+      setupRefreshStatusDriverGivePrice(),
     ]);
 
     generateEstimatedDistanceAndTimeInMinutes();
@@ -121,10 +130,16 @@ class RideOrderDetailController extends GetxController {
     if (orderRideDetail.value.state == 7) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAndToNamed(
-          Routes.RIDE_ORDER_DONE,
-          arguments: {"order_id": orderId.value, "order_type": orderType.value},
-        );
+        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+            Get.currentRoute != Routes.HOME) {
+          Get.offAndToNamed(
+            Routes.RIDE_ORDER_DONE,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        }
       });
     }
   }
@@ -135,8 +150,19 @@ class RideOrderDetailController extends GetxController {
   }
 
   @override
-  void onClose() {
+  Future<void> onClose() async {
     super.onClose();
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderRideDetail.value.orderId.toString())
+        .set({
+          "userId": orderRideDetail.value.userId,
+          "userName": homeController.userInfo.value.name,
+          "userIsOnline": false,
+          "userLastSeen": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+
     try {
       googleMapController.dispose();
     } catch (e) {}
@@ -146,12 +172,89 @@ class RideOrderDetailController extends GetxController {
     try {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
+    try {
+      refreshStatusDriverGivePriceTimer?.cancel();
+    } catch (e) {}
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(orderRideDetail.value.orderId.toString())
+          .set({
+            "userId": orderRideDetail.value.userId,
+            "userName": homeController.userInfo.value.name,
+            "userIsOnline": true,
+            "userLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    } else if (state == AppLifecycleState.paused) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(orderRideDetail.value.orderId.toString())
+          .set({
+            "userId": orderRideDetail.value.userId,
+            "userName": homeController.userInfo.value.name,
+            "userIsOnline": false,
+            "userLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    }
+  }
+
+  Future<void> joinFirestoreChatRooms() async {
+    FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderRideDetail.value.orderId.toString())
+        .snapshots()
+        .listen((event) {
+          evmotoOrderChatParticipants.value =
+              EvmotoOrderChatParticipants.fromJson(event.data()!);
+        });
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderRideDetail.value.orderId.toString())
+        .set({
+          "userId": orderRideDetail.value.userId,
+          "userName": homeController.userInfo.value.name,
+          "userIsOnline": true,
+          "userLastSeen": FieldValue.serverTimestamp(),
+          "userJoinedAt": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
   }
 
   void generateEstimatedDistanceAndTimeInMinutes() {
     estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
     estimatedTimeInMinutes.value =
         (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
+  }
+
+  Future<void> setupRefreshStatusDriverGivePrice() async {
+    refreshStatusDriverGivePriceTimer = Timer.periodic(Duration(seconds: 5), (
+      timer,
+    ) async {
+      if (orderRideDetail.value.state == 6) {
+        await getOrderRideDetail();
+      }
+
+      if (orderRideDetail.value.state == 7) {
+        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+            Get.currentRoute != Routes.HOME) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Get.currentRoute != Routes.RIDE_ORDER_DONE) {
+              Get.offAndToNamed(
+                Routes.RIDE_ORDER_DONE,
+                arguments: {
+                  "order_id": orderId.value,
+                  "order_type": orderType.value,
+                },
+              );
+            }
+          });
+        }
+      }
+    });
   }
 
   Future<void> refreshAll() async {
@@ -207,10 +310,16 @@ class RideOrderDetailController extends GetxController {
     if (orderRideDetail.value.state == 7) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAndToNamed(
-          Routes.RIDE_ORDER_DONE,
-          arguments: {"order_id": orderId.value, "order_type": orderType.value},
-        );
+        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+            Get.currentRoute != Routes.HOME) {
+          Get.offAndToNamed(
+            Routes.RIDE_ORDER_DONE,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        }
       });
     }
   }
@@ -946,7 +1055,11 @@ class RideOrderDetailController extends GetxController {
                                         .sematicColorGreen400
                                         .value,
                                     content: Text(
-                                      "Berhasil membatalkan transaksi",
+                                      languageServices
+                                              .language
+                                              .value
+                                              .snackbarCancelTransactionSuccess ??
+                                          "-",
                                       style: typographyServices
                                           .bodySmallRegular
                                           .value
@@ -998,9 +1111,9 @@ class RideOrderDetailController extends GetxController {
     int menit = (estimatedTimeInMinutes.value % 60).round();
 
     if (jam > 0) {
-      return '$jam Jam $menit Menit';
+      return '$jam ${languageServices.language.value.hour} $menit ${languageServices.language.value.minute}';
     } else {
-      return '$menit Menit';
+      return '$menit ${languageServices.language.value.minute}';
     }
   }
 }

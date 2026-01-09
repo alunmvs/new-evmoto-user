@@ -30,6 +30,8 @@ import '../modules/login_register_verification_otp/bindings/login_register_verif
 import '../modules/login_register_verification_otp/views/login_register_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
+import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
 import '../modules/promotion/bindings/promotion_binding.dart';
@@ -228,6 +230,11 @@ class AppPages {
       name: _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW,
       page: () => const DepositBalancePaymentWebviewView(),
       binding: DepositBalancePaymentWebviewBinding(),
+    ),
+    GetPage(
+      name: _Paths.PHOTO_VIEWER,
+      page: () => const PhotoViewerView(),
+      binding: PhotoViewerBinding(),
     ),
   ];
 }
