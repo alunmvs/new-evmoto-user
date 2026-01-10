@@ -43,7 +43,6 @@ class LoginRegisterVerificationOtpController extends GetxController {
     super.onInit();
     isFetch.value = true;
     mobilePhone.value = Get.arguments['mobile_phone'] ?? "";
-    await requestLocation();
     await requestOTP();
     isFetch.value = false;
   }
@@ -126,6 +125,8 @@ class LoginRegisterVerificationOtpController extends GetxController {
 
   Future<void> onSubmitOTP() async {
     try {
+      await requestLocation();
+
       var loginData = await loginRegisterRepository.loginByOtp(
         phone: mobilePhone.value,
         code: otpCode.value,
