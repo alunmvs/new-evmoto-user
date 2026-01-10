@@ -457,10 +457,9 @@ class AccountController extends GetxController {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
-                            "assets/icons/icon_delete.svg",
+                            "assets/icons/icon_alert_circle.svg",
                             width: 26,
                             height: 26,
-                            color: themeColorServices.sematicColorRed400.value,
                           ),
                         ],
                       ),
