@@ -39,6 +39,8 @@ abstract class Routes {
   static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
       _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW;
   static const PHOTO_VIEWER = _Paths.PHOTO_VIEWER;
+  static const ONBOARDING_REGISTRATION_FORM =
+      _Paths.ONBOARDING_REGISTRATION_FORM;
 }
 
 abstract class _Paths {
@@ -77,4 +79,5 @@ abstract class _Paths {
   static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
       '/deposit-balance-payment-webview';
   static const PHOTO_VIEWER = '/photo-viewer';
+  static const ONBOARDING_REGISTRATION_FORM = '/onboarding-registration-form';
 }

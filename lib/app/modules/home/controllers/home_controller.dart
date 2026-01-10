@@ -68,7 +68,11 @@ class HomeController extends GetxController {
 
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await displayCoachmark();
+      if (userInfo.value.name == "" || userInfo.value.name == null) {
+        Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
+      } else {
+        await displayCoachmark();
+      }
     });
   }
 

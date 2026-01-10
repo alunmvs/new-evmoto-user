@@ -30,6 +30,8 @@ import '../modules/login_register_verification_otp/bindings/login_register_verif
 import '../modules/login_register_verification_otp/views/login_register_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/onboarding_registration_form/bindings/onboarding_registration_form_binding.dart';
+import '../modules/onboarding_registration_form/views/onboarding_registration_form_view.dart';
 import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
@@ -235,6 +237,11 @@ class AppPages {
       name: _Paths.PHOTO_VIEWER,
       page: () => const PhotoViewerView(),
       binding: PhotoViewerBinding(),
+    ),
+    GetPage(
+      name: _Paths.ONBOARDING_REGISTRATION_FORM,
+      page: () => const OnboardingRegistrationFormView(),
+      binding: OnboardingRegistrationFormBinding(),
     ),
   ];
 }
