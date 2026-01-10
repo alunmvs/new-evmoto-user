@@ -76,6 +76,7 @@ class OrderRide {
   int? userId;
   String? userHeadImg;
   int? weight;
+  int? payType;
 
   OrderRide({
     this.orderId,
@@ -155,6 +156,7 @@ class OrderRide {
     this.userId,
     this.userHeadImg,
     this.weight,
+    this.payType,
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
@@ -235,6 +237,7 @@ class OrderRide {
     userId = json['userId'];
     userHeadImg = json['userHeadImg'];
     weight = json['weight'];
+    payType = json['payType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -316,6 +319,7 @@ class OrderRide {
     data['userId'] = this.userId;
     data['userHeadImg'] = this.userHeadImg;
     data['weight'] = this.weight;
+    data['payType'] = this.payType;
     return data;
   }
 }

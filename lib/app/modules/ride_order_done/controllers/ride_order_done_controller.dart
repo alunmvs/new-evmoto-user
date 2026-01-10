@@ -75,7 +75,7 @@ class RideOrderDoneController extends GetxController {
         await Future.wait([
           orderRideRepository.paidOrder(
             orderId: orderId.value,
-            payType: 3,
+            payType: orderRideDetail.value.payType!,
             type: 1,
             orderType: orderType.value,
             language: languageServices.languageCodeSystem.value,
@@ -92,7 +92,7 @@ class RideOrderDoneController extends GetxController {
           ),
           orderRideRepository.paidOrder(
             orderId: orderId.value,
-            payType: 3,
+            payType: orderRideDetail.value.payType!,
             type: 1,
             orderType: orderType.value,
             language: languageServices.languageCodeSystem.value,
