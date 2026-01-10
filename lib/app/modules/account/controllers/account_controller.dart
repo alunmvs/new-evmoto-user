@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
@@ -71,130 +72,469 @@ class AccountController extends GetxController {
     }
   }
 
-  Future<void> onTapLogout() async {
-    await Get.dialog(
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                color: themeColorServices.neutralsColorGrey0.value,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        languageServices.language.value.logoutConfirmation ??
-                            "-",
-                        style: typographyServices.bodyLargeBold.value,
-                        textAlign: TextAlign.center,
+  Future<void> onTapManageAccount() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Kelola Akun",
+                      style: typographyServices.bodyLargeBold.value,
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Kelola akses akun, keluar dari aplikasi, atau ajukan penghapusan akun.",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFFB3B3B3),
                       ),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    ),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Color(0XFFE8E8E8)),
+                      ),
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 46,
-                              width: Get.width,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                    color: themeColorServices
-                                        .neutralsColorGrey300
-                                        .value,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  Get.close(1);
-                                },
-                                child: Text(
-                                  languageServices.language.value.cancel ?? "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey400
-                                            .value,
+                          IntrinsicHeight(
+                            child: GestureDetector(
+                              onTap: () async {
+                                Get.close(1);
+                                await onTapLogout();
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: Color(0XFFFFEAE9),
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_logout.svg",
+                                            width: 16,
+                                            height: 16,
+                                            color: themeColorServices
+                                                .sematicColorRed400
+                                                .value,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Keluar dari Akun",
+                                            style: typographyServices
+                                                .bodySmallBold
+                                                .value,
+                                          ),
+                                          Text(
+                                            "Keluar dari akun untuk mengamankan akses Anda.",
+                                            style: typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFB3B3B3),
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_arrow_right.svg",
+                                            width: 6,
+                                            height: 12,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  var storage = FlutterSecureStorage();
-                                  await storage.deleteAll();
-                                  await socketServices.closeWebsocket();
-
-                                  Get.offAllNamed(Routes.LOGIN_REGISTER);
-
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      languageServices
-                                              .language
-                                              .value
-                                              .snackbarLogoutSuccess ??
-                                          "-",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
+                          SizedBox(height: 16),
+                          IntrinsicHeight(
+                            child: GestureDetector(
+                              onTap: () async {
+                                Get.close(1);
+                                await onTapDeleteAccount();
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: Color(0XFFFFEAE9),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_delete.svg",
+                                            width: 16,
+                                            height: 16,
                                             color: themeColorServices
-                                                .neutralsColorGrey0
+                                                .sematicColorRed400
                                                 .value,
                                           ),
-                                    ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: Text(
-                                  languageServices.language.value.logout ?? "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
+                                        ],
                                       ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Hapus Akun",
+                                            style: typographyServices
+                                                .bodySmallBold
+                                                .value,
+                                          ),
+                                          Text(
+                                            "Tindakan ini akan menghapus akun dan data Anda secara permanen.",
+                                            style: typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFB3B3B3),
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_arrow_right.svg",
+                                            width: 6,
+                                            height: 12,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+      isDismissible: true,
+    );
+  }
+
+  Future<void> onTapLogout() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: Color(0XFFFFEAE9),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_logout.svg",
+                            width: 26,
+                            height: 26,
+                            color: themeColorServices.sematicColorRed400.value,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      "Yakin Ingin Keluar Dari Akun?",
+                      style: typographyServices.bodyLargeBold.value,
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Anda akan keluar dari akun ini dan perlu masuk kembali untuk menggunakan layanan.",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFFB3B3B3),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    SizedBox(
+                      width: Get.width,
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          var storage = FlutterSecureStorage();
+                          await storage.deleteAll();
+                          await socketServices.closeWebsocket();
+
+                          Get.offAllNamed(Routes.LOGIN_REGISTER);
+
+                          var snackBar = SnackBar(
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor:
+                                themeColorServices.sematicColorGreen400.value,
+                            content: Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .snackbarLogoutSuccess ??
+                                  "-",
+                              style: typographyServices.bodySmallRegular.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          );
+                          rootScaffoldMessengerKey.currentState?.showSnackBar(
+                            snackBar,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: themeColorServices.primaryBlue.value,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Keluar Sekarang",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    SizedBox(
+                      width: Get.width,
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0XFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Batalkan",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      isDismissible: true,
+    );
+  }
+
+  Future<void> onTapDeleteAccount() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: Color(0XFFFFEAE9),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_delete.svg",
+                            width: 26,
+                            height: 26,
+                            color: themeColorServices.sematicColorRed400.value,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      "Yakin Ingin Hapus Akun?",
+                      style: typographyServices.bodyLargeBold.value,
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Akun dan seluruh data Anda akan dihapus secara permanen dan tidak dapat dipulihkan.",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFFB3B3B3),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    SizedBox(
+                      width: Get.width,
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed: () async {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              themeColorServices.sematicColorRed400.value,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Hapus Akun",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    SizedBox(
+                      width: Get.width,
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0XFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Batalkan",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      isDismissible: true,
     );
   }
 
