@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -17,10 +17,12 @@ import 'package:new_evmoto_user/main.dart';
 class ActivityDetailController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
+  final OpenMapsRepository openMapsRepository;
 
   ActivityDetailController({
     required this.googleMapsRepository,
     required this.orderRideRepository,
+    required this.openMapsRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -49,7 +51,6 @@ class ActivityDetailController extends GetxController {
     isFetch.value = true;
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
-    print(orderId);
     await getOrderRideDetail();
     isFetch.value = false;
     await setupGoogleMapOriginToDestination();
@@ -109,20 +110,21 @@ class ActivityDetailController extends GetxController {
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
-    var googleDirectionList = await googleMapsRepository.getDirection(
+    var openMapDirection = await openMapsRepository.getDirection(
       originLatitude: orderRideDetail.value.startLat.toString(),
       originLongitude: orderRideDetail.value.startLon.toString(),
       destinationLatitude: orderRideDetail.value.endLat.toString(),
       destinationLongitude: orderRideDetail.value.endLon.toString(),
-      region: "en",
     );
 
-    var result = PolylinePoints.decodePolyline(
-      googleDirectionList.first.overviewPolyline!.points!,
-    );
-    var polylineCoordinates = result
-        .map((p) => LatLng(p.latitude, p.longitude))
+    var polylineCoordinates = openMapDirection
+        .routes!
+        .first
+        .geometry!
+        .coordinates!
+        .map((p) => LatLng(p[1], p[0]))
         .toList();
+
     polylinesCoordinate.value = polylineCoordinates;
 
     polylines.clear();

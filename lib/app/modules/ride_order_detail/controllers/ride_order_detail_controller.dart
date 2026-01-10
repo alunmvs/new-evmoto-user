@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
@@ -11,6 +10,7 @@ import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -24,10 +24,12 @@ class RideOrderDetailController extends GetxController
     with WidgetsBindingObserver {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
+  final OpenMapsRepository openMapsRepository;
 
   RideOrderDetailController({
     required this.googleMapsRepository,
     required this.orderRideRepository,
+    required this.openMapsRepository,
   });
 
   final homeController = Get.find<HomeController>();
@@ -392,21 +394,20 @@ class RideOrderDetailController extends GetxController
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
 
-      var googleDirectionList = await googleMapsRepository.getDirection(
+      var openMapDirection = await openMapsRepository.getDirection(
         originLatitude: driverLatitude.value,
         originLongitude: driverLongitude.value,
         destinationLatitude: orderRideDetail.value.startLat.toString(),
         destinationLongitude: orderRideDetail.value.startLon.toString(),
-        region: "en",
       );
 
-      var result = PolylinePoints.decodePolyline(
-        googleDirectionList.first.overviewPolyline!.points!,
-      );
-      var polylineCoordinates = result
-          .map((p) => LatLng(p.latitude, p.longitude))
+      var polylineCoordinates = openMapDirection
+          .routes!
+          .first
+          .geometry!
+          .coordinates!
+          .map((p) => LatLng(p[1], p[0]))
           .toList();
-      polylinesCoordinate.value = polylineCoordinates;
 
       polylines.add(
         Polyline(
@@ -510,23 +511,25 @@ class RideOrderDetailController extends GetxController
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
-    var googleDirectionList = await googleMapsRepository.getDirection(
+    var openMapDirection = await openMapsRepository.getDirection(
       originLatitude: orderRideDetail.value.startLat.toString(),
       originLongitude: orderRideDetail.value.startLon.toString(),
       destinationLatitude: orderRideDetail.value.endLat.toString(),
       destinationLongitude: orderRideDetail.value.endLon.toString(),
-      region: "en",
     );
 
-    var result = PolylinePoints.decodePolyline(
-      googleDirectionList.first.overviewPolyline!.points!,
-    );
-    var polylineCoordinates = result
-        .map((p) => LatLng(p.latitude, p.longitude))
+    var polylineCoordinates = openMapDirection
+        .routes!
+        .first
+        .geometry!
+        .coordinates!
+        .map((p) => LatLng(p[1], p[0]))
         .toList();
+
     polylinesCoordinate.value = polylineCoordinates;
 
     polylines.clear();
+
     isFetch.value = true;
     polylines.add(
       Polyline(
@@ -672,21 +675,24 @@ class RideOrderDetailController extends GetxController
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
-        var googleDirectionList = await googleMapsRepository.getDirection(
+        var openMapDirection = await openMapsRepository.getDirection(
           originLatitude: driverLatitude.value,
           originLongitude: driverLongitude.value,
           destinationLatitude: orderRideDetail.value.startLat.toString(),
           destinationLongitude: orderRideDetail.value.startLon.toString(),
-          region: "en",
         );
 
-        var result = PolylinePoints.decodePolyline(
-          googleDirectionList.first.overviewPolyline!.points!,
-        );
-        var polylineCoordinates = result
-            .map((p) => LatLng(p.latitude, p.longitude))
+        var polylineCoordinates = openMapDirection
+            .routes!
+            .first
+            .geometry!
+            .coordinates!
+            .map((p) => LatLng(p[1], p[0]))
             .toList();
+
         polylinesCoordinate.value = polylineCoordinates;
+
+        polylines.clear();
 
         polylines.add(
           Polyline(
@@ -775,20 +781,21 @@ class RideOrderDetailController extends GetxController
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
-        var googleDirectionList = await googleMapsRepository.getDirection(
+        var openMapDirection = await openMapsRepository.getDirection(
           originLatitude: driverLatitude.value,
           originLongitude: driverLongitude.value,
           destinationLatitude: orderRideDetail.value.endLat.toString(),
           destinationLongitude: orderRideDetail.value.endLon.toString(),
-          region: "en",
         );
 
-        var result = PolylinePoints.decodePolyline(
-          googleDirectionList.first.overviewPolyline!.points!,
-        );
-        var polylineCoordinates = result
-            .map((p) => LatLng(p.latitude, p.longitude))
+        var polylineCoordinates = openMapDirection
+            .routes!
+            .first
+            .geometry!
+            .coordinates!
+            .map((p) => LatLng(p[1], p[0]))
             .toList();
+
         polylinesCoordinate.value = polylineCoordinates;
 
         polylines.add(

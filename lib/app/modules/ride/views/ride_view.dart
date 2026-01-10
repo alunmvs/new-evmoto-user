@@ -1955,7 +1955,7 @@ class RideView extends GetView<RideController> {
 
                                                 await Future.wait([
                                                   controller
-                                                      .generatePolylines(),
+                                                      .generatePolylinesOpenMapsApi(),
                                                   controller.refocusMapsBound(),
                                                   controller
                                                       .getOrderRidePricingList(),
@@ -2151,7 +2151,8 @@ class RideView extends GetView<RideController> {
                                               );
 
                                               await Future.wait([
-                                                controller.generatePolylines(),
+                                                controller
+                                                    .generatePolylinesOpenMapsApi(),
                                                 controller.refocusMapsBound(),
                                                 controller
                                                     .getOrderRidePricingList(),

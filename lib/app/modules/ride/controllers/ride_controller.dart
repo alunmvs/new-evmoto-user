@@ -16,6 +16,7 @@ import 'package:new_evmoto_user/app/data/models/requested_order_ride_model.dart'
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
@@ -31,11 +32,13 @@ class RideController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
   final SavedAddressRepository savedAddressRepository;
+  final OpenMapsRepository openMapsRepository;
 
   RideController({
     required this.googleMapsRepository,
     required this.orderRideRepository,
     required this.savedAddressRepository,
+    required this.openMapsRepository,
   });
 
   final homeController = Get.find<HomeController>();
@@ -202,7 +205,7 @@ class RideController extends GetxController {
       status.value = "checkout";
 
       await Future.wait([
-        generatePolylines(),
+        generatePolylinesOpenMapsApi(),
         refocusMapsBound(),
         getOrderRidePricingList(),
       ]);
@@ -361,7 +364,7 @@ class RideController extends GetxController {
       await Future.wait([
         getOriginPlaceLocationList(keyword: originAddress.value),
         getDestinationPlaceLocationList(keyword: destinationAddress.value),
-        generatePolylines(),
+        generatePolylinesOpenMapsApi(),
         refocusMapsBound(),
         getOrderRidePricingList(),
       ]);
@@ -490,15 +493,17 @@ class RideController extends GetxController {
         );
 
     recommendationOriginCurrentLocationList.value = [];
-    recommendationOriginCurrentLocationList.add(
-      RecommendationLocation(
-        name: languageServices.language.value.currentLocation ?? "-",
-        id: "${currentLocationDetail.first.formattedAddress}",
-        latitude: currentLatitude.value,
-        longitude: currentLongitude.value,
-        addressDetail: currentLocationDetail.first.formattedAddress,
-      ),
-    );
+    if (currentLocationDetail.isNotEmpty) {
+      recommendationOriginCurrentLocationList.add(
+        RecommendationLocation(
+          name: languageServices.language.value.currentLocation ?? "-",
+          id: "${currentLocationDetail.first.formattedAddress}",
+          latitude: currentLatitude.value,
+          longitude: currentLongitude.value,
+          addressDetail: currentLocationDetail.first.formattedAddress,
+        ),
+      );
+    }
   }
 
   bool isLatLngOriginFilled() {
@@ -1197,6 +1202,35 @@ class RideController extends GetxController {
     );
   }
 
+  Future<void> generatePolylinesOpenMapsApi() async {
+    var openMapDirection = await openMapsRepository.getDirection(
+      originLatitude: originLatitude.value,
+      originLongitude: originLongitude.value,
+      destinationLatitude: destinationLatitude.value,
+      destinationLongitude: destinationLongitude.value,
+    );
+
+    var polylineCoordinates = openMapDirection
+        .routes!
+        .first
+        .geometry!
+        .coordinates!
+        .map((p) => LatLng(p[1], p[0]))
+        .toList();
+
+    polylinesCoordinate.value = polylineCoordinates;
+
+    polylines.clear();
+    polylines.add(
+      Polyline(
+        polylineId: PolylineId("route"),
+        points: polylineCoordinates,
+        color: Color(0XFF37C086),
+        width: 6,
+      ),
+    );
+  }
+
   Future<void> getOrderRidePricingList() async {
     orderRidePricingList.value = (await orderRideRepository
         .getOrderRidePricingList(
@@ -1231,6 +1265,7 @@ class RideController extends GetxController {
       ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
       type: "1", // 1 = Ride, 2 = Intercity
       amount: selectedOrderRidePricing.value.amount,
+      payType: payType.value,
     ));
   }
 
@@ -1388,7 +1423,7 @@ class RideController extends GetxController {
 
     if (originAddress.value != "" && destinationAddress.value != "") {
       await Future.wait([
-        generatePolylines(),
+        generatePolylinesOpenMapsApi(),
         refocusMapsBound(),
         getOrderRidePricingList(),
       ]);
