@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:pinput/pinput.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends GetxController {
@@ -126,7 +127,7 @@ class AccountController extends GetxController {
                                       width: 32,
                                       height: 32,
                                       decoration: BoxDecoration(
-                                        color: Color(0XFFFFEAE9),
+                                        color: Color(0XFFD7EAFF),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Row(
@@ -139,9 +140,7 @@ class AccountController extends GetxController {
                                             "assets/icons/icon_logout.svg",
                                             width: 16,
                                             height: 16,
-                                            color: themeColorServices
-                                                .sematicColorRed400
-                                                .value,
+                                            color: Color(0XFF0573EA),
                                           ),
                                         ],
                                       ),
@@ -310,7 +309,7 @@ class AccountController extends GetxController {
                       width: 52,
                       height: 52,
                       decoration: BoxDecoration(
-                        color: Color(0XFFFFEAE9),
+                        color: Color(0XFFD7EAFF),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -321,7 +320,7 @@ class AccountController extends GetxController {
                             "assets/icons/icon_logout.svg",
                             width: 26,
                             height: 26,
-                            color: themeColorServices.sematicColorRed400.value,
+                            color: Color(0XFF0573EA),
                           ),
                         ],
                       ),
@@ -481,7 +480,10 @@ class AccountController extends GetxController {
                       width: Get.width,
                       height: 46,
                       child: ElevatedButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          Get.close(1);
+                          await onTapValidateOtpDeleteAccount();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               themeColorServices.sematicColorRed400.value,
@@ -535,6 +537,215 @@ class AccountController extends GetxController {
       ),
       isDismissible: true,
     );
+  }
+
+  Future<void> onTapValidateOtpDeleteAccount() async {
+    // send otp code
+    final otpCode = "".obs;
+    final errorMessage = "".obs;
+
+    await Get.bottomSheet(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Masukkan Kode OTP",
+                      style: typographyServices.bodyLargeBold.value,
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Untuk mengonfirmasi penghapusan akun Anda",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFFB3B3B3),
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      "assets/images/img_otp.svg",
+                      width: 139,
+                      height: 80,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text:
+                            "${languageServices.language.value.verificationOtpDescription ?? "-"} ",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(
+                              color:
+                                  themeColorServices.neutralsColorGrey600.value,
+                            ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "+${homeController.userInfo.value.phone}",
+                            style: typographyServices.bodySmallBold.value,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Pinput(
+                      defaultPinTheme: PinTheme(
+                        textStyle: typographyServices.headingMediumBold.value
+                            .copyWith(
+                              color: themeColorServices.primaryBlue.value,
+                            ),
+                        width: 48,
+                        height: 52 + 5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: themeColorServices.primaryBlue.value,
+                          ),
+                        ),
+                      ),
+                      onCompleted: (pin) async {
+                        otpCode.value = pin;
+                      },
+                    ),
+                    if (errorMessage.value != "") ...[
+                      SizedBox(height: 16),
+                      Text(
+                        errorMessage.value,
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(
+                              color:
+                                  themeColorServices.sematicColorRed400.value,
+                            ),
+                      ),
+                    ],
+                    SizedBox(height: 16 * 3),
+                    SizedBox(
+                      width: Get.width,
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed: () async {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: themeColorServices.primaryBlue.value,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Konfirmasi OTP",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    SizedBox(
+                      width: Get.width,
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                          await onTapSuccessDeleteAccountDialog();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0XFFD9D9D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          "Batalkan",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      isDismissible: true,
+    );
+  }
+
+  Future<void> onTapSuccessDeleteAccountDialog() async {
+    Get.dialog(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFDDFFE6),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_checkmark_circle.svg",
+                              width: 36,
+                              height: 36,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        "Akun Anda telah berhasil dihapus.",
+                        style: typographyServices.bodyLargeBold.value,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "Terima kasih telah menggunakan EV Moto.",
+                        style: typographyServices.bodySmallRegular.value,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    await Future.delayed(Duration(seconds: 3)).then((value) {
+      Get.close(1);
+    });
   }
 
   Future<void> onTapRatingAndReviewApp() async {
