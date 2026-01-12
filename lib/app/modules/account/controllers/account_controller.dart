@@ -13,6 +13,7 @@ import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends GetxController {
@@ -406,10 +407,7 @@ class AccountController extends GetxController {
                         child: Text(
                           "Batalkan",
                           style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color:
-                                    themeColorServices.neutralsColorGrey0.value,
-                              ),
+                              .copyWith(color: Colors.black),
                         ),
                       ),
                     ),
@@ -520,10 +518,7 @@ class AccountController extends GetxController {
                         child: Text(
                           "Batalkan",
                           style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color:
-                                    themeColorServices.neutralsColorGrey0.value,
-                              ),
+                              .copyWith(color: Colors.black),
                         ),
                       ),
                     ),
@@ -543,6 +538,7 @@ class AccountController extends GetxController {
     // send otp code
     final otpCode = "".obs;
     final errorMessage = "".obs;
+    final isButtonResendEnable = true.obs;
 
     await Get.bottomSheet(
       Column(
@@ -626,6 +622,56 @@ class AccountController extends GetxController {
                             ),
                       ),
                     ],
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (isButtonResendEnable.value == false) ...[
+                          SlideCountdown(
+                            duration: Duration(minutes: 1),
+                            countUp: false,
+                            separatorStyle: typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Color(0XFF676767)),
+                            shouldShowMinutes: (value) {
+                              return true;
+                            },
+                            onDone: () {
+                              isButtonResendEnable.value = true;
+                            },
+                            decoration: BoxDecoration(),
+                            padding: EdgeInsets.all(0),
+                            style: typographyServices.bodySmallRegular.value
+                                .copyWith(color: Color(0XFF676767)),
+                          ),
+                        ],
+                        SizedBox(width: 10),
+                        SizedBox(
+                          height: 34,
+                          child: ElevatedButton(
+                            onPressed: isButtonResendEnable.value
+                                ? () async {
+                                    // await requestOtp();
+                                  }
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              backgroundColor:
+                                  themeColorServices.primaryBlue.value,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                            child: Text(
+                              "Kirim ulang code",
+                              style: typographyServices.bodySmallBold.value
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 16 * 3),
                     SizedBox(
                       width: Get.width,
@@ -668,10 +714,7 @@ class AccountController extends GetxController {
                         child: Text(
                           "Batalkan",
                           style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color:
-                                    themeColorServices.neutralsColorGrey0.value,
-                              ),
+                              .copyWith(color: Colors.black),
                         ),
                       ),
                     ),
