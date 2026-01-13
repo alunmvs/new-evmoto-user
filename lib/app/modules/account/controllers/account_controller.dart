@@ -826,7 +826,7 @@ class AccountController extends GetxController {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        "Terima kasih telah menggunakan EV Moto.",
+                        "Terima kasih telah menggunakan EVMoto.",
                         style: typographyServices.bodySmallRegular.value,
                       ),
                     ],

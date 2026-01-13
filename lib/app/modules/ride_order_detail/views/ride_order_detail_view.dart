@@ -296,7 +296,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                       ),
                                       SizedBox(width: 8),
                                       Text(
-                                        "ECGO EV Moto",
+                                        "ECGO EVMoto",
                                         style: controller
                                             .typographyServices
                                             .bodyLargeBold

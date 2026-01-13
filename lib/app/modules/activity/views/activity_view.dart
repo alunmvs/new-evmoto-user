@@ -262,7 +262,7 @@ class ActivityView extends GetView<ActivityController> {
                                   ),
                                   SizedBox(height: 16),
                                   Text(
-                                    "Kamu sudah mencoba EV Moto?",
+                                    "Kamu sudah mencoba EVMoto?",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeBold
