@@ -1264,12 +1264,7 @@ class HomeView extends GetView<HomeController> {
                                                                         ),
                                                                   ),
                                                                   child: Text(
-                                                                    controller
-                                                                            .languageServices
-                                                                            .language
-                                                                            .value
-                                                                            .discount50 ??
-                                                                        "-",
+                                                                    "Promo",
                                                                     style: controller
                                                                         .typographyServices
                                                                         .captionSmallBold
