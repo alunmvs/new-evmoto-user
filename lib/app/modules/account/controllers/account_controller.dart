@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
+import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -17,6 +19,14 @@ import 'package:slide_countdown/slide_countdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends GetxController {
+  final OtpRepository otpRepository;
+  final UserRepository userRepository;
+
+  AccountController({
+    required this.otpRepository,
+    required this.userRepository,
+  });
+
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
@@ -538,7 +548,13 @@ class AccountController extends GetxController {
     // send otp code
     final otpCode = "".obs;
     final errorMessage = "".obs;
-    final isButtonResendEnable = true.obs;
+    final isButtonResendEnable = false.obs;
+
+    await otpRepository.requestOTP(
+      phone: homeController.userInfo.value.phone,
+      language: languageServices.languageCodeSystem.value,
+      type: 6,
+    );
 
     await Get.bottomSheet(
       Column(
@@ -652,7 +668,15 @@ class AccountController extends GetxController {
                           child: ElevatedButton(
                             onPressed: isButtonResendEnable.value
                                 ? () async {
-                                    // await requestOtp();
+                                    await otpRepository.requestOTP(
+                                      phone:
+                                          homeController.userInfo.value.phone,
+                                      language: languageServices
+                                          .languageCodeSystem
+                                          .value,
+                                      type: 6,
+                                    );
+                                    isButtonResendEnable.value = false;
                                   }
                                 : null,
                             style: ElevatedButton.styleFrom(
@@ -677,7 +701,37 @@ class AccountController extends GetxController {
                       width: Get.width,
                       height: 46,
                       child: ElevatedButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          Get.close(1);
+                          await userRepository.deleteAccount(
+                            otpCode: otpCode.value,
+                          );
+                          await onTapSuccessDeleteAccountDialog();
+
+                          var storage = FlutterSecureStorage();
+                          await storage.deleteAll();
+                          await socketServices.closeWebsocket();
+
+                          Get.offAllNamed(Routes.LOGIN_REGISTER);
+
+                          var snackBar = SnackBar(
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor:
+                                themeColorServices.sematicColorGreen400.value,
+                            content: Text(
+                              "Berhasil menghapus akun",
+                              style: typographyServices.bodySmallRegular.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          );
+                          rootScaffoldMessengerKey.currentState?.showSnackBar(
+                            snackBar,
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: themeColorServices.primaryBlue.value,
                           shape: RoundedRectangleBorder(
