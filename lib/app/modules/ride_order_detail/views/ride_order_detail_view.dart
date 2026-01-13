@@ -383,7 +383,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                         ),
                                         SizedBox(width: 11),
                                         Text(
-                                          "Saldo ECGO",
+                                          "Saldo EVMOTO",
                                           style: controller
                                               .typographyServices
                                               .bodyLargeBold
@@ -1187,53 +1187,117 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                         .value,
                                                   ),
                                                   SizedBox(height: 8),
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 24,
-                                                        height: 24,
-                                                        decoration: BoxDecoration(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue100
-                                                              .value,
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                8,
+                                                  if (controller
+                                                          .orderRideDetail
+                                                          .value
+                                                          .payType ==
+                                                      2) ...[
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 24,
+                                                          height: 24,
+                                                          decoration: BoxDecoration(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .sematicColorBlue100
+                                                                .value,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  8,
+                                                                ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_wallet.svg",
+                                                                width: 12,
+                                                                height: 12,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 11),
+                                                        Text(
+                                                          "Saldo EVMOTO",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodyLargeBold
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .neutralsColorGrey700
+                                                                    .value,
                                                               ),
                                                         ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                              "assets/icons/icon_wallet.svg",
-                                                              width: 12,
-                                                              height: 12,
-                                                            ),
-                                                          ],
+                                                      ],
+                                                    ),
+                                                  ],
+                                                  if (controller
+                                                          .orderRideDetail
+                                                          .value
+                                                          .payType ==
+                                                      3) ...[
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 24,
+                                                          height: 24,
+                                                          decoration: BoxDecoration(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .sematicColorBlue100
+                                                                .value,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  8,
+                                                                ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_cash.svg",
+                                                                width: 12,
+                                                                height: 12,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                      SizedBox(width: 11),
-                                                      Text(
-                                                        "Saldo ECGO",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodyLargeBold
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .neutralsColorGrey700
-                                                                  .value,
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                        SizedBox(width: 11),
+                                                        Text(
+                                                          controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .cash ??
+                                                              "-",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodyLargeBold
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .neutralsColorGrey700
+                                                                    .value,
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ],
                                               ),
                                             ),
@@ -1755,7 +1819,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Metode Pembayaran",
+                                            "Metode Pembayaran ${controller.orderRideDetail.value.payType}",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -1853,7 +1917,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                 ),
                                                 SizedBox(width: 11),
                                                 Text(
-                                                  "Saldo ECGO",
+                                                  "Saldo EVMOTO",
                                                   style: controller
                                                       .typographyServices
                                                       .bodyLargeBold

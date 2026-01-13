@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/data/models/google_geo_code_search_model.dart';
 import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
@@ -1953,6 +1954,11 @@ class RideView extends GetView<RideController> {
                                                   ),
                                                 );
 
+                                                controller
+                                                        .selectedCoupon
+                                                        .value =
+                                                    Coupon();
+
                                                 await Future.wait([
                                                   controller
                                                       .generatePolylinesOpenMapsApi(),
@@ -2150,6 +2156,9 @@ class RideView extends GetView<RideController> {
                                                 ),
                                               );
 
+                                              controller.selectedCoupon.value =
+                                                  Coupon();
+
                                               await Future.wait([
                                                 controller
                                                     .generatePolylinesOpenMapsApi(),
@@ -2157,6 +2166,7 @@ class RideView extends GetView<RideController> {
                                                 controller
                                                     .getOrderRidePricingList(),
                                               ]);
+
                                               controller
                                                   .generateEstimatedDistanceAndTimeInMinutes();
                                               controller
@@ -3114,8 +3124,13 @@ class RideView extends GetView<RideController> {
                                                           decimalDigits: 0,
                                                         ).format(
                                                           orderRidePricing
-                                                                  .amount ??
-                                                              0.0,
+                                                                      .discountMoney ==
+                                                                  null
+                                                              ? 0.0
+                                                              : (orderRidePricing
+                                                                        .amount! -
+                                                                    orderRidePricing
+                                                                        .discountMoney!),
                                                         ),
                                                         style: controller
                                                             .typographyServices
@@ -3135,7 +3150,7 @@ class RideView extends GetView<RideController> {
                                                             decimalDigits: 0,
                                                           ).format(
                                                             orderRidePricing
-                                                                    .discountMoney ??
+                                                                    .amount ??
                                                                 0.0,
                                                           ),
                                                           style: controller
@@ -3247,7 +3262,7 @@ class RideView extends GetView<RideController> {
                                                           ),
                                                           SizedBox(width: 4),
                                                           Text(
-                                                            "Saldo ECGO",
+                                                            "Saldo EVMOTO",
                                                             style: controller
                                                                 .typographyServices
                                                                 .bodySmallBold
@@ -3357,6 +3372,8 @@ class RideView extends GetView<RideController> {
                                                               .selectedCoupon
                                                               .value =
                                                           result;
+                                                      await controller
+                                                          .getOrderRidePricingList();
                                                     }
                                                   },
                                                   child: Container(

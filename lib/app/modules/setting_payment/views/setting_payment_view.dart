@@ -93,7 +93,7 @@ class SettingPaymentView extends GetView<SettingPaymentController> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Saldo ECGO",
+                                        "Saldo EVMOTO",
                                         style: controller
                                             .typographyServices
                                             .bodySmallBold

@@ -204,6 +204,8 @@ class RideController extends GetxController {
       focusNodeDestination.requestFocus();
       status.value = "checkout";
 
+      selectedCoupon.value = Coupon();
+
       await Future.wait([
         generatePolylinesOpenMapsApi(),
         refocusMapsBound(),
@@ -360,6 +362,8 @@ class RideController extends GetxController {
       );
 
       focusNodeDestination.requestFocus();
+
+      selectedCoupon.value = Coupon();
 
       await Future.wait([
         getOriginPlaceLocationList(keyword: originAddress.value),
@@ -640,7 +644,7 @@ class RideController extends GetxController {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Saldo ECGO",
+                                                "Saldo EVMOTO",
                                                 style: typographyServices
                                                     .bodySmallBold
                                                     .value
@@ -1239,6 +1243,7 @@ class RideController extends GetxController {
               "${destinationLongitude.value},${destinationLatitude.value}",
           language: languageServices.languageCodeSystem.value,
           type: 1,
+          couponId: selectedCoupon.value.id,
         ));
   }
 
@@ -1422,11 +1427,14 @@ class RideController extends GetxController {
     }
 
     if (originAddress.value != "" && destinationAddress.value != "") {
+      selectedCoupon.value = Coupon();
+
       await Future.wait([
         generatePolylinesOpenMapsApi(),
         refocusMapsBound(),
         getOrderRidePricingList(),
       ]);
+
       selectedOrderRidePricing.value = orderRidePricingList.first;
       status.value = "checkout";
       isOriginHasPrimaryFocus.value = false;

@@ -261,6 +261,7 @@ class OrderRideRepository {
     String? endLonLat,
     int? type,
     int? language,
+    required int? couponId,
   }) async {
     try {
       var url =
@@ -271,6 +272,7 @@ class OrderRideRepository {
         "endLonLat": endLonLat,
         "type": type,
         "language": language,
+        "couponId": couponId,
       });
 
       var storage = FlutterSecureStorage();
