@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/main.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DepositBalancePaymentWebviewController extends GetxController {
   final PaymentRepository paymentRepository;
@@ -18,7 +18,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
   final homeController = Get.find<HomeController>();
 
-  final webViewController = WebViewController();
+  late InAppWebViewController? webViewController;
 
   final redirectUrl = "".obs;
 
@@ -26,55 +26,6 @@ class DepositBalancePaymentWebviewController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     redirectUrl.value = Get.arguments['redirect_url'] ?? "";
-
-    await webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
-    await webViewController.setNavigationDelegate(
-      NavigationDelegate(
-        onNavigationRequest: (request) async {
-          var uri = Uri.parse(request.url);
-          if (uri.queryParameters['transaction_status'].toString() ==
-              "settlement") {
-            // try {
-            //   await paymentRepository.redirectUrlDepositBalance(
-            //     orderId: uri.queryParameters['order_id'].toString(),
-            //     statusCode: uri.queryParameters['status_code'].toString(),
-            //     transactionStatus: uri.queryParameters['transaction_status']
-            //         .toString(),
-            //   );
-            // } catch (e) {}
-            Get.back();
-            Get.back();
-            final SnackBar snackBar = SnackBar(
-              behavior: SnackBarBehavior.fixed,
-              backgroundColor: themeColorServices.sematicColorGreen400.value,
-              content: Text(
-                "Saldo berhasil ditambah",
-                style: typographyServices.bodySmallRegular.value.copyWith(
-                  color: themeColorServices.neutralsColorGrey0.value,
-                ),
-              ),
-            );
-            rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-          } else if (uri.queryParameters['action'].toString() == "abandoned") {
-            Get.back();
-            final SnackBar snackBar = SnackBar(
-              behavior: SnackBarBehavior.fixed,
-              backgroundColor: themeColorServices.sematicColorRed400.value,
-              content: Text(
-                "Transaksi kedaluwarsa",
-                style: typographyServices.bodySmallRegular.value.copyWith(
-                  color: themeColorServices.neutralsColorGrey0.value,
-                ),
-              ),
-            );
-            rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-          }
-          return NavigationDecision.navigate;
-        },
-      ),
-    );
-
-    await webViewController.loadRequest(Uri.parse(redirectUrl.value));
   }
 
   @override
@@ -85,6 +36,15 @@ class DepositBalancePaymentWebviewController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> handleIntent(String intentUrl) async {
+    try {
+      await launchUrl(
+        Uri.parse(intentUrl),
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (e) {}
   }
 
   Future<void> showDialogBackButton() async {

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
+import 'package:new_evmoto_user/main.dart';
 import '../controllers/deposit_balance_payment_webview_controller.dart';
 
 class DepositBalancePaymentWebviewView
@@ -18,7 +17,6 @@ class DepositBalancePaymentWebviewView
           await controller.showDialogBackButton();
         }
       },
-
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -31,8 +29,8 @@ class DepositBalancePaymentWebviewView
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {
-                  Get.back();
+                onTap: () async {
+                  await controller.showDialogBackButton();
                 },
                 child: Container(
                   width: 40,
@@ -81,7 +79,83 @@ class DepositBalancePaymentWebviewView
           ),
         ),
         backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
-        body: WebViewWidget(controller: controller.webViewController),
+        body: InAppWebView(
+          initialUrlRequest: URLRequest(
+            url: WebUri(controller.redirectUrl.value),
+          ),
+          initialSettings: InAppWebViewSettings(
+            javaScriptEnabled: true,
+            useOnDownloadStart: true,
+          ),
+          onWebViewCreated: (controller) {},
+          onDownloadStartRequest:
+              (webviewController, downloadStartRequest) async {
+                var uri = downloadStartRequest.url;
+
+                if (uri.scheme == "blob") {}
+              },
+          shouldOverrideUrlLoading:
+              (webviewController, navigationAction) async {
+                final uri = navigationAction.request.url!;
+
+                if (uri.scheme == "intent" ||
+                    !["http", "https"].contains(uri.scheme)) {
+                  await controller.handleIntent(uri.toString());
+                  return NavigationActionPolicy.CANCEL;
+                }
+
+                if (uri.queryParameters['transaction_status'].toString() ==
+                    "settlement") {
+                  Get.back();
+                  Get.back();
+                  final SnackBar snackBar = SnackBar(
+                    behavior: SnackBarBehavior.fixed,
+                    backgroundColor: controller
+                        .themeColorServices
+                        .sematicColorGreen400
+                        .value,
+                    content: Text(
+                      "Saldo berhasil ditambah",
+                      style: controller
+                          .typographyServices
+                          .bodySmallRegular
+                          .value
+                          .copyWith(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey0
+                                .value,
+                          ),
+                    ),
+                  );
+                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+                } else if (uri.queryParameters['action'].toString() ==
+                    "abandoned") {
+                  Get.back();
+                  final SnackBar snackBar = SnackBar(
+                    behavior: SnackBarBehavior.fixed,
+                    backgroundColor:
+                        controller.themeColorServices.sematicColorRed400.value,
+                    content: Text(
+                      "Transaksi kedaluwarsa",
+                      style: controller
+                          .typographyServices
+                          .bodySmallRegular
+                          .value
+                          .copyWith(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey0
+                                .value,
+                          ),
+                    ),
+                  );
+                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+                }
+
+                return NavigationActionPolicy.ALLOW;
+              },
+        ),
       ),
     );
   }
