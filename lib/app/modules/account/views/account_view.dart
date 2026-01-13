@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -64,11 +65,35 @@ class AccountView extends GetView<AccountController> {
                       ),
                       child: Row(
                         children: [
-                          SvgPicture.asset(
-                            "assets/icons/icon_profile_filled.svg",
-                            width: 48,
-                            height: 48,
-                          ),
+                          if (controller.homeController.userInfo.value.avatar ==
+                                  "" ||
+                              controller.homeController.userInfo.value.avatar ==
+                                  null) ...[
+                            SvgPicture.asset(
+                              "assets/icons/icon_profile_filled.svg",
+                              width: 48,
+                              height: 48,
+                            ),
+                          ],
+                          if (controller.homeController.userInfo.value.avatar !=
+                                  "" &&
+                              controller.homeController.userInfo.value.avatar !=
+                                  null) ...[
+                            CircleAvatar(
+                              backgroundColor: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey0
+                                  .value,
+                              radius: 48 / 2,
+                              backgroundImage: CachedNetworkImageProvider(
+                                controller
+                                    .homeController
+                                    .userInfo
+                                    .value
+                                    .avatar!,
+                              ),
+                            ),
+                          ],
                           SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,25 +128,30 @@ class AccountView extends GetView<AccountController> {
                             ],
                           ),
                           Spacer(),
-                          // Container(
-                          //   padding: EdgeInsets.all(8),
-                          //   decoration: BoxDecoration(
-                          //     color: controller
-                          //         .themeColorServices
-                          //         .sematicColorBlue100
-                          //         .value,
-                          //     borderRadius: BorderRadius.circular(8),
-                          //   ),
-                          //   child: SvgPicture.asset(
-                          //     "assets/icons/icon_edit.svg",
-                          //     width: 16,
-                          //     height: 16,
-                          //     color: controller
-                          //         .themeColorServices
-                          //         .sematicColorBlue500
-                          //         .value,
-                          //   ),
-                          // ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(Routes.ADD_EDIT_USER_INFORMATION);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorBlue100
+                                    .value,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: SvgPicture.asset(
+                                "assets/icons/icon_edit.svg",
+                                width: 16,
+                                height: 16,
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorBlue500
+                                    .value,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

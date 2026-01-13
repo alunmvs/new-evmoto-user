@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -24,9 +25,15 @@ class OnboardingRegistrationFormController extends GetxController {
     ),
   });
 
+  final userInfo = UserInfo().obs;
+  final isFetch = false.obs;
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    isFetch.value = true;
+    await getUserInfo();
+    isFetch.value = false;
   }
 
   @override
@@ -37,6 +44,12 @@ class OnboardingRegistrationFormController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> getUserInfo() async {
+    userInfo.value = (await userRepository.getUserInfo(
+      language: languageServices.languageCodeSystem.value,
+    ));
   }
 
   Future<void> onTapLogout() async {
@@ -171,6 +184,7 @@ class OnboardingRegistrationFormController extends GetxController {
     if (formGroup.valid) {
       await userRepository.updateName(
         name: formGroup.control("full_name").value,
+        id: userInfo.value.id!,
       );
 
       Get.offAllNamed(Routes.HOME);

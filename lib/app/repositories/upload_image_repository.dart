@@ -44,4 +44,20 @@ class UploadImageRepository {
       rethrow;
     }
   }
+
+  Future<String?> uploadUserAvatar({
+    required File file,
+    required String fileName,
+  }) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref().child(
+        'evmoto_user_avatar/$fileName',
+      );
+
+      await storageRef.putFile(file);
+      return await storageRef.getDownloadURL();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

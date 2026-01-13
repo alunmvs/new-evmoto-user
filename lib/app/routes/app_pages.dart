@@ -8,6 +8,8 @@ import '../modules/activity_detail/bindings/activity_detail_binding.dart';
 import '../modules/activity_detail/views/activity_detail_view.dart';
 import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
+import '../modules/add_edit_user_information/bindings/add_edit_user_information_binding.dart';
+import '../modules/add_edit_user_information/views/add_edit_user_information_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -242,6 +244,11 @@ class AppPages {
       name: _Paths.ONBOARDING_REGISTRATION_FORM,
       page: () => const OnboardingRegistrationFormView(),
       binding: OnboardingRegistrationFormBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_EDIT_USER_INFORMATION,
+      page: () => const AddEditUserInformationView(),
+      binding: AddEditUserInformationBinding(),
     ),
   ];
 }
