@@ -9,6 +9,7 @@ import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -33,6 +34,8 @@ class HomeController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
   final socketServices = Get.find<SocketServices>();
+  final firebasePushNotificationServices =
+      Get.find<FirebasePushNotificationServices>();
 
   final bannerUrlList = [
     "assets/images/img_promo_1.png",
@@ -69,10 +72,12 @@ class HomeController extends GetxController {
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (userInfo.value.name == "" || userInfo.value.name == null) {
-        Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
+        await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
       } else {
         await displayCoachmark();
       }
+
+      await firebasePushNotificationServices.requestPermission();
     });
   }
 
