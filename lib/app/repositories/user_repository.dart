@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -67,6 +69,32 @@ class UserRepository {
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateName({required String name}) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/tUser/updateById";
+
+      var formData = {"name": name};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
     } on DioException catch (e) {
       rethrow;
     }
