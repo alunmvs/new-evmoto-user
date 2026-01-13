@@ -616,7 +616,7 @@ class AccountView extends GetView<AccountController> {
                         children: [
                           InkWell(
                             onTap: () async {
-                              await controller.onTapLogout();
+                              await controller.onTapManageAccount();
                             },
                             child: Container(
                               padding: EdgeInsets.all(16),
@@ -634,12 +634,7 @@ class AccountView extends GetView<AccountController> {
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .logout ??
-                                        "-",
+                                    "Kelola Akun",
                                     style: controller
                                         .typographyServices
                                         .bodySmallBold

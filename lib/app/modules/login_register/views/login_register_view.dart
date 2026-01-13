@@ -467,83 +467,84 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 16),
-                                    Center(
-                                      child: Text(
-                                        controller
-                                                .languageServices
-                                                .language
-                                                .value
-                                                .loginOr ??
-                                            "-",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey500
-                                                  .value,
-                                            ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 16),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            height: 48,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: SvgPicture.asset(
-                                                "assets/logos/logo_facebook.svg",
-                                                height: 24,
-                                                width: 24,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: 16),
-                                        Expanded(
-                                          child: Container(
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            height: 48,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: SvgPicture.asset(
-                                                "assets/logos/logo_google.svg",
-                                                height: 24,
-                                                width: 24,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    // SizedBox(height: 16),
+                                    // Center(
+                                    //   child: Text(
+                                    //     controller
+                                    //             .languageServices
+                                    //             .language
+                                    //             .value
+                                    //             .loginOr ??
+                                    //         "-",
+                                    //     style: controller
+                                    //         .typographyServices
+                                    //         .bodySmallRegular
+                                    //         .value
+                                    //         .copyWith(
+                                    //           color: controller
+                                    //               .themeColorServices
+                                    //               .neutralsColorGrey500
+                                    //               .value,
+                                    //         ),
+                                    //   ),
+                                    // ),
+
+                                    // SizedBox(height: 16),
+                                    // Row(
+                                    //   children: [
+                                    //     Expanded(
+                                    //       child: Container(
+                                    //         width: MediaQuery.of(
+                                    //           context,
+                                    //         ).size.width,
+                                    //         height: 48,
+                                    //         decoration: BoxDecoration(
+                                    //           border: Border.all(
+                                    //             color: controller
+                                    //                 .themeColorServices
+                                    //                 .neutralsColorGrey200
+                                    //                 .value,
+                                    //           ),
+                                    //           borderRadius:
+                                    //               BorderRadius.circular(12),
+                                    //         ),
+                                    //         child: Center(
+                                    //           child: SvgPicture.asset(
+                                    //             "assets/logos/logo_facebook.svg",
+                                    //             height: 24,
+                                    //             width: 24,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //     SizedBox(width: 16),
+                                    //     Expanded(
+                                    //       child: Container(
+                                    //         width: MediaQuery.of(
+                                    //           context,
+                                    //         ).size.width,
+                                    //         height: 48,
+                                    //         decoration: BoxDecoration(
+                                    //           border: Border.all(
+                                    //             color: controller
+                                    //                 .themeColorServices
+                                    //                 .neutralsColorGrey200
+                                    //                 .value,
+                                    //           ),
+                                    //           borderRadius:
+                                    //               BorderRadius.circular(12),
+                                    //         ),
+                                    //         child: Center(
+                                    //           child: SvgPicture.asset(
+                                    //             "assets/logos/logo_google.svg",
+                                    //             height: 24,
+                                    //             width: 24,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
                               ),
