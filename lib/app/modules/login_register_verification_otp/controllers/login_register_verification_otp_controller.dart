@@ -43,8 +43,10 @@ class LoginRegisterVerificationOtpController extends GetxController {
     super.onInit();
     isFetch.value = true;
     mobilePhone.value = Get.arguments['mobile_phone'] ?? "";
-    await requestOTP();
     isFetch.value = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await requestOTP();
+    });
   }
 
   @override
