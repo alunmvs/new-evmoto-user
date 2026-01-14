@@ -1819,7 +1819,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Metode Pembayaran ${controller.orderRideDetail.value.payType}",
+                                            "Metode Pembayaran",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
