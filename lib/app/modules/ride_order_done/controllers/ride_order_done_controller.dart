@@ -79,6 +79,7 @@ class RideOrderDoneController extends GetxController {
             type: 1,
             orderType: orderType.value,
             language: languageServices.languageCodeSystem.value,
+            couponId: orderRideDetail.value.couponId!,
           ),
         ]);
       } else {
@@ -96,6 +97,7 @@ class RideOrderDoneController extends GetxController {
             type: 1,
             orderType: orderType.value,
             language: languageServices.languageCodeSystem.value,
+            couponId: orderRideDetail.value.couponId!,
           ),
         ]);
       }

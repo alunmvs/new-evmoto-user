@@ -203,6 +203,7 @@ class OrderRideRepository {
     String? placementLon,
     required double? amount,
     required int? payType,
+    required int? couponId,
   }) async {
     try {
       var url =
@@ -229,6 +230,7 @@ class OrderRideRepository {
         "language": language,
         "amount": amount,
         "payType": payType,
+        "couponId": couponId,
       });
 
       var storage = FlutterSecureStorage();
@@ -354,6 +356,7 @@ class OrderRideRepository {
     required int type,
     required int orderType,
     required int language,
+    required int couponId,
   }) async {
     try {
       var url =
@@ -365,6 +368,7 @@ class OrderRideRepository {
         "type": type,
         "orderType": orderType,
         "language": language,
+        "couponId": couponId,
       });
 
       var storage = FlutterSecureStorage();

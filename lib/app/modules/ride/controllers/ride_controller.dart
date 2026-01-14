@@ -1271,6 +1271,7 @@ class RideController extends GetxController {
       type: "1", // 1 = Ride, 2 = Intercity
       amount: selectedOrderRidePricing.value.amount,
       payType: payType.value,
+      couponId: selectedCoupon.value.id,
     ));
   }
 
