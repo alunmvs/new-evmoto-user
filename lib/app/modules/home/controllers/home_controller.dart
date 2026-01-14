@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
@@ -10,12 +13,16 @@ import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController {
   final UserRepository userRepository;
@@ -36,6 +43,7 @@ class HomeController extends GetxController {
   final socketServices = Get.find<SocketServices>();
   final firebasePushNotificationServices =
       Get.find<FirebasePushNotificationServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final bannerUrlList = [
     "assets/images/img_promo_1.png",
@@ -71,6 +79,9 @@ class HomeController extends GetxController {
 
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await checkForceUpdate();
+      await checkSoftUpdate();
+
       if (userInfo.value.name == "" || userInfo.value.name == null) {
         await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
       } else {
@@ -276,6 +287,206 @@ class HomeController extends GetxController {
           ),
         ),
       );
+    }
+  }
+
+  Future<void> checkSoftUpdate() async {
+    var userAppVersion = jsonDecode(
+      firebaseRemoteConfigServices.remoteConfig.getString("user_app_version"),
+    );
+
+    var packageInfo = await PackageInfo.fromPlatform();
+    var currentVersion = Version.parse(packageInfo.version);
+    var latestAppVersion = Version.parse(userAppVersion['latest_app_version']);
+
+    if (latestAppVersion > currentVersion) {
+      await showDialogSoftUpdate();
+    }
+  }
+
+  Future<void> checkForceUpdate() async {
+    var userAppVersion = jsonDecode(
+      firebaseRemoteConfigServices.remoteConfig.getString("user_app_version"),
+    );
+
+    var packageInfo = await PackageInfo.fromPlatform();
+    var currentVersion = Version.parse(packageInfo.version);
+    var minAppVersion = Version.parse(userAppVersion['min_app_version']);
+
+    if (minAppVersion > currentVersion) {
+      await showDialogForceUpdate();
+    }
+  }
+
+  Future<void> showDialogSoftUpdate() async {
+    await Get.dialog(
+      Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: AspectRatio(
+                          aspectRatio: 1 / 1,
+                          child: Image.asset(
+                            "assets/images/img_soft_update.png",
+                            width: Get.width,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        "Versi Terbaru EVMoto Driver\nTelah Tersedia",
+                        style: typographyServices.bodyLargeBold.value,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "Perbarui aplikasi untuk pengalaman\nyang lebih lancar dan optimal.",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(color: Color(0XFFB3B3B3)),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 16),
+                      SizedBox(
+                        height: 46,
+                        width: Get.width,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await onTapUpdateVersion();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                themeColorServices.primaryBlue.value,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            "Update Sekarang",
+                            style: typographyServices.bodyLargeBold.value
+                                .copyWith(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> showDialogForceUpdate() async {
+    await Get.dialog(
+      PopScope(
+        canPop: false,
+        child: Material(
+          color: themeColorServices.neutralsColorGrey0.value,
+          child: SizedBox(
+            width: Get.width,
+            height: Get.height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 16),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: AspectRatio(
+                      aspectRatio: 1 / 1,
+                      child: Image.asset(
+                        "assets/images/img_force_update.png",
+                        width: Get.width,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    "Versi Terbaru Telah Tersedia",
+                    style: typographyServices.bodyLargeBold.value,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    "Perbarui aplikasi untuk pengalaman yang lebih lancar dan optimal.",
+                    style: typographyServices.bodySmallRegular.value.copyWith(
+                      color: Color(0XFFB3B3B3),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Spacer(),
+                  SizedBox(
+                    height: 46,
+                    width: Get.width,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await onTapUpdateVersion();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: themeColorServices.primaryBlue.value,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: Text(
+                        "Update Sekarang",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  Future<void> onTapUpdateVersion() async {
+    if (Platform.isAndroid) {
+      var url = Uri.parse(
+        firebaseRemoteConfigServices.remoteConfig.getString(
+          "user_playstore_link",
+        ),
+      );
+
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        throw 'Unable launch url update app version';
+      }
+    } else if (Platform.isIOS) {
+      var url = Uri.parse(
+        firebaseRemoteConfigServices.remoteConfig.getString(
+          "user_appstore_link",
+        ),
+      );
+
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        throw 'Unable launch url update app version';
+      }
     }
   }
 }

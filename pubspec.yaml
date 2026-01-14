@@ -82,6 +82,7 @@ dependencies:
   firebase_messaging: ^16.1.0
   flutter_local_notifications: ^19.5.0
   slide_countdown: ^2.0.2
+  pub_semver: ^2.2.0
 
 dev_dependencies:
   get_cli: ^1.9.1
