@@ -134,6 +134,7 @@ class DepositBalancePaymentWebviewView
                     ),
                   );
                   rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+                  return NavigationActionPolicy.CANCEL;
                 } else if (uri.queryParameters['action'].toString() ==
                     "abandoned") {
                   Get.back();
@@ -156,6 +157,7 @@ class DepositBalancePaymentWebviewView
                     ),
                   );
                   rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+                  return NavigationActionPolicy.CANCEL;
                 }
 
                 return NavigationActionPolicy.ALLOW;
