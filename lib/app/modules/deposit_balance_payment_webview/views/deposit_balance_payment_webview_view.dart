@@ -104,6 +104,11 @@ class DepositBalancePaymentWebviewView
                   return NavigationActionPolicy.CANCEL;
                 }
 
+                if (uri.queryParameters['action'].toString() == "back") {
+                  await controller.showDialogBackButton();
+                  return NavigationActionPolicy.CANCEL;
+                }
+
                 if (uri.queryParameters['transaction_status'].toString() ==
                     "settlement") {
                   Get.back();
