@@ -3126,7 +3126,8 @@ class RideView extends GetView<RideController> {
                                                           orderRidePricing
                                                                       .discountMoney ==
                                                                   null
-                                                              ? 0.0
+                                                              ? orderRidePricing
+                                                                    .amount!
                                                               : (orderRidePricing
                                                                         .amount! -
                                                                     orderRidePricing
