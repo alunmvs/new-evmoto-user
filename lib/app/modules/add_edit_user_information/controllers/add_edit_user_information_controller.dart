@@ -226,6 +226,7 @@ class AddEditUserInformationController extends GetxController {
           ),
         ],
       ),
+      isScrollControlled: true,
     );
   }
 

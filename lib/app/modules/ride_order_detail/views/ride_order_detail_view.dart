@@ -354,7 +354,11 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                   ),
                                   child: Row(
                                     children: [
-                                      if (controller.payType.value == 2) ...[
+                                      if (controller
+                                              .orderRideDetail
+                                              .value
+                                              .payType ==
+                                          2) ...[
                                         Container(
                                           width: 24,
                                           height: 24,
@@ -396,7 +400,11 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                               ),
                                         ),
                                       ],
-                                      if (controller.payType.value == 3) ...[
+                                      if (controller
+                                              .orderRideDetail
+                                              .value
+                                              .payType ==
+                                          3) ...[
                                         Container(
                                           width: 24,
                                           height: 24,
@@ -500,6 +508,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                       ),
                     ),
                   ],
+
                   if (controller.orderRideDetail.value.state == 2 ||
                       controller.orderRideDetail.value.state == 3) ...[
                     SlidingUpPanel(

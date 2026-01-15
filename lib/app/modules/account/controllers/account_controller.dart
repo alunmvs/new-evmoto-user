@@ -7,11 +7,13 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
@@ -294,6 +296,7 @@ class AccountController extends GetxController {
         ],
       ),
       isDismissible: true,
+      isScrollControlled: true,
     );
   }
 
@@ -354,33 +357,7 @@ class AccountController extends GetxController {
                       height: 46,
                       child: ElevatedButton(
                         onPressed: () async {
-                          var storage = FlutterSecureStorage();
-                          await storage.deleteAll();
-                          await socketServices.closeWebsocket();
-
-                          Get.offAllNamed(Routes.LOGIN_REGISTER);
-
-                          var snackBar = SnackBar(
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor:
-                                themeColorServices.sematicColorGreen400.value,
-                            content: Text(
-                              languageServices
-                                      .language
-                                      .value
-                                      .snackbarLogoutSuccess ??
-                                  "-",
-                              style: typographyServices.bodySmallRegular.value
-                                  .copyWith(
-                                    color: themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                  ),
-                            ),
-                          );
-                          rootScaffoldMessengerKey.currentState?.showSnackBar(
-                            snackBar,
-                          );
+                          await logout();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: themeColorServices.primaryBlue.value,
@@ -430,6 +407,7 @@ class AccountController extends GetxController {
         ],
       ),
       isDismissible: true,
+      isScrollControlled: true,
     );
   }
 
@@ -541,6 +519,7 @@ class AccountController extends GetxController {
         ],
       ),
       isDismissible: true,
+      isScrollControlled: true,
     );
   }
 
@@ -557,230 +536,232 @@ class AccountController extends GetxController {
     );
 
     await Get.bottomSheet(
-      Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-            child: Material(
-              color: themeColorServices.neutralsColorGrey0.value,
-              child: Container(
-                padding: EdgeInsets.all(16),
-                width: Get.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Masukkan Kode OTP",
-                      style: typographyServices.bodyLargeBold.value,
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "Untuk mengonfirmasi penghapusan akun Anda",
-                      style: typographyServices.bodySmallRegular.value.copyWith(
-                        color: Color(0XFFB3B3B3),
+      Obx(
+        () => Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  width: Get.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Masukkan Kode OTP",
+                        style: typographyServices.bodyLargeBold.value,
                       ),
-                    ),
-                    SvgPicture.asset(
-                      "assets/images/img_otp.svg",
-                      width: 139,
-                      height: 80,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text:
-                            "${languageServices.language.value.verificationOtpDescription ?? "-"} ",
+                      SizedBox(height: 4),
+                      Text(
+                        "Untuk mengonfirmasi penghapusan akun Anda",
                         style: typographyServices.bodySmallRegular.value
-                            .copyWith(
-                              color:
-                                  themeColorServices.neutralsColorGrey600.value,
-                            ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "+${homeController.userInfo.value.phone}",
-                            style: typographyServices.bodySmallBold.value,
-                          ),
-                        ],
+                            .copyWith(color: Color(0XFFB3B3B3)),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    Pinput(
-                      defaultPinTheme: PinTheme(
-                        textStyle: typographyServices.headingMediumBold.value
-                            .copyWith(
+                      SvgPicture.asset(
+                        "assets/images/img_otp.svg",
+                        width: 139,
+                        height: 80,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text:
+                              "${languageServices.language.value.verificationOtpDescription ?? "-"} ",
+                          style: typographyServices.bodySmallRegular.value
+                              .copyWith(
+                                color: themeColorServices
+                                    .neutralsColorGrey600
+                                    .value,
+                              ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "+${homeController.userInfo.value.phone}",
+                              style: typographyServices.bodySmallBold.value,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Pinput(
+                        defaultPinTheme: PinTheme(
+                          textStyle: typographyServices.headingMediumBold.value
+                              .copyWith(
+                                color: themeColorServices.primaryBlue.value,
+                              ),
+                          width: 48,
+                          height: 52 + 5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
                               color: themeColorServices.primaryBlue.value,
                             ),
-                        width: 48,
-                        height: 52 + 5,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: themeColorServices.primaryBlue.value,
                           ),
                         ),
-                      ),
-                      onCompleted: (pin) async {
-                        otpCode.value = pin;
-                      },
-                    ),
-                    if (errorMessage.value != "") ...[
-                      SizedBox(height: 16),
-                      Text(
-                        errorMessage.value,
-                        style: typographyServices.bodySmallRegular.value
-                            .copyWith(
-                              color:
-                                  themeColorServices.sematicColorRed400.value,
-                            ),
-                      ),
-                    ],
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (isButtonResendEnable.value == false) ...[
-                          SlideCountdown(
-                            duration: Duration(minutes: 1),
-                            countUp: false,
-                            separatorStyle: typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Color(0XFF676767)),
-                            shouldShowMinutes: (value) {
-                              return true;
-                            },
-                            onDone: () {
-                              isButtonResendEnable.value = true;
-                            },
-                            decoration: BoxDecoration(),
-                            padding: EdgeInsets.all(0),
-                            style: typographyServices.bodySmallRegular.value
-                                .copyWith(color: Color(0XFF676767)),
-                          ),
-                        ],
-                        SizedBox(width: 10),
-                        SizedBox(
-                          height: 34,
-                          child: ElevatedButton(
-                            onPressed: isButtonResendEnable.value
-                                ? () async {
-                                    await otpRepository.requestOTP(
-                                      phone:
-                                          homeController.userInfo.value.phone,
-                                      language: languageServices
-                                          .languageCodeSystem
-                                          .value,
-                                      type: 6,
-                                    );
-                                    isButtonResendEnable.value = false;
-                                  }
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              backgroundColor:
-                                  themeColorServices.primaryBlue.value,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            child: Text(
-                              "Kirim ulang code",
-                              style: typographyServices.bodySmallBold.value
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16 * 3),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                          await userRepository.deleteAccount(
-                            otpCode: otpCode.value,
-                          );
-                          await onTapSuccessDeleteAccountDialog();
-
-                          var storage = FlutterSecureStorage();
-                          await storage.deleteAll();
-                          await socketServices.closeWebsocket();
-
-                          Get.offAllNamed(Routes.LOGIN_REGISTER);
-
-                          var snackBar = SnackBar(
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor:
-                                themeColorServices.sematicColorGreen400.value,
-                            content: Text(
-                              "Berhasil menghapus akun",
-                              style: typographyServices.bodySmallRegular.value
-                                  .copyWith(
-                                    color: themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                  ),
-                            ),
-                          );
-                          rootScaffoldMessengerKey.currentState?.showSnackBar(
-                            snackBar,
-                          );
+                        onCompleted: (pin) async {
+                          otpCode.value = pin;
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          "Konfirmasi OTP",
-                          style: typographyServices.bodyLargeBold.value
+                      ),
+                      if (errorMessage.value != "") ...[
+                        SizedBox(height: 16),
+                        Text(
+                          errorMessage.value,
+                          style: typographyServices.bodySmallRegular.value
                               .copyWith(
                                 color:
-                                    themeColorServices.neutralsColorGrey0.value,
+                                    themeColorServices.sematicColorRed400.value,
                               ),
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                          await onTapSuccessDeleteAccountDialog();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0XFFD9D9D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                      ],
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          if (isButtonResendEnable.value == false) ...[
+                            SlideCountdown(
+                              duration: Duration(minutes: 1),
+                              countUp: false,
+                              separatorStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(color: Color(0XFF676767)),
+                              shouldShowMinutes: (value) {
+                                return true;
+                              },
+                              onDone: () {
+                                isButtonResendEnable.value = true;
+                              },
+                              decoration: BoxDecoration(),
+                              padding: EdgeInsets.all(0),
+                              style: typographyServices.bodySmallRegular.value
+                                  .copyWith(color: Color(0XFF676767)),
+                            ),
+                          ],
+                          SizedBox(width: 10),
+                          SizedBox(
+                            height: 34,
+                            child: ElevatedButton(
+                              onPressed: isButtonResendEnable.value
+                                  ? () async {
+                                      await otpRepository.requestOTP(
+                                        phone:
+                                            homeController.userInfo.value.phone,
+                                        language: languageServices
+                                            .languageCodeSystem
+                                            .value,
+                                        type: 6,
+                                      );
+                                      isButtonResendEnable.value = false;
+                                    }
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                backgroundColor:
+                                    themeColorServices.primaryBlue.value,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              child: Text(
+                                "Kirim ulang code",
+                                style: typographyServices.bodySmallBold.value
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
                           ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          "Batalkan",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(color: Colors.black),
+                        ],
+                      ),
+                      SizedBox(height: 16 * 3),
+                      SizedBox(
+                        width: Get.width,
+                        height: 46,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Get.close(1);
+                            await userRepository.deleteAccount(
+                              otpCode: otpCode.value,
+                            );
+                            await onTapSuccessDeleteAccountDialog();
+
+                            await clearDataLogout();
+
+                            Get.offAllNamed(Routes.LOGIN_REGISTER);
+
+                            var snackBar = SnackBar(
+                              behavior: SnackBarBehavior.fixed,
+                              backgroundColor:
+                                  themeColorServices.sematicColorGreen400.value,
+                              content: Text(
+                                "Berhasil menghapus akun",
+                                style: typographyServices.bodySmallRegular.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                    ),
+                              ),
+                            );
+                            rootScaffoldMessengerKey.currentState?.showSnackBar(
+                              snackBar,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                themeColorServices.primaryBlue.value,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            "Konfirmasi OTP",
+                            style: typographyServices.bodyLargeBold.value
+                                .copyWith(
+                                  color: themeColorServices
+                                      .neutralsColorGrey0
+                                      .value,
+                                ),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                  ],
+                      SizedBox(height: 8),
+                      SizedBox(
+                        width: Get.width,
+                        height: 46,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Get.close(1);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0XFFD9D9D9),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            "Batalkan",
+                            style: typographyServices.bodyLargeBold.value
+                                .copyWith(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       isDismissible: true,
+      isScrollControlled: true,
     );
   }
 

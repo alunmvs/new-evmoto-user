@@ -1132,6 +1132,7 @@ class RideController extends GetxController {
           ],
         ),
       ),
+      isScrollControlled: true,
     );
   }
 

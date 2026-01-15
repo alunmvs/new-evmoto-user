@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../controllers/promotion_controller.dart';
 
@@ -36,13 +37,37 @@ class PromotionView extends GetView<PromotionController> {
                   ),
                 ),
               )
-            : RefreshIndicator(
-                color: controller.themeColorServices.primaryBlue.value,
-                backgroundColor:
-                    controller.themeColorServices.neutralsColorGrey0.value,
-                onRefresh: () async {},
+            : SmartRefresher(
+                controller: controller.refreshController,
+                onRefresh: () async {
+                  await controller.getAvailableCouponList();
+                  controller.refreshController.refreshCompleted();
+                },
+                header: MaterialClassicHeader(
+                  color: controller.themeColorServices.primaryBlue.value,
+                ),
+                footer: ClassicFooter(
+                  loadStyle: LoadStyle.HideAlways,
+                  textStyle: controller
+                      .typographyServices
+                      .bodySmallRegular
+                      .value
+                      .copyWith(
+                        color: controller.themeColorServices.primaryBlue.value,
+                      ),
+                  canLoadingIcon: null,
+                  loadingIcon: null,
+                  idleIcon: null,
+                  noMoreIcon: null,
+                  failedIcon: null,
+                ),
+                enablePullDown: true,
+                enablePullUp: controller.isSeeMoreAvailableCoupon.value,
+                onLoading: () async {
+                  await controller.seeMoreAvailableCouponList();
+                  controller.refreshController.loadComplete();
+                },
                 child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(

@@ -205,6 +205,7 @@ class SettingSavedLocationController extends GetxController {
           ),
         ],
       ),
+      isScrollControlled: true,
     );
   }
 
@@ -405,6 +406,7 @@ class SettingSavedLocationController extends GetxController {
           ),
         ],
       ),
+      isScrollControlled: true,
     );
   }
 

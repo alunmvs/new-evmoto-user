@@ -4,6 +4,7 @@ import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class PromotionController extends GetxController {
   final CouponRepository couponRepository;
@@ -13,6 +14,8 @@ class PromotionController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+
+  final refreshController = RefreshController();
 
   final availableCouponList = <Coupon>[].obs;
   final availableCouponPageNum = 1.obs;

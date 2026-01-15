@@ -33,15 +33,19 @@ class OnboardingIntroductionView
                     ),
                   ),
                 ),
-                SingleChildScrollView(
+                SizedBox(
+                  height: MediaQuery.of(context).size.height,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 56),
                       if (controller.pageNumber.value == 0) ...[
-                        SvgPicture.asset(
-                          "assets/images/img_onboarding_1.svg",
-                          width: MediaQuery.of(context).size.width,
+                        Expanded(
+                          child: SvgPicture.asset(
+                            "assets/images/img_onboarding_1.svg",
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(
@@ -91,9 +95,12 @@ class OnboardingIntroductionView
                         ),
                       ],
                       if (controller.pageNumber.value == 1) ...[
-                        SvgPicture.asset(
-                          "assets/images/img_onboarding_2.svg",
-                          width: MediaQuery.of(context).size.width,
+                        Expanded(
+                          child: SvgPicture.asset(
+                            "assets/images/img_onboarding_2.svg",
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(
