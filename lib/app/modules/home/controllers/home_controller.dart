@@ -297,7 +297,7 @@ class HomeController extends GetxController {
 
   Future<void> checkSoftUpdate() async {
     var userAppVersion = jsonDecode(
-      firebaseRemoteConfigServices.remoteConfig.getString("user_app_version"),
+      firebaseRemoteConfigServices.remoteConfig.getString("driver_app_version"),
     );
 
     var packageInfo = await PackageInfo.fromPlatform();
@@ -311,7 +311,7 @@ class HomeController extends GetxController {
 
   Future<void> checkForceUpdate() async {
     var userAppVersion = jsonDecode(
-      firebaseRemoteConfigServices.remoteConfig.getString("user_app_version"),
+      firebaseRemoteConfigServices.remoteConfig.getString("driver_app_version"),
     );
 
     var packageInfo = await PackageInfo.fromPlatform();
