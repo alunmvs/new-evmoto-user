@@ -28,8 +28,8 @@ class SplashScreenView extends GetView<SplashScreenController> {
                     ),
                   ),
                   Center(
-                    child: SvgPicture.asset(
-                      "assets/logos/logo_evmoto.svg",
+                    child: Image.asset(
+                      "assets/logos/logo_evmoto.png",
                       height: 49,
                       width: 160,
                     ),

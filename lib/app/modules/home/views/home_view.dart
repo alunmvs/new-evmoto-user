@@ -69,8 +69,8 @@ class HomeView extends GetView<HomeController> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(999),
                           ),
-                          child: SvgPicture.asset(
-                            "assets/logos/logo_evmoto.svg",
+                          child: Image.asset(
+                            "assets/logos/logo_evmoto.png",
                             width: 63.86,
                             height: 19.77,
                           ),
@@ -2164,36 +2164,41 @@ class HomeView extends GetView<HomeController> {
                                                     padEnds: false,
                                                   ),
                                                 ),
-                                                SizedBox(height: 12),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 16,
+                                                if (controller
+                                                        .availableCouponList
+                                                        .length >
+                                                    1) ...[
+                                                  SizedBox(height: 12),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
+                                                    child: DotsIndicator(
+                                                      dotsCount: controller
+                                                          .availableCouponList
+                                                          .length,
+                                                      position: controller
+                                                          .indexBanner
+                                                          .value,
+                                                      decorator: DotsDecorator(
+                                                        spacing:
+                                                            EdgeInsets.symmetric(
+                                                              horizontal: 3,
+                                                              vertical: 4,
+                                                            ),
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey300
+                                                            .value,
+                                                        activeColor: controller
+                                                            .themeColorServices
+                                                            .primaryBlue
+                                                            .value,
                                                       ),
-                                                  child: DotsIndicator(
-                                                    dotsCount: controller
-                                                        .bannerUrlList
-                                                        .length,
-                                                    position: controller
-                                                        .indexBanner
-                                                        .value,
-                                                    decorator: DotsDecorator(
-                                                      spacing:
-                                                          EdgeInsets.symmetric(
-                                                            horizontal: 3,
-                                                            vertical: 4,
-                                                          ),
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey300
-                                                          .value,
-                                                      activeColor: controller
-                                                          .themeColorServices
-                                                          .primaryBlue
-                                                          .value,
                                                     ),
                                                   ),
-                                                ),
+                                                ],
                                               ],
                                               SizedBox(height: 32),
                                             ],

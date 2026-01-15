@@ -15,8 +15,8 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: SvgPicture.asset(
-            "assets/logos/logo_evmoto.svg",
+          title: Image.asset(
+            "assets/logos/logo_evmoto.png",
             height: 27.87,
             width: 90,
           ),
