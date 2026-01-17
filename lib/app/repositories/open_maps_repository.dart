@@ -17,7 +17,7 @@ class OpenMapsRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/osrm/route/v1/driving/route/v1/driving/$originLongitude,$originLatitude;$destinationLongitude,$destinationLatitude";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/osrm/route/v1/driving/$originLongitude,$originLatitude;$destinationLongitude,$destinationLatitude";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

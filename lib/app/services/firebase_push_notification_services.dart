@@ -72,7 +72,7 @@ class FirebasePushNotificationServices extends GetxService {
           ?.requestNotificationsPermission();
     }
 
-    flutterLocalNotificationsPlugin.initialize(
+    await flutterLocalNotificationsPlugin.initialize(
       InitializationSettings(
         android: AndroidInitializationSettings('ic_notification_small'),
         iOS: DarwinInitializationSettings(),
