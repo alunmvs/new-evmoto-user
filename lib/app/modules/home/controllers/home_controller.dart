@@ -112,29 +112,37 @@ class HomeController extends GetxController {
   }
 
   Future<void> getUserInfo() async {
-    userInfo.value = (await userRepository.getUserInfo(
-      language: languageServices.languageCodeSystem.value,
-    ));
+    try {
+      userInfo.value = (await userRepository.getUserInfo(
+        language: languageServices.languageCodeSystem.value,
+      ));
+    } catch (e) {}
   }
 
   Future<void> getActiveOrderList() async {
-    activeOrderList.value = (await orderRideRepository.getActiveOrderList(
-      language: languageServices.languageCodeSystem.value,
-    ));
+    try {
+      activeOrderList.value = (await orderRideRepository.getActiveOrderList(
+        language: languageServices.languageCodeSystem.value,
+      ));
+    } catch (e) {}
   }
 
   Future<void> getAvailableCouponList() async {
-    availableCouponList.value = await couponRepository.getCouponList(
-      pageNum: 1,
-      size: 7,
-      language: languageServices.languageCodeSystem.value,
-      state: 1,
-    );
+    try {
+      availableCouponList.value = await couponRepository.getCouponList(
+        pageNum: 1,
+        size: 7,
+        language: languageServices.languageCodeSystem.value,
+        state: 1,
+      );
+    } catch (e) {}
   }
 
   Future<void> getSavedAddressList() async {
-    savedAddressList.value = (await savedAddressRepository
-        .getSavedAddressList());
+    try {
+      savedAddressList.value = (await savedAddressRepository
+          .getSavedAddressList());
+    } catch (e) {}
   }
 
   Future<void> onTapRideService() async {
