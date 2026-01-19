@@ -29,7 +29,7 @@ class ActivityController extends GetxController
   final activeOrderRefreshController = RefreshController();
   final activeOrderList = <ActiveOrder>[].obs;
   final activeOrderPageNum = 1.obs;
-  final activeOrderSize = 5.obs;
+  final activeOrderSize = 9999.obs;
   final activeOrderSeeMore = true.obs;
 
   final historyOrderRefreshController = RefreshController();
@@ -77,6 +77,8 @@ class ActivityController extends GetxController
 
     activeOrderList.value = (await orderRideRepository.getActiveOrderList(
       language: languageServices.languageCodeSystem.value,
+      pageNum: activeOrderPageNum.value,
+      size: activeOrderSize.value,
     ));
 
     for (var activeOrder in activeOrderList) {
@@ -96,6 +98,8 @@ class ActivityController extends GetxController
 
     var activeOrderList = (await orderRideRepository.getActiveOrderList(
       language: languageServices.languageCodeSystem.value,
+      pageNum: activeOrderPageNum.value,
+      size: activeOrderSize.value,
     ));
 
     for (var activeOrder in activeOrderList) {

@@ -227,12 +227,12 @@ class ActivityView extends GetView<ActivityController> {
                           failedIcon: null,
                         ),
                         enablePullDown: true,
-                        enablePullUp: controller.activeOrderSeeMore.value,
-                        onLoading: () async {
-                          await controller.seeMoreActiveOrderList();
-                          controller.activeOrderRefreshController
-                              .loadComplete();
-                        },
+                        // enablePullUp: controller.activeOrderSeeMore.value,
+                        // onLoading: () async {
+                        //   await controller.seeMoreActiveOrderList();
+                        //   controller.activeOrderRefreshController
+                        //       .loadComplete();
+                        // },
                         child: SingleChildScrollView(
                           physics: AlwaysScrollableScrollPhysics(),
                           child: Column(

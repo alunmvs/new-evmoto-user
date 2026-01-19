@@ -56,12 +56,20 @@ class OrderRideRepository {
     }
   }
 
-  Future<List<ActiveOrder>> getActiveOrderList({int? language}) async {
+  Future<List<ActiveOrder>> getActiveOrderList({
+    int? language,
+    int? pageNum,
+    int? size,
+  }) async {
     try {
       var url =
           "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryServingOrder";
 
-      var formData = FormData.fromMap({"language": language});
+      var formData = FormData.fromMap({
+        "language": language,
+        "pageNum": pageNum,
+        "size": size,
+      });
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
