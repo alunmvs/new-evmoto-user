@@ -692,7 +692,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                           ),
                                           SizedBox(width: 11),
                                           Text(
-                                            "Saldo EVMOTO",
+                                            "Saldo EVMoto",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeBold

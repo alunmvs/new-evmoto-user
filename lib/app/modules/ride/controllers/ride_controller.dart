@@ -644,7 +644,7 @@ class RideController extends GetxController {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Saldo EVMOTO",
+                                                "Saldo EVMoto",
                                                 style: typographyServices
                                                     .bodySmallBold
                                                     .value

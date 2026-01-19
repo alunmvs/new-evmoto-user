@@ -387,7 +387,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                         ),
                                         SizedBox(width: 11),
                                         Text(
-                                          "Saldo EVMOTO",
+                                          "Saldo EVMoto",
                                           style: controller
                                               .typographyServices
                                               .bodyLargeBold
@@ -1234,7 +1234,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                         ),
                                                         SizedBox(width: 11),
                                                         Text(
-                                                          "Saldo EVMOTO",
+                                                          "Saldo EVMoto",
                                                           style: controller
                                                               .typographyServices
                                                               .bodyLargeBold
@@ -1926,7 +1926,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                 ),
                                                 SizedBox(width: 11),
                                                 Text(
-                                                  "Saldo EVMOTO",
+                                                  "Saldo EVMoto",
                                                   style: controller
                                                       .typographyServices
                                                       .bodyLargeBold

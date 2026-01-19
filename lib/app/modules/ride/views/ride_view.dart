@@ -3263,7 +3263,7 @@ class RideView extends GetView<RideController> {
                                                           ),
                                                           SizedBox(width: 4),
                                                           Text(
-                                                            "Saldo EVMOTO",
+                                                            "Saldo EVMoto",
                                                             style: controller
                                                                 .typographyServices
                                                                 .bodySmallBold
