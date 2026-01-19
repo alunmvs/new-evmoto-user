@@ -613,7 +613,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                             .orderRideDetail
                                             .value
                                             .payType ==
-                                        2) ...[
+                                        3) ...[
                                       Row(
                                         children: [
                                           Container(
@@ -662,7 +662,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                             .orderRideDetail
                                             .value
                                             .payType ==
-                                        3) ...[
+                                        2) ...[
                                       Row(
                                         children: [
                                           Container(
