@@ -104,7 +104,7 @@
   "please_select": "请选择",
   "enter_amount": "请输入金额",
   "number_of_refill": "补充次数",
-  "minimum_topup_balance_10000": "*最低充值金额为10,000印尼盾",
+  "minimum_topup_balance_10000": "*最低充值金额",
   "refill_now": "立即补充",
   "balance_history": "余额历史记录",
   "delivery_service": "送货服务",

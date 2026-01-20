@@ -439,12 +439,7 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .minimumTopupBalance10000 ??
-                                  "-",
+                              "${controller.languageServices.language.value.minimumTopupBalance10000!} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.firebaseRemoteConfigServices.remoteConfig.getInt("user_deposit_min"))}",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
