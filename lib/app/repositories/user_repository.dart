@@ -99,7 +99,7 @@ class UserRepository {
 
   Future<void> updateUserInformation({
     required String name,
-    required int genderType,
+    required int? genderType,
     required String? avatarUrl,
     required int id,
   }) async {
