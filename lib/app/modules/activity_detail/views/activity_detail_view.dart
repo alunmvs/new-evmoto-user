@@ -276,7 +276,7 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                           controller
                                                       .orderRideDetail
                                                       .value
-                                                      .arriveTime ==
+                                                      .insertTime ==
                                                   ""
                                               ? "-"
                                               : DateFormat(
@@ -290,7 +290,7 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                                     controller
                                                         .orderRideDetail
                                                         .value
-                                                        .arriveTime!
+                                                        .insertTime!
                                                         .replaceFirst(' ', 'T'),
                                                   ),
                                                 ),
@@ -361,7 +361,27 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                               ),
                                         ),
                                         Text(
-                                          "-",
+                                          controller
+                                                      .orderRideDetail
+                                                      .value
+                                                      .arriveTime ==
+                                                  ""
+                                              ? "-"
+                                              : DateFormat(
+                                                  'HH:mm',
+                                                  controller
+                                                      .languageServices
+                                                      .languageCode
+                                                      .value,
+                                                ).format(
+                                                  DateTime.parse(
+                                                    controller
+                                                        .orderRideDetail
+                                                        .value
+                                                        .arriveTime!
+                                                        .replaceFirst(' ', 'T'),
+                                                  ),
+                                                ),
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
