@@ -21,6 +21,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
   late InAppWebViewController? webViewController;
 
   final redirectUrl = "".obs;
+  final isLoadingDownloadBlob = false.obs;
 
   @override
   Future<void> onInit() async {

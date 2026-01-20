@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import '../controllers/deposit_balance_payment_webview_controller.dart';
 
 class DepositBalancePaymentWebviewView
@@ -87,7 +92,45 @@ class DepositBalancePaymentWebviewView
             javaScriptEnabled: true,
             useOnDownloadStart: true,
           ),
-          onWebViewCreated: (controller) {},
+          onWebViewCreated: (controller) {
+            this.controller.webViewController = controller;
+
+            controller.addJavaScriptHandler(
+              handlerName: 'saveBlob',
+              callback: (args) async {
+                final base64Data = args[0];
+                final mimeType = args[1];
+                await _saveFile(base64Data, mimeType);
+              },
+            );
+          },
+          onLoadStop: (controller, url) async {
+            await controller.evaluateJavascript(
+              source: '''
+(function () {
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest('a');
+    if (!a) return;
+
+    if (a.href.startsWith('blob:')) {
+      e.preventDefault();
+
+      fetch(a.href)
+        .then(res => res.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = function () {
+            window.flutter_inappwebview
+              .callHandler('saveBlob', reader.result, blob.type);
+          };
+          reader.readAsDataURL(blob);
+        });
+    }
+  }, true);
+})();
+''',
+            );
+          },
           onDownloadStartRequest:
               (webviewController, downloadStartRequest) async {
                 var uri = downloadStartRequest.url;
@@ -165,5 +208,23 @@ class DepositBalancePaymentWebviewView
         ),
       ),
     );
+  }
+
+  Future<void> _saveFile(String base64, String mime) async {
+    if (controller.isLoadingDownloadBlob.value == false) {
+      controller.isLoadingDownloadBlob.value = true;
+      final bytes = base64Decode(base64.split(',').last);
+      final dir = await getApplicationDocumentsDirectory();
+
+      final extension = mime.split('/').last;
+      final file = File('${dir.path}/temp_download.$extension');
+
+      await file.writeAsBytes(bytes);
+
+      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
+
+      await file.delete();
+      controller.isLoadingDownloadBlob.value = false;
+    }
   }
 }
