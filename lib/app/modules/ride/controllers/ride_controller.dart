@@ -740,7 +740,10 @@ class RideController extends GetxController {
                                         SizedBox(width: 8),
                                         RadioGroup(
                                           groupValue: payType.value,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            payType.value = 2;
+                                            Get.close(1);
+                                          },
                                           child: Radio(
                                             value: 2,
                                             activeColor: themeColorServices
@@ -1102,7 +1105,10 @@ class RideController extends GetxController {
                                   SizedBox(width: 8),
                                   RadioGroup(
                                     groupValue: payType.value,
-                                    onChanged: (value) {},
+                                    onChanged: (value) {
+                                      payType.value = 3;
+                                      Get.close(1);
+                                    },
                                     child: Radio(
                                       value: 3,
                                       activeColor:
