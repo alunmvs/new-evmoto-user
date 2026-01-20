@@ -292,7 +292,7 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                         ),
                                         SizedBox(height: 8),
                                         RatingBar.builder(
-                                          initialRating: 0,
+                                          initialRating: 5,
                                           minRating: 1,
                                           direction: Axis.horizontal,
                                           allowHalfRating: false,
