@@ -4,6 +4,7 @@ import 'package:new_evmoto_user/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_user/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
@@ -23,6 +24,7 @@ class DepositBalanceController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final formGroup = FormGroup({
     "money": FormControl<String>(validators: <Validator>[Validators.required]),
@@ -76,7 +78,11 @@ class DepositBalanceController extends GetxController {
           formGroup.control("money").value.toString().replaceAll(".", ""),
         );
 
-        if (money < 10000) {
+        var depositAmountMin = firebaseRemoteConfigServices.remoteConfig.getInt(
+          "user_deposit_min",
+        );
+
+        if (money < depositAmountMin) {
           final SnackBar snackBar = SnackBar(
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorRed400.value,
