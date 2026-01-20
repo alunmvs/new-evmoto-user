@@ -84,10 +84,8 @@ class HomeController extends GetxController {
 
       if (userInfo.value.name == "" || userInfo.value.name == null) {
         await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
-      } else {
-        await displayCoachmark();
       }
-
+      await displayCoachmark();
       await firebasePushNotificationServices.requestPermission();
     });
   }
