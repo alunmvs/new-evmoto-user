@@ -413,33 +413,137 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                 .value,
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
                           children: [
-                            Text(
-                              controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .total ??
-                                  "-",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallBold
-                                  .value,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Metode Pembayaran",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value,
+                                ),
+                                if (controller.orderRideDetail.value.payType ==
+                                    2) ...[
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 16,
+                                        height: 16,
+                                        decoration: BoxDecoration(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue100
+                                              .value,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(6),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_wallet.svg",
+                                              width: 12,
+                                              height: 12,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 2),
+                                      Text(
+                                        "Saldo EVMoto",
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallBold
+                                            .value,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                                if (controller.orderRideDetail.value.payType ==
+                                    3) ...[
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 16,
+                                        height: 16,
+                                        decoration: BoxDecoration(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue100
+                                              .value,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(6),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_cash.svg",
+                                              width: 12,
+                                              height: 12,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 2),
+                                      Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .cash ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallBold
+                                            .value,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ],
                             ),
-                            Text(
-                              NumberFormat.currency(
-                                locale: 'id_ID',
-                                symbol: 'Rp',
-                                decimalDigits: 0,
-                              ).format(
-                                controller.orderRideDetail.value.payMoney,
-                              ),
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallBold
-                                  .value,
+                            SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .total ??
+                                      "-",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value,
+                                ),
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'id_ID',
+                                    symbol: 'Rp',
+                                    decimalDigits: 0,
+                                  ).format(
+                                    controller.orderRideDetail.value.payMoney,
+                                  ),
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value,
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -504,7 +608,8 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                   ),
                                   SizedBox(width: 2),
                                   Text(
-                                    "-",
+                                    controller.orderRideDetail.value.score
+                                        .toString(),
                                     style: controller
                                         .typographyServices
                                         .bodySmallBold
