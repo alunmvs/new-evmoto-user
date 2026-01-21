@@ -416,9 +416,20 @@ class ActivityView extends GetView<ActivityController> {
                                                 decimalDigits: 0,
                                               ).format(
                                                 activeOrder
-                                                        .orderRide
-                                                        ?.collectionFees ??
-                                                    0.0,
+                                                                .orderRide
+                                                                ?.collectionFees !=
+                                                            null &&
+                                                        activeOrder
+                                                                .orderRide
+                                                                ?.collectionFees !=
+                                                            0
+                                                    ? activeOrder
+                                                          .orderRide
+                                                          ?.collectionFees
+                                                    : activeOrder
+                                                              .orderRide
+                                                              ?.orderMoney ??
+                                                          0.0,
                                               ),
                                               style: controller
                                                   .typographyServices
@@ -1184,9 +1195,20 @@ class ActivityView extends GetView<ActivityController> {
                                                       decimalDigits: 0,
                                                     ).format(
                                                       historyOrder
-                                                              .orderRide
-                                                              ?.payMoney ??
-                                                          0,
+                                                                      .orderRide
+                                                                      ?.collectionFees !=
+                                                                  null &&
+                                                              historyOrder
+                                                                      .orderRide
+                                                                      ?.collectionFees !=
+                                                                  0
+                                                          ? historyOrder
+                                                                .orderRide
+                                                                ?.collectionFees
+                                                          : historyOrder
+                                                                    .orderRide
+                                                                    ?.orderMoney ??
+                                                                0.0,
                                                     ),
                                                     style: controller
                                                         .typographyServices
