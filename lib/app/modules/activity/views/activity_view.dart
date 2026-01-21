@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../controllers/activity_controller.dart';
@@ -281,28 +282,17 @@ class ActivityView extends GetView<ActivityController> {
                                   SizedBox(height: 16),
                                   SizedBox(
                                     height: 46,
-                                    child: ElevatedButton(
+                                    child: LoaderElevatedButton(
                                       onPressed: () async {
                                         await controller.homeController
                                             .onTapRideService();
                                       },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: controller
+                                      borderSide: BorderSide(
+                                        color: controller
                                             .themeColorServices
-                                            .primaryBlue
+                                            .sematicColorBlue200
                                             .value,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                          side: BorderSide(
-                                            color: controller
-                                                .themeColorServices
-                                                .sematicColorBlue200
-                                                .value,
-                                            width: 2,
-                                          ),
-                                        ),
+                                        width: 2,
                                       ),
                                       child: Text(
                                         controller

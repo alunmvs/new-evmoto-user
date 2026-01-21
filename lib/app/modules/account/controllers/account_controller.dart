@@ -14,6 +14,7 @@ import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
@@ -355,17 +356,10 @@ class AccountController extends GetxController {
                     SizedBox(
                       width: Get.width,
                       height: 46,
-                      child: ElevatedButton(
+                      child: LoaderElevatedButton(
                         onPressed: () async {
                           await logout();
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
                         child: Text(
                           "Keluar Sekarang",
                           style: typographyServices.bodyLargeBold.value
@@ -380,17 +374,10 @@ class AccountController extends GetxController {
                     SizedBox(
                       width: Get.width,
                       height: 46,
-                      child: ElevatedButton(
+                      child: LoaderElevatedButton(
                         onPressed: () async {
                           Get.close(1);
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0XFFD9D9D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
                         child: Text(
                           "Batalkan",
                           style: typographyServices.bodyLargeBold.value
@@ -465,19 +452,13 @@ class AccountController extends GetxController {
                     SizedBox(
                       width: Get.width,
                       height: 46,
-                      child: ElevatedButton(
+                      child: LoaderElevatedButton(
                         onPressed: () async {
                           Get.close(1);
                           await onTapValidateOtpDeleteAccount();
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              themeColorServices.sematicColorRed400.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
+                        buttonColor:
+                            themeColorServices.sematicColorRed400.value,
                         child: Text(
                           "Hapus Akun",
                           style: typographyServices.bodyLargeBold.value
@@ -492,17 +473,11 @@ class AccountController extends GetxController {
                     SizedBox(
                       width: Get.width,
                       height: 46,
-                      child: ElevatedButton(
+                      child: LoaderElevatedButton(
                         onPressed: () async {
                           Get.close(1);
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0XFFD9D9D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
+                        buttonColor: Color(0XFFD9D9D9),
                         child: Text(
                           "Batalkan",
                           style: typographyServices.bodyLargeBold.value
@@ -680,7 +655,7 @@ class AccountController extends GetxController {
                       SizedBox(
                         width: Get.width,
                         height: 46,
-                        child: ElevatedButton(
+                        child: LoaderElevatedButton(
                           onPressed: () async {
                             Get.close(1);
                             try {
@@ -733,14 +708,6 @@ class AccountController extends GetxController {
                               snackBar,
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                themeColorServices.primaryBlue.value,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 0,
-                          ),
                           child: Text(
                             "Konfirmasi OTP",
                             style: typographyServices.bodyLargeBold.value
@@ -756,17 +723,11 @@ class AccountController extends GetxController {
                       SizedBox(
                         width: Get.width,
                         height: 46,
-                        child: ElevatedButton(
+                        child: LoaderElevatedButton(
+                          buttonColor: Color(0XFFD9D9D9),
                           onPressed: () async {
                             Get.close(1);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0XFFD9D9D9),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 0,
-                          ),
                           child: Text(
                             "Batalkan",
                             style: typographyServices.bodyLargeBold.value

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../controllers/setting_saved_location_controller.dart';
@@ -281,46 +282,36 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await controller.onTapAddLocation();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  await controller.onTapAddLocation();
+                },
+                buttonColor: controller.themeColorServices.primaryBlue.value,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/icon_add_square.svg",
+                      width: 12,
+                      height: 12,
+                      color: controller
+                          .themeColorServices
+                          .neutralsColorGrey0
+                          .value,
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/icon_add_square.svg",
-                        width: 12,
-                        height: 12,
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey0
-                            .value,
-                      ),
-                      SizedBox(width: 6),
-                      Text(
-                        controller
-                                .languageServices
-                                .language
-                                .value
-                                .addOtherAddress ??
-                            "-",
-                        style: controller.typographyServices.bodyLargeBold.value
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  ),
+                    SizedBox(width: 6),
+                    Text(
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .addOtherAddress ??
+                          "-",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(color: Colors.white),
+                    ),
+                  ],
                 ),
               ),
             ],

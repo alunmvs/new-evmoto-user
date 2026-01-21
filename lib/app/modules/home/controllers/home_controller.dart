@@ -18,6 +18,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -249,7 +250,7 @@ class HomeController extends GetxController {
                               SizedBox(
                                 width: Get.width,
                                 height: 46,
-                                child: ElevatedButton(
+                                child: LoaderElevatedButton(
                                   onPressed: () async {
                                     Get.close(1);
 
@@ -262,13 +263,6 @@ class HomeController extends GetxController {
                                       balanceGlobalKey,
                                     ]);
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        themeColorServices.primaryBlue.value,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
                                   child: Text(
                                     languageServices
                                             .language
@@ -374,17 +368,10 @@ class HomeController extends GetxController {
                       SizedBox(
                         height: 46,
                         width: Get.width,
-                        child: ElevatedButton(
+                        child: LoaderElevatedButton(
                           onPressed: () async {
                             await onTapUpdateVersion();
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                themeColorServices.primaryBlue.value,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
                           child: Text(
                             "Update Sekarang",
                             style: typographyServices.bodyLargeBold.value
@@ -448,16 +435,10 @@ class HomeController extends GetxController {
                   SizedBox(
                     height: 46,
                     width: Get.width,
-                    child: ElevatedButton(
+                    child: LoaderElevatedButton(
                       onPressed: () async {
                         await onTapUpdateVersion();
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: themeColorServices.primaryBlue.value,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
                       child: Text(
                         "Update Sekarang",
                         style: typographyServices.bodyLargeBold.value.copyWith(

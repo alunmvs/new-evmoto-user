@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/setting_language_controller.dart';
 
@@ -249,17 +250,10 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
               SizedBox(
                 height: 46,
                 width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
+                child: LoaderElevatedButton(
                   onPressed: () async {
                     await controller.onTapSave();
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
                   child: Text(
                     controller.languageServices.language.value.save ?? "-",
                     style: controller.typographyServices.bodyLargeBold.value

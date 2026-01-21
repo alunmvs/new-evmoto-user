@@ -18,6 +18,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class RideOrderDetailController extends GetxController
@@ -1042,7 +1043,7 @@ class RideOrderDetailController extends GetxController
                             child: SizedBox(
                               width: Get.width,
                               height: 46,
-                              child: ElevatedButton(
+                              child: LoaderElevatedButton(
                                 onPressed: () async {
                                   await orderRideRepository.cancelOrderRide(
                                     orderId: orderId.value,
@@ -1080,14 +1081,8 @@ class RideOrderDetailController extends GetxController
                                   rootScaffoldMessengerKey.currentState
                                       ?.showSnackBar(snackBar);
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
+                                buttonColor:
+                                    themeColorServices.sematicColorRed400.value,
                                 child: Text(
                                   "Batalkan",
                                   style: typographyServices.bodyLargeBold.value

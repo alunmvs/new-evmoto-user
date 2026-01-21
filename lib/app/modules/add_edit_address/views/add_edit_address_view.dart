@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/add_edit_address_controller.dart';
@@ -364,17 +365,10 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
             SizedBox(
               height: 46,
               width: MediaQuery.of(context).size.width,
-              child: ElevatedButton(
+              child: LoaderElevatedButton(
                 onPressed: () async {
                   await controller.onTapSaveAddress();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      controller.themeColorServices.primaryBlue.value,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
                 child: Text(
                   controller
                           .languageServices

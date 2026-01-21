@@ -7,6 +7,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -475,7 +476,7 @@ class SettingSavedLocationController extends GetxController {
                             child: SizedBox(
                               width: Get.width,
                               height: 46,
-                              child: ElevatedButton(
+                              child: LoaderElevatedButton(
                                 onPressed: () async {
                                   try {
                                     await savedAddressRepository
@@ -530,14 +531,8 @@ class SettingSavedLocationController extends GetxController {
                                         ?.showSnackBar(snackBar);
                                   }
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
+                                buttonColor:
+                                    themeColorServices.sematicColorRed400.value,
                                 child: Text(
                                   languageServices.language.value.delete ?? "-",
                                   style: typographyServices.bodyLargeBold.value

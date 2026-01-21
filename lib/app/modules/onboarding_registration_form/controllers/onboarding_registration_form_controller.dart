@@ -7,6 +7,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -114,7 +115,7 @@ class OnboardingRegistrationFormController extends GetxController {
                             child: SizedBox(
                               width: Get.width,
                               height: 46,
-                              child: ElevatedButton(
+                              child: LoaderElevatedButton(
                                 onPressed: () async {
                                   var storage = FlutterSecureStorage();
                                   await storage.deleteAll();
@@ -145,14 +146,8 @@ class OnboardingRegistrationFormController extends GetxController {
                                   rootScaffoldMessengerKey.currentState
                                       ?.showSnackBar(snackBar);
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
+                                buttonColor:
+                                    themeColorServices.sematicColorRed400.value,
                                 child: Text(
                                   languageServices.language.value.logout ?? "-",
                                   style: typographyServices.bodyLargeBold.value

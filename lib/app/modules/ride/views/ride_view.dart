@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/general_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -2523,21 +2524,10 @@ class RideView extends GetView<RideController> {
                                   child: SizedBox(
                                     height: 46,
                                     width: MediaQuery.of(context).size.width,
-                                    child: ElevatedButton(
+                                    child: LoaderElevatedButton(
                                       onPressed: () async {
                                         await controller.onTapSubmitViaMap();
                                       },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: controller
-                                            .themeColorServices
-                                            .primaryBlue
-                                            .value,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                        ),
-                                      ),
                                       child: Text(
                                         controller
                                                 .languageServices
@@ -3464,7 +3454,7 @@ class RideView extends GetView<RideController> {
                                           width: MediaQuery.of(
                                             context,
                                           ).size.width,
-                                          child: ElevatedButton(
+                                          child: LoaderElevatedButton(
                                             onPressed: () async {
                                               if (controller.payType.value ==
                                                   2) {
@@ -3524,16 +3514,6 @@ class RideView extends GetView<RideController> {
                                                 },
                                               );
                                             },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: controller
-                                                  .themeColorServices
-                                                  .primaryBlue
-                                                  .value,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                              ),
-                                            ),
                                             child: Text(
                                               controller
                                                       .languageServices

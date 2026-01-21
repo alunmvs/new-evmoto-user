@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/voucher_detail_controller.dart';
 
@@ -482,18 +483,13 @@ class VoucherDetailView extends GetView<VoucherDetailController> {
                     SizedBox(
                       height: 46,
                       width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        onPressed: () {
+                      child: LoaderElevatedButton(
+                        onPressed: () async {
                           Get.back();
                           Get.back(result: controller.couponDetail.value);
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              controller.themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
+                        buttonColor:
+                            controller.themeColorServices.primaryBlue.value,
                         child: Text(
                           controller.languageServices.language.value.usePromo ??
                               "-",

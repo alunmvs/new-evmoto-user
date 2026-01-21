@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/introduction_package_service_controller.dart';
 
@@ -149,21 +150,14 @@ class IntroductionPackageServiceView
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 46,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            controller.themeColorServices.primaryBlue.value,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          side: BorderSide(
-                            color: controller
-                                .themeColorServices
-                                .sematicColorBlue200
-                                .value,
-                            width: 2,
-                          ),
-                        ),
+                    child: LoaderElevatedButton(
+                      onPressed: () async {},
+                      borderSide: BorderSide(
+                        color: controller
+                            .themeColorServices
+                            .sematicColorBlue200
+                            .value,
+                        width: 2,
                       ),
                       child: Text(
                         controller

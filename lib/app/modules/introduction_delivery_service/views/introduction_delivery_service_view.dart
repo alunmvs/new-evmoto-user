@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/introduction_delivery_service_controller.dart';
@@ -100,7 +101,7 @@ class IntroductionDeliveryServiceView
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 46,
-                    child: ElevatedButton(
+                    child: LoaderElevatedButton(
                       onPressed: () async {
                         var prefs = await SharedPreferences.getInstance();
                         await prefs.setBool(
@@ -111,19 +112,12 @@ class IntroductionDeliveryServiceView
                         Get.back();
                         await controller.homeController.onTapRideService();
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            controller.themeColorServices.primaryBlue.value,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          side: BorderSide(
-                            color: controller
-                                .themeColorServices
-                                .sematicColorBlue200
-                                .value,
-                            width: 2,
-                          ),
-                        ),
+                      borderSide: BorderSide(
+                        color: controller
+                            .themeColorServices
+                            .sematicColorBlue200
+                            .value,
+                        width: 2,
                       ),
                       child: Text(
                         controller

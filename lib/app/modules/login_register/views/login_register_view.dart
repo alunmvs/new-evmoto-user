@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/login_register_controller.dart';
 
@@ -404,7 +405,7 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                               context,
                                             ).size.width,
                                             height: 46,
-                                            child: ElevatedButton(
+                                            child: LoaderElevatedButton(
                                               onPressed:
                                                   controller.isFormValid.value
                                                   ? () async {
@@ -412,37 +413,28 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                           .onTapSubmit();
                                                     }
                                                   : null,
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
+                                              buttonColor:
+                                                  controller.isFormValid.value
+                                                  ? controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value
+                                                  : controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey300
+                                                        .value,
+                                              borderSide: BorderSide(
+                                                color:
                                                     controller.isFormValid.value
                                                     ? controller
                                                           .themeColorServices
-                                                          .primaryBlue
+                                                          .sematicColorBlue200
                                                           .value
                                                     : controller
                                                           .themeColorServices
-                                                          .neutralsColorGrey300
+                                                          .neutralsColorGrey200
                                                           .value,
-
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(16),
-                                                  side: BorderSide(
-                                                    color:
-                                                        controller
-                                                            .isFormValid
-                                                            .value
-                                                        ? controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue200
-                                                              .value
-                                                        : controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey200
-                                                              .value,
-                                                    width: 2,
-                                                  ),
-                                                ),
+                                                width: 2,
                                               ),
                                               child: Text(
                                                 controller

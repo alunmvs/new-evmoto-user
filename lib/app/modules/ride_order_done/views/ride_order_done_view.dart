@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../controllers/ride_order_done_controller.dart';
@@ -1073,17 +1074,10 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
               SizedBox(
                 height: 46,
                 width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
+                child: LoaderElevatedButton(
                   onPressed: () async {
                     await controller.onTapDone();
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
                   child: Text(
                     controller.languageServices.language.value.finished ?? "-",
                     style: controller.typographyServices.bodyLargeBold.value

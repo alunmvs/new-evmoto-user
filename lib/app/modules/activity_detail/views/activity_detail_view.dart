@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../controllers/activity_detail_controller.dart';
@@ -656,17 +657,10 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
               SizedBox(
                 height: 46,
                 width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
+                child: LoaderElevatedButton(
                   onPressed: () async {
                     await controller.onTapOrderAgain();
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
                   child: Text(
                     controller.languageServices.language.value.orderAgain ??
                         "-",

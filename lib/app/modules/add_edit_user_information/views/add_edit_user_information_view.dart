@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/add_edit_user_information_controller.dart';
@@ -484,17 +485,10 @@ class AddEditUserInformationView
               SizedBox(
                 height: 46,
                 width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
+                child: LoaderElevatedButton(
                   onPressed: () async {
                     await controller.onTapSubmit();
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
                   child: Text(
                     "Simpan",
                     style: controller.typographyServices.bodyLargeBold.value
