@@ -8,6 +8,7 @@ class LoaderElevatedButton extends StatelessWidget {
   final Color? buttonColor;
   final BorderSide? borderSide;
   final bool? isWidthFitToContent;
+  final EdgeInsetsGeometry? padding;
 
   LoaderElevatedButton({
     super.key,
@@ -16,6 +17,7 @@ class LoaderElevatedButton extends StatelessWidget {
     this.buttonColor,
     this.borderSide,
     this.isWidthFitToContent,
+    this.padding,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -52,7 +54,9 @@ class LoaderElevatedButton extends StatelessWidget {
                     : BorderRadius.circular(16),
                 side: borderSide ?? BorderSide.none,
               ),
-              padding: EdgeInsets.all(0),
+              padding: isLoading.value
+                  ? EdgeInsets.all(0)
+                  : padding ?? EdgeInsets.all(0),
             ),
             child: isLoading.value
                 ? Center(

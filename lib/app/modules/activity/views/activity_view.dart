@@ -285,7 +285,12 @@ class ActivityView extends GetView<ActivityController> {
                                     onPressed: () async {
                                       await controller.homeController
                                           .onTapRideService();
+
+                                      await controller.refreshAll();
                                     },
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                    ),
                                     borderSide: BorderSide(
                                       color: controller
                                           .themeColorServices
@@ -313,7 +318,7 @@ class ActivityView extends GetView<ActivityController> {
                                       in controller.activeOrderList) ...[
                                     GestureDetector(
                                       onTap: () async {
-                                        Get.toNamed(
+                                        await Get.toNamed(
                                           Routes.RIDE_ORDER_DETAIL,
                                           arguments: {
                                             "order_id": activeOrder.orderId
@@ -321,6 +326,7 @@ class ActivityView extends GetView<ActivityController> {
                                             "order_type": activeOrder.orderType,
                                           },
                                         );
+                                        await controller.refreshAll();
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(
@@ -483,8 +489,9 @@ class ActivityView extends GetView<ActivityController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                Get.toNamed(Routes.HISTORY_BALANCE);
+                              onTap: () async {
+                                await Get.toNamed(Routes.HISTORY_BALANCE);
+                                await controller.refreshAll();
                               },
                               child: Container(
                                 color: controller
@@ -861,7 +868,7 @@ class ActivityView extends GetView<ActivityController> {
                                         for (var historyOrder
                                             in controller.historyOrderList) ...[
                                           GestureDetector(
-                                            onTap: () {
+                                            onTap: () async {
                                               if ([
                                                 1,
                                                 2,
@@ -871,7 +878,7 @@ class ActivityView extends GetView<ActivityController> {
                                                 6,
                                                 7,
                                               ].contains(historyOrder.state)) {
-                                                Get.toNamed(
+                                                await Get.toNamed(
                                                   Routes.RIDE_ORDER_DETAIL,
                                                   arguments: {
                                                     "order_id": historyOrder
@@ -882,7 +889,7 @@ class ActivityView extends GetView<ActivityController> {
                                                   },
                                                 );
                                               } else {
-                                                Get.toNamed(
+                                                await Get.toNamed(
                                                   Routes.ACTIVITY_DETAIL,
                                                   arguments: {
                                                     "order_id": historyOrder
@@ -893,6 +900,8 @@ class ActivityView extends GetView<ActivityController> {
                                                   },
                                                 );
                                               }
+
+                                              await controller.refreshAll();
                                             },
                                             child: Container(
                                               color: Colors.transparent,
