@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import '../controllers/deposit_balance_payment_webview_controller.dart';
 
@@ -213,18 +215,78 @@ class DepositBalancePaymentWebviewView
   Future<void> _saveFile(String base64, String mime) async {
     if (controller.isLoadingDownloadBlob.value == false) {
       controller.isLoadingDownloadBlob.value = true;
-      final bytes = base64Decode(base64.split(',').last);
-      final dir = await getApplicationDocumentsDirectory();
+      var granted = await requestGalleryPermission();
+      if (granted) {
+        final bytes = base64Decode(base64.split(',').last);
+        final dir = await getApplicationDocumentsDirectory();
 
-      final extension = mime.split('/').last;
-      final file = File('${dir.path}/temp_download.$extension');
+        final extension = mime.split('/').last;
+        final file = File('${dir.path}/temp_download.$extension');
 
-      await file.writeAsBytes(bytes);
+        await file.writeAsBytes(bytes);
 
-      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
+        final success = await GallerySaver.saveImage(file.path);
 
-      await file.delete();
+        if (success == true) {
+          var snackBar = SnackBar(
+            behavior: SnackBarBehavior.fixed,
+            backgroundColor:
+                controller.themeColorServices.sematicColorGreen400.value,
+            content: Text(
+              "Berhasil menyimpan gambar pada gallery",
+              style: controller.typographyServices.bodySmallRegular.value
+                  .copyWith(
+                    color:
+                        controller.themeColorServices.neutralsColorGrey0.value,
+                  ),
+            ),
+          );
+          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        }
+
+        await file.delete();
+      } else {
+        var snackBar = SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor:
+              controller.themeColorServices.sematicColorRed400.value,
+          content: Text(
+            "Tidak memiliki akses menyimpan gambar ke gallery",
+            style: controller.typographyServices.bodySmallRegular.value
+                .copyWith(
+                  color: controller.themeColorServices.neutralsColorGrey0.value,
+                ),
+          ),
+        );
+        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      }
       controller.isLoadingDownloadBlob.value = false;
     }
   }
+}
+
+Future<bool> requestGalleryPermission() async {
+  if (Platform.isIOS) {
+    final status = await Permission.photos.request();
+    return status.isGranted || status.isLimited;
+  }
+
+  if (Platform.isAndroid) {
+    if (await Permission.photos.isGranted) {
+      return true;
+    }
+
+    if (await Permission.storage.isGranted) {
+      return true;
+    }
+
+    // Request sesuai versi
+    final status = await Permission.photos.request();
+    if (status.isGranted) return true;
+
+    final legacy = await Permission.storage.request();
+    return legacy.isGranted;
+  }
+
+  return false;
 }
