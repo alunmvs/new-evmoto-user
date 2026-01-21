@@ -1261,563 +1261,587 @@ class RideView extends GetView<RideController> {
                                 ],
                                 if (controller.isOriginHasPrimaryFocus.value ==
                                     true) ...[
-                                  SingleChildScrollView(
-                                    controller: sc,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (controller
-                                                .originGooglePlaceTextSearchList
-                                                .isEmpty &&
-                                            controller.keywordOrigin.value !=
-                                                "") ...[
-                                          Container(
-                                            padding: EdgeInsets.all(16),
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/img_location_not_found.png",
-                                                  width: 72,
-                                                  height: 72,
-                                                ),
-                                                SizedBox(height: 16),
-                                                Text(
-                                                  controller
-                                                          .languageServices
-                                                          .language
-                                                          .value
-                                                          .locationNotFound ??
-                                                      "-",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallBold
-                                                      .value
-                                                      .copyWith(),
-                                                ),
-                                                SizedBox(height: 8),
-                                                Text(
-                                                  controller
-                                                          .languageServices
-                                                          .language
-                                                          .value
-                                                          .makeSureTheAddressEnteredIsCorrect ??
-                                                      "-",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallRegular
-                                                      .value
-                                                      .copyWith(),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                        if (controller
-                                                .originGooglePlaceTextSearchList
-                                                .isEmpty &&
-                                            controller.keywordOrigin.value ==
-                                                "") ...[
-                                          for (var recommendationOriginCurrentLocation
-                                              in controller
-                                                  .recommendationOriginCurrentLocationList) ...[
-                                            GestureDetector(
-                                              onTap: () async {
-                                                controller
-                                                        .originLatitude
-                                                        .value =
-                                                    recommendationOriginCurrentLocation
-                                                        .latitude!;
-                                                controller
-                                                        .originLongitude
-                                                        .value =
-                                                    recommendationOriginCurrentLocation
-                                                        .longitude!;
-                                                controller.originAddress.value =
-                                                    recommendationOriginCurrentLocation
-                                                        .addressDetail ??
-                                                    "-";
-                                                controller.keywordOrigin.value =
-                                                    recommendationOriginCurrentLocation
-                                                        .addressDetail ??
-                                                    "-";
-                                                controller
-                                                        .originTextEditingController
-                                                        .text =
-                                                    recommendationOriginCurrentLocation
-                                                        .addressDetail ??
-                                                    "-";
-                                                controller.focusNodeDestination
-                                                    .requestFocus();
-
-                                                controller.markers.removeWhere(
-                                                  (m) =>
-                                                      m.markerId.value ==
-                                                      'origin',
-                                                );
-                                                controller.markers.add(
-                                                  Marker(
-                                                    markerId: MarkerId(
-                                                      "origin",
-                                                    ),
-                                                    position: LatLng(
-                                                      double.parse(
-                                                        recommendationOriginCurrentLocation
-                                                            .latitude!,
-                                                      ),
-                                                      double.parse(
-                                                        recommendationOriginCurrentLocation
-                                                            .longitude!,
-                                                      ),
-                                                    ),
-                                                    icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-                                                      'assets/icons/icon_origin.svg',
-                                                      Size(22.67, 22.67),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                color: Colors.transparent,
-                                                padding: EdgeInsets.only(
-                                                  bottom: 8,
-                                                  top: 14,
-                                                  left: 16,
-                                                  right: 16,
-                                                ),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: 24,
-                                                      height: 24,
-                                                      decoration: BoxDecoration(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .sematicColorBlue100
-                                                            .value,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_pinpoint.svg",
-                                                            width: 13.5,
-                                                            height: 15.75,
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .sematicColorBlue500
-                                                                .value,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 8),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          TextHighlight(
-                                                            text:
-                                                                recommendationOriginCurrentLocation
-                                                                    .name ??
-                                                                recommendationOriginCurrentLocation
-                                                                    .addressDetail!,
-                                                            words: controller
-                                                                .highlightedWordTitleAddressOrigin,
-                                                            textStyle: controller
-                                                                .typographyServices
-                                                                .bodySmallBold
-                                                                .value,
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                          SizedBox(height: 4),
-                                                          TextHighlight(
-                                                            text:
-                                                                recommendationOriginCurrentLocation
-                                                                    .addressDetail ??
-                                                                "-",
-                                                            words: controller
-                                                                .highlightedWordAddressOrigin,
-                                                            textStyle: controller
-                                                                .typographyServices
-                                                                .captionLargeRegular
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .neutralsColorGrey500
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Divider(
-                                              height: 0,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey200
-                                                  .value,
-                                            ),
-                                          ],
-                                          for (var recommendationOriginLocation
-                                              in controller
-                                                  .recommendationOriginLocationList) ...[
-                                            GestureDetector(
-                                              onTap: () async {
-                                                controller
-                                                        .originLatitude
-                                                        .value =
-                                                    recommendationOriginLocation
-                                                        .latitude!;
-                                                controller
-                                                        .originLongitude
-                                                        .value =
-                                                    recommendationOriginLocation
-                                                        .longitude!;
-                                                controller.originAddress.value =
-                                                    recommendationOriginLocation
-                                                        .addressDetail ??
-                                                    "-";
-                                                controller.keywordOrigin.value =
-                                                    recommendationOriginLocation
-                                                        .addressDetail ??
-                                                    "-";
-                                                controller
-                                                        .originTextEditingController
-                                                        .text =
-                                                    recommendationOriginLocation
-                                                        .addressDetail ??
-                                                    "-";
-                                                controller.focusNodeDestination
-                                                    .requestFocus();
-
-                                                controller.markers.removeWhere(
-                                                  (m) =>
-                                                      m.markerId.value ==
-                                                      'origin',
-                                                );
-                                                controller.markers.add(
-                                                  Marker(
-                                                    markerId: MarkerId(
-                                                      "origin",
-                                                    ),
-                                                    position: LatLng(
-                                                      double.parse(
-                                                        recommendationOriginLocation
-                                                            .latitude!,
-                                                      ),
-                                                      double.parse(
-                                                        recommendationOriginLocation
-                                                            .longitude!,
-                                                      ),
-                                                    ),
-                                                    icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-                                                      'assets/icons/icon_origin.svg',
-                                                      Size(22.67, 22.67),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                color: Colors.transparent,
-                                                padding: EdgeInsets.only(
-                                                  bottom: 8,
-                                                  top: 14,
-                                                  left: 16,
-                                                  right: 16,
-                                                ),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: 24,
-                                                      height: 24,
-                                                      decoration: BoxDecoration(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .sematicColorBlue100
-                                                            .value,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_pinpoint.svg",
-                                                            width: 13.5,
-                                                            height: 15.75,
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .sematicColorBlue500
-                                                                .value,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 8),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          TextHighlight(
-                                                            text:
-                                                                recommendationOriginLocation
-                                                                    .name ??
-                                                                recommendationOriginLocation
-                                                                    .addressDetail!,
-                                                            words: controller
-                                                                .highlightedWordTitleAddressOrigin,
-                                                            textStyle: controller
-                                                                .typographyServices
-                                                                .bodySmallBold
-                                                                .value,
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                          SizedBox(height: 4),
-                                                          TextHighlight(
-                                                            text:
-                                                                recommendationOriginLocation
-                                                                    .addressDetail ??
-                                                                "-",
-                                                            words: controller
-                                                                .highlightedWordAddressOrigin,
-                                                            textStyle: controller
-                                                                .typographyServices
-                                                                .captionLargeRegular
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .neutralsColorGrey500
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Divider(
-                                              height: 0,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey200
-                                                  .value,
-                                            ),
-                                          ],
-                                        ],
-                                        for (var originGooglePlaceTextSearch
-                                            in controller
-                                                .originGooglePlaceTextSearchList) ...[
-                                          GestureDetector(
-                                            onTap: () async {
-                                              controller.originLatitude.value =
-                                                  originGooglePlaceTextSearch
-                                                      .geometry!
-                                                      .location!
-                                                      .lat
-                                                      .toString();
-                                              controller.originLongitude.value =
-                                                  originGooglePlaceTextSearch
-                                                      .geometry!
-                                                      .location!
-                                                      .lng
-                                                      .toString();
-                                              controller
-                                                      .originGooglePlaceTextSearch
-                                                      .value =
-                                                  originGooglePlaceTextSearch;
-                                              controller.originAddress.value =
-                                                  originGooglePlaceTextSearch
-                                                      .formattedAddress ??
-                                                  "-";
-                                              controller.keywordOrigin.value =
-                                                  originGooglePlaceTextSearch
-                                                      .formattedAddress ??
-                                                  "-";
-                                              controller
-                                                      .originTextEditingController
-                                                      .text =
-                                                  originGooglePlaceTextSearch
-                                                      .formattedAddress ??
-                                                  "-";
-                                              controller.focusNodeDestination
-                                                  .requestFocus();
-
-                                              controller.markers.removeWhere(
-                                                (m) =>
-                                                    m.markerId.value ==
-                                                    'origin',
-                                              );
-                                              controller.markers.add(
-                                                Marker(
-                                                  markerId: MarkerId("origin"),
-                                                  position: LatLng(
-                                                    double.parse(
-                                                      controller
-                                                          .originLatitude
-                                                          .value,
-                                                    ),
-                                                    double.parse(
-                                                      controller
-                                                          .originLongitude
-                                                          .value,
-                                                    ),
-                                                  ),
-                                                  icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-                                                    'assets/icons/icon_origin.svg',
-                                                    Size(22.67, 22.67),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              color: Colors.transparent,
-                                              padding: EdgeInsets.only(
-                                                bottom: 8,
-                                                top: 14,
-                                                left: 16,
-                                                right: 16,
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      controller: sc,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (controller
+                                                  .originGooglePlaceTextSearchList
+                                                  .isEmpty &&
+                                              controller.keywordOrigin.value !=
+                                                  "") ...[
+                                            Container(
+                                              padding: EdgeInsets.all(16),
+                                              width: MediaQuery.of(
+                                                context,
+                                              ).size.width,
+                                              child: Column(
                                                 children: [
-                                                  Container(
-                                                    width: 24,
-                                                    height: 24,
-                                                    decoration: BoxDecoration(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .sematicColorBlue100
-                                                          .value,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            8,
-                                                          ),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "assets/icons/icon_pinpoint.svg",
-                                                          width: 13.5,
-                                                          height: 15.75,
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue500
-                                                              .value,
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  Image.asset(
+                                                    "assets/images/img_location_not_found.png",
+                                                    width: 72,
+                                                    height: 72,
                                                   ),
-                                                  SizedBox(width: 8),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        TextHighlight(
-                                                          text:
-                                                              originGooglePlaceTextSearch
-                                                                  .name ??
-                                                              "-",
-                                                          words: controller
-                                                              .highlightedWordTitleAddressOrigin,
-                                                          textStyle: controller
-                                                              .typographyServices
-                                                              .bodySmallBold
-                                                              .value,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                        ),
-                                                        SizedBox(height: 4),
-                                                        TextHighlight(
-                                                          text:
-                                                              originGooglePlaceTextSearch
-                                                                  .formattedAddress ??
-                                                              "-",
-                                                          words: controller
-                                                              .highlightedWordAddressOrigin,
-                                                          textStyle: controller
-                                                              .typographyServices
-                                                              .captionLargeRegular
-                                                              .value
-                                                              .copyWith(
-                                                                color: controller
-                                                                    .themeColorServices
-                                                                    .neutralsColorGrey500
-                                                                    .value,
-                                                              ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  SizedBox(height: 16),
+                                                  Text(
+                                                    controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .locationNotFound ??
+                                                        "-",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallBold
+                                                        .value
+                                                        .copyWith(),
+                                                  ),
+                                                  SizedBox(height: 8),
+                                                  Text(
+                                                    controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .makeSureTheAddressEnteredIsCorrect ??
+                                                        "-",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
+                                                        .value
+                                                        .copyWith(),
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                          ),
-                                          Divider(
-                                            height: 0,
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorGrey200
-                                                .value,
-                                          ),
+                                          ],
+                                          if (controller
+                                                  .originGooglePlaceTextSearchList
+                                                  .isEmpty &&
+                                              controller.keywordOrigin.value ==
+                                                  "") ...[
+                                            for (var recommendationOriginCurrentLocation
+                                                in controller
+                                                    .recommendationOriginCurrentLocationList) ...[
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  controller
+                                                          .originLatitude
+                                                          .value =
+                                                      recommendationOriginCurrentLocation
+                                                          .latitude!;
+                                                  controller
+                                                          .originLongitude
+                                                          .value =
+                                                      recommendationOriginCurrentLocation
+                                                          .longitude!;
+                                                  controller
+                                                          .originAddress
+                                                          .value =
+                                                      recommendationOriginCurrentLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                          .keywordOrigin
+                                                          .value =
+                                                      recommendationOriginCurrentLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                          .originTextEditingController
+                                                          .text =
+                                                      recommendationOriginCurrentLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                      .focusNodeDestination
+                                                      .requestFocus();
+
+                                                  controller.markers
+                                                      .removeWhere(
+                                                        (m) =>
+                                                            m.markerId.value ==
+                                                            'origin',
+                                                      );
+                                                  controller.markers.add(
+                                                    Marker(
+                                                      markerId: MarkerId(
+                                                        "origin",
+                                                      ),
+                                                      position: LatLng(
+                                                        double.parse(
+                                                          recommendationOriginCurrentLocation
+                                                              .latitude!,
+                                                        ),
+                                                        double.parse(
+                                                          recommendationOriginCurrentLocation
+                                                              .longitude!,
+                                                        ),
+                                                      ),
+                                                      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+                                                        'assets/icons/icon_origin.svg',
+                                                        Size(22.67, 22.67),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  color: Colors.transparent,
+                                                  padding: EdgeInsets.only(
+                                                    bottom: 8,
+                                                    top: 14,
+                                                    left: 16,
+                                                    right: 16,
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        width: 24,
+                                                        height: 24,
+                                                        decoration: BoxDecoration(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .sematicColorBlue100
+                                                              .value,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_pinpoint.svg",
+                                                              width: 13.5,
+                                                              height: 15.75,
+                                                              color: controller
+                                                                  .themeColorServices
+                                                                  .sematicColorBlue500
+                                                                  .value,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 8),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            TextHighlight(
+                                                              text:
+                                                                  recommendationOriginCurrentLocation
+                                                                      .name ??
+                                                                  recommendationOriginCurrentLocation
+                                                                      .addressDetail!,
+                                                              words: controller
+                                                                  .highlightedWordTitleAddressOrigin,
+                                                              textStyle: controller
+                                                                  .typographyServices
+                                                                  .bodySmallBold
+                                                                  .value,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                            SizedBox(height: 4),
+                                                            TextHighlight(
+                                                              text:
+                                                                  recommendationOriginCurrentLocation
+                                                                      .addressDetail ??
+                                                                  "-",
+                                                              words: controller
+                                                                  .highlightedWordAddressOrigin,
+                                                              textStyle: controller
+                                                                  .typographyServices
+                                                                  .captionLargeRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey500
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Divider(
+                                                height: 0,
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey200
+                                                    .value,
+                                              ),
+                                            ],
+                                            for (var recommendationOriginLocation
+                                                in controller
+                                                    .recommendationOriginLocationList) ...[
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  controller
+                                                          .originLatitude
+                                                          .value =
+                                                      recommendationOriginLocation
+                                                          .latitude!;
+                                                  controller
+                                                          .originLongitude
+                                                          .value =
+                                                      recommendationOriginLocation
+                                                          .longitude!;
+                                                  controller
+                                                          .originAddress
+                                                          .value =
+                                                      recommendationOriginLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                          .keywordOrigin
+                                                          .value =
+                                                      recommendationOriginLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                          .originTextEditingController
+                                                          .text =
+                                                      recommendationOriginLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                      .focusNodeDestination
+                                                      .requestFocus();
+
+                                                  controller.markers
+                                                      .removeWhere(
+                                                        (m) =>
+                                                            m.markerId.value ==
+                                                            'origin',
+                                                      );
+                                                  controller.markers.add(
+                                                    Marker(
+                                                      markerId: MarkerId(
+                                                        "origin",
+                                                      ),
+                                                      position: LatLng(
+                                                        double.parse(
+                                                          recommendationOriginLocation
+                                                              .latitude!,
+                                                        ),
+                                                        double.parse(
+                                                          recommendationOriginLocation
+                                                              .longitude!,
+                                                        ),
+                                                      ),
+                                                      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+                                                        'assets/icons/icon_origin.svg',
+                                                        Size(22.67, 22.67),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  color: Colors.transparent,
+                                                  padding: EdgeInsets.only(
+                                                    bottom: 8,
+                                                    top: 14,
+                                                    left: 16,
+                                                    right: 16,
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        width: 24,
+                                                        height: 24,
+                                                        decoration: BoxDecoration(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .sematicColorBlue100
+                                                              .value,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_pinpoint.svg",
+                                                              width: 13.5,
+                                                              height: 15.75,
+                                                              color: controller
+                                                                  .themeColorServices
+                                                                  .sematicColorBlue500
+                                                                  .value,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 8),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            TextHighlight(
+                                                              text:
+                                                                  recommendationOriginLocation
+                                                                      .name ??
+                                                                  recommendationOriginLocation
+                                                                      .addressDetail!,
+                                                              words: controller
+                                                                  .highlightedWordTitleAddressOrigin,
+                                                              textStyle: controller
+                                                                  .typographyServices
+                                                                  .bodySmallBold
+                                                                  .value,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                            SizedBox(height: 4),
+                                                            TextHighlight(
+                                                              text:
+                                                                  recommendationOriginLocation
+                                                                      .addressDetail ??
+                                                                  "-",
+                                                              words: controller
+                                                                  .highlightedWordAddressOrigin,
+                                                              textStyle: controller
+                                                                  .typographyServices
+                                                                  .captionLargeRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey500
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Divider(
+                                                height: 0,
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey200
+                                                    .value,
+                                              ),
+                                            ],
+                                          ],
+                                          for (var originGooglePlaceTextSearch
+                                              in controller
+                                                  .originGooglePlaceTextSearchList) ...[
+                                            GestureDetector(
+                                              onTap: () async {
+                                                controller
+                                                        .originLatitude
+                                                        .value =
+                                                    originGooglePlaceTextSearch
+                                                        .geometry!
+                                                        .location!
+                                                        .lat
+                                                        .toString();
+                                                controller
+                                                        .originLongitude
+                                                        .value =
+                                                    originGooglePlaceTextSearch
+                                                        .geometry!
+                                                        .location!
+                                                        .lng
+                                                        .toString();
+                                                controller
+                                                        .originGooglePlaceTextSearch
+                                                        .value =
+                                                    originGooglePlaceTextSearch;
+                                                controller.originAddress.value =
+                                                    originGooglePlaceTextSearch
+                                                        .formattedAddress ??
+                                                    "-";
+                                                controller.keywordOrigin.value =
+                                                    originGooglePlaceTextSearch
+                                                        .formattedAddress ??
+                                                    "-";
+                                                controller
+                                                        .originTextEditingController
+                                                        .text =
+                                                    originGooglePlaceTextSearch
+                                                        .formattedAddress ??
+                                                    "-";
+                                                controller.focusNodeDestination
+                                                    .requestFocus();
+
+                                                controller.markers.removeWhere(
+                                                  (m) =>
+                                                      m.markerId.value ==
+                                                      'origin',
+                                                );
+                                                controller.markers.add(
+                                                  Marker(
+                                                    markerId: MarkerId(
+                                                      "origin",
+                                                    ),
+                                                    position: LatLng(
+                                                      double.parse(
+                                                        controller
+                                                            .originLatitude
+                                                            .value,
+                                                      ),
+                                                      double.parse(
+                                                        controller
+                                                            .originLongitude
+                                                            .value,
+                                                      ),
+                                                    ),
+                                                    icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+                                                      'assets/icons/icon_origin.svg',
+                                                      Size(22.67, 22.67),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                color: Colors.transparent,
+                                                padding: EdgeInsets.only(
+                                                  bottom: 8,
+                                                  top: 14,
+                                                  left: 16,
+                                                  right: 16,
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: 24,
+                                                      height: 24,
+                                                      decoration: BoxDecoration(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .sematicColorBlue100
+                                                            .value,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_pinpoint.svg",
+                                                            width: 13.5,
+                                                            height: 15.75,
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .sematicColorBlue500
+                                                                .value,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 8),
+                                                    Expanded(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          TextHighlight(
+                                                            text:
+                                                                originGooglePlaceTextSearch
+                                                                    .name ??
+                                                                "-",
+                                                            words: controller
+                                                                .highlightedWordTitleAddressOrigin,
+                                                            textStyle: controller
+                                                                .typographyServices
+                                                                .bodySmallBold
+                                                                .value,
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                          ),
+                                                          SizedBox(height: 4),
+                                                          TextHighlight(
+                                                            text:
+                                                                originGooglePlaceTextSearch
+                                                                    .formattedAddress ??
+                                                                "-",
+                                                            words: controller
+                                                                .highlightedWordAddressOrigin,
+                                                            textStyle: controller
+                                                                .typographyServices
+                                                                .captionLargeRegular
+                                                                .value
+                                                                .copyWith(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .neutralsColorGrey500
+                                                                      .value,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Divider(
+                                              height: 0,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey200
+                                                  .value,
+                                            ),
+                                          ],
+                                          SizedBox(height: 32),
                                         ],
-                                        SizedBox(height: 32),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -1825,85 +1849,293 @@ class RideView extends GetView<RideController> {
                                         .isDestinationHasPrimaryFocus
                                         .value ==
                                     true) ...[
-                                  SingleChildScrollView(
-                                    controller: sc,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (controller
-                                                .destinationGooglePlaceTextSearchList
-                                                .isEmpty &&
-                                            controller
-                                                    .keywordDestination
-                                                    .value !=
-                                                "") ...[
-                                          Container(
-                                            padding: EdgeInsets.all(16),
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/img_location_not_found.png",
-                                                  width: 72,
-                                                  height: 72,
-                                                ),
-                                                SizedBox(height: 16),
-                                                Text(
-                                                  controller
-                                                          .languageServices
-                                                          .language
-                                                          .value
-                                                          .locationNotFound ??
-                                                      "-",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallBold
-                                                      .value,
-                                                ),
-                                                SizedBox(height: 8),
-                                                Text(
-                                                  controller
-                                                          .languageServices
-                                                          .language
-                                                          .value
-                                                          .makeSureTheAddressEnteredIsCorrect ??
-                                                      "-",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallRegular
-                                                      .value,
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      controller: sc,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (controller
+                                                  .destinationGooglePlaceTextSearchList
+                                                  .isEmpty &&
+                                              controller
+                                                      .keywordDestination
+                                                      .value !=
+                                                  "") ...[
+                                            Container(
+                                              padding: EdgeInsets.all(16),
+                                              width: MediaQuery.of(
+                                                context,
+                                              ).size.width,
+                                              child: Column(
+                                                children: [
+                                                  Image.asset(
+                                                    "assets/images/img_location_not_found.png",
+                                                    width: 72,
+                                                    height: 72,
+                                                  ),
+                                                  SizedBox(height: 16),
+                                                  Text(
+                                                    controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .locationNotFound ??
+                                                        "-",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallBold
+                                                        .value,
+                                                  ),
+                                                  SizedBox(height: 8),
+                                                  Text(
+                                                    controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .makeSureTheAddressEnteredIsCorrect ??
+                                                        "-",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
+                                                        .value,
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                        if (controller
-                                                .destinationGooglePlaceTextSearchList
-                                                .isEmpty &&
-                                            controller
-                                                    .keywordDestination
-                                                    .value ==
-                                                "") ...[
-                                          for (var recommendationDestinationLocation
+                                          ],
+                                          if (controller
+                                                  .destinationGooglePlaceTextSearchList
+                                                  .isEmpty &&
+                                              controller
+                                                      .keywordDestination
+                                                      .value ==
+                                                  "") ...[
+                                            for (var recommendationDestinationLocation
+                                                in controller
+                                                    .recommendationDestinationLocationList) ...[
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  controller
+                                                          .destinationLatitude
+                                                          .value =
+                                                      recommendationDestinationLocation
+                                                          .latitude!;
+                                                  controller
+                                                          .destinationLongitude
+                                                          .value =
+                                                      recommendationDestinationLocation
+                                                          .longitude!;
+
+                                                  controller
+                                                      .focusNodeDestination
+                                                      .requestFocus();
+                                                  controller.status.value =
+                                                      "checkout";
+                                                  controller
+                                                          .destinationAddress
+                                                          .value =
+                                                      recommendationDestinationLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                          .keywordDestination
+                                                          .value =
+                                                      recommendationDestinationLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller
+                                                          .destinationTextEditingController
+                                                          .text =
+                                                      recommendationDestinationLocation
+                                                          .addressDetail ??
+                                                      "-";
+                                                  controller.markers
+                                                      .removeWhere(
+                                                        (m) =>
+                                                            m.markerId.value ==
+                                                            'destination',
+                                                      );
+                                                  controller.markers.add(
+                                                    Marker(
+                                                      markerId: MarkerId(
+                                                        "destination",
+                                                      ),
+                                                      position: LatLng(
+                                                        double.parse(
+                                                          controller
+                                                              .destinationLatitude
+                                                              .value,
+                                                        ),
+                                                        double.parse(
+                                                          controller
+                                                              .destinationLongitude
+                                                              .value,
+                                                        ),
+                                                      ),
+                                                      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+                                                        'assets/icons/icon_pinpoint.svg',
+                                                        Size(27, 31),
+                                                      ),
+                                                    ),
+                                                  );
+
+                                                  controller
+                                                          .selectedCoupon
+                                                          .value =
+                                                      Coupon();
+
+                                                  await Future.wait([
+                                                    controller
+                                                        .generatePolylinesOpenMapsApi(),
+                                                    controller
+                                                        .refocusMapsBound(),
+                                                    controller
+                                                        .getOrderRidePricingList(),
+                                                  ]);
+                                                  controller
+                                                      .generateEstimatedDistanceAndTimeInMinutes();
+                                                  controller
+                                                      .selectedOrderRidePricing
+                                                      .value = controller
+                                                      .orderRidePricingList
+                                                      .first;
+                                                },
+                                                child: Container(
+                                                  color: Colors.transparent,
+                                                  padding: EdgeInsets.only(
+                                                    bottom: 8,
+                                                    top: 14,
+                                                    left: 16,
+                                                    right: 16,
+                                                  ),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        width: 24,
+                                                        height: 24,
+                                                        decoration: BoxDecoration(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .sematicColorBlue100
+                                                              .value,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_pinpoint.svg",
+                                                              width: 13.5,
+                                                              height: 15.75,
+                                                              color: controller
+                                                                  .themeColorServices
+                                                                  .sematicColorBlue500
+                                                                  .value,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 8),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            TextHighlight(
+                                                              text:
+                                                                  recommendationDestinationLocation
+                                                                      .name ??
+                                                                  recommendationDestinationLocation
+                                                                      .addressDetail!,
+                                                              words: controller
+                                                                  .highlightedWordTitleAddressOrigin,
+                                                              textStyle: controller
+                                                                  .typographyServices
+                                                                  .bodySmallBold
+                                                                  .value,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                            SizedBox(height: 4),
+                                                            TextHighlight(
+                                                              text:
+                                                                  recommendationDestinationLocation
+                                                                      .addressDetail ??
+                                                                  "-",
+                                                              words: controller
+                                                                  .highlightedWordAddressOrigin,
+                                                              textStyle: controller
+                                                                  .typographyServices
+                                                                  .captionLargeRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey500
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Divider(
+                                                height: 0,
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey200
+                                                    .value,
+                                              ),
+                                            ],
+                                          ],
+                                          for (var destinationGooglePlaceTextSearch
                                               in controller
-                                                  .recommendationDestinationLocationList) ...[
+                                                  .destinationGooglePlaceTextSearchList) ...[
                                             GestureDetector(
                                               onTap: () async {
                                                 controller
                                                         .destinationLatitude
                                                         .value =
-                                                    recommendationDestinationLocation
-                                                        .latitude!;
+                                                    destinationGooglePlaceTextSearch
+                                                        .geometry!
+                                                        .location!
+                                                        .lat
+                                                        .toString();
                                                 controller
                                                         .destinationLongitude
                                                         .value =
-                                                    recommendationDestinationLocation
-                                                        .longitude!;
-
+                                                    destinationGooglePlaceTextSearch
+                                                        .geometry!
+                                                        .location!
+                                                        .lng
+                                                        .toString();
+                                                controller
+                                                        .destinationGooglePlaceTextSearch
+                                                        .value =
+                                                    destinationGooglePlaceTextSearch;
                                                 controller.focusNodeDestination
                                                     .requestFocus();
                                                 controller.status.value =
@@ -1911,20 +2143,20 @@ class RideView extends GetView<RideController> {
                                                 controller
                                                         .destinationAddress
                                                         .value =
-                                                    recommendationDestinationLocation
-                                                        .addressDetail ??
+                                                    destinationGooglePlaceTextSearch
+                                                        .formattedAddress ??
                                                     "-";
                                                 controller
                                                         .keywordDestination
                                                         .value =
-                                                    recommendationDestinationLocation
-                                                        .addressDetail ??
+                                                    destinationGooglePlaceTextSearch
+                                                        .formattedAddress ??
                                                     "-";
                                                 controller
                                                         .destinationTextEditingController
                                                         .text =
-                                                    recommendationDestinationLocation
-                                                        .addressDetail ??
+                                                    destinationGooglePlaceTextSearch
+                                                        .formattedAddress ??
                                                     "-";
                                                 controller.markers.removeWhere(
                                                   (m) =>
@@ -1967,6 +2199,7 @@ class RideView extends GetView<RideController> {
                                                   controller
                                                       .getOrderRidePricingList(),
                                                 ]);
+
                                                 controller
                                                     .generateEstimatedDistanceAndTimeInMinutes();
                                                 controller
@@ -2029,10 +2262,9 @@ class RideView extends GetView<RideController> {
                                                         children: [
                                                           TextHighlight(
                                                             text:
-                                                                recommendationDestinationLocation
+                                                                destinationGooglePlaceTextSearch
                                                                     .name ??
-                                                                recommendationDestinationLocation
-                                                                    .addressDetail!,
+                                                                "-",
                                                             words: controller
                                                                 .highlightedWordTitleAddressOrigin,
                                                             textStyle: controller
@@ -2041,16 +2273,12 @@ class RideView extends GetView<RideController> {
                                                                 .value,
                                                             textAlign:
                                                                 TextAlign.left,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
                                                           ),
                                                           SizedBox(height: 4),
                                                           TextHighlight(
                                                             text:
-                                                                recommendationDestinationLocation
-                                                                    .addressDetail ??
+                                                                destinationGooglePlaceTextSearch
+                                                                    .formattedAddress ??
                                                                 "-",
                                                             words: controller
                                                                 .highlightedWordAddressOrigin,
@@ -2080,204 +2308,9 @@ class RideView extends GetView<RideController> {
                                                   .value,
                                             ),
                                           ],
+                                          SizedBox(height: 32),
                                         ],
-                                        for (var destinationGooglePlaceTextSearch
-                                            in controller
-                                                .destinationGooglePlaceTextSearchList) ...[
-                                          GestureDetector(
-                                            onTap: () async {
-                                              controller
-                                                      .destinationLatitude
-                                                      .value =
-                                                  destinationGooglePlaceTextSearch
-                                                      .geometry!
-                                                      .location!
-                                                      .lat
-                                                      .toString();
-                                              controller
-                                                      .destinationLongitude
-                                                      .value =
-                                                  destinationGooglePlaceTextSearch
-                                                      .geometry!
-                                                      .location!
-                                                      .lng
-                                                      .toString();
-                                              controller
-                                                      .destinationGooglePlaceTextSearch
-                                                      .value =
-                                                  destinationGooglePlaceTextSearch;
-                                              controller.focusNodeDestination
-                                                  .requestFocus();
-                                              controller.status.value =
-                                                  "checkout";
-                                              controller
-                                                      .destinationAddress
-                                                      .value =
-                                                  destinationGooglePlaceTextSearch
-                                                      .formattedAddress ??
-                                                  "-";
-                                              controller
-                                                      .keywordDestination
-                                                      .value =
-                                                  destinationGooglePlaceTextSearch
-                                                      .formattedAddress ??
-                                                  "-";
-                                              controller
-                                                      .destinationTextEditingController
-                                                      .text =
-                                                  destinationGooglePlaceTextSearch
-                                                      .formattedAddress ??
-                                                  "-";
-                                              controller.markers.removeWhere(
-                                                (m) =>
-                                                    m.markerId.value ==
-                                                    'destination',
-                                              );
-                                              controller.markers.add(
-                                                Marker(
-                                                  markerId: MarkerId(
-                                                    "destination",
-                                                  ),
-                                                  position: LatLng(
-                                                    double.parse(
-                                                      controller
-                                                          .destinationLatitude
-                                                          .value,
-                                                    ),
-                                                    double.parse(
-                                                      controller
-                                                          .destinationLongitude
-                                                          .value,
-                                                    ),
-                                                  ),
-                                                  icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-                                                    'assets/icons/icon_pinpoint.svg',
-                                                    Size(27, 31),
-                                                  ),
-                                                ),
-                                              );
-
-                                              controller.selectedCoupon.value =
-                                                  Coupon();
-
-                                              await Future.wait([
-                                                controller
-                                                    .generatePolylinesOpenMapsApi(),
-                                                controller.refocusMapsBound(),
-                                                controller
-                                                    .getOrderRidePricingList(),
-                                              ]);
-
-                                              controller
-                                                  .generateEstimatedDistanceAndTimeInMinutes();
-                                              controller
-                                                  .selectedOrderRidePricing
-                                                  .value = controller
-                                                  .orderRidePricingList
-                                                  .first;
-                                            },
-                                            child: Container(
-                                              color: Colors.transparent,
-                                              padding: EdgeInsets.only(
-                                                bottom: 8,
-                                                top: 14,
-                                                left: 16,
-                                                right: 16,
-                                              ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: 24,
-                                                    height: 24,
-                                                    decoration: BoxDecoration(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .sematicColorBlue100
-                                                          .value,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            8,
-                                                          ),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          "assets/icons/icon_pinpoint.svg",
-                                                          width: 13.5,
-                                                          height: 15.75,
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue500
-                                                              .value,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 8),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        TextHighlight(
-                                                          text:
-                                                              destinationGooglePlaceTextSearch
-                                                                  .name ??
-                                                              "-",
-                                                          words: controller
-                                                              .highlightedWordTitleAddressOrigin,
-                                                          textStyle: controller
-                                                              .typographyServices
-                                                              .bodySmallBold
-                                                              .value,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                        ),
-                                                        SizedBox(height: 4),
-                                                        TextHighlight(
-                                                          text:
-                                                              destinationGooglePlaceTextSearch
-                                                                  .formattedAddress ??
-                                                              "-",
-                                                          words: controller
-                                                              .highlightedWordAddressOrigin,
-                                                          textStyle: controller
-                                                              .typographyServices
-                                                              .captionLargeRegular
-                                                              .value
-                                                              .copyWith(
-                                                                color: controller
-                                                                    .themeColorServices
-                                                                    .neutralsColorGrey500
-                                                                    .value,
-                                                              ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Divider(
-                                            height: 0,
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorGrey200
-                                                .value,
-                                          ),
-                                        ],
-                                        SizedBox(height: 32),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ],
