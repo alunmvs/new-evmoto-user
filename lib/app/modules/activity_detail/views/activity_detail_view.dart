@@ -629,7 +629,7 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                   ),
                                   SizedBox(width: 2),
                                   Text(
-                                    controller.orderRideDetail.value.score
+                                    controller.orderRideDetail.value.orderScore
                                         .toString(),
                                     style: controller
                                         .typographyServices
