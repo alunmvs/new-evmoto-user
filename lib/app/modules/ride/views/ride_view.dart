@@ -2521,26 +2521,22 @@ class RideView extends GetView<RideController> {
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
                                   ),
-                                  child: SizedBox(
-                                    height: 46,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: LoaderElevatedButton(
-                                      onPressed: () async {
-                                        await controller.onTapSubmitViaMap();
-                                      },
-                                      child: Text(
-                                        controller
-                                                .languageServices
-                                                .language
-                                                .value
-                                                .confirmation ??
-                                            "-",
-                                        style: controller
-                                            .typographyServices
-                                            .bodyLargeBold
-                                            .value
-                                            .copyWith(color: Colors.white),
-                                      ),
+                                  child: LoaderElevatedButton(
+                                    onPressed: () async {
+                                      await controller.onTapSubmitViaMap();
+                                    },
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .confirmation ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value
+                                          .copyWith(color: Colors.white),
                                     ),
                                   ),
                                 ),
@@ -3449,86 +3445,76 @@ class RideView extends GetView<RideController> {
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,
                                         ),
-                                        child: SizedBox(
-                                          height: 46,
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
-                                          child: LoaderElevatedButton(
-                                            onPressed: () async {
-                                              if (controller.payType.value ==
-                                                  2) {
-                                                if (controller
-                                                        .homeController
-                                                        .userInfo
-                                                        .value
-                                                        .balance! <
+                                        child: LoaderElevatedButton(
+                                          onPressed: () async {
+                                            if (controller.payType.value == 2) {
+                                              if (controller
+                                                      .homeController
+                                                      .userInfo
+                                                      .value
+                                                      .balance! <
+                                                  controller
+                                                      .selectedOrderRidePricing
+                                                      .value
+                                                      .amount!) {
+                                                var snackBar = SnackBar(
+                                                  behavior:
+                                                      SnackBarBehavior.fixed,
+                                                  backgroundColor: controller
+                                                      .themeColorServices
+                                                      .sematicColorRed400
+                                                      .value,
+                                                  content: Text(
                                                     controller
-                                                        .selectedOrderRidePricing
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .snackbarBalanceNotSuccess ??
+                                                        "-",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
                                                         .value
-                                                        .amount!) {
-                                                  var snackBar = SnackBar(
-                                                    behavior:
-                                                        SnackBarBehavior.fixed,
-                                                    backgroundColor: controller
-                                                        .themeColorServices
-                                                        .sematicColorRed400
-                                                        .value,
-                                                    content: Text(
-                                                      controller
-                                                              .languageServices
-                                                              .language
-                                                              .value
-                                                              .snackbarBalanceNotSuccess ??
-                                                          "-",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .bodySmallRegular
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .neutralsColorGrey0
-                                                                .value,
-                                                          ),
-                                                    ),
-                                                  );
-                                                  rootScaffoldMessengerKey
-                                                      .currentState
-                                                      ?.showSnackBar(snackBar);
-                                                  return;
-                                                }
-                                              }
-                                              await controller
-                                                  .requestOrderRide();
-                                              Get.back();
-                                              Get.toNamed(
-                                                Routes.RIDE_ORDER_DETAIL,
-                                                arguments: {
-                                                  "order_id": controller
-                                                      .requestedOrderRide
-                                                      .value
-                                                      .id
-                                                      .toString(),
-                                                  "order_type": 1,
-                                                },
-                                              );
-                                            },
-                                            child: Text(
-                                              controller
-                                                      .languageServices
-                                                      .language
-                                                      .value
-                                                      .orderEvMoto ??
-                                                  "-",
-                                              style: controller
-                                                  .typographyServices
-                                                  .bodyLargeBold
-                                                  .value
-                                                  .copyWith(
-                                                    color: Colors.white,
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey0
+                                                              .value,
+                                                        ),
                                                   ),
-                                            ),
+                                                );
+                                                rootScaffoldMessengerKey
+                                                    .currentState
+                                                    ?.showSnackBar(snackBar);
+                                                return;
+                                              }
+                                            }
+                                            await controller.requestOrderRide();
+                                            Get.back();
+                                            Get.toNamed(
+                                              Routes.RIDE_ORDER_DETAIL,
+                                              arguments: {
+                                                "order_id": controller
+                                                    .requestedOrderRide
+                                                    .value
+                                                    .id
+                                                    .toString(),
+                                                "order_type": 1,
+                                              },
+                                            );
+                                          },
+                                          child: Text(
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .orderEvMoto ??
+                                                "-",
+                                            style: controller
+                                                .typographyServices
+                                                .bodyLargeBold
+                                                .value
+                                                .copyWith(color: Colors.white),
                                           ),
                                         ),
                                       ),

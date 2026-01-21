@@ -247,37 +247,31 @@ class HomeController extends GetxController {
                                 textAlign: TextAlign.left,
                               ),
                               SizedBox(height: 16),
-                              SizedBox(
-                                width: Get.width,
-                                height: 46,
-                                child: LoaderElevatedButton(
-                                  onPressed: () async {
-                                    Get.close(1);
+                              LoaderElevatedButton(
+                                onPressed: () async {
+                                  Get.close(1);
 
-                                    isCoachmarkActive.value = true;
+                                  isCoachmarkActive.value = true;
 
-                                    ShowcaseView.get().startShowCase([
-                                      destinationGlobalKey,
-                                      savedLocationGlobalKey,
-                                      servicesGlobalKey,
-                                      balanceGlobalKey,
-                                    ]);
-                                  },
-                                  child: Text(
-                                    languageServices
-                                            .language
-                                            .value
-                                            .dialogCoachmarkButton ??
-                                        "-",
-                                    style: typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
+                                  ShowcaseView.get().startShowCase([
+                                    destinationGlobalKey,
+                                    savedLocationGlobalKey,
+                                    servicesGlobalKey,
+                                    balanceGlobalKey,
+                                  ]);
+                                },
+                                child: Text(
+                                  languageServices
+                                          .language
+                                          .value
+                                          .dialogCoachmarkButton ??
+                                      "-",
+                                  style: typographyServices.bodySmallBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
                                 ),
                               ),
                             ],
@@ -365,18 +359,14 @@ class HomeController extends GetxController {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 16),
-                      SizedBox(
-                        height: 46,
-                        width: Get.width,
-                        child: LoaderElevatedButton(
-                          onPressed: () async {
-                            await onTapUpdateVersion();
-                          },
-                          child: Text(
-                            "Update Sekarang",
-                            style: typographyServices.bodyLargeBold.value
-                                .copyWith(color: Colors.white),
-                          ),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          await onTapUpdateVersion();
+                        },
+                        child: Text(
+                          "Update Sekarang",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Colors.white),
                         ),
                       ),
                       SizedBox(height: 16),
@@ -432,18 +422,14 @@ class HomeController extends GetxController {
                     textAlign: TextAlign.center,
                   ),
                   Spacer(),
-                  SizedBox(
-                    height: 46,
-                    width: Get.width,
-                    child: LoaderElevatedButton(
-                      onPressed: () async {
-                        await onTapUpdateVersion();
-                      },
-                      child: Text(
-                        "Update Sekarang",
-                        style: typographyServices.bodyLargeBold.value.copyWith(
-                          color: Colors.white,
-                        ),
+                  LoaderElevatedButton(
+                    onPressed: () async {
+                      await onTapUpdateVersion();
+                    },
+                    child: Text(
+                      "Update Sekarang",
+                      style: typographyServices.bodyLargeBold.value.copyWith(
+                        color: Colors.white,
                       ),
                     ),
                   ),

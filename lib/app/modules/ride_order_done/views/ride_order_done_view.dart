@@ -1071,18 +1071,14 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
               .withValues(alpha: 0.1),
           child: Column(
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: LoaderElevatedButton(
-                  onPressed: () async {
-                    await controller.onTapDone();
-                  },
-                  child: Text(
-                    controller.languageServices.language.value.finished ?? "-",
-                    style: controller.typographyServices.bodyLargeBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  await controller.onTapDone();
+                },
+                child: Text(
+                  controller.languageServices.language.value.finished ?? "-",
+                  style: controller.typographyServices.bodyLargeBold.value
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],

@@ -7,6 +7,7 @@ class LoaderElevatedButton extends StatelessWidget {
   final Future<void> Function()? onPressed;
   final Color? buttonColor;
   final BorderSide? borderSide;
+  final bool? isWidthFitToContent;
 
   LoaderElevatedButton({
     super.key,
@@ -14,6 +15,7 @@ class LoaderElevatedButton extends StatelessWidget {
     required this.onPressed,
     this.buttonColor,
     this.borderSide,
+    this.isWidthFitToContent,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -24,7 +26,11 @@ class LoaderElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => SizedBox(
-        width: isLoading.value ? 46 : MediaQuery.of(context).size.width,
+        width: isLoading.value
+            ? 46
+            : isWidthFitToContent == true
+            ? null
+            : MediaQuery.of(context).size.width,
         height: 46,
         child: ElevatedButton(
           onPressed: onPressed != null

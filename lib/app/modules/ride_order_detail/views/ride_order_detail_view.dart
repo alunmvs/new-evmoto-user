@@ -958,33 +958,26 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                 ),
                                                 SizedBox(width: 8),
                                                 Expanded(
-                                                  child: SizedBox(
-                                                    height: 46,
-                                                    width: MediaQuery.of(
-                                                      context,
-                                                    ).size.width,
-                                                    child: LoaderElevatedButton(
-                                                      onPressed: () async {
-                                                        Get.toNamed(
-                                                          Routes.RIDE_CHAT,
-                                                        );
-                                                      },
-                                                      child: Text(
-                                                        controller
-                                                                .languageServices
-                                                                .language
-                                                                .value
-                                                                .chatDriver ??
-                                                            "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodyLargeBold
-                                                            .value
-                                                            .copyWith(
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                      ),
+                                                  child: LoaderElevatedButton(
+                                                    onPressed: () async {
+                                                      Get.toNamed(
+                                                        Routes.RIDE_CHAT,
+                                                      );
+                                                    },
+                                                    child: Text(
+                                                      controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .chatDriver ??
+                                                          "-",
+                                                      style: controller
+                                                          .typographyServices
+                                                          .bodyLargeBold
+                                                          .value
+                                                          .copyWith(
+                                                            color: Colors.white,
+                                                          ),
                                                     ),
                                                   ),
                                                 ),

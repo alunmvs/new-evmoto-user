@@ -376,39 +376,35 @@ class SettingPaymentView extends GetView<SettingPaymentController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: LoaderElevatedButton(
-                  onPressed: () async {
-                    Get.back();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/icon_add_square.svg",
-                        width: 12,
-                        height: 12,
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey0
-                            .value,
-                      ),
-                      SizedBox(width: 6),
-                      Text(
-                        controller
-                                .languageServices
-                                .language
-                                .value
-                                .addPaymentMethod ??
-                            "-",
-                        style: controller.typographyServices.bodyLargeBold.value
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  Get.back();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/icon_add_square.svg",
+                      width: 12,
+                      height: 12,
+                      color: controller
+                          .themeColorServices
+                          .neutralsColorGrey0
+                          .value,
+                    ),
+                    SizedBox(width: 6),
+                    Text(
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .addPaymentMethod ??
+                          "-",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(color: Colors.white),
+                    ),
+                  ],
                 ),
               ),
             ],

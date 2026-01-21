@@ -400,60 +400,54 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                             ],
                                           ),
                                           SizedBox(height: 16),
-                                          SizedBox(
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            height: 46,
-                                            child: LoaderElevatedButton(
-                                              onPressed:
-                                                  controller.isFormValid.value
-                                                  ? () async {
-                                                      await controller
-                                                          .onTapSubmit();
-                                                    }
-                                                  : null,
-                                              buttonColor:
+                                          LoaderElevatedButton(
+                                            onPressed:
+                                                controller.isFormValid.value
+                                                ? () async {
+                                                    await controller
+                                                        .onTapSubmit();
+                                                  }
+                                                : null,
+                                            buttonColor:
+                                                controller.isFormValid.value
+                                                ? controller
+                                                      .themeColorServices
+                                                      .primaryBlue
+                                                      .value
+                                                : controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey300
+                                                      .value,
+                                            borderSide: BorderSide(
+                                              color:
                                                   controller.isFormValid.value
                                                   ? controller
                                                         .themeColorServices
-                                                        .primaryBlue
+                                                        .sematicColorBlue200
                                                         .value
                                                   : controller
                                                         .themeColorServices
-                                                        .neutralsColorGrey300
+                                                        .neutralsColorGrey200
                                                         .value,
-                                              borderSide: BorderSide(
-                                                color:
-                                                    controller.isFormValid.value
-                                                    ? controller
-                                                          .themeColorServices
-                                                          .sematicColorBlue200
-                                                          .value
-                                                    : controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey200
-                                                          .value,
-                                                width: 2,
-                                              ),
-                                              child: Text(
-                                                controller
-                                                        .languageServices
-                                                        .language
-                                                        .value
-                                                        .loginButton ??
-                                                    "-",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodyLargeBold
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey0
-                                                          .value,
-                                                    ),
-                                              ),
+                                              width: 2,
+                                            ),
+                                            child: Text(
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .loginButton ??
+                                                  "-",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey0
+                                                        .value,
+                                                  ),
                                             ),
                                           ),
                                         ],

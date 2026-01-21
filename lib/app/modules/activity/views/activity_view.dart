@@ -280,33 +280,31 @@ class ActivityView extends GetView<ActivityController> {
                                     textAlign: TextAlign.center,
                                   ),
                                   SizedBox(height: 16),
-                                  SizedBox(
-                                    height: 46,
-                                    child: LoaderElevatedButton(
-                                      onPressed: () async {
-                                        await controller.homeController
-                                            .onTapRideService();
-                                      },
-                                      borderSide: BorderSide(
-                                        color: controller
-                                            .themeColorServices
-                                            .sematicColorBlue200
-                                            .value,
-                                        width: 2,
-                                      ),
-                                      child: Text(
-                                        controller
-                                                .languageServices
-                                                .language
-                                                .value
-                                                .orderEvMoto ??
-                                            "-",
-                                        style: controller
-                                            .typographyServices
-                                            .bodyLargeBold
-                                            .value
-                                            .copyWith(color: Colors.white),
-                                      ),
+                                  LoaderElevatedButton(
+                                    isWidthFitToContent: true,
+                                    onPressed: () async {
+                                      await controller.homeController
+                                          .onTapRideService();
+                                    },
+                                    borderSide: BorderSide(
+                                      color: controller
+                                          .themeColorServices
+                                          .sematicColorBlue200
+                                          .value,
+                                      width: 2,
+                                    ),
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .orderEvMoto ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value
+                                          .copyWith(color: Colors.white),
                                     ),
                                   ),
                                 ],

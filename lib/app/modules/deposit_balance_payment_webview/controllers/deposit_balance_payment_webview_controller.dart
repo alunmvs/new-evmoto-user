@@ -107,25 +107,21 @@ class DepositBalancePaymentWebviewController extends GetxController {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: LoaderElevatedButton(
-                                onPressed: () async {
-                                  Get.close(1);
-                                  Get.back();
-                                },
-                                buttonColor:
-                                    themeColorServices.sematicColorRed400.value,
-                                child: Text(
-                                  "Batalkan",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                Get.close(1);
+                                Get.back();
+                              },
+                              buttonColor:
+                                  themeColorServices.sematicColorRed400.value,
+                              child: Text(
+                                "Batalkan",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                    ),
                               ),
                             ),
                           ),

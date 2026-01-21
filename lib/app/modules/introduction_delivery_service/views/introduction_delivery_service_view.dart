@@ -98,37 +98,33 @@ class IntroductionDeliveryServiceView
                 SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 46,
-                    child: LoaderElevatedButton(
-                      onPressed: () async {
-                        var prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool(
-                          'is_introduction_delivery_service_shown',
-                          true,
-                        );
+                  child: LoaderElevatedButton(
+                    onPressed: () async {
+                      var prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool(
+                        'is_introduction_delivery_service_shown',
+                        true,
+                      );
 
-                        Get.back();
-                        await controller.homeController.onTapRideService();
-                      },
-                      borderSide: BorderSide(
-                        color: controller
-                            .themeColorServices
-                            .sematicColorBlue200
-                            .value,
-                        width: 2,
-                      ),
-                      child: Text(
-                        controller
-                                .languageServices
-                                .language
-                                .value
-                                .introRideButton ??
-                            "-",
-                        style: controller.typographyServices.bodyLargeBold.value
-                            .copyWith(color: Colors.white),
-                      ),
+                      Get.back();
+                      await controller.homeController.onTapRideService();
+                    },
+                    borderSide: BorderSide(
+                      color: controller
+                          .themeColorServices
+                          .sematicColorBlue200
+                          .value,
+                      width: 2,
+                    ),
+                    child: Text(
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .introRideButton ??
+                          "-",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(color: Colors.white),
                     ),
                   ),
                 ),

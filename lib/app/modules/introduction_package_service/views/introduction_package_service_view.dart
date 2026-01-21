@@ -147,28 +147,24 @@ class IntroductionPackageServiceView
                 SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 46,
-                    child: LoaderElevatedButton(
-                      onPressed: () async {},
-                      borderSide: BorderSide(
-                        color: controller
-                            .themeColorServices
-                            .sematicColorBlue200
-                            .value,
-                        width: 2,
-                      ),
-                      child: Text(
-                        controller
-                                .languageServices
-                                .language
-                                .value
-                                .introPackageDeliveryButton ??
-                            "-",
-                        style: controller.typographyServices.bodyLargeBold.value
-                            .copyWith(color: Colors.white),
-                      ),
+                  child: LoaderElevatedButton(
+                    onPressed: () async {},
+                    borderSide: BorderSide(
+                      color: controller
+                          .themeColorServices
+                          .sematicColorBlue200
+                          .value,
+                      width: 2,
+                    ),
+                    child: Text(
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .introPackageDeliveryButton ??
+                          "-",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(color: Colors.white),
                     ),
                   ),
                 ),

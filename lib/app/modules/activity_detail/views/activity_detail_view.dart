@@ -654,19 +654,14 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
               .withValues(alpha: 0.1),
           child: Column(
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: LoaderElevatedButton(
-                  onPressed: () async {
-                    await controller.onTapOrderAgain();
-                  },
-                  child: Text(
-                    controller.languageServices.language.value.orderAgain ??
-                        "-",
-                    style: controller.typographyServices.bodyLargeBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  await controller.onTapOrderAgain();
+                },
+                child: Text(
+                  controller.languageServices.language.value.orderAgain ?? "-",
+                  style: controller.typographyServices.bodyLargeBold.value
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],

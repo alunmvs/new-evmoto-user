@@ -473,75 +473,69 @@ class SettingSavedLocationController extends GetxController {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: LoaderElevatedButton(
-                                onPressed: () async {
-                                  try {
-                                    await savedAddressRepository
-                                        .deleteSavedAddress(
-                                          id: savedAddress.id!,
-                                        );
-                                    Get.close(1);
-                                    var snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorGreen400
-                                          .value,
-                                      content: Text(
-                                        languageServices
-                                                .language
-                                                .value
-                                                .snackbarDeleteAddressSuccess ??
-                                            "-",
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                try {
+                                  await savedAddressRepository
+                                      .deleteSavedAddress(id: savedAddress.id!);
+                                  Get.close(1);
+                                  var snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorGreen400
+                                        .value,
+                                    content: Text(
+                                      languageServices
+                                              .language
+                                              .value
+                                              .snackbarDeleteAddressSuccess ??
+                                          "-",
+                                      style: typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
 
-                                    await getSavedAddressList();
-                                  } catch (e) {
-                                    var snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorRed400
+                                  await getSavedAddressList();
+                                } catch (e) {
+                                  var snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                    content: Text(
+                                      e.toString(),
+                                      style: typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
+                                }
+                              },
+                              buttonColor:
+                                  themeColorServices.sematicColorRed400.value,
+                              child: Text(
+                                languageServices.language.value.delete ?? "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
                                           .value,
-                                      content: Text(
-                                        e.toString(),
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
-                                  }
-                                },
-                                buttonColor:
-                                    themeColorServices.sematicColorRed400.value,
-                                child: Text(
-                                  languageServices.language.value.delete ?? "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
+                                    ),
                               ),
                             ),
                           ),

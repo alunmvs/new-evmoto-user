@@ -112,51 +112,47 @@ class OnboardingRegistrationFormController extends GetxController {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: LoaderElevatedButton(
-                                onPressed: () async {
-                                  var storage = FlutterSecureStorage();
-                                  await storage.deleteAll();
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                var storage = FlutterSecureStorage();
+                                await storage.deleteAll();
 
-                                  Get.offAllNamed(Routes.LOGIN_REGISTER);
+                                Get.offAllNamed(Routes.LOGIN_REGISTER);
 
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      languageServices
-                                              .language
-                                              .value
-                                              .snackbarLogoutSuccess ??
-                                          "-",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
+                                var snackBar = SnackBar(
+                                  behavior: SnackBarBehavior.fixed,
+                                  backgroundColor: themeColorServices
+                                      .sematicColorGreen400
+                                      .value,
+                                  content: Text(
+                                    languageServices
+                                            .language
+                                            .value
+                                            .snackbarLogoutSuccess ??
+                                        "-",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                );
+                                rootScaffoldMessengerKey.currentState
+                                    ?.showSnackBar(snackBar);
+                              },
+                              buttonColor:
+                                  themeColorServices.sematicColorRed400.value,
+                              child: Text(
+                                languageServices.language.value.logout ?? "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
                                     ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
-                                },
-                                buttonColor:
-                                    themeColorServices.sematicColorRed400.value,
-                                child: Text(
-                                  languageServices.language.value.logout ?? "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
                               ),
                             ),
                           ),

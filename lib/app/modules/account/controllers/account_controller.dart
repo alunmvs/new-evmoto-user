@@ -353,35 +353,26 @@ class AccountController extends GetxController {
                       ),
                     ),
                     SizedBox(height: 16),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: LoaderElevatedButton(
-                        onPressed: () async {
-                          await logout();
-                        },
-                        child: Text(
-                          "Keluar Sekarang",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color:
-                                    themeColorServices.neutralsColorGrey0.value,
-                              ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        await logout();
+                      },
+                      child: Text(
+                        "Keluar Sekarang",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: themeColorServices.neutralsColorGrey0.value,
                         ),
                       ),
                     ),
                     SizedBox(height: 8),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: LoaderElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                        },
-                        child: Text(
-                          "Batalkan",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(color: Colors.black),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        Get.close(1);
+                      },
+                      child: Text(
+                        "Batalkan",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -449,39 +440,29 @@ class AccountController extends GetxController {
                       ),
                     ),
                     SizedBox(height: 16),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: LoaderElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                          await onTapValidateOtpDeleteAccount();
-                        },
-                        buttonColor:
-                            themeColorServices.sematicColorRed400.value,
-                        child: Text(
-                          "Hapus Akun",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color:
-                                    themeColorServices.neutralsColorGrey0.value,
-                              ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        Get.close(1);
+                        await onTapValidateOtpDeleteAccount();
+                      },
+                      buttonColor: themeColorServices.sematicColorRed400.value,
+                      child: Text(
+                        "Hapus Akun",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: themeColorServices.neutralsColorGrey0.value,
                         ),
                       ),
                     ),
                     SizedBox(height: 8),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: LoaderElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                        },
-                        buttonColor: Color(0XFFD9D9D9),
-                        child: Text(
-                          "Batalkan",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(color: Colors.black),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        Get.close(1);
+                      },
+                      buttonColor: Color(0XFFD9D9D9),
+                      child: Text(
+                        "Batalkan",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -652,50 +633,20 @@ class AccountController extends GetxController {
                         ],
                       ),
                       SizedBox(height: 16 * 3),
-                      SizedBox(
-                        width: Get.width,
-                        height: 46,
-                        child: LoaderElevatedButton(
-                          onPressed: () async {
-                            Get.close(1);
-                            try {
-                              await userRepository.deleteAccount(
-                                otpCode: otpCode.value,
-                              );
-                            } catch (e) {
-                              final SnackBar snackBar = SnackBar(
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor:
-                                    themeColorServices.sematicColorRed400.value,
-                                content: Text(
-                                  e.toString(),
-                                  style: typographyServices
-                                      .bodySmallRegular
-                                      .value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
-                              );
-                              rootScaffoldMessengerKey.currentState
-                                  ?.showSnackBar(snackBar);
-                              return;
-                            }
-
-                            await onTapSuccessDeleteAccountDialog();
-
-                            await clearDataLogout();
-
-                            Get.offAllNamed(Routes.LOGIN_REGISTER);
-
-                            var snackBar = SnackBar(
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                          try {
+                            await userRepository.deleteAccount(
+                              otpCode: otpCode.value,
+                            );
+                          } catch (e) {
+                            final SnackBar snackBar = SnackBar(
                               behavior: SnackBarBehavior.fixed,
                               backgroundColor:
-                                  themeColorServices.sematicColorGreen400.value,
+                                  themeColorServices.sematicColorRed400.value,
                               content: Text(
-                                "Berhasil menghapus akun",
+                                e.toString(),
                                 style: typographyServices.bodySmallRegular.value
                                     .copyWith(
                                       color: themeColorServices
@@ -707,32 +658,52 @@ class AccountController extends GetxController {
                             rootScaffoldMessengerKey.currentState?.showSnackBar(
                               snackBar,
                             );
-                          },
-                          child: Text(
-                            "Konfirmasi OTP",
-                            style: typographyServices.bodyLargeBold.value
-                                .copyWith(
-                                  color: themeColorServices
-                                      .neutralsColorGrey0
-                                      .value,
-                                ),
-                          ),
+                            return;
+                          }
+
+                          await onTapSuccessDeleteAccountDialog();
+
+                          await clearDataLogout();
+
+                          Get.offAllNamed(Routes.LOGIN_REGISTER);
+
+                          var snackBar = SnackBar(
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor:
+                                themeColorServices.sematicColorGreen400.value,
+                            content: Text(
+                              "Berhasil menghapus akun",
+                              style: typographyServices.bodySmallRegular.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          );
+                          rootScaffoldMessengerKey.currentState?.showSnackBar(
+                            snackBar,
+                          );
+                        },
+                        child: Text(
+                          "Konfirmasi OTP",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
                         ),
                       ),
                       SizedBox(height: 8),
-                      SizedBox(
-                        width: Get.width,
-                        height: 46,
-                        child: LoaderElevatedButton(
-                          buttonColor: Color(0XFFD9D9D9),
-                          onPressed: () async {
-                            Get.close(1);
-                          },
-                          child: Text(
-                            "Batalkan",
-                            style: typographyServices.bodyLargeBold.value
-                                .copyWith(color: Colors.black),
-                          ),
+                      LoaderElevatedButton(
+                        buttonColor: Color(0XFFD9D9D9),
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        child: Text(
+                          "Batalkan",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Colors.black),
                         ),
                       ),
                       SizedBox(height: 16),

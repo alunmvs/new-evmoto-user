@@ -356,18 +356,14 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: LoaderElevatedButton(
-                  onPressed: () async {
-                    await controller.onTapSubmit();
-                  },
-                  child: Text(
-                    controller.languageServices.language.value.cancel ?? "-",
-                    style: controller.typographyServices.bodyLargeBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  await controller.onTapSubmit();
+                },
+                child: Text(
+                  controller.languageServices.language.value.cancel ?? "-",
+                  style: controller.typographyServices.bodyLargeBold.value
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],

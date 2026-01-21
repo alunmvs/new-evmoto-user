@@ -1040,58 +1040,53 @@ class RideOrderDetailController extends GetxController
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: LoaderElevatedButton(
-                                onPressed: () async {
-                                  await orderRideRepository.cancelOrderRide(
-                                    orderId: orderId.value,
-                                    orderType: orderType.value,
-                                    language: languageServices
-                                        .languageCodeSystem
-                                        .value,
-                                    reason: null,
-                                    remark: null,
-                                  );
-                                  Get.close(1);
-                                  Get.back();
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                await orderRideRepository.cancelOrderRide(
+                                  orderId: orderId.value,
+                                  orderType: orderType.value,
+                                  language:
+                                      languageServices.languageCodeSystem.value,
+                                  reason: null,
+                                  remark: null,
+                                );
+                                Get.close(1);
+                                Get.back();
 
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      languageServices
-                                              .language
-                                              .value
-                                              .snackbarCancelTransactionSuccess ??
-                                          "-",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
+                                var snackBar = SnackBar(
+                                  behavior: SnackBarBehavior.fixed,
+                                  backgroundColor: themeColorServices
+                                      .sematicColorGreen400
+                                      .value,
+                                  content: Text(
+                                    languageServices
+                                            .language
+                                            .value
+                                            .snackbarCancelTransactionSuccess ??
+                                        "-",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                );
+                                rootScaffoldMessengerKey.currentState
+                                    ?.showSnackBar(snackBar);
+                              },
+                              buttonColor:
+                                  themeColorServices.sematicColorRed400.value,
+                              child: Text(
+                                "Batalkan",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
                                     ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
-                                },
-                                buttonColor:
-                                    themeColorServices.sematicColorRed400.value,
-                                child: Text(
-                                  "Batalkan",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
                               ),
                             ),
                           ),
