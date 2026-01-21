@@ -369,6 +369,7 @@ class AccountController extends GetxController {
                       onPressed: () async {
                         Get.close(1);
                       },
+                      buttonColor: Color(0XFFD9D9D9),
                       child: Text(
                         "Batalkan",
                         style: typographyServices.bodyLargeBold.value.copyWith(

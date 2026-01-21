@@ -72,16 +72,16 @@ class RideOrderDoneController extends GetxController {
   Future<void> onTapDone() async {
     try {
       if (rating.value == 0.0) {
-        await Future.wait([
-          orderRideRepository.paidOrder(
-            orderId: orderId.value,
-            payType: orderRideDetail.value.payType!,
-            type: 1,
-            orderType: orderType.value,
-            language: languageServices.languageCodeSystem.value,
-            couponId: orderRideDetail.value.couponId!,
-          ),
-        ]);
+        // await Future.wait([
+        //   orderRideRepository.paidOrder(
+        //     orderId: orderId.value,
+        //     payType: orderRideDetail.value.payType!,
+        //     type: 1,
+        //     orderType: orderType.value,
+        //     language: languageServices.languageCodeSystem.value,
+        //     couponId: orderRideDetail.value.couponId!,
+        //   ),
+        // ]);
       } else {
         await Future.wait([
           orderRideRepository.submitRatingAndReviewOrder(
@@ -91,14 +91,14 @@ class RideOrderDoneController extends GetxController {
             fraction: rating.value,
             language: languageServices.languageCodeSystem.value,
           ),
-          orderRideRepository.paidOrder(
-            orderId: orderId.value,
-            payType: orderRideDetail.value.payType!,
-            type: 1,
-            orderType: orderType.value,
-            language: languageServices.languageCodeSystem.value,
-            couponId: orderRideDetail.value.couponId!,
-          ),
+          // orderRideRepository.paidOrder(
+          //   orderId: orderId.value,
+          //   payType: orderRideDetail.value.payType!,
+          //   type: 1,
+          //   orderType: orderType.value,
+          //   language: languageServices.languageCodeSystem.value,
+          //   couponId: orderRideDetail.value.couponId!,
+          // ),
         ]);
       }
 

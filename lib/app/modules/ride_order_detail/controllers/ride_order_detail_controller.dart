@@ -310,7 +310,7 @@ class RideOrderDetailController extends GetxController
 
     generateEstimatedDistanceAndTimeInMinutes();
 
-    if (orderRideDetail.value.state == 7) {
+    if (orderRideDetail.value.state == 9) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
