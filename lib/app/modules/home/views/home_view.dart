@@ -1283,11 +1283,13 @@ class HomeView extends GetView<HomeController> {
                                                         ),
                                                       ),
                                                       GestureDetector(
-                                                        onTap: () {
-                                                          Get.toNamed(
+                                                        onTap: () async {
+                                                          await Get.toNamed(
                                                             Routes
                                                                 .INTRODUCTION_PACKAGE_SERVICE,
                                                           );
+                                                          await controller
+                                                              .refreshAll();
                                                         },
                                                         child: Stack(
                                                           children: [
@@ -1393,11 +1395,13 @@ class HomeView extends GetView<HomeController> {
                                                         ),
                                                       ),
                                                       GestureDetector(
-                                                        onTap: () {
-                                                          Get.toNamed(
+                                                        onTap: () async {
+                                                          await Get.toNamed(
                                                             Routes
                                                                 .INTRODUCTION_FOOD_SERVICE,
                                                           );
+                                                          await controller
+                                                              .refreshAll();
                                                         },
                                                         child: Stack(
                                                           children: [
@@ -1871,25 +1875,27 @@ class HomeView extends GetView<HomeController> {
                                                                 SizedBox(
                                                                   height: 2,
                                                                 ),
-                                                                Text(
-                                                                  NumberFormat.currency(
-                                                                    locale:
-                                                                        'id_ID',
-                                                                    symbol:
-                                                                        'Rp',
-                                                                    decimalDigits:
-                                                                        0,
-                                                                  ).format(
-                                                                    controller
-                                                                            .userInfo
-                                                                            .value
-                                                                            .balance ??
-                                                                        0.0,
+                                                                Obx(
+                                                                  () => Text(
+                                                                    NumberFormat.currency(
+                                                                      locale:
+                                                                          'id_ID',
+                                                                      symbol:
+                                                                          'Rp',
+                                                                      decimalDigits:
+                                                                          0,
+                                                                    ).format(
+                                                                      controller
+                                                                              .userInfo
+                                                                              .value
+                                                                              .balance ??
+                                                                          0.0,
+                                                                    ),
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodySmallBold
+                                                                        .value,
                                                                   ),
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodySmallBold
-                                                                      .value,
                                                                 ),
                                                               ],
                                                             ),
@@ -1942,11 +1948,14 @@ class HomeView extends GetView<HomeController> {
                                                                 width: 14,
                                                               ),
                                                               GestureDetector(
-                                                                onTap: () {
-                                                                  Get.toNamed(
+                                                                onTap: () async {
+                                                                  await Get.toNamed(
                                                                     Routes
                                                                         .HISTORY_BALANCE,
                                                                   );
+
+                                                                  await controller
+                                                                      .refreshAll();
                                                                 },
                                                                 child: SizedBox(
                                                                   width: 46,
@@ -2008,10 +2017,12 @@ class HomeView extends GetView<HomeController> {
                                                           .value,
                                                     ),
                                                     GestureDetector(
-                                                      onTap: () {
-                                                        Get.toNamed(
+                                                      onTap: () async {
+                                                        await Get.toNamed(
                                                           Routes.PROMOTION,
                                                         );
+                                                        await controller
+                                                            .refreshAll();
                                                       },
                                                       child: Text(
                                                         controller
@@ -2121,8 +2132,8 @@ class HomeView extends GetView<HomeController> {
                                                                 right: 16,
                                                               ),
                                                         child: GestureDetector(
-                                                          onTap: () {
-                                                            Get.toNamed(
+                                                          onTap: () async {
+                                                            await Get.toNamed(
                                                               Routes
                                                                   .VOUCHER_DETAIL,
                                                               arguments: {
@@ -2130,6 +2141,8 @@ class HomeView extends GetView<HomeController> {
                                                                     availableCoupon,
                                                               },
                                                             );
+                                                            await controller
+                                                                .refreshAll();
                                                           },
                                                           child: ClipRRect(
                                                             borderRadius:
@@ -2246,8 +2259,9 @@ class HomeView extends GetView<HomeController> {
                       },
                       destinations: [
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             controller.indexNavigationBar.value = 0;
+                            await controller.refreshAll();
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -2320,8 +2334,10 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             controller.indexNavigationBar.value = 1;
+
+                            await controller.refreshAll();
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -2394,8 +2410,9 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             controller.indexNavigationBar.value = 2;
+                            await controller.refreshAll();
                           },
                           child: Container(
                             color: Colors.transparent,

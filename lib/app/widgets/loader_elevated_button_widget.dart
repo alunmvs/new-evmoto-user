@@ -25,45 +25,47 @@ class LoaderElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => SizedBox(
-        width: isLoading.value
-            ? 46
-            : isWidthFitToContent == true
-            ? null
-            : MediaQuery.of(context).size.width,
-        height: 46,
-        child: ElevatedButton(
-          onPressed: onPressed != null
-              ? () async {
-                  if (isLoading.value == false) {
-                    isLoading.value = true;
-                    await onPressed!();
-                    isLoading.value = false;
+      () => Center(
+        child: SizedBox(
+          width: isLoading.value
+              ? 46
+              : isWidthFitToContent == true
+              ? null
+              : MediaQuery.of(context).size.width,
+          height: 46,
+          child: ElevatedButton(
+            onPressed: onPressed != null
+                ? () async {
+                    if (isLoading.value == false) {
+                      isLoading.value = true;
+                      await onPressed!();
+                      isLoading.value = false;
+                    }
                   }
-                }
-              : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor:
-                buttonColor ?? themeColorServices.primaryBlue.value,
-            shape: RoundedRectangleBorder(
-              borderRadius: isLoading.value
-                  ? BorderRadius.circular(9999)
-                  : BorderRadius.circular(16),
-              side: borderSide ?? BorderSide.none,
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  buttonColor ?? themeColorServices.primaryBlue.value,
+              shape: RoundedRectangleBorder(
+                borderRadius: isLoading.value
+                    ? BorderRadius.circular(9999)
+                    : BorderRadius.circular(16),
+                side: borderSide ?? BorderSide.none,
+              ),
+              padding: EdgeInsets.all(0),
             ),
-            padding: EdgeInsets.all(0),
-          ),
-          child: isLoading.value
-              ? Center(
-                  child: SizedBox(
-                    width: 25,
-                    height: 25,
-                    child: CircularProgressIndicator(
-                      color: themeColorServices.neutralsColorGrey0.value,
+            child: isLoading.value
+                ? Center(
+                    child: SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: CircularProgressIndicator(
+                        color: themeColorServices.neutralsColorGrey0.value,
+                      ),
                     ),
-                  ),
-                )
-              : child,
+                  )
+                : child,
+          ),
         ),
       ),
     );
