@@ -62,7 +62,7 @@ class Routes {
     geometry = json['geometry'] != null
         ? new Geometry.fromJson(json['geometry'])
         : null;
-    weight = json['weight'];
+    weight = double.tryParse(json['weight'].toString());
     duration = double.tryParse(json['duration'].toString());
     distance = double.tryParse(json['distance'].toString());
   }

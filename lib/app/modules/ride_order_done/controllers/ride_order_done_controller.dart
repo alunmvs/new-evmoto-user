@@ -26,7 +26,7 @@ class RideOrderDoneController extends GetxController {
   final orderId = "".obs;
   final orderType = 0.obs;
 
-  final rating = 0.0.obs;
+  final rating = 5.0.obs;
 
   final isFetch = false.obs;
 
