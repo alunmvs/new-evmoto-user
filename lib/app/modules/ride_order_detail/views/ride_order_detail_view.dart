@@ -509,7 +509,6 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                       ),
                     ),
                   ],
-
                   if (controller.orderRideDetail.value.state == 2 ||
                       controller.orderRideDetail.value.state == 3) ...[
                     SlidingUpPanel(
@@ -1466,7 +1465,8 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                     ),
                   ],
                   if (controller.orderRideDetail.value.state == 4 ||
-                      controller.orderRideDetail.value.state == 5) ...[
+                      controller.orderRideDetail.value.state == 5 ||
+                      controller.orderRideDetail.value.state == 6) ...[
                     SlidingUpPanel(
                       minHeight: 168 + 121,
                       maxHeight: 168 + 121,
