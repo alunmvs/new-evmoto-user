@@ -9,11 +9,16 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class RideOrderDoneController extends GetxController {
   final OrderRideRepository orderRideRepository;
 
   RideOrderDoneController({required this.orderRideRepository});
+
+  final formGroup = FormGroup({
+    "review": FormControl<String>(validators: <Validator>[]),
+  });
 
   final homeController = Get.find<HomeController>();
 
@@ -71,34 +76,15 @@ class RideOrderDoneController extends GetxController {
 
   Future<void> onTapDone() async {
     try {
-      if (rating.value == 0.0) {
-        // await Future.wait([
-        //   orderRideRepository.paidOrder(
-        //     orderId: orderId.value,
-        //     payType: orderRideDetail.value.payType!,
-        //     type: 1,
-        //     orderType: orderType.value,
-        //     language: languageServices.languageCodeSystem.value,
-        //     couponId: orderRideDetail.value.couponId!,
-        //   ),
-        // ]);
-      } else {
+      if (rating.value != 0.0) {
         await Future.wait([
           orderRideRepository.submitRatingAndReviewOrder(
             orderType: orderType.value,
             orderId: orderId.value,
-            content: null,
+            content: formGroup.control("review").value,
             fraction: rating.value,
             language: languageServices.languageCodeSystem.value,
           ),
-          // orderRideRepository.paidOrder(
-          //   orderId: orderId.value,
-          //   payType: orderRideDetail.value.payType!,
-          //   type: 1,
-          //   orderType: orderType.value,
-          //   language: languageServices.languageCodeSystem.value,
-          //   couponId: orderRideDetail.value.couponId!,
-          // ),
         ]);
       }
 

@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 import '../controllers/ride_order_done_controller.dart';
@@ -337,6 +338,91 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey0
+                                      .value,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey300
+                                        .value,
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ReactiveForm(
+                                      formGroup: controller.formGroup,
+                                      child: Column(
+                                        children: [
+                                          ReactiveTextField(
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value,
+                                            cursorErrorColor: controller
+                                                .themeColorServices
+                                                .primaryBlue
+                                                .value,
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            maxLines: 3,
+                                            formControlName: 'review',
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                    horizontal: 0,
+                                                    vertical: 0,
+                                                  ),
+                                              hintText:
+                                                  "Masukan ulasan kamu disini",
+                                              hintStyle: controller
+                                                  .typographyServices
+                                                  .bodySmallRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey400
+                                                        .value,
+                                                  ),
+                                              errorStyle: controller
+                                                  .typographyServices
+                                                  .bodySmallRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .sematicColorRed500
+                                                        .value,
+                                                  ),
+                                              focusedErrorBorder:
+                                                  InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              border: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
                             SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(
