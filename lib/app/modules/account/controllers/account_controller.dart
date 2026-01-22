@@ -39,6 +39,7 @@ class AccountController extends GetxController {
   final homeController = Get.find<HomeController>();
 
   final packageVersion = "".obs;
+  final buildNumber = "".obs;
 
   final isFetch = false.obs;
 
@@ -63,6 +64,7 @@ class AccountController extends GetxController {
   Future<void> getPackageInfo() async {
     var packageInfo = await PackageInfo.fromPlatform();
     packageVersion.value = packageInfo.version;
+    buildNumber.value = packageInfo.buildNumber;
   }
 
   Future<void> onTapContactCs() async {
