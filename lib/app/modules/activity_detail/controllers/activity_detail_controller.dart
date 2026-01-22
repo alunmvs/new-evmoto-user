@@ -13,6 +13,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class ActivityDetailController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
@@ -23,6 +24,10 @@ class ActivityDetailController extends GetxController {
     required this.googleMapsRepository,
     required this.orderRideRepository,
     required this.openMapsRepository,
+  });
+
+  final formGroup = FormGroup({
+    "review": FormControl<String>(validators: <Validator>[]),
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -42,6 +47,8 @@ class ActivityDetailController extends GetxController {
   final orderRideDetail = OrderRide().obs;
   final orderId = "".obs;
   final orderType = 0.obs;
+
+  final rating = 5.0.obs;
 
   final isFetch = false.obs;
 
@@ -226,5 +233,34 @@ class ActivityDetailController extends GetxController {
         "end_lon": orderRideDetail.value.endLon,
       },
     );
+  }
+
+  Future<void> onTapSubmitAndReview() async {
+    if (rating.value != 0.0) {
+      await Future.wait([
+        orderRideRepository.submitRatingAndReviewOrder(
+          orderType: orderType.value,
+          orderId: orderId.value,
+          content: formGroup.control("review").value,
+          fraction: rating.value,
+          language: languageServices.languageCodeSystem.value,
+        ),
+      ]);
+
+      await getOrderRideDetail();
+
+      var snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorGreen400.value,
+        content: Text(
+          "Berhasil mengirimkan penilaian dan ulasan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    }
   }
 }
