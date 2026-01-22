@@ -449,16 +449,8 @@ class RideOrderDetailController extends GetxController
         );
       }
 
-      final basePadding = Get.width * 0.1;
-      double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-          .abs();
-      double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-          .abs();
-      double areaFactor = (latDiff + lngDiff) * 80000;
-      var dynamicPadding = (basePadding + areaFactor).clamp(60, 200);
-
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
       );
     } else {}
   }
@@ -573,16 +565,8 @@ class RideOrderDetailController extends GetxController
       );
     }
 
-    final basePadding = Get.width * 0.1;
-    double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-        .abs();
-    double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-        .abs();
-    double areaFactor = (latDiff + lngDiff) * 80000;
-    var dynamicPadding = (basePadding + areaFactor).clamp(60, 200);
-
     await googleMapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+      CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
     );
   }
 
@@ -736,16 +720,8 @@ class RideOrderDetailController extends GetxController
           );
         }
 
-        final basePadding = Get.width * 0.1;
-        double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-            .abs();
-        double lngDiff =
-            (bounds.northeast.longitude - bounds.southwest.longitude).abs();
-        double areaFactor = (latDiff + lngDiff) * 80000;
-        var dynamicPadding = (basePadding + areaFactor).clamp(60, 200);
-
         await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
 
@@ -838,16 +814,8 @@ class RideOrderDetailController extends GetxController
           );
         }
 
-        final basePadding = Get.width * 0.1;
-        double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-            .abs();
-        double lngDiff =
-            (bounds.northeast.longitude - bounds.southwest.longitude).abs();
-        double areaFactor = (latDiff + lngDiff) * 80000;
-        var dynamicPadding = (basePadding + areaFactor).clamp(60, 200);
-
         await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
     }
@@ -927,16 +895,8 @@ class RideOrderDetailController extends GetxController
         );
       }
 
-      final basePadding = Get.width * 0.1;
-      double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-          .abs();
-      double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-          .abs();
-      double areaFactor = (latDiff + lngDiff) * 80000;
-      var dynamicPadding = (basePadding + areaFactor).clamp(60, 200);
-
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
       );
     } else {
       LatLngBounds bounds;
@@ -968,16 +928,9 @@ class RideOrderDetailController extends GetxController
           northeast: LatLng(destinationLatitude, destinationLongitude),
         );
       }
-      final basePadding = Get.width * 0.1;
-      double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-          .abs();
-      double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-          .abs();
-      double areaFactor = (latDiff + lngDiff) * 80000;
-      var dynamicPadding = (basePadding + areaFactor).clamp(60, 200);
 
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
       );
     }
   }
