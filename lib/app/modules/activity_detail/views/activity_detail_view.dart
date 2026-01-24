@@ -860,230 +860,235 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                           ],
                         ),
                       ),
-                      if (controller.orderRideDetail.value.orderScore == null ||
-                          controller.orderRideDetail.value.orderScore == 0) ...[
-                        SizedBox(height: 16),
-                        Container(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey0
-                              .value,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 16),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey0
-                                      .value,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
+                      if (controller.orderRideDetail.value.state != 10) ...[
+                        if (controller.orderRideDetail.value.orderScore ==
+                                null ||
+                            controller.orderRideDetail.value.orderScore ==
+                                0) ...[
+                          SizedBox(height: 16),
+                          Container(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey0
+                                .value,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 16),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
                                     color: controller
                                         .themeColorServices
-                                        .neutralsColorGrey300
+                                        .neutralsColorGrey0
                                         .value,
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          controller
-                                                  .languageServices
-                                                  .language
-                                                  .value
-                                                  .howTravelExperience ??
-                                              "-",
-                                          style: controller
-                                              .typographyServices
-                                              .bodyLargeBold
-                                              .value,
-                                        ),
-                                        Text(
-                                          controller
-                                                  .languageServices
-                                                  .language
-                                                  .value
-                                                  .scoreTravelExperience ??
-                                              "-",
-                                          style: controller
-                                              .typographyServices
-                                              .bodyLargeBold
-                                              .value,
-                                        ),
-                                        SizedBox(height: 8),
-                                        RatingBar.builder(
-                                          initialRating: 5,
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: false,
-                                          itemCount: 5,
-                                          itemPadding: EdgeInsets.symmetric(
-                                            horizontal: 4,
-                                          ),
-                                          unratedColor: controller
-                                              .themeColorServices
-                                              .neutralsColorSlate100
-                                              .value,
-                                          itemBuilder: (context, _) => SizedBox(
-                                            width: 48,
-                                            height: 48,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                SvgPicture.asset(
-                                                  "assets/icons/icon_star.svg",
-                                                  width: 39,
-                                                  height: 36,
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .sematicColorYellow400
-                                                      .value,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            controller.rating.value = rating;
-                                          },
-                                          glow: false,
-                                        ),
-                                      ],
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey300
+                                          .value,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 12),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey0
-                                      .value,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey300
-                                        .value,
                                   ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    ReactiveForm(
-                                      formGroup: controller.formGroup,
-                                      child: Column(
+                                  child: Column(
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          ReactiveTextField(
+                                          Text(
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .howTravelExperience ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
-                                                .bodySmallRegular
+                                                .bodyLargeBold
                                                 .value,
-                                            cursorErrorColor: controller
-                                                .themeColorServices
-                                                .primaryBlue
+                                          ),
+                                          Text(
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .scoreTravelExperience ??
+                                                "-",
+                                            style: controller
+                                                .typographyServices
+                                                .bodyLargeBold
                                                 .value,
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            maxLines: 3,
-                                            formControlName: 'review',
-                                            decoration: InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                    horizontal: 0,
-                                                    vertical: 0,
-                                                  ),
-                                              hintText:
-                                                  "Masukan ulasan kamu disini",
-                                              hintStyle: controller
-                                                  .typographyServices
-                                                  .bodySmallRegular
-                                                  .value
-                                                  .copyWith(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey400
-                                                        .value,
-                                                  ),
-                                              errorStyle: controller
-                                                  .typographyServices
-                                                  .bodySmallRegular
-                                                  .value
-                                                  .copyWith(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .sematicColorRed500
-                                                        .value,
-                                                  ),
-                                              focusedErrorBorder:
-                                                  InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              border: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
+                                          ),
+                                          SizedBox(height: 8),
+                                          RatingBar.builder(
+                                            initialRating: 5,
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: false,
+                                            itemCount: 5,
+                                            itemPadding: EdgeInsets.symmetric(
+                                              horizontal: 4,
                                             ),
+                                            unratedColor: controller
+                                                .themeColorServices
+                                                .neutralsColorSlate100
+                                                .value,
+                                            itemBuilder: (context, _) => SizedBox(
+                                              width: 48,
+                                              height: 48,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_star.svg",
+                                                    width: 39,
+                                                    height: 36,
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .sematicColorYellow400
+                                                        .value,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              controller.rating.value = rating;
+                                            },
+                                            glow: false,
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 12),
-                              SizedBox(
-                                height: 46,
-                                width: Get.width,
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(
+                                SizedBox(height: 12),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
                                       color: controller
                                           .themeColorServices
-                                          .primaryBlue
+                                          .neutralsColorGrey300
                                           .value,
                                     ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
                                   ),
-                                  onPressed: () async {
-                                    await controller.onTapSubmitAndReview();
-                                  },
-                                  child: Text(
-                                    "Kirim Penilaian dan Ulasan",
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .primaryBlue
-                                              .value,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      ReactiveForm(
+                                        formGroup: controller.formGroup,
+                                        child: Column(
+                                          children: [
+                                            ReactiveTextField(
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodySmallRegular
+                                                  .value,
+                                              cursorErrorColor: controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              maxLines: 3,
+                                              formControlName: 'review',
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                      horizontal: 0,
+                                                      vertical: 0,
+                                                    ),
+                                                hintText:
+                                                    "Masukan ulasan kamu disini",
+                                                hintStyle: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey400
+                                                          .value,
+                                                    ),
+                                                errorStyle: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .sematicColorRed500
+                                                          .value,
+                                                    ),
+                                                focusedErrorBorder:
+                                                    InputBorder.none,
+                                                errorBorder: InputBorder.none,
+                                                border: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 16),
-                            ],
+                                SizedBox(height: 12),
+                                SizedBox(
+                                  height: 46,
+                                  width: Get.width,
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      await controller.onTapSubmitAndReview();
+                                    },
+                                    child: Text(
+                                      "Kirim Penilaian dan Ulasan",
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .primaryBlue
+                                                .value,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
                       ],
                       SizedBox(height: 16),
                     ],
