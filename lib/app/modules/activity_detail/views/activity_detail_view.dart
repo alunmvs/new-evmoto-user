@@ -91,27 +91,148 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                               ),
                               child: Row(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 32 / 2,
-                                    backgroundImage: CachedNetworkImageProvider(
+                                  if (controller
+                                              .orderRideDetail
+                                              .value
+                                              .driverName ==
+                                          null ||
                                       controller
-                                          .orderRideDetail
-                                          .value
-                                          .driverAvatar!,
+                                              .orderRideDetail
+                                              .value
+                                              .driverName ==
+                                          "") ...[
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_profile.svg",
+                                      width: 32,
                                     ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    controller
-                                            .orderRideDetail
-                                            .value
-                                            .driverName ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeBold
-                                        .value,
-                                  ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      "Orderan telah dicancel",
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value,
+                                    ),
+                                  ],
+                                  if (controller
+                                              .orderRideDetail
+                                              .value
+                                              .driverName !=
+                                          null &&
+                                      controller
+                                              .orderRideDetail
+                                              .value
+                                              .driverName !=
+                                          "") ...[
+                                    CircleAvatar(
+                                      radius: 32 / 2,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                            controller
+                                                .orderRideDetail
+                                                .value
+                                                .driverAvatar!,
+                                          ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          controller
+                                                  .orderRideDetail
+                                                  .value
+                                                  .driverName ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeBold
+                                              .value,
+                                        ),
+                                        SizedBox(height: 4),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey200
+                                                      .value,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_star.svg",
+                                                    width: 12,
+                                                    height: 12,
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .sematicColorYellow400
+                                                        .value,
+                                                  ),
+                                                  SizedBox(width: 2),
+                                                  Text(
+                                                    controller
+                                                                .orderRideDetail
+                                                                .value
+                                                                .score ==
+                                                            null
+                                                        ? "-"
+                                                        : controller
+                                                              .orderRideDetail
+                                                              .value
+                                                              .score!
+                                                              .toStringAsFixed(
+                                                                2,
+                                                              ),
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallBold
+                                                        .value,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 4),
+                                            Container(
+                                              padding: EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey200
+                                                      .value,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    controller
+                                                            .orderRideDetail
+                                                            .value
+                                                            .licensePlate ??
+                                                        "-",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallBold
+                                                        .value,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ],
                               ),
                             ),
