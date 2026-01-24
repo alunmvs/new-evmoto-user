@@ -110,8 +110,9 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                       "Orderan telah dicancel",
                                       style: controller
                                           .typographyServices
-                                          .bodyLargeBold
-                                          .value,
+                                          .bodyLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
                                     ),
                                   ],
                                   if (controller
@@ -150,86 +151,87 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                               .bodyLargeBold
                                               .value,
                                         ),
-                                        SizedBox(height: 4),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey200
-                                                      .value,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "assets/icons/icon_star.svg",
-                                                    width: 12,
-                                                    height: 12,
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .sematicColorYellow400
-                                                        .value,
-                                                  ),
-                                                  SizedBox(width: 2),
-                                                  Text(
-                                                    controller
-                                                                .orderRideDetail
-                                                                .value
-                                                                .score ==
-                                                            null
-                                                        ? "-"
-                                                        : controller
-                                                              .orderRideDetail
-                                                              .value
-                                                              .score!
-                                                              .toStringAsFixed(
-                                                                2,
-                                                              ),
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallBold
-                                                        .value,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(width: 4),
-                                            Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey200
-                                                      .value,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    controller
-                                                            .orderRideDetail
-                                                            .value
-                                                            .licensePlate ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallBold
-                                                        .value,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+
+                                        // SizedBox(height: 4),
+                                        // Row(
+                                        //   children: [
+                                        //     Container(
+                                        //       padding: EdgeInsets.all(4),
+                                        //       decoration: BoxDecoration(
+                                        //         border: Border.all(
+                                        //           color: controller
+                                        //               .themeColorServices
+                                        //               .neutralsColorGrey200
+                                        //               .value,
+                                        //         ),
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(8),
+                                        //       ),
+                                        //       child: Row(
+                                        //         children: [
+                                        //           SvgPicture.asset(
+                                        //             "assets/icons/icon_star.svg",
+                                        //             width: 12,
+                                        //             height: 12,
+                                        //             color: controller
+                                        //                 .themeColorServices
+                                        //                 .sematicColorYellow400
+                                        //                 .value,
+                                        //           ),
+                                        //           SizedBox(width: 2),
+                                        //           Text(
+                                        //             controller
+                                        //                         .orderRideDetail
+                                        //                         .value
+                                        //                         .score ==
+                                        //                     null
+                                        //                 ? "-"
+                                        //                 : controller
+                                        //                       .orderRideDetail
+                                        //                       .value
+                                        //                       .score!
+                                        //                       .toStringAsFixed(
+                                        //                         2,
+                                        //                       ),
+                                        //             style: controller
+                                        //                 .typographyServices
+                                        //                 .bodySmallBold
+                                        //                 .value,
+                                        //           ),
+                                        //         ],
+                                        //       ),
+                                        //     ),
+                                        //     SizedBox(width: 4),
+                                        //     Container(
+                                        //       padding: EdgeInsets.all(4),
+                                        //       decoration: BoxDecoration(
+                                        //         border: Border.all(
+                                        //           color: controller
+                                        //               .themeColorServices
+                                        //               .neutralsColorGrey200
+                                        //               .value,
+                                        //         ),
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(8),
+                                        //       ),
+                                        //       child: Row(
+                                        //         children: [
+                                        //           Text(
+                                        //             controller
+                                        //                     .orderRideDetail
+                                        //                     .value
+                                        //                     .licensePlate ??
+                                        //                 "-",
+                                        //             style: controller
+                                        //                 .typographyServices
+                                        //                 .bodySmallBold
+                                        //                 .value,
+                                        //           ),
+                                        //         ],
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
                                       ],
                                     ),
                                   ],
