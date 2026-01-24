@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
@@ -45,6 +46,7 @@ class ActivityDetailController extends GetxController {
   final polylinesCoordinate = <LatLng>[].obs;
 
   final orderRideDetail = OrderRide().obs;
+  final orderReviewDetail = OrderReview().obs;
   final orderId = "".obs;
   final orderType = 0.obs;
 
@@ -58,7 +60,7 @@ class ActivityDetailController extends GetxController {
     isFetch.value = true;
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
-    await getOrderRideDetail();
+    await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
     isFetch.value = false;
     await setupGoogleMapOriginToDestination();
   }
@@ -80,6 +82,13 @@ class ActivityDetailController extends GetxController {
           orderId: orderId.value,
           orderType: orderType.value,
         ));
+  }
+
+  Future<void> getOrderReviewDetail() async {
+    orderReviewDetail.value = (await orderRideRepository.getOrderReviewDetail(
+      orderId: orderId.value,
+      orderType: orderType.value,
+    ));
   }
 
   Future<void> setupGoogleMapOriginToDestination() async {
@@ -247,7 +256,7 @@ class ActivityDetailController extends GetxController {
         ),
       ]);
 
-      await getOrderRideDetail();
+      await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
 
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,

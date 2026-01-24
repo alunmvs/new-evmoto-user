@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
@@ -439,6 +440,44 @@ class OrderRideRepository {
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<OrderReview> getOrderReviewDetail({
+    required int orderType,
+    required String orderId,
+  }) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryOrderReview";
+
+      var formData = FormData.fromMap({
+        "orderType": orderType,
+        "orderId": orderId,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return OrderReview.fromJson(response.data['data']);
     } on DioException catch (e) {
       rethrow;
     }

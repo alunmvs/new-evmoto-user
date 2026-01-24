@@ -833,18 +833,18 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                   children: [
                                     Text(
                                       controller
-                                                      .orderRideDetail
+                                                      .orderReviewDetail
                                                       .value
                                                       .content ==
                                                   null ||
                                               controller
-                                                      .orderRideDetail
+                                                      .orderReviewDetail
                                                       .value
                                                       .content ==
                                                   ""
                                           ? "-"
                                           : controller
-                                                .orderRideDetail
+                                                .orderReviewDetail
                                                 .value
                                                 .content!,
                                       style: controller
