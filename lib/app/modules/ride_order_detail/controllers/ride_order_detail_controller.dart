@@ -192,6 +192,7 @@ class RideOrderDetailController extends GetxController
             "userIsOnline": true,
             "userLastSeen": FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
+      await refreshAll();
     } else if (state == AppLifecycleState.paused) {
       await FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
@@ -409,6 +410,8 @@ class RideOrderDetailController extends GetxController
           .coordinates!
           .map((p) => LatLng(p[1], p[0]))
           .toList();
+
+      polylinesCoordinate.value = polylineCoordinates;
 
       polylines.add(
         Polyline(
@@ -677,8 +680,6 @@ class RideOrderDetailController extends GetxController
 
         polylinesCoordinate.value = polylineCoordinates;
 
-        polylines.clear();
-
         polylines.add(
           Polyline(
             polylineId: PolylineId("route"),
@@ -751,9 +752,9 @@ class RideOrderDetailController extends GetxController
             orderRideDetail.value.endLat!,
             orderRideDetail.value.endLon!,
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-            'assets/icons/icon_order_destination.png',
-            Size(29, 29),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_pinpoint.svg',
+            Size(27, 31),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -895,9 +896,22 @@ class RideOrderDetailController extends GetxController
         );
       }
 
-      await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+      var movementDirection = compareLatLng(
+        originLat: originLatitude,
+        originLng: originLongitude,
+        destLat: destinationLatitude,
+        destLng: destinationLongitude,
       );
+
+      if (movementDirection == MovementDirection.vertical) {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+        );
+      } else {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        );
+      }
     } else {
       LatLngBounds bounds;
 
@@ -929,9 +943,38 @@ class RideOrderDetailController extends GetxController
         );
       }
 
-      await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+      var movementDirection = compareLatLng(
+        originLat: originLatitude,
+        originLng: originLongitude,
+        destLat: destinationLatitude,
+        destLng: destinationLongitude,
       );
+
+      if (movementDirection == MovementDirection.vertical) {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+        );
+      } else {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        );
+      }
+    }
+  }
+
+  MovementDirection compareLatLng({
+    required double originLat,
+    required double originLng,
+    required double destLat,
+    required double destLng,
+  }) {
+    final double deltaLat = (destLat - originLat).abs();
+    final double deltaLng = (destLng - originLng).abs();
+
+    if (deltaLat > deltaLng) {
+      return MovementDirection.vertical;
+    } else {
+      return MovementDirection.horizontal;
     }
   }
 
@@ -1067,3 +1110,5 @@ class RideOrderDetailController extends GetxController
     }
   }
 }
+
+enum MovementDirection { vertical, horizontal }
