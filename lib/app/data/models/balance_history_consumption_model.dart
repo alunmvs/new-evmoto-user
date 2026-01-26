@@ -6,14 +6,24 @@ class BalanceHistoryConsumption implements HasCreatedAtDateTime {
   double? money;
   int? type;
   String? createTime;
+  int? orderId;
+  int? payType;
 
-  BalanceHistoryConsumption({this.money, this.type, this.createTime});
+  BalanceHistoryConsumption({
+    this.money,
+    this.type,
+    this.createTime,
+    this.orderId,
+    this.payType,
+  });
 
   BalanceHistoryConsumption.fromJson(Map<String, dynamic> json) {
     money = json['money'];
     type = json['type'];
     createTime = json['createTime'];
     createTimeDateTime = DateTime.parse(createTime!.replaceFirst(' ', 'T'));
+    orderId = json['orderId'];
+    payType = json['payType'];
   }
 
   Map<String, dynamic> toJson() {

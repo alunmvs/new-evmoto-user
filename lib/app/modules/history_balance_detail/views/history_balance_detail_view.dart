@@ -161,7 +161,8 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                       ),
                       child: Center(
                         child: Text(
-                          "-",
+                          controller.balanceHistoryConsumption.value.orderId
+                              .toString(),
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -173,6 +174,84 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                                     .value,
                               ),
                         ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
+                        border: Border.all(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey200
+                              .value,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .paymentMethod ??
+                                    "-",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey700
+                                          .value,
+                                    ),
+                              ),
+                              Text(
+                                controller
+                                            .balanceHistoryConsumption
+                                            .value
+                                            .payType ==
+                                        2
+                                    ? "Saldo EVMoto"
+                                    : controller
+                                              .balanceHistoryConsumption
+                                              .value
+                                              .payType ==
+                                          3
+                                    ? controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .cash ??
+                                          "-"
+                                    : "-",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallBold
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey700
+                                          .value,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 12),
