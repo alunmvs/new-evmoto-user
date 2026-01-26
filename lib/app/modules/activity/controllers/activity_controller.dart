@@ -81,15 +81,6 @@ class ActivityController extends GetxController
       size: activeOrderSize.value,
     ));
 
-    for (var activeOrder in activeOrderList) {
-      activeOrder.orderRide = await orderRideRepository
-          .getOrderRideDetailbyOrderId(
-            orderId: activeOrder.orderId.toString(),
-            orderType: activeOrder.orderType,
-            language: languageServices.languageCodeSystem.value,
-          );
-    }
-
     activeOrderList.refresh();
   }
 
@@ -101,15 +92,6 @@ class ActivityController extends GetxController
       pageNum: activeOrderPageNum.value,
       size: activeOrderSize.value,
     ));
-
-    for (var activeOrder in activeOrderList) {
-      activeOrder.orderRide = await orderRideRepository
-          .getOrderRideDetailbyOrderId(
-            orderId: activeOrder.orderId.toString(),
-            language: languageServices.languageCodeSystem.value,
-            orderType: activeOrder.orderType,
-          );
-    }
 
     if (activeOrderList.isEmpty) {
       activeOrderSeeMore.value = false;
@@ -129,15 +111,6 @@ class ActivityController extends GetxController
       type: historyOrderSelectedOrderType.value,
     ));
 
-    for (var historyOrder in historyOrderList) {
-      historyOrder.orderRide = await orderRideRepository
-          .getOrderRideDetailbyOrderId(
-            orderId: historyOrder.orderId.toString(),
-            language: languageServices.languageCodeSystem.value,
-            orderType: historyOrder.orderType,
-          );
-    }
-
     this.historyOrderList.value = historyOrderList;
   }
 
@@ -150,15 +123,6 @@ class ActivityController extends GetxController
       size: historyOrderSize.value,
       type: historyOrderSelectedOrderType.value,
     ));
-
-    for (var historyOrder in historyOrderList) {
-      historyOrder.orderRide = await orderRideRepository
-          .getOrderRideDetailbyOrderId(
-            orderId: historyOrder.orderId.toString(),
-            language: languageServices.languageCodeSystem.value,
-            orderType: historyOrder.orderType,
-          );
-    }
 
     if (historyOrderList.isEmpty) {
       historyOrderSeeMore.value = false;

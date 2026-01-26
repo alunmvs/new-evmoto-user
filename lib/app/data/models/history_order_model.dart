@@ -19,7 +19,7 @@ class HistoryOrder {
   String? orderName;
   int? orderType;
   int? insertTime;
-  OrderRide? orderRide;
+  double? collectionFees;
 
   HistoryOrder({
     this.orderId,
@@ -40,7 +40,7 @@ class HistoryOrder {
     this.orderName,
     this.orderType,
     this.insertTime,
-    this.orderRide,
+    this.collectionFees,
   });
 
   HistoryOrder.fromJson(Map<String, dynamic> json) {
@@ -62,6 +62,7 @@ class HistoryOrder {
     orderName = json['orderName'];
     orderType = json['orderType'];
     insertTime = json['insertTime'];
+    collectionFees = json['collectionFees'];
   }
 
   Map<String, dynamic> toJson() {
@@ -84,6 +85,7 @@ class HistoryOrder {
     data['orderName'] = this.orderName;
     data['orderType'] = this.orderType;
     data['insertTime'] = this.insertTime;
+    data['collectionFees'] = this.collectionFees;
     return data;
   }
 }
