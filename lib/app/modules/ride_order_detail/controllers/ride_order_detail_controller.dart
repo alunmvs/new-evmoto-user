@@ -235,7 +235,7 @@ class RideOrderDetailController extends GetxController
   }
 
   Future<void> setupRefreshStatusDriverGivePrice() async {
-    refreshStatusDriverGivePriceTimer = Timer.periodic(Duration(seconds: 5), (
+    refreshStatusDriverGivePriceTimer ??= Timer.periodic(Duration(seconds: 5), (
       timer,
     ) async {
       if (orderRideDetail.value.state == 6) {
@@ -586,7 +586,7 @@ class RideOrderDetailController extends GetxController
   }
 
   Future<void> setupSchedulerDriverCurrentLocation() async {
-    driverCurrentLocationTimer = Timer.periodic(Duration(seconds: 3), (
+    driverCurrentLocationTimer ??= Timer.periodic(Duration(seconds: 3), (
       timer,
     ) async {
       if (isSchedulerDriverCurrentLocationIsProcess.value == false) {
@@ -847,7 +847,9 @@ class RideOrderDetailController extends GetxController
   }
 
   Future<void> setupSchedulerDriverRefocusMapBound() async {
-    refocusMapBoundsTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+    refocusMapBoundsTimer ??= Timer.periodic(Duration(seconds: 5), (
+      timer,
+    ) async {
       await onTapRefocus();
     });
   }

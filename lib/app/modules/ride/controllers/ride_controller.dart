@@ -1173,17 +1173,38 @@ class RideController extends GetxController {
       );
     }
 
-    final basePadding = Get.width * 0.1;
-    double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-        .abs();
-    double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-        .abs();
-    double areaFactor = (latDiff + lngDiff) * 80000;
-    var dynamicPadding = (basePadding + areaFactor).clamp(0, 250);
-
-    await googleMapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+    var movementDirection = compareLatLng(
+      originLat: originLatitude,
+      originLng: originLongitude,
+      destLat: destinationLatitude,
+      destLng: destinationLongitude,
     );
+
+    if (movementDirection == MovementDirection.vertical) {
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+      );
+    } else {
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+      );
+    }
+  }
+
+  MovementDirection compareLatLng({
+    required double originLat,
+    required double originLng,
+    required double destLat,
+    required double destLng,
+  }) {
+    final double deltaLat = (destLat - originLat).abs();
+    final double deltaLng = (destLng - originLng).abs();
+
+    if (deltaLat > deltaLng) {
+      return MovementDirection.vertical;
+    } else {
+      return MovementDirection.horizontal;
+    }
   }
 
   Future<void> generatePolylines() async {
@@ -1469,3 +1490,5 @@ class RideController extends GetxController {
     }
   }
 }
+
+enum MovementDirection { vertical, horizontal }
