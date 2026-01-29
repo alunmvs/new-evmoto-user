@@ -60,9 +60,9 @@ class RideOrderDetailController extends GetxController
   final orderId = "".obs;
   final orderType = 0.obs;
 
-  late Timer? driverCurrentLocationTimer;
-  late Timer? refocusMapBoundsTimer;
-  late Timer? refreshStatusDriverGivePriceTimer;
+  Timer? driverCurrentLocationTimer;
+  Timer? refocusMapBoundsTimer;
+  Timer? refreshStatusDriverGivePriceTimer;
 
   final isPinLocationWaitingForDriverHide = true.obs;
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;

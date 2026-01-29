@@ -14,7 +14,7 @@ import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 
 class SocketServices extends GetxService with WidgetsBindingObserver {
   late Socket? socket;
-  late Timer? schedulerDataSocketTimer;
+  Timer? schedulerDataSocketTimer;
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -48,6 +48,8 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         var dataJson = convertBytesToJson(bytes: data);
         if (dataJson != null) {
           var method = dataJson['method'] ?? "";
+
+          print(dataJson);
 
           switch (method) {
             case 'DRIVER_POSITION':

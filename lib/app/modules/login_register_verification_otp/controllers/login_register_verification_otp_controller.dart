@@ -34,7 +34,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
   final longitude = "".obs;
 
   final otpProtectionTimerSeconds = 0.obs;
-  late Timer? otpProtectionTimer;
+  Timer? otpProtectionTimer;
 
   final isFetch = false.obs;
 
