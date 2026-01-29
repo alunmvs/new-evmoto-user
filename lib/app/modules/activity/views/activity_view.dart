@@ -1191,7 +1191,7 @@ class ActivityView extends GetView<ActivityController> {
                                                           ? historyOrder
                                                                 .collectionFees
                                                           : historyOrder
-                                                                    .orderMoney ??
+                                                                    .payMoney ??
                                                                 0.0,
                                                     ),
                                                     style: controller
