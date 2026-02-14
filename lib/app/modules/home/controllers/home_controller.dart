@@ -57,6 +57,8 @@ class HomeController extends GetxController {
   final activeOrderList = <ActiveOrder>[].obs;
   final availableCouponList = <Coupon>[].obs;
 
+  final isActiveOrderListNotEmpty = false.obs;
+
   final savedAddressList = <SavedAddress>[].obs;
 
   // coachmark
@@ -120,11 +122,11 @@ class HomeController extends GetxController {
   }
 
   Future<void> getActiveOrderList() async {
-    try {
-      activeOrderList.value = (await orderRideRepository.getActiveOrderList(
-        language: languageServices.languageCodeSystem.value,
-      ));
-    } catch (e) {}
+    activeOrderList.value = (await orderRideRepository.getActiveOrderList(
+      language: languageServices.languageCodeSystem.value,
+    ));
+
+    isActiveOrderListNotEmpty.value = activeOrderList.isNotEmpty;
   }
 
   Future<void> getAvailableCouponList() async {
@@ -155,7 +157,7 @@ class HomeController extends GetxController {
       await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
     } else {
       await refreshAll();
-      if (activeOrderList.isNotEmpty) {
+      if (isActiveOrderListNotEmpty.value) {
         await Get.toNamed(
           Routes.RIDE_ORDER_DETAIL,
           arguments: {
