@@ -156,6 +156,8 @@ class RideOrderDetailController extends GetxController
   Future<void> onClose() async {
     super.onClose();
 
+    WidgetsBinding.instance.removeObserver(this);
+
     await FirebaseFirestore.instance
         .collection('evmoto_order_chat_participants')
         .doc(orderRideDetail.value.orderId.toString())
