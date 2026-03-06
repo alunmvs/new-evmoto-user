@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_mode
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
@@ -18,6 +19,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final isSocketClose = true.obs;
 
@@ -40,7 +42,10 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   }
 
   Future<void> setupWebsocket() async {
-    socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
+    socket = await Socket.connect(
+      firebaseRemoteConfigServices.remoteConfig.getString('user_websocket_url'),
+      8888,
+    );
     isSocketClose.value = false;
 
     socket?.listen(

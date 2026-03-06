@@ -22,7 +22,7 @@ class ApiServices extends GetxService {
     // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     //     (client) {
     //       client.findProxy = (uri) {
-    //         return "PROXY 192.168.18.121:8888";
+    //         return "PROXY 192.168.18.106:8888";
     //       };
 
     //       client.badCertificateCallback =

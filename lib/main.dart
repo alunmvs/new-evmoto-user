@@ -54,10 +54,11 @@ Future<void> main() async {
   Get.put(ThemeColorServices(), permanent: true);
   Get.put(TypographyServices(), permanent: true);
   Get.put(LanguageServices(), permanent: true);
-  Get.put(SocketServices(), permanent: true);
   Get.put(ApiServices(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
+  await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
   Get.put(FirebasePushNotificationServices(), permanent: true);
+  Get.put(SocketServices(), permanent: true);
 
   runApp(
     GetMaterialApp(

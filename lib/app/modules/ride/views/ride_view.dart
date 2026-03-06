@@ -3200,6 +3200,7 @@ class RideView extends GetView<RideController> {
                                             ),
                                           ),
                                         ),
+                                        SizedBox(height: 8),
                                       ],
                                       SizedBox(height: 16),
                                       DashedLine(
