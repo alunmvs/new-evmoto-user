@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -15,6 +16,7 @@ class RideBinding extends Bindings {
         orderRideRepository: OrderRideRepository(),
         savedAddressRepository: SavedAddressRepository(),
         openMapsRepository: OpenMapsRepository(),
+        geocodingRepository: GeocodingRepository(),
       ),
     );
   }

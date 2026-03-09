@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/modules/setting_saved_location/controllers/setting_saved_location_controller.dart';
 import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
@@ -31,7 +31,7 @@ class AddEditAddressController extends GetxController {
     ),
   });
 
-  final googlePlaceTextSearch = GooglePlaceTextSearch().obs;
+  final geocodingPlace = GeocodingPlace().obs;
   final addressType = 0.obs;
 
   final savedAddress = SavedAddress().obs;
@@ -52,11 +52,10 @@ class AddEditAddressController extends GetxController {
           savedAddress.value.addressDetail!;
       formGroup.control("address_name").value = savedAddress.value.addressName!;
     } else {
-      googlePlaceTextSearch.value =
-          Get.arguments['google_place_text_search'] ?? GooglePlaceTextSearch();
+      geocodingPlace.value =
+          Get.arguments['geocoding_place'] ?? GeocodingPlace();
       addressType.value = Get.arguments['address_type'] ?? 0;
-      formGroup.control("address_detail").value =
-          googlePlaceTextSearch.value.formattedAddress;
+      formGroup.control("address_detail").value = geocodingPlace.value.address;
     }
     isFetch.value = false;
   }
@@ -79,12 +78,10 @@ class AddEditAddressController extends GetxController {
         if (isEdit.value == false) {
           await savedAddressRepository.insertSavedAddress(
             addressName: formGroup.control("address_name").value,
-            addressTitle: googlePlaceTextSearch.value.name ?? "",
+            addressTitle: geocodingPlace.value.name ?? "",
             addressDetail: formGroup.control("address_detail").value,
-            latitude: googlePlaceTextSearch.value.geometry!.location!.lat
-                .toString(),
-            longitude: googlePlaceTextSearch.value.geometry!.location!.lng
-                .toString(),
+            latitude: geocodingPlace.value.lat.toString(),
+            longitude: geocodingPlace.value.lng.toString(),
             addressType: addressType.value,
           );
 
@@ -112,16 +109,12 @@ class AddEditAddressController extends GetxController {
             id: savedAddress.value.id!,
             addressName: formGroup.control("address_name").value,
             addressTitle:
-                googlePlaceTextSearch.value.name ??
-                savedAddress.value.addressTitle!,
+                geocodingPlace.value.name ?? savedAddress.value.addressTitle!,
             addressDetail: formGroup.control("address_detail").value,
-            latitude:
-                (googlePlaceTextSearch.value.geometry?.location?.lat ??
-                        savedAddress.value.latitude!)
-                    .toString(),
+            latitude: (geocodingPlace.value.lat ?? savedAddress.value.latitude!)
+                .toString(),
             longitude:
-                (googlePlaceTextSearch.value.geometry?.location?.lng ??
-                        savedAddress.value.longitude!)
+                (geocodingPlace.value.lng ?? savedAddress.value.longitude!)
                     .toString(),
             addressType: addressType.value,
           );

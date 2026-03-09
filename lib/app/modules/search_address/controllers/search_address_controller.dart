@@ -2,16 +2,16 @@ import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
-import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
-import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
+import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 class SearchAddressController extends GetxController {
-  final GoogleMapsRepository googleMapsRepository;
+  final GeocodingRepository geocodingRepository;
 
-  SearchAddressController({required this.googleMapsRepository});
+  SearchAddressController({required this.geocodingRepository});
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -25,13 +25,15 @@ class SearchAddressController extends GetxController {
   final highlightedWordAddress = <String, HighlightedWord>{}.obs;
   final isDisplaySearchAddressPinnedTop = false.obs;
 
-  final googlePlaceTextSearchList = <GooglePlaceTextSearch>[].obs;
+  // final googlePlaceTextSearchList = <GooglePlaceTextSearch>[].obs;
+  final geocodingPlaceList = <GeocodingPlace>[].obs;
   final currentLatitude = "".obs;
   final currentLongitude = "".obs;
 
   final isEdit = false.obs;
 
   final isFetch = false.obs;
+  final isFetchAddressSearch = false.obs;
 
   @override
   Future<void> onInit() async {
@@ -110,19 +112,20 @@ class SearchAddressController extends GetxController {
 
   Future<void> getPlaceLocationList({String? keyword}) async {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
-      if (this.keyword.value == keyword) {
-        googlePlaceTextSearchList.value = await googleMapsRepository
-            .getRecommendationPlaceListByTextSearch(
-              query: this.keyword.value,
-              language: "en",
-            );
+      isFetchAddressSearch.value = true;
+      if (this.keyword.value == '') {
+        geocodingPlaceList.value = [];
+      }
+      if (this.keyword.value == keyword && this.keyword.value != '') {
+        geocodingPlaceList.value = await geocodingRepository
+            .getGeocodingPlaceByQuery(limit: 5, query: this.keyword.value);
 
-        for (var location in googlePlaceTextSearchList) {
+        for (var location in geocodingPlaceList) {
           var distanceMeter = Geolocator.distanceBetween(
             double.parse(currentLatitude.value),
             double.parse(currentLongitude.value),
-            location.geometry!.location!.lat!,
-            location.geometry!.location!.lng!,
+            location.lat!,
+            location.lng!,
           );
           var distanceKm = (distanceMeter / 1000);
 
@@ -147,17 +150,16 @@ class SearchAddressController extends GetxController {
                 );
           }
         }
+        isFetchAddressSearch.value = false;
       }
     });
   }
 
-  String getDistanceString({
-    required GooglePlaceTextSearch googlePlaceTextSearch,
-  }) {
-    if (googlePlaceTextSearch.customDistanceKm! < 1) {
-      return "${googlePlaceTextSearch.customDistanceM!.round()} m";
+  String getDistanceString({required GeocodingPlace geocodingPlace}) {
+    if (geocodingPlace.customDistanceKm! < 1) {
+      return "${geocodingPlace.customDistanceM!.round()} m";
     } else {
-      return "${googlePlaceTextSearch.customDistanceKm!.toStringAsFixed(2)} ${languageServices.language.value.km}";
+      return "${geocodingPlace.customDistanceKm!.toStringAsFixed(2)} ${languageServices.language.value.km}";
     }
   }
 }

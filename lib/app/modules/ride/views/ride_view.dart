@@ -140,6 +140,12 @@ class RideView extends GetView<RideController> {
                                     false
                                 ? controller.polylines
                                 : {},
+                            cameraTargetBounds: CameraTargetBounds(
+                              LatLngBounds(
+                                southwest: LatLng(-11.0, 95.0),
+                                northeast: LatLng(6.0, 141.0),
+                              ),
+                            ),
                           ),
                           if (controller.status.value ==
                                   "origin_select_via_map" ||

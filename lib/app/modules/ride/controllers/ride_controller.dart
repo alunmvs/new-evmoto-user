@@ -15,6 +15,7 @@ import 'package:new_evmoto_user/app/data/models/recommendation_location_model.da
 import 'package:new_evmoto_user/app/data/models/requested_order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -33,12 +34,14 @@ class RideController extends GetxController {
   final OrderRideRepository orderRideRepository;
   final SavedAddressRepository savedAddressRepository;
   final OpenMapsRepository openMapsRepository;
+  final GeocodingRepository geocodingRepository;
 
   RideController({
     required this.googleMapsRepository,
     required this.orderRideRepository,
     required this.savedAddressRepository,
     required this.openMapsRepository,
+    required this.geocodingRepository,
   });
 
   final homeController = Get.find<HomeController>();

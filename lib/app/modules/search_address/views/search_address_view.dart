@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/utils/service_area_helper.dart';
+import 'package:new_evmoto_user/main.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../controllers/search_address_controller.dart';
@@ -392,25 +394,105 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 2),
-                                      for (var googlePlaceTextSearch
-                                          in controller
-                                              .googlePlaceTextSearchList) ...[
+                                      if (controller
+                                              .geocodingPlaceList
+                                              .isEmpty &&
+                                          controller.keyword.value != '' &&
+                                          controller
+                                                  .isFetchAddressSearch
+                                                  .value ==
+                                              false) ...[
+                                        Container(
+                                          padding: EdgeInsets.all(16),
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
+                                          child: Column(
+                                            children: [
+                                              Image.asset(
+                                                "assets/images/img_location_not_found.png",
+                                                width: 72,
+                                                height: 72,
+                                              ),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .locationNotFound ??
+                                                    "-",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value
+                                                    .copyWith(),
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                "Pastikan alamat yang dimasukkan sudah benar",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                      for (var geocodingPlace
+                                          in controller.geocodingPlaceList) ...[
                                         GestureDetector(
                                           onTap: () {
                                             if (controller.isEdit.value ==
                                                 true) {
-                                              Get.back(
-                                                result: googlePlaceTextSearch,
-                                              );
+                                              Get.back(result: geocodingPlace);
                                             } else {
+                                              var isInsideserviceArea =
+                                                  isLatLngInsideServiceArea(
+                                                    latitude:
+                                                        geocodingPlace.lat!,
+                                                    longitude:
+                                                        geocodingPlace.lng!,
+                                                  );
+                                              if (isInsideserviceArea ==
+                                                  false) {
+                                                var snackBar = SnackBar(
+                                                  behavior:
+                                                      SnackBarBehavior.fixed,
+                                                  backgroundColor: controller
+                                                      .themeColorServices
+                                                      .sematicColorRed400
+                                                      .value,
+                                                  content: Text(
+                                                    'Alamat diluar wilayah layanan tersedia',
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey0
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                );
+                                                rootScaffoldMessengerKey
+                                                    .currentState
+                                                    ?.showSnackBar(snackBar);
+                                                return;
+                                              }
                                               Get.toNamed(
                                                 Routes.ADD_EDIT_ADDRESS,
                                                 arguments: {
                                                   "address_type": controller
                                                       .addressType
                                                       .value,
-                                                  "google_place_text_search":
-                                                      googlePlaceTextSearch,
+                                                  "geocoding_place":
+                                                      geocodingPlace,
                                                 },
                                               );
                                             }
@@ -469,7 +551,7 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                     children: [
                                                       TextHighlight(
                                                         text:
-                                                            googlePlaceTextSearch
+                                                            geocodingPlace
                                                                 .name ??
                                                             "-",
                                                         words: controller
@@ -484,7 +566,7 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                       SizedBox(height: 4),
                                                       TextHighlight(
                                                         text:
-                                                            "${controller.getDistanceString(googlePlaceTextSearch: googlePlaceTextSearch)} ⬩ ${googlePlaceTextSearch.formattedAddress}",
+                                                            "${controller.getDistanceString(geocodingPlace: geocodingPlace)} ⬩ ${geocodingPlace.address}",
                                                         words: controller
                                                             .highlightedWordAddress,
                                                         textStyle: controller

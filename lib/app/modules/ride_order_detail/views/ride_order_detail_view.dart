@@ -68,6 +68,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                       .isPinLocationWaitingForDriverHide
                                       .value ==
                                   true,
+                              cameraTargetBounds: CameraTargetBounds(
+                                LatLngBounds(
+                                  southwest: LatLng(-11.0, 95.0),
+                                  northeast: LatLng(6.5, 141.0),
+                                ),
+                              ),
                             ),
                             if (controller
                                     .isPinLocationWaitingForDriverHide

@@ -232,21 +232,21 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   .primaryBlue
                                   .value,
                               formControlName: 'address_detail',
-                              onTap: (control) async {
-                                var googlePlaceTextSearch = await Get.toNamed(
-                                  Routes.SEARCH_ADDRESS,
-                                );
+                              // onTap: (control) async {
+                              //   var geocodingPlace = await Get.toNamed(
+                              //     Routes.SEARCH_ADDRESS,
+                              //   );
 
-                                if (googlePlaceTextSearch != null) {
-                                  controller.googlePlaceTextSearch.value =
-                                      googlePlaceTextSearch;
+                              //   if (geocodingPlace != null) {
+                              //     controller.geocodingPlace.value =
+                              //         geocodingPlace;
 
-                                  controller.formGroup
-                                          .control("address_detail")
-                                          .value =
-                                      googlePlaceTextSearch.formattedAddress;
-                                }
-                              },
+                              //     controller.formGroup
+                              //             .control("address_detail")
+                              //             .value =
+                              //         geocodingPlace.address;
+                              //   }
+                              // },
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 12,
