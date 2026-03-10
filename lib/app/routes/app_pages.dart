@@ -162,7 +162,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SEARCH_ADDRESS,
-      page: () => const SearchAddressView(),
+      page: () => SearchAddressView(),
       binding: SearchAddressBinding(),
     ),
     GetPage(

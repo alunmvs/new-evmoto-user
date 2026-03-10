@@ -735,6 +735,9 @@ class HomeView extends GetView<HomeController> {
                                                                   arguments: {
                                                                     "address_type":
                                                                         1,
+                                                                    "tag": DateTime.now()
+                                                                        .millisecondsSinceEpoch
+                                                                        .toString(),
                                                                   },
                                                                 );
 
@@ -803,6 +806,9 @@ class HomeView extends GetView<HomeController> {
                                                                   arguments: {
                                                                     "address_type":
                                                                         2,
+                                                                    "tag": DateTime.now()
+                                                                        .millisecondsSinceEpoch
+                                                                        .toString(),
                                                                   },
                                                                 );
 
@@ -871,6 +877,9 @@ class HomeView extends GetView<HomeController> {
                                                                   arguments: {
                                                                     "address_type":
                                                                         3,
+                                                                    "tag": DateTime.now()
+                                                                        .millisecondsSinceEpoch
+                                                                        .toString(),
                                                                   },
                                                                 );
 
@@ -1657,109 +1666,112 @@ class HomeView extends GetView<HomeController> {
                                                                           await Get.dialog(
                                                                             barrierDismissible:
                                                                                 false,
-                                                                            Padding(
-                                                                              padding: const EdgeInsets.all(
-                                                                                16,
-                                                                              ),
-                                                                              child: Column(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                children: [
-                                                                                  ClipRRect(
-                                                                                    borderRadius: BorderRadius.circular(
-                                                                                      16,
-                                                                                    ),
-                                                                                    child: Material(
-                                                                                      color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                      child: Container(
-                                                                                        padding: EdgeInsets.all(
-                                                                                          16,
-                                                                                        ),
-                                                                                        width: MediaQuery.of(
-                                                                                          context,
-                                                                                        ).size.width,
-                                                                                        decoration: BoxDecoration(
-                                                                                          color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                          borderRadius: BorderRadius.circular(
+                                                                            PopScope(
+                                                                              canPop: false,
+                                                                              child: Padding(
+                                                                                padding: const EdgeInsets.all(
+                                                                                  16,
+                                                                                ),
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                  children: [
+                                                                                    ClipRRect(
+                                                                                      borderRadius: BorderRadius.circular(
+                                                                                        16,
+                                                                                      ),
+                                                                                      child: Material(
+                                                                                        color: controller.themeColorServices.neutralsColorGrey0.value,
+                                                                                        child: Container(
+                                                                                          padding: EdgeInsets.all(
                                                                                             16,
                                                                                           ),
-                                                                                        ),
-                                                                                        child: Column(
-                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                          children:
-                                                                                              <
-                                                                                                Widget
-                                                                                              >[
-                                                                                                Text(
-                                                                                                  controller.languageServices.language.value.coachmarkDescription5 ??
-                                                                                                      "-",
-                                                                                                  style: controller.typographyServices.bodyLargeBold.value.copyWith(),
-                                                                                                ),
-                                                                                                SizedBox(
-                                                                                                  height: 4,
-                                                                                                ),
-                                                                                                Text(
-                                                                                                  controller.languageServices.language.value.coachmarkDescription5 ??
-                                                                                                      "-",
-                                                                                                  style: controller.typographyServices.bodySmallRegular.value.copyWith(),
-                                                                                                ),
-                                                                                                SizedBox(
-                                                                                                  height: 16,
-                                                                                                ),
-                                                                                                Row(
-                                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                  children: [
-                                                                                                    Text(
-                                                                                                      "5/5",
-                                                                                                      style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                                                        color: controller.themeColorServices.neutralsColorGrey500.value,
+                                                                                          width: MediaQuery.of(
+                                                                                            context,
+                                                                                          ).size.width,
+                                                                                          decoration: BoxDecoration(
+                                                                                            color: controller.themeColorServices.neutralsColorGrey0.value,
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              16,
+                                                                                            ),
+                                                                                          ),
+                                                                                          child: Column(
+                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            children:
+                                                                                                <
+                                                                                                  Widget
+                                                                                                >[
+                                                                                                  Text(
+                                                                                                    controller.languageServices.language.value.coachmarkDescription5 ??
+                                                                                                        "-",
+                                                                                                    style: controller.typographyServices.bodyLargeBold.value.copyWith(),
+                                                                                                  ),
+                                                                                                  SizedBox(
+                                                                                                    height: 4,
+                                                                                                  ),
+                                                                                                  Text(
+                                                                                                    controller.languageServices.language.value.coachmarkDescription5 ??
+                                                                                                        "-",
+                                                                                                    style: controller.typographyServices.bodySmallRegular.value.copyWith(),
+                                                                                                  ),
+                                                                                                  SizedBox(
+                                                                                                    height: 16,
+                                                                                                  ),
+                                                                                                  Row(
+                                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                                    children: [
+                                                                                                      Text(
+                                                                                                        "5/5",
+                                                                                                        style: controller.typographyServices.captionLargeBold.value.copyWith(
+                                                                                                          color: controller.themeColorServices.neutralsColorGrey500.value,
+                                                                                                        ),
                                                                                                       ),
-                                                                                                    ),
-                                                                                                    SizedBox(
-                                                                                                      height: 30,
-                                                                                                      child: ElevatedButton(
-                                                                                                        onPressed: () async {
-                                                                                                          Get.close(
-                                                                                                            1,
-                                                                                                          );
+                                                                                                      SizedBox(
+                                                                                                        height: 30,
+                                                                                                        child: ElevatedButton(
+                                                                                                          onPressed: () async {
+                                                                                                            Get.close(
+                                                                                                              1,
+                                                                                                            );
 
-                                                                                                          var prefs = await SharedPreferences.getInstance();
-                                                                                                          await prefs.setBool(
-                                                                                                            'is_coachmark_displayed',
-                                                                                                            true,
-                                                                                                          );
-                                                                                                        },
-                                                                                                        style: ElevatedButton.styleFrom(
-                                                                                                          backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                                          shape: RoundedRectangleBorder(
-                                                                                                            borderRadius: BorderRadius.circular(
-                                                                                                              8,
+                                                                                                            var prefs = await SharedPreferences.getInstance();
+                                                                                                            await prefs.setBool(
+                                                                                                              'is_coachmark_displayed',
+                                                                                                              true,
+                                                                                                            );
+                                                                                                          },
+                                                                                                          style: ElevatedButton.styleFrom(
+                                                                                                            backgroundColor: controller.themeColorServices.primaryBlue.value,
+                                                                                                            shape: RoundedRectangleBorder(
+                                                                                                              borderRadius: BorderRadius.circular(
+                                                                                                                8,
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                            padding: EdgeInsets.symmetric(
+                                                                                                              horizontal: 16,
+                                                                                                              vertical: 0,
                                                                                                             ),
                                                                                                           ),
-                                                                                                          padding: EdgeInsets.symmetric(
-                                                                                                            horizontal: 16,
-                                                                                                            vertical: 0,
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                        child: Center(
-                                                                                                          child: Text(
-                                                                                                            controller.languageServices.language.value.coachmarkButton5 ??
-                                                                                                                "-",
-                                                                                                            style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                                              color: controller.themeColorServices.neutralsColorGrey0.value,
+                                                                                                          child: Center(
+                                                                                                            child: Text(
+                                                                                                              controller.languageServices.language.value.coachmarkButton5 ??
+                                                                                                                  "-",
+                                                                                                              style: controller.typographyServices.bodySmallBold.value.copyWith(
+                                                                                                                color: controller.themeColorServices.neutralsColorGrey0.value,
+                                                                                                              ),
                                                                                                             ),
                                                                                                           ),
                                                                                                         ),
                                                                                                       ),
-                                                                                                    ),
-                                                                                                  ],
-                                                                                                ),
-                                                                                              ],
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                ],
+                                                                                          ),
                                                                                         ),
                                                                                       ),
                                                                                     ),
-                                                                                  ),
-                                                                                ],
+                                                                                  ],
+                                                                                ),
                                                                               ),
                                                                             ),
                                                                           );

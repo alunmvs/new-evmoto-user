@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
@@ -247,6 +248,17 @@ class AddEditUserInformationView
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
+                          validationMessages: {
+                            ValidationMessage.required: (error) =>
+                                'Wajib diisi',
+                            ValidationMessage.maxLength: (error) =>
+                                'Maksimal 20 karakter',
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[A-ZA-z ]'),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 16),
                         Text(

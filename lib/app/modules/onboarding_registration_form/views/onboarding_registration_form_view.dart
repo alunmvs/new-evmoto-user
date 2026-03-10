@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
@@ -156,7 +157,14 @@ class OnboardingRegistrationFormView
                             validationMessages: {
                               ValidationMessage.required: (error) =>
                                   'Wajib diisi',
+                              ValidationMessage.maxLength: (error) =>
+                                  'Maksimal 20 karakter',
                             },
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[A-ZA-z ]'),
+                              ),
+                            ],
                           ),
                         ],
                       ),

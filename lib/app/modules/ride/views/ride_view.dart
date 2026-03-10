@@ -6,11 +6,14 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/data/models/google_geo_code_search_model.dart';
 import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/general_helper.dart';
+import 'package:new_evmoto_user/app/utils/service_area_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
@@ -103,18 +106,16 @@ class RideView extends GetView<RideController> {
                             onCameraMove: (position) async {
                               if (controller.status.value ==
                                   "origin_select_via_map") {
-                                await controller
-                                    .onMapMoveOriginGoogleGeoCodeSearch(
-                                      latitude: position.target.latitude
-                                          .toString(),
-                                      longitude: position.target.longitude
-                                          .toString(),
-                                    );
+                                await controller.onMapMoveOriginGeoCodeSearch(
+                                  latitude: position.target.latitude.toString(),
+                                  longitude: position.target.longitude
+                                      .toString(),
+                                );
                               }
                               if (controller.status.value ==
                                   "destination_select_via_map") {
                                 await controller
-                                    .onMapMoveDestinationGoogleGeoCodeSearch(
+                                    .onMapMoveDestinationGoogleCodeSearch(
                                       latitude: position.target.latitude
                                           .toString(),
                                       longitude: position.target.longitude
@@ -125,10 +126,12 @@ class RideView extends GetView<RideController> {
                             initialCameraPosition:
                                 controller.initialCameraPosition.value,
                             onMapCreated:
-                                (GoogleMapController googleMapController) {
+                                (
+                                  GoogleMapController googleMapController,
+                                ) async {
                                   controller.googleMapController =
                                       googleMapController;
-                                  controller.prefillOrderAgain();
+                                  await controller.prefillOrderAgain();
                                 },
                             markers:
                                 controller.isHideMarkersAndPolylines.value ==
@@ -451,13 +454,12 @@ class RideView extends GetView<RideController> {
                                           onTap: () {
                                             if (controller
                                                     .originTextEditingController
-                                                    .text !=
+                                                    .text ==
                                                 "") {
-                                              controller.getOriginPlaceLocationList(
-                                                keyword: controller
-                                                    .originTextEditingController
-                                                    .text,
-                                              );
+                                              controller
+                                                      .originGeocodingPlaceList
+                                                      .value =
+                                                  [];
                                             }
                                           },
                                           decoration: InputDecoration(
@@ -634,13 +636,17 @@ class RideView extends GetView<RideController> {
                                                                   .value =
                                                               "";
                                                           controller
-                                                                  .originGoogleGeoCodeSearch
+                                                                  .originGeocodeAddressSearch
                                                                   .value =
-                                                              GoogleGeoCodeSearch();
+                                                              null;
                                                           controller
-                                                                  .originGooglePlaceTextSearch
+                                                                  .originGeocodingPlace
                                                                   .value =
-                                                              GooglePlaceTextSearch();
+                                                              GeocodingPlace();
+                                                          controller
+                                                                  .originGeocodingPlaceList
+                                                                  .value =
+                                                              [];
 
                                                           controller
                                                               .focusNodeOrigin
@@ -712,15 +718,13 @@ class RideView extends GetView<RideController> {
                                           },
                                           onTap: () {
                                             if (controller
-                                                    .originTextEditingController
-                                                    .text !=
+                                                    .destinationTextEditingController
+                                                    .text ==
                                                 "") {
                                               controller
-                                                  .getDestinationPlaceLocationList(
-                                                    keyword: controller
-                                                        .originTextEditingController
-                                                        .text,
-                                                  );
+                                                      .destinationGeocodingPlaceList
+                                                      .value =
+                                                  [];
                                             }
                                           },
                                           decoration: InputDecoration(
@@ -898,13 +902,17 @@ class RideView extends GetView<RideController> {
                                                                   .value =
                                                               "";
                                                           controller
-                                                                  .destinationGoogleGeoCodeSearch
+                                                                  .destinationGeocodeAddressSearch
                                                                   .value =
-                                                              GoogleGeoCodeSearch();
+                                                              null;
                                                           controller
-                                                                  .destinationGooglePlaceTextSearch
+                                                                  .destinationGeocodingPlace
                                                                   .value =
-                                                              GooglePlaceTextSearch();
+                                                              GeocodingPlace();
+                                                          controller
+                                                                  .destinationGeocodingPlaceList
+                                                                  .value =
+                                                              [];
                                                           controller
                                                               .focusNodeDestination
                                                               .requestFocus();
@@ -1043,7 +1051,12 @@ class RideView extends GetView<RideController> {
                                           onTap: () async {
                                             await Get.toNamed(
                                               Routes.SEARCH_ADDRESS,
-                                              arguments: {"address_type": 1},
+                                              arguments: {
+                                                "address_type": 1,
+                                                "tag": DateTime.now()
+                                                    .millisecondsSinceEpoch
+                                                    .toString(),
+                                              },
                                             );
                                             await controller
                                                 .getSavedAddressList();
@@ -1117,7 +1130,12 @@ class RideView extends GetView<RideController> {
                                           onTap: () async {
                                             await Get.toNamed(
                                               Routes.SEARCH_ADDRESS,
-                                              arguments: {"address_type": 2},
+                                              arguments: {
+                                                "address_type": 2,
+                                                "tag": DateTime.now()
+                                                    .millisecondsSinceEpoch
+                                                    .toString(),
+                                              },
                                             );
                                             await controller
                                                 .getSavedAddressList();
@@ -1191,7 +1209,12 @@ class RideView extends GetView<RideController> {
                                           onTap: () async {
                                             await Get.toNamed(
                                               Routes.SEARCH_ADDRESS,
-                                              arguments: {"address_type": 3},
+                                              arguments: {
+                                                "address_type": 3,
+                                                "tag": DateTime.now()
+                                                    .millisecondsSinceEpoch
+                                                    .toString(),
+                                              },
                                             );
                                             await controller
                                                 .getSavedAddressList();
@@ -1275,7 +1298,7 @@ class RideView extends GetView<RideController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           if (controller
-                                                  .originGooglePlaceTextSearchList
+                                                  .originGeocodingPlaceList
                                                   .isEmpty &&
                                               controller.keywordOrigin.value !=
                                                   "") ...[
@@ -1325,7 +1348,7 @@ class RideView extends GetView<RideController> {
                                             ),
                                           ],
                                           if (controller
-                                                  .originGooglePlaceTextSearchList
+                                                  .originGeocodingPlaceList
                                                   .isEmpty &&
                                               controller.keywordOrigin.value ==
                                                   "") ...[
@@ -1334,6 +1357,25 @@ class RideView extends GetView<RideController> {
                                                     .recommendationOriginCurrentLocationList) ...[
                                               GestureDetector(
                                                 onTap: () async {
+                                                  var isInsideserviceArea =
+                                                      isLatLngInsideServiceArea(
+                                                        latitude: double.parse(
+                                                          recommendationOriginCurrentLocation
+                                                              .latitude!,
+                                                        ),
+                                                        longitude: double.parse(
+                                                          recommendationOriginCurrentLocation
+                                                              .longitude!,
+                                                        ),
+                                                      );
+                                                  if (isInsideserviceArea ==
+                                                      false) {
+                                                    SnackbarHelper.showSnackbarError(
+                                                      text:
+                                                          'Alamat diluar wilayah layanan tersedia',
+                                                    );
+                                                    return;
+                                                  }
                                                   controller
                                                           .originLatitude
                                                           .value =
@@ -1506,6 +1548,25 @@ class RideView extends GetView<RideController> {
                                                     .recommendationOriginLocationList) ...[
                                               GestureDetector(
                                                 onTap: () async {
+                                                  var isInsideserviceArea =
+                                                      isLatLngInsideServiceArea(
+                                                        latitude: double.parse(
+                                                          recommendationOriginLocation
+                                                              .latitude!,
+                                                        ),
+                                                        longitude: double.parse(
+                                                          recommendationOriginLocation
+                                                              .longitude!,
+                                                        ),
+                                                      );
+                                                  if (isInsideserviceArea ==
+                                                      false) {
+                                                    SnackbarHelper.showSnackbarError(
+                                                      text:
+                                                          'Alamat diluar wilayah layanan tersedia',
+                                                    );
+                                                    return;
+                                                  }
                                                   controller
                                                           .originLatitude
                                                           .value =
@@ -1674,44 +1735,56 @@ class RideView extends GetView<RideController> {
                                               ),
                                             ],
                                           ],
-                                          for (var originGooglePlaceTextSearch
+                                          for (var originGeocodingPlace
                                               in controller
-                                                  .originGooglePlaceTextSearchList) ...[
+                                                  .originGeocodingPlaceList) ...[
                                             GestureDetector(
                                               onTap: () async {
+                                                var isInsideserviceArea =
+                                                    isLatLngInsideServiceArea(
+                                                      latitude:
+                                                          originGeocodingPlace
+                                                              .lat!,
+                                                      longitude:
+                                                          originGeocodingPlace
+                                                              .lng!,
+                                                    );
+                                                if (isInsideserviceArea ==
+                                                    false) {
+                                                  SnackbarHelper.showSnackbarError(
+                                                    text:
+                                                        'Alamat diluar wilayah layanan tersedia',
+                                                  );
+                                                  return;
+                                                }
+
                                                 controller
                                                         .originLatitude
                                                         .value =
-                                                    originGooglePlaceTextSearch
-                                                        .geometry!
-                                                        .location!
-                                                        .lat
+                                                    originGeocodingPlace.lat
                                                         .toString();
                                                 controller
                                                         .originLongitude
                                                         .value =
-                                                    originGooglePlaceTextSearch
-                                                        .geometry!
-                                                        .location!
-                                                        .lng
+                                                    originGeocodingPlace.lng
                                                         .toString();
                                                 controller
-                                                        .originGooglePlaceTextSearch
+                                                        .originGeocodingPlace
                                                         .value =
-                                                    originGooglePlaceTextSearch;
+                                                    originGeocodingPlace;
                                                 controller.originAddress.value =
-                                                    originGooglePlaceTextSearch
-                                                        .formattedAddress ??
+                                                    originGeocodingPlace
+                                                        .address ??
                                                     "-";
                                                 controller.keywordOrigin.value =
-                                                    originGooglePlaceTextSearch
-                                                        .formattedAddress ??
+                                                    originGeocodingPlace
+                                                        .address ??
                                                     "-";
                                                 controller
                                                         .originTextEditingController
                                                         .text =
-                                                    originGooglePlaceTextSearch
-                                                        .formattedAddress ??
+                                                    originGeocodingPlace
+                                                        .address ??
                                                     "-";
                                                 controller.focusNodeDestination
                                                     .requestFocus();
@@ -1799,7 +1872,7 @@ class RideView extends GetView<RideController> {
                                                         children: [
                                                           TextHighlight(
                                                             text:
-                                                                originGooglePlaceTextSearch
+                                                                originGeocodingPlace
                                                                     .name ??
                                                                 "-",
                                                             words: controller
@@ -1814,8 +1887,8 @@ class RideView extends GetView<RideController> {
                                                           SizedBox(height: 4),
                                                           TextHighlight(
                                                             text:
-                                                                originGooglePlaceTextSearch
-                                                                    .formattedAddress ??
+                                                                originGeocodingPlace
+                                                                    .address ??
                                                                 "-",
                                                             words: controller
                                                                 .highlightedWordAddressOrigin,
@@ -1863,7 +1936,7 @@ class RideView extends GetView<RideController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           if (controller
-                                                  .destinationGooglePlaceTextSearchList
+                                                  .destinationGeocodingPlaceList
                                                   .isEmpty &&
                                               controller
                                                       .keywordDestination
@@ -1913,7 +1986,7 @@ class RideView extends GetView<RideController> {
                                             ),
                                           ],
                                           if (controller
-                                                  .destinationGooglePlaceTextSearchList
+                                                  .destinationGeocodingPlaceList
                                                   .isEmpty &&
                                               controller
                                                       .keywordDestination
@@ -1924,6 +1997,25 @@ class RideView extends GetView<RideController> {
                                                     .recommendationDestinationLocationList) ...[
                                               GestureDetector(
                                                 onTap: () async {
+                                                  var isInsideserviceArea =
+                                                      isLatLngInsideServiceArea(
+                                                        latitude: double.parse(
+                                                          recommendationDestinationLocation
+                                                              .latitude!,
+                                                        ),
+                                                        longitude: double.parse(
+                                                          recommendationDestinationLocation
+                                                              .longitude!,
+                                                        ),
+                                                      );
+                                                  if (isInsideserviceArea ==
+                                                      false) {
+                                                    SnackbarHelper.showSnackbarError(
+                                                      text:
+                                                          'Alamat diluar wilayah layanan tersedia',
+                                                    );
+                                                    return;
+                                                  }
                                                   controller
                                                           .destinationLatitude
                                                           .value =
@@ -2117,31 +2209,44 @@ class RideView extends GetView<RideController> {
                                               ),
                                             ],
                                           ],
-                                          for (var destinationGooglePlaceTextSearch
+                                          for (var destinationGeocodingPlace
                                               in controller
-                                                  .destinationGooglePlaceTextSearchList) ...[
+                                                  .destinationGeocodingPlaceList) ...[
                                             GestureDetector(
                                               onTap: () async {
+                                                var isInsideserviceArea =
+                                                    isLatLngInsideServiceArea(
+                                                      latitude:
+                                                          destinationGeocodingPlace
+                                                              .lat!,
+                                                      longitude:
+                                                          destinationGeocodingPlace
+                                                              .lng!,
+                                                    );
+                                                if (isInsideserviceArea ==
+                                                    false) {
+                                                  SnackbarHelper.showSnackbarError(
+                                                    text:
+                                                        'Alamat diluar wilayah layanan tersedia',
+                                                  );
+                                                  return;
+                                                }
                                                 controller
                                                         .destinationLatitude
                                                         .value =
-                                                    destinationGooglePlaceTextSearch
-                                                        .geometry!
-                                                        .location!
+                                                    destinationGeocodingPlace
                                                         .lat
                                                         .toString();
                                                 controller
                                                         .destinationLongitude
                                                         .value =
-                                                    destinationGooglePlaceTextSearch
-                                                        .geometry!
-                                                        .location!
+                                                    destinationGeocodingPlace
                                                         .lng
                                                         .toString();
                                                 controller
-                                                        .destinationGooglePlaceTextSearch
+                                                        .destinationGeocodingPlace
                                                         .value =
-                                                    destinationGooglePlaceTextSearch;
+                                                    destinationGeocodingPlace;
                                                 controller.focusNodeDestination
                                                     .requestFocus();
                                                 controller.status.value =
@@ -2149,20 +2254,20 @@ class RideView extends GetView<RideController> {
                                                 controller
                                                         .destinationAddress
                                                         .value =
-                                                    destinationGooglePlaceTextSearch
-                                                        .formattedAddress ??
+                                                    destinationGeocodingPlace
+                                                        .address ??
                                                     "-";
                                                 controller
                                                         .keywordDestination
                                                         .value =
-                                                    destinationGooglePlaceTextSearch
-                                                        .formattedAddress ??
+                                                    destinationGeocodingPlace
+                                                        .address ??
                                                     "-";
                                                 controller
                                                         .destinationTextEditingController
                                                         .text =
-                                                    destinationGooglePlaceTextSearch
-                                                        .formattedAddress ??
+                                                    destinationGeocodingPlace
+                                                        .address ??
                                                     "-";
                                                 controller.markers.removeWhere(
                                                   (m) =>
@@ -2268,7 +2373,7 @@ class RideView extends GetView<RideController> {
                                                         children: [
                                                           TextHighlight(
                                                             text:
-                                                                destinationGooglePlaceTextSearch
+                                                                destinationGeocodingPlace
                                                                     .name ??
                                                                 "-",
                                                             words: controller
@@ -2283,8 +2388,8 @@ class RideView extends GetView<RideController> {
                                                           SizedBox(height: 4),
                                                           TextHighlight(
                                                             text:
-                                                                destinationGooglePlaceTextSearch
-                                                                    .formattedAddress ??
+                                                                destinationGeocodingPlace
+                                                                    .address ??
                                                                 "-",
                                                             words: controller
                                                                 .highlightedWordAddressOrigin,
@@ -2519,14 +2624,12 @@ class RideView extends GetView<RideController> {
                                                 controller.status.value ==
                                                         "origin_select_via_map"
                                                     ? (controller
-                                                              .originGoogleGeoCodeSearch
-                                                              .value
-                                                              .formattedAddress ??
+                                                              .originGeocodeAddressSearch
+                                                              .value ??
                                                           "-")
                                                     : (controller
-                                                              .destinationGoogleGeoCodeSearch
-                                                              .value
-                                                              .formattedAddress ??
+                                                              .destinationGeocodeAddressSearch
+                                                              .value ??
                                                           "-"),
                                                 style: controller
                                                     .typographyServices
@@ -2562,7 +2665,9 @@ class RideView extends GetView<RideController> {
                                   ),
                                   child: LoaderElevatedButton(
                                     onPressed: () async {
-                                      await controller.onTapSubmitViaMap();
+                                      await controller.onTapSubmitViaMap(
+                                        context: context,
+                                      );
                                     },
                                     child: Text(
                                       controller
@@ -2829,8 +2934,8 @@ class RideView extends GetView<RideController> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16),
+                            topLeft: Radius.circular(0),
+                            topRight: Radius.circular(0),
                           ),
                         ),
                         child: Column(
@@ -2853,8 +2958,8 @@ class RideView extends GetView<RideController> {
                                   stops: [0.0, 0.5],
                                 ),
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16),
+                                  topLeft: Radius.circular(0),
+                                  topRight: Radius.circular(0),
                                 ),
                               ),
                               child: Row(
@@ -2973,8 +3078,8 @@ class RideView extends GetView<RideController> {
                                     .neutralsColorGrey0
                                     .value,
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16),
+                                  topLeft: Radius.circular(0),
+                                  topRight: Radius.circular(0),
                                 ),
                                 boxShadow: [
                                   BoxShadow(

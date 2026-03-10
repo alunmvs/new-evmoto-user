@@ -8,6 +8,7 @@ class SearchAddressBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<SearchAddressController>(
       () => SearchAddressController(geocodingRepository: GeocodingRepository()),
+      tag: Get.arguments['tag'],
     );
   }
 }

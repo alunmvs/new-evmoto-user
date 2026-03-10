@@ -31,7 +31,7 @@ class AddEditUserInformationController extends GetxController {
 
   final formGroup = FormGroup({
     "full_name": FormControl<String>(
-      validators: <Validator>[Validators.required],
+      validators: <Validator>[Validators.required, Validators.maxLength(20)],
     ),
     "gender_type": FormControl<int>(validators: <Validator>[]),
     "mobile_number": FormControl<String>(

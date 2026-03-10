@@ -24,7 +24,7 @@ class AddEditAddressController extends GetxController {
 
   final formGroup = FormGroup({
     "address_name": FormControl<String>(
-      validators: <Validator>[Validators.required],
+      validators: <Validator>[Validators.required, Validators.maxLength(255)],
     ),
     "address_detail": FormControl<String>(
       validators: <Validator>[Validators.required],
@@ -97,7 +97,7 @@ class AddEditAddressController extends GetxController {
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorGreen400.value,
             content: Text(
-              languageServices.language.value.logoutConfirmation ?? "-",
+              'Berhasil menyimpan alamat',
               style: typographyServices.bodySmallRegular.value.copyWith(
                 color: themeColorServices.neutralsColorGrey0.value,
               ),

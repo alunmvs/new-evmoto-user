@@ -6,13 +6,18 @@ import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/utils/service_area_helper.dart';
-import 'package:new_evmoto_user/main.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../controllers/search_address_controller.dart';
 
-class SearchAddressView extends GetView<SearchAddressController> {
-  const SearchAddressView({super.key});
+class SearchAddressView extends StatelessWidget {
+  SearchAddressView({super.key});
+
+  final controller = Get.find<SearchAddressController>(
+    tag: Get.arguments['tag'],
+  );
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -147,6 +152,7 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                 .typographyServices
                                 .bodySmallRegular
                                 .value,
+
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                 vertical: 12,
@@ -459,30 +465,10 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                   );
                                               if (isInsideserviceArea ==
                                                   false) {
-                                                var snackBar = SnackBar(
-                                                  behavior:
-                                                      SnackBarBehavior.fixed,
-                                                  backgroundColor: controller
-                                                      .themeColorServices
-                                                      .sematicColorRed400
-                                                      .value,
-                                                  content: Text(
-                                                    'Alamat diluar wilayah layanan tersedia',
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey0
-                                                              .value,
-                                                        ),
-                                                  ),
+                                                SnackbarHelper.showSnackbarError(
+                                                  text:
+                                                      'Alamat diluar wilayah layanan tersedia',
                                                 );
-                                                rootScaffoldMessengerKey
-                                                    .currentState
-                                                    ?.showSnackBar(snackBar);
                                                 return;
                                               }
                                               Get.toNamed(

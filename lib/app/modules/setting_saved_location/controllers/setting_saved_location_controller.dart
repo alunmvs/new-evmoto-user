@@ -272,7 +272,11 @@ class SettingSavedLocationController extends GetxController {
 
                             await Get.toNamed(
                               Routes.SEARCH_ADDRESS,
-                              arguments: {"address_type": 1},
+                              arguments: {
+                                "address_type": 1,
+                                "tag": DateTime.now().millisecondsSinceEpoch
+                                    .toString(),
+                              },
                             );
                           },
                           child: Container(
@@ -316,7 +320,11 @@ class SettingSavedLocationController extends GetxController {
 
                             await Get.toNamed(
                               Routes.SEARCH_ADDRESS,
-                              arguments: {"address_type": 2},
+                              arguments: {
+                                "address_type": 2,
+                                "tag": DateTime.now().millisecondsSinceEpoch
+                                    .toString(),
+                              },
                             );
                           },
                           child: Container(
@@ -360,7 +368,11 @@ class SettingSavedLocationController extends GetxController {
 
                             await Get.toNamed(
                               Routes.SEARCH_ADDRESS,
-                              arguments: {"address_type": 3},
+                              arguments: {
+                                "address_type": 3,
+                                "tag": DateTime.now().millisecondsSinceEpoch
+                                    .toString(),
+                              },
                             );
                           },
                           child: Container(

@@ -7,8 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
-import 'package:new_evmoto_user/app/data/models/google_geo_code_search_model.dart';
-import 'package:new_evmoto_user/app/data/models/google_place_text_search_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/models/recommendation_location_model.dart';
@@ -26,6 +25,8 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_user/app/utils/service_area_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:intl/intl.dart';
 
@@ -60,25 +61,23 @@ class RideController extends GetxController {
   final polylines = <Polyline>{}.obs;
   final polylinesCoordinate = <LatLng>[].obs;
 
-  final currentLatitude = "".obs;
-  final currentLongitude = "".obs;
+  final currentLatitude = Rx<String?>(null);
+  final currentLongitude = Rx<String?>(null);
 
   final originTextEditingController = TextEditingController();
   final focusNodeOrigin = FocusNode();
-  final originGooglePlaceTextSearch = GooglePlaceTextSearch().obs;
   final originLatitude = "".obs;
   final originLongitude = "".obs;
   final originAddress = "".obs;
 
   final destinationTextEditingController = TextEditingController();
   final focusNodeDestination = FocusNode();
-  final destinationGooglePlaceTextSearch = GooglePlaceTextSearch().obs;
   final destinationLatitude = "".obs;
   final destinationLongitude = "".obs;
   final destinationAddress = "".obs;
 
-  final originGoogleGeoCodeSearch = GoogleGeoCodeSearch().obs;
-  final destinationGoogleGeoCodeSearch = GoogleGeoCodeSearch().obs;
+  final originGeocodeAddressSearch = Rx<String?>(null);
+  final destinationGeocodeAddressSearch = Rx<String?>(null);
   final originSearchLatitude = "".obs;
   final originSearchLongitude = "".obs;
   final destinationSearchLatitude = "".obs;
@@ -112,8 +111,11 @@ class RideController extends GetxController {
   final fillOriginAndDestinationPanelMinHeight = 0.0.obs;
   final fillOriginAndDestinationPanelMaxHeight = 0.0.obs;
 
-  final originGooglePlaceTextSearchList = <GooglePlaceTextSearch>[].obs;
-  final destinationGooglePlaceTextSearchList = <GooglePlaceTextSearch>[].obs;
+  final originGeocodingPlace = GeocodingPlace().obs;
+  final destinationGeocodingPlace = GeocodingPlace().obs;
+
+  final originGeocodingPlaceList = <GeocodingPlace>[].obs;
+  final destinationGeocodingPlaceList = <GeocodingPlace>[].obs;
 
   final orderRidePricingList = <OrderRidePricing>[].obs;
   final selectedOrderRidePricing = OrderRidePricing().obs;
@@ -147,13 +149,15 @@ class RideController extends GetxController {
     await homeController.getUserInfo();
     await Future.wait([getHistoryOrderList(), getSavedAddressList()]);
     await requestLocation();
-    initialCameraPosition.value = CameraPosition(
-      target: LatLng(
-        double.parse(currentLatitude.value),
-        double.parse(currentLongitude.value),
-      ),
-      zoom: 15,
-    );
+    if (currentLatitude.value != null) {
+      initialCameraPosition.value = CameraPosition(
+        target: LatLng(
+          double.parse(currentLatitude.value!),
+          double.parse(currentLongitude.value!),
+        ),
+        zoom: 15,
+      );
+    }
 
     fillOriginAndDestinationPanelMinHeight.value = Get.height * 0.8;
     fillOriginAndDestinationPanelMaxHeight.value = Get.height * 0.8;
@@ -176,6 +180,15 @@ class RideController extends GetxController {
     }
 
     isFetch.value = false;
+
+    await googleMapController.moveCamera(
+      CameraUpdate.newLatLng(
+        LatLng(
+          double.parse(currentLatitude.value!),
+          double.parse(currentLongitude.value!),
+        ),
+      ),
+    );
   }
 
   @override
@@ -214,6 +227,7 @@ class RideController extends GetxController {
         refocusMapsBound(),
         getOrderRidePricingList(),
       ]);
+      generateEstimatedDistanceAndTimeInMinutes();
       selectedOrderRidePricing.value = orderRidePricingList.first;
     }
   }
@@ -376,6 +390,8 @@ class RideController extends GetxController {
         getOrderRidePricingList(),
       ]);
 
+      generateEstimatedDistanceAndTimeInMinutes();
+
       selectedOrderRidePricing.value = orderRidePricingList.first;
 
       status.value = "checkout";
@@ -385,40 +401,41 @@ class RideController extends GetxController {
   Future<void> getOriginPlaceLocationList({String? keyword}) async {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (keywordOrigin.value == keyword) {
-        originGooglePlaceTextSearchList.value = await googleMapsRepository
-            .getRecommendationPlaceListByTextSearch(
-              query: keywordOrigin.value,
-              language: "en",
+        originGeocodingPlaceList.value = await geocodingRepository
+            .getGeocodingPlaceByQuery(limit: 5, query: keywordOrigin.value);
+
+        if (currentLatitude.value != null) {
+          for (var location in originGeocodingPlaceList) {
+            var distanceMeter = Geolocator.distanceBetween(
+              double.parse(currentLatitude.value!),
+              double.parse(currentLongitude.value!),
+              location.lat!,
+              location.lng!,
             );
+            var distanceKm = (distanceMeter / 1000);
 
-        for (var location in originGooglePlaceTextSearchList) {
-          var distanceMeter = Geolocator.distanceBetween(
-            double.parse(currentLatitude.value),
-            double.parse(currentLongitude.value),
-            location.geometry!.location!.lat!,
-            location.geometry!.location!.lng!,
-          );
-          var distanceKm = (distanceMeter / 1000);
+            location.customDistanceKm = distanceKm;
+            location.customDistanceM = distanceMeter;
 
-          location.customDistanceKm = distanceKm;
-          location.customDistanceM = distanceMeter;
-
-          if (distanceKm < 1) {
-            highlightedWordAddressOrigin["${distanceMeter.round()}m ⬩"] =
-                HighlightedWord(
-                  onTap: () {},
-                  textStyle: typographyServices.captionLargeBold.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey500.value,
-                  ),
-                );
-          } else {
-            highlightedWordAddressOrigin["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
-                HighlightedWord(
-                  onTap: () {},
-                  textStyle: typographyServices.captionLargeBold.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey500.value,
-                  ),
-                );
+            if (distanceKm < 1) {
+              highlightedWordAddressOrigin["${distanceMeter.round()}m ⬩"] =
+                  HighlightedWord(
+                    onTap: () {},
+                    textStyle: typographyServices.captionLargeBold.value
+                        .copyWith(
+                          color: themeColorServices.neutralsColorGrey500.value,
+                        ),
+                  );
+            } else {
+              highlightedWordAddressOrigin["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
+                  HighlightedWord(
+                    onTap: () {},
+                    textStyle: typographyServices.captionLargeBold.value
+                        .copyWith(
+                          color: themeColorServices.neutralsColorGrey500.value,
+                        ),
+                  );
+            }
           }
         }
       }
@@ -428,40 +445,44 @@ class RideController extends GetxController {
   Future<void> getDestinationPlaceLocationList({String? keyword}) async {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (keywordDestination.value == keyword) {
-        destinationGooglePlaceTextSearchList.value = await googleMapsRepository
-            .getRecommendationPlaceListByTextSearch(
+        destinationGeocodingPlaceList.value = await geocodingRepository
+            .getGeocodingPlaceByQuery(
+              limit: 5,
               query: keywordDestination.value,
-              language: "en",
             );
 
-        for (var location in destinationGooglePlaceTextSearchList) {
-          var distanceMeter = Geolocator.distanceBetween(
-            double.parse(currentLatitude.value),
-            double.parse(currentLongitude.value),
-            location.geometry!.location!.lat!,
-            location.geometry!.location!.lng!,
-          );
-          var distanceKm = (distanceMeter / 1000);
+        if (currentLatitude.value != null) {
+          for (var location in destinationGeocodingPlaceList) {
+            var distanceMeter = Geolocator.distanceBetween(
+              double.parse(currentLatitude.value!),
+              double.parse(currentLongitude.value!),
+              location.lat!,
+              location.lng!,
+            );
+            var distanceKm = (distanceMeter / 1000);
 
-          location.customDistanceKm = distanceKm;
-          location.customDistanceM = distanceMeter;
+            location.customDistanceKm = distanceKm;
+            location.customDistanceM = distanceMeter;
 
-          if (distanceKm < 1) {
-            highlightedWordAddressDestination["${distanceMeter.round()}m ⬩"] =
-                HighlightedWord(
-                  onTap: () {},
-                  textStyle: typographyServices.captionLargeBold.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey500.value,
-                  ),
-                );
-          } else {
-            highlightedWordAddressDestination["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
-                HighlightedWord(
-                  onTap: () {},
-                  textStyle: typographyServices.captionLargeBold.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey500.value,
-                  ),
-                );
+            if (distanceKm < 1) {
+              highlightedWordAddressDestination["${distanceMeter.round()}m ⬩"] =
+                  HighlightedWord(
+                    onTap: () {},
+                    textStyle: typographyServices.captionLargeBold.value
+                        .copyWith(
+                          color: themeColorServices.neutralsColorGrey500.value,
+                        ),
+                  );
+            } else {
+              highlightedWordAddressDestination["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
+                  HighlightedWord(
+                    onTap: () {},
+                    textStyle: typographyServices.captionLargeBold.value
+                        .copyWith(
+                          color: themeColorServices.neutralsColorGrey500.value,
+                        ),
+                  );
+            }
           }
         }
       }
@@ -492,24 +513,25 @@ class RideController extends GetxController {
 
     focusNodeOrigin.requestFocus();
 
-    var currentLocationDetail = await googleMapsRepository
-        .getRecommendationPlaceListByLatitudeLongitude(
-          language: "en",
-          latitude: currentLatitude.value,
-          longitude: currentLongitude.value,
-        );
+    if (currentLatitude.value != null) {
+      var currentLocationDetail = await geocodingRepository
+          .getAddressByLatitudeLongitude(
+            latitude: double.parse(currentLatitude.value!),
+            longitude: double.parse(currentLongitude.value!),
+          );
 
-    recommendationOriginCurrentLocationList.value = [];
-    if (currentLocationDetail.isNotEmpty) {
-      recommendationOriginCurrentLocationList.add(
-        RecommendationLocation(
-          name: languageServices.language.value.currentLocation ?? "-",
-          id: "${currentLocationDetail.first.formattedAddress}",
-          latitude: currentLatitude.value,
-          longitude: currentLongitude.value,
-          addressDetail: currentLocationDetail.first.formattedAddress,
-        ),
-      );
+      recommendationOriginCurrentLocationList.value = [];
+      if (currentLocationDetail != null) {
+        recommendationOriginCurrentLocationList.add(
+          RecommendationLocation(
+            name: languageServices.language.value.currentLocation ?? "-",
+            id: currentLocationDetail,
+            latitude: currentLatitude.value,
+            longitude: currentLongitude.value,
+            addressDetail: currentLocationDetail,
+          ),
+        );
+      }
     }
   }
 
@@ -1310,9 +1332,23 @@ class RideController extends GetxController {
     if (focusNodeOrigin.hasPrimaryFocus) {
       isHideMarkersAndPolylines.value = true;
       status.value = "origin_select_via_map";
+
+      if (currentLatitude.value != null) {
+        await onMapMoveOriginGeoCodeSearch(
+          latitude: currentLatitude.value!,
+          longitude: currentLongitude.value!,
+        );
+      }
     } else if (focusNodeDestination.hasPrimaryFocus) {
       isHideMarkersAndPolylines.value = true;
       status.value = "destination_select_via_map";
+
+      if (currentLatitude.value != null) {
+        await onMapMoveDestinationGoogleCodeSearch(
+          latitude: currentLatitude.value!,
+          longitude: currentLongitude.value!,
+        );
+      }
     } else {
       if (originTextEditingController.text == "" &&
           destinationTextEditingController.text == "") {
@@ -1329,14 +1365,9 @@ class RideController extends GetxController {
       } else if (originTextEditingController.text != "" &&
           destinationTextEditingController.text != "") {}
     }
-
-    await onMapMoveOriginGoogleGeoCodeSearch(
-      latitude: currentLatitude.value,
-      longitude: currentLongitude.value,
-    );
   }
 
-  Future<void> onMapMoveOriginGoogleGeoCodeSearch({
+  Future<void> onMapMoveOriginGeoCodeSearch({
     required String latitude,
     required String longitude,
   }) async {
@@ -1347,63 +1378,60 @@ class RideController extends GetxController {
           originSearchLongitude.value == longitude) {
         if (originSearchIsLoading.value == false) {
           originSearchIsLoading.value = true;
-          originGoogleGeoCodeSearch.value =
-              (await googleMapsRepository
-                      .getRecommendationPlaceListByLatitudeLongitude(
-                        latitude: latitude,
-                        longitude: longitude,
-                        language: "en",
-                      ))
-                  .first;
+          originGeocodeAddressSearch.value = await geocodingRepository
+              .getAddressByLatitudeLongitude(
+                latitude: double.parse(latitude),
+                longitude: double.parse(longitude),
+              );
           originSearchIsLoading.value = false;
         }
       }
     });
   }
 
-  Future<void> onMapMoveDestinationGoogleGeoCodeSearch({
+  Future<void> onMapMoveDestinationGoogleCodeSearch({
     required String latitude,
     required String longitude,
   }) async {
     destinationSearchLatitude.value = latitude;
     destinationSearchLongitude.value = longitude;
+    print(
+      "${destinationSearchLatitude.value}, ${destinationSearchLongitude.value}",
+    );
     Future.delayed(Duration(seconds: 1), () async {
       if (destinationSearchLatitude.value == latitude &&
           destinationSearchLongitude.value == longitude) {
         if (destinationSearchIsLoading.value == false) {
           destinationSearchIsLoading.value = true;
-          destinationGoogleGeoCodeSearch.value =
-              (await googleMapsRepository
-                      .getRecommendationPlaceListByLatitudeLongitude(
-                        latitude: latitude,
-                        longitude: longitude,
-                        language: "en",
-                      ))
-                  .first;
+          destinationGeocodeAddressSearch.value = await geocodingRepository
+              .getAddressByLatitudeLongitude(
+                latitude: double.parse(latitude),
+                longitude: double.parse(longitude),
+              );
           destinationSearchIsLoading.value = false;
         }
       }
     });
   }
 
-  Future<void> onTapSubmitViaMap() async {
+  Future<void> onTapSubmitViaMap({required BuildContext context}) async {
     if (status.value == "origin_select_via_map") {
+      var isInsideserviceArea = isLatLngInsideServiceArea(
+        latitude: double.parse(originSearchLatitude.value),
+        longitude: double.parse(originSearchLongitude.value),
+      );
+      if (isInsideserviceArea == false) {
+        SnackbarHelper.showSnackbarError(
+          text: 'Alamat diluar wilayah layanan tersedia',
+        );
+        return;
+      }
+
       status.value = "fill_origin_and_destination";
-      originAddress.value = originGoogleGeoCodeSearch.value.formattedAddress!;
-      originLatitude.value = originGoogleGeoCodeSearch
-          .value
-          .geometry!
-          .location!
-          .lat
-          .toString();
-      originLongitude.value = originGoogleGeoCodeSearch
-          .value
-          .geometry!
-          .location!
-          .lng
-          .toString();
-      originTextEditingController.text =
-          originGoogleGeoCodeSearch.value.formattedAddress!;
+      originAddress.value = originGeocodeAddressSearch.value!;
+      originLatitude.value = originSearchLatitude.value;
+      originLongitude.value = originSearchLongitude.value;
+      originTextEditingController.text = originGeocodeAddressSearch.value!;
 
       markers.removeWhere((m) => m.markerId.value == 'origin');
       markers.add(
@@ -1424,23 +1452,23 @@ class RideController extends GetxController {
       isOriginHasPrimaryFocus.value = false;
       isDestinationHasPrimaryFocus.value = true;
     } else if (status.value == "destination_select_via_map") {
+      var isInsideserviceArea = isLatLngInsideServiceArea(
+        latitude: double.parse(destinationSearchLatitude.value),
+        longitude: double.parse(destinationSearchLongitude.value),
+      );
+      if (isInsideserviceArea == false) {
+        SnackbarHelper.showSnackbarError(
+          text: 'Alamat diluar wilayah layanan tersedia',
+        );
+        return;
+      }
+
       status.value = "fill_origin_and_destination";
-      destinationAddress.value =
-          destinationGoogleGeoCodeSearch.value.formattedAddress!;
-      destinationLatitude.value = destinationGoogleGeoCodeSearch
-          .value
-          .geometry!
-          .location!
-          .lat
-          .toString();
-      destinationLongitude.value = destinationGoogleGeoCodeSearch
-          .value
-          .geometry!
-          .location!
-          .lng
-          .toString();
+      destinationAddress.value = destinationGeocodeAddressSearch.value!;
+      destinationLatitude.value = destinationSearchLatitude.value;
+      destinationLongitude.value = destinationSearchLongitude.value;
       destinationTextEditingController.text =
-          destinationGoogleGeoCodeSearch.value.formattedAddress!;
+          destinationGeocodeAddressSearch.value!;
 
       markers.removeWhere((m) => m.markerId.value == 'destination');
       markers.add(
@@ -1461,11 +1489,18 @@ class RideController extends GetxController {
     if (originAddress.value != "" && destinationAddress.value != "") {
       selectedCoupon.value = Coupon();
 
-      await Future.wait([
-        generatePolylinesOpenMapsApi(),
-        refocusMapsBound(),
-        getOrderRidePricingList(),
-      ]);
+      try {
+        await Future.wait([
+          generatePolylinesOpenMapsApi(),
+          refocusMapsBound(),
+          getOrderRidePricingList(),
+        ]);
+
+        generateEstimatedDistanceAndTimeInMinutes();
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
+        return;
+      }
 
       selectedOrderRidePricing.value = orderRidePricingList.first;
       status.value = "checkout";

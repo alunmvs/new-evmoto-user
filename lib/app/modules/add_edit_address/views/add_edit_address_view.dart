@@ -232,21 +232,26 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   .primaryBlue
                                   .value,
                               formControlName: 'address_detail',
-                              // onTap: (control) async {
-                              //   var geocodingPlace = await Get.toNamed(
-                              //     Routes.SEARCH_ADDRESS,
-                              //   );
+                              onTap: (control) async {
+                                var geocodingPlace = await Get.toNamed(
+                                  Routes.SEARCH_ADDRESS,
+                                  preventDuplicates: false,
+                                  arguments: {
+                                    "tag": DateTime.now().millisecondsSinceEpoch
+                                        .toString(),
+                                  },
+                                );
 
-                              //   if (geocodingPlace != null) {
-                              //     controller.geocodingPlace.value =
-                              //         geocodingPlace;
+                                if (geocodingPlace != null) {
+                                  controller.geocodingPlace.value =
+                                      geocodingPlace;
 
-                              //     controller.formGroup
-                              //             .control("address_detail")
-                              //             .value =
-                              //         geocodingPlace.address;
-                              //   }
-                              // },
+                                  controller.formGroup
+                                          .control("address_detail")
+                                          .value =
+                                      geocodingPlace.address;
+                                }
+                              },
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 12,
