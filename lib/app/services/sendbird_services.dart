@@ -25,7 +25,7 @@ class SendbirdServices extends GetxService {
       "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
         'sendbird_app_id',
       ),
-      "user_id": "user_210",
+      "user_id": "user_${homeController.userInfo.value.id}",
       "access_token": '',
       "push_token": firebasePushNotificationServices.fcmToken.value,
     });
