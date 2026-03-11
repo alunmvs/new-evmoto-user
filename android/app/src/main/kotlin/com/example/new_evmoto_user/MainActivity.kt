@@ -67,6 +67,9 @@ class MainActivity: FlutterActivity() {
                         }
                     }
                 }
+                "check_is_call_active" -> {
+                    result.success(directCall != null);
+                }
                 "handle_firebase_push_notification_data" -> {
                     val data: Map<String, String> = call.argument("data")!!
                     SendBirdCall.handleFirebaseMessageData(data)

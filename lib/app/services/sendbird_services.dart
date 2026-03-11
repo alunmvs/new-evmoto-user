@@ -57,6 +57,10 @@ class SendbirdServices extends GetxService {
     }
   }
 
+  Future<bool> checkIsCallActive() async {
+    return await methodChannel.invokeMethod('check_is_call_active', {});
+  }
+
   Future<void> handleFirebasePushNotificationData({
     required Map<dynamic, dynamic> data,
   }) async {

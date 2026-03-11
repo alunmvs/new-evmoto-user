@@ -251,11 +251,7 @@ class RideCallSendbirdView extends GetView<RideCallSendbirdController> {
                           onTap: () async {
                             final sendbirdServices =
                                 Get.find<SendbirdServices>();
-                            if (controller.isCaller.value == false) {
-                              await FlutterCallkitIncoming.endCall(
-                                controller.callId.value,
-                              );
-                            }
+                            await FlutterCallkitIncoming.endAllCalls();
 
                             await sendbirdServices.endCall();
                             Get.back();

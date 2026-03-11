@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
@@ -21,6 +22,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -93,8 +95,63 @@ class HomeController extends GetxController {
         await displayCoachmark();
         await firebasePushNotificationServices.requestPermission();
         await sendBirdServices.initialize();
+        await checkInitialCall();
       }
     });
+  }
+
+  Future<void> checkInitialCall() async {
+    // Ambil daftar panggilan aktif
+    final calls = await FlutterCallkitIncoming.activeCalls();
+
+    if (calls is List && calls.isNotEmpty) {
+      // Ambil data panggilan terakhir (biasanya yang baru saja diterima)
+      final callData = calls.last;
+
+      final sendbirdServices = Get.find<SendbirdServices>();
+      await sendbirdServices.handleFirebasePushNotificationData(
+        data: callData['extra'],
+      );
+
+      await Future.delayed(Duration(milliseconds: 500));
+
+      await Permission.microphone.request();
+
+      await sendbirdServices.pickupCall(
+        callId: jsonDecode(
+          callData['extra']['sendbird_call'],
+        )['command']['payload']['call_id'],
+      );
+
+      var isActive = await sendbirdServices.checkIsCallActive();
+
+      if (isActive == true) {
+        Get.toNamed(
+          Routes.RIDE_CALL_SENDBIRD,
+          arguments: {
+            "call_id": jsonDecode(
+              callData['extra']['sendbird_call'],
+            )['command']['payload']['call_id'],
+            "is_caller": false,
+            "driver_id": null,
+            "driver_name": jsonDecode(
+              callData['extra']['sendbird_call'],
+            )['command']['payload']['caller']['nickname'],
+            "driver_avatar_url":
+                jsonDecode(
+                      callData['extra']['sendbird_call'],
+                    )['command']['payload']['caller']['profile_url'] ==
+                    ''
+                ? null
+                : jsonDecode(
+                    callData['extra']['sendbird_call'],
+                  )['command']['payload']['caller']['profile_url'],
+          },
+        );
+      } else {
+        FlutterCallkitIncoming.endAllCalls();
+      }
+    }
   }
 
   @override
@@ -105,6 +162,7 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    FlutterCallkitIncoming.endAllCalls();
   }
 
   Future<void> refreshAll() async {

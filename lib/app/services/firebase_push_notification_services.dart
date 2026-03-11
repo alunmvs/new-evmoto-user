@@ -333,13 +333,23 @@ class FirebasePushNotificationServices extends GetxService {
           return;
         }
 
+        if (commandType == 'end') {
+          FlutterCallkitIncoming.endCall(
+            jsonDecode(data['sendbird_call'])['command']['payload']['call_id'],
+          );
+          if (Get.currentRoute == Routes.RIDE_CALL_SENDBIRD) {
+            Get.back();
+          }
+          return;
+        }
+
         var excludeShowNotification = [
           'other_device_accepted',
           'audio',
           'video',
           'candidate',
           'offer',
-          'end',
+          // 'end',
           'dial_rcv',
           'accept',
           'answer',
