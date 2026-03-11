@@ -10,9 +10,6 @@ import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dar
 class SendbirdServices extends GetxService {
   var methodChannel = MethodChannel('com.sendbird.calls/method');
 
-  final appId = ''.obs;
-  final userId = ''.obs;
-
   Future<void> initialize() async {
     final firebaseRemoteConfigServices =
         Get.find<FirebaseRemoteConfigServices>();
