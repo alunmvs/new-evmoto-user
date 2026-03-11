@@ -1,3 +1,5 @@
+-keep class com.hiennv.flutter_callkit_incoming.** { *; }
+
 # -------------------------------------------------
 # Gson: do not obfuscate model classes
 # -------------------------------------------------

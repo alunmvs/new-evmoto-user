@@ -896,7 +896,25 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                   child: OutlinedButton(
                                                     onPressed: () async {
                                                       Get.toNamed(
-                                                        Routes.RIDE_CALL,
+                                                        Routes
+                                                            .RIDE_CALL_SENDBIRD,
+                                                        arguments: {
+                                                          'is_caller': true,
+                                                          'driver_id': controller
+                                                              .orderRideDetail
+                                                              .value
+                                                              .driverId,
+                                                          'driver_name':
+                                                              controller
+                                                                  .orderRideDetail
+                                                                  .value
+                                                                  .driverName,
+                                                          'driver_avatar_url':
+                                                              controller
+                                                                  .orderRideDetail
+                                                                  .value
+                                                                  .driverAvatar,
+                                                        },
                                                       );
                                                     },
                                                     style: OutlinedButton.styleFrom(

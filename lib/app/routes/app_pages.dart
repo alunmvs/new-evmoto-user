@@ -44,6 +44,8 @@ import '../modules/ride/bindings/ride_binding.dart';
 import '../modules/ride/views/ride_view.dart';
 import '../modules/ride_call/bindings/ride_call_binding.dart';
 import '../modules/ride_call/views/ride_call_view.dart';
+import '../modules/ride_call_sendbird/bindings/ride_call_sendbird_binding.dart';
+import '../modules/ride_call_sendbird/views/ride_call_sendbird_view.dart';
 import '../modules/ride_chat/bindings/ride_chat_binding.dart';
 import '../modules/ride_chat/views/ride_chat_view.dart';
 import '../modules/ride_order_cancel/bindings/ride_order_cancel_binding.dart';
@@ -249,6 +251,11 @@ class AppPages {
       name: _Paths.ADD_EDIT_USER_INFORMATION,
       page: () => const AddEditUserInformationView(),
       binding: AddEditUserInformationBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIDE_CALL_SENDBIRD,
+      page: () => const RideCallSendbirdView(),
+      binding: RideCallSendbirdBinding(),
     ),
   ];
 }

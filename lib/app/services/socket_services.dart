@@ -54,7 +54,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         if (dataJson != null) {
           var method = dataJson['method'] ?? "";
 
-          print(dataJson);
+          // print(dataJson);
 
           switch (method) {
             case 'DRIVER_POSITION':

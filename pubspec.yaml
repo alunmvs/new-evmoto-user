@@ -73,7 +73,7 @@ dependencies:
   showcaseview: ^5.0.1
   flutter_localizations:
     sdk: flutter
-  flutter_webrtc: ^1.2.1
+  # flutter_webrtc: ^1.2.1
   stop_watch_timer: ^3.2.2
   path_provider: ^2.1.5
   ffmpeg_kit_flutter_new: ^4.1.0
@@ -88,6 +88,12 @@ dependencies:
   gallery_saver_plus: ^3.2.9
   permission_handler: ^12.0.1
   point_in_polygon: ^1.0.0
+  sendbird_sdk: ^3.2.20
+  flutter_callkit_incoming: ^3.0.0
+
+dependency_overrides:
+  http: ^1.1.2
+  uuid: ^4.4.2
 
 dev_dependencies:
   get_cli: ^1.9.1

@@ -86,4 +86,5 @@ flutter {
 dependencies {
     // flutter_local_notifications
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    implementation("com.sendbird.sdk:sendbird-calls:1.7.0")
 }

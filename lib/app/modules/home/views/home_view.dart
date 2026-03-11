@@ -1927,6 +1927,20 @@ class HomeView extends GetView<HomeController> {
 
                                                                   await controller
                                                                       .refreshAll();
+                                                                  // Get.toNamed(
+                                                                  //   Routes
+                                                                  //       .RIDE_CALL_SENDBIRD,
+                                                                  //   arguments: {
+                                                                  //     'is_caller':
+                                                                  //         true,
+                                                                  //     'driver_id':
+                                                                  //         '999999',
+                                                                  //     'driver_name':
+                                                                  //         'Testing IT',
+                                                                  //     'driver_avatar_url':
+                                                                  //         '',
+                                                                  //   },
+                                                                  // );
                                                                 },
                                                                 child: SizedBox(
                                                                   width: 46,

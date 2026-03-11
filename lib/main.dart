@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
@@ -59,6 +60,7 @@ Future<void> main() async {
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
   Get.put(FirebasePushNotificationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
+  Get.put(SendbirdServices(), permanent: true);
 
   runApp(
     GetMaterialApp(
