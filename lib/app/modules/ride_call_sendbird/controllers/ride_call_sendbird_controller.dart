@@ -20,6 +20,8 @@ class RideCallSendbirdController extends GetxController {
 
   final callId = "".obs;
 
+  final isMicrophoneOn = true.obs;
+  final isSpeakerOn = false.obs;
   final isFetch = false.obs;
 
   @override
@@ -35,7 +37,7 @@ class RideCallSendbirdController extends GetxController {
       driverId.value = Get.arguments['driver_id'].toString();
       final sendBirdServices = Get.find<SendbirdServices>();
 
-      await sendBirdServices.startCall(calleeId: driverId.value);
+      await sendBirdServices.startCall(calleeId: "driver_${driverId.value}");
     }
 
     if (isCaller.value == false) {

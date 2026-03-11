@@ -452,8 +452,18 @@ class FirebasePushNotificationServices extends GetxService {
               )['command']['payload']['call_id'],
               "is_caller": false,
               "driver_id": null,
-              "driver_name": "Testing IT",
-              "driver_avatar_url": "",
+              "driver_name": jsonDecode(
+                event.body['extra']['sendbird_call'],
+              )['command']['payload']['caller']['nickname'],
+              "driver_avatar_url":
+                  jsonDecode(
+                        event.body['extra']['sendbird_call'],
+                      )['command']['payload']['caller']['profile_url'] ==
+                      ''
+                  ? null
+                  : jsonDecode(
+                      event.body['extra']['sendbird_call'],
+                    )['command']['payload']['caller']['profile_url'],
             },
           );
           break;

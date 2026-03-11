@@ -11,6 +11,7 @@ import com.sendbird.calls.handler.DirectCallListener
 import com.sendbird.calls.handler.SendBirdCallListener
 import com.sendbird.calls.handler.CompletionHandler
 import com.sendbird.calls.SendBirdException
+import com.sendbird.calls.AudioDevice
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -117,6 +118,22 @@ class MainActivity: FlutterActivity() {
                 "end_direct_call" -> {
                     // End a call
                     directCall?.end();
+                    result.success(true);
+                }
+                "microphone_on" -> {
+                    directCall?.unmuteMicrophone();
+                    result.success(true);
+                }
+                "microphone_off" -> {
+                    directCall?.muteMicrophone();
+                    result.success(true);
+                }
+                "loadspeaker_on" -> {
+                    directCall?.selectAudioDevice(AudioDevice.SPEAKERPHONE, null);
+                    result.success(true);
+                }
+                "loadspeaker_off" -> {
+                    directCall?.selectAudioDevice(AudioDevice.EARPIECE, null);
                     result.success(true);
                 }
                 else -> {

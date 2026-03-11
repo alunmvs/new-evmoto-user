@@ -139,109 +139,114 @@ class RideCallSendbirdView extends GetView<RideCallSendbirdController> {
                     right: 0,
                     child: Column(
                       children: [
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   crossAxisAlignment: CrossAxisAlignment.center,
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () async {
-                        //         for (var track
-                        //             in controller.localStream!
-                        //                 .getAudioTracks()) {
-                        //           track.enabled =
-                        //               !controller.isMicrophoneOn.value;
-                        //           controller.isMicrophoneOn.value =
-                        //               !controller.isMicrophoneOn.value;
-                        //         }
-                        //       },
-                        //       child: Container(
-                        //         height: 50,
-                        //         width: 50,
-                        //         decoration: BoxDecoration(
-                        //           color: controller
-                        //               .themeColorServices
-                        //               .neutralsColorGrey0
-                        //               .value,
-                        //           borderRadius: BorderRadius.circular(16),
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: controller
-                        //                   .themeColorServices
-                        //                   .overlayDark200
-                        //                   .value
-                        //                   .withValues(alpha: 0.06),
-                        //               blurRadius: 10,
-                        //               spreadRadius: 0,
-                        //               offset: Offset(0, 3.33),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           children: [
-                        //             Image.asset(
-                        //               controller.isMicrophoneOn.value
-                        //                   ? "assets/icons/icon_microphone_on.png"
-                        //                   : "assets/icons/icon_microphone_off.png",
-                        //               width: 24,
-                        //               height: 24,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     SizedBox(width: 16 * 2),
-                        //     GestureDetector(
-                        //       onTap: () async {
-                        //         controller.isSpeakerOn.value =
-                        //             !controller.isSpeakerOn.value;
-                        //         await Helper.setSpeakerphoneOn(
-                        //           controller.isSpeakerOn.value,
-                        //         );
-                        //       },
-                        //       child: Container(
-                        //         height: 50,
-                        //         width: 50,
-                        //         decoration: BoxDecoration(
-                        //           color: controller.isSpeakerOn.value
-                        //               ? Color(0XFF29CD29)
-                        //               : controller
-                        //                     .themeColorServices
-                        //                     .neutralsColorGrey0
-                        //                     .value,
-                        //           borderRadius: BorderRadius.circular(16),
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: controller
-                        //                   .themeColorServices
-                        //                   .overlayDark200
-                        //                   .value
-                        //                   .withValues(alpha: 0.06),
-                        //               blurRadius: 10,
-                        //               spreadRadius: 0,
-                        //               offset: Offset(0, 3.33),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           children: [
-                        //             Image.asset(
-                        //               controller.isSpeakerOn.value
-                        //                   ? "assets/icons/icon_speaker_white.png"
-                        //                   : "assets/icons/icon_speaker.png",
-                        //               width: 24,
-                        //               height: 24,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // SizedBox(height: 16 * 2),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                final sendbirdServices =
+                                    Get.find<SendbirdServices>();
+                                if (controller.isMicrophoneOn.value == false) {
+                                  await sendbirdServices.microphoneOn();
+                                } else {
+                                  await sendbirdServices.microphoneOff();
+                                }
+                                controller.isMicrophoneOn.value =
+                                    !controller.isMicrophoneOn.value;
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey0
+                                      .value,
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: controller
+                                          .themeColorServices
+                                          .overlayDark200
+                                          .value
+                                          .withValues(alpha: 0.06),
+                                      blurRadius: 10,
+                                      spreadRadius: 0,
+                                      offset: Offset(0, 3.33),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      controller.isMicrophoneOn.value
+                                          ? "assets/icons/icon_microphone_on.png"
+                                          : "assets/icons/icon_microphone_off.png",
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16 * 2),
+                            GestureDetector(
+                              onTap: () async {
+                                final sendbirdServices =
+                                    Get.find<SendbirdServices>();
+                                if (controller.isSpeakerOn.value == false) {
+                                  await sendbirdServices.loadspeakerOn();
+                                } else {
+                                  await sendbirdServices.loadspeakerOff();
+                                }
+                                controller.isSpeakerOn.value =
+                                    !controller.isSpeakerOn.value;
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: controller.isSpeakerOn.value
+                                      ? Color(0XFF29CD29)
+                                      : controller
+                                            .themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: controller
+                                          .themeColorServices
+                                          .overlayDark200
+                                          .value
+                                          .withValues(alpha: 0.06),
+                                      blurRadius: 10,
+                                      spreadRadius: 0,
+                                      offset: Offset(0, 3.33),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      controller.isSpeakerOn.value
+                                          ? "assets/icons/icon_speaker_white.png"
+                                          : "assets/icons/icon_speaker.png",
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16 * 2),
                         GestureDetector(
                           onTap: () async {
                             final sendbirdServices =

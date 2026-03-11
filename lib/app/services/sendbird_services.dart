@@ -82,4 +82,20 @@ class SendbirdServices extends GetxService {
   Future<void> endCall() async {
     await methodChannel.invokeMethod("end_direct_call", {});
   }
+
+  Future<void> loadspeakerOn() async {
+    await methodChannel.invokeMethod("loadspeaker_on", {});
+  }
+
+  Future<void> loadspeakerOff() async {
+    await methodChannel.invokeMethod("loadspeaker_off", {});
+  }
+
+  Future<void> microphoneOn() async {
+    await methodChannel.invokeMethod("microphone_on", {});
+  }
+
+  Future<void> microphoneOff() async {
+    await methodChannel.invokeMethod("microphone_off", {});
+  }
 }
