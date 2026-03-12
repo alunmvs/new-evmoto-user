@@ -139,6 +139,7 @@ class RideController extends GetxController {
   final estimatedDistanceInKm = 0.0.obs;
   final estimatedSpeedInKmh = 40.obs;
 
+  final isPermissionLocationAllow = true.obs;
   final isFetch = false.obs;
 
   @override
@@ -149,6 +150,10 @@ class RideController extends GetxController {
     await homeController.getUserInfo();
     await Future.wait([getHistoryOrderList(), getSavedAddressList()]);
     await requestLocation();
+    if (isPermissionLocationAllow.value == false) {
+      isFetch.value = false;
+      return;
+    }
     if (currentLatitude.value != null) {
       initialCameraPosition.value = CameraPosition(
         target: LatLng(
@@ -490,12 +495,14 @@ class RideController extends GetxController {
   }
 
   Future<void> requestLocation() async {
+    isPermissionLocationAllow.value = true;
     var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     var permission = await Geolocator.requestPermission();
 
     if (isLocationServiceEnabled == false ||
         (permission == LocationPermission.denied ||
             permission == LocationPermission.deniedForever)) {
+      isPermissionLocationAllow.value = false;
       return;
     }
 
