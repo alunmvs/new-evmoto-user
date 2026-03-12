@@ -1,4 +1,6 @@
 -keep class com.hiennv.flutter_callkit_incoming.** { *; }
+-dontwarn org.conscrypt.Conscrypt$ProviderBuilder
+-dontwarn org.conscrypt.Conscrypt
 
 # -------------------------------------------------
 # Gson: do not obfuscate model classes
