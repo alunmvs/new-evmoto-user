@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
@@ -13,7 +12,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 
-class SocketServices extends GetxService with WidgetsBindingObserver {
+class SocketServices extends GetxService {
   late Socket? socket;
   Timer? schedulerDataSocketTimer;
 
@@ -26,19 +25,6 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   @override
   Future<void> onInit() async {
     super.onInit();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      setupWebsocket();
-    } else if (state == AppLifecycleState.paused) {
-      if (isSocketClose.value == false) {
-        socket?.close();
-        isSocketClose.value = true;
-      }
-    }
   }
 
   Future<void> setupWebsocket() async {
@@ -54,7 +40,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         if (dataJson != null) {
           var method = dataJson['method'] ?? "";
 
-          // print(dataJson);
+          // print("debug ${dataJson}");
 
           switch (method) {
             case 'DRIVER_POSITION':
@@ -119,7 +105,6 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   }
 
   Future<void> closeWebsocket() async {
-    WidgetsBinding.instance.removeObserver(this);
     await socket?.close();
   }
 
@@ -135,6 +120,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> sendHeartBeat() async {
     if (isSocketClose.value == false && Get.isRegistered<HomeController>()) {
+      // print("send heart beat ${DateFormat('HH:mm:ss').format(DateTime.now())}");
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
