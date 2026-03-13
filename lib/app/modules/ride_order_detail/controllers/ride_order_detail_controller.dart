@@ -14,6 +14,7 @@ import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
@@ -38,6 +39,8 @@ class RideOrderDetailController extends GetxController
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+
+  final sendbirdChatServices = Get.find<SendbirdChatServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),

@@ -43,6 +43,7 @@ abstract class Routes {
       _Paths.ONBOARDING_REGISTRATION_FORM;
   static const ADD_EDIT_USER_INFORMATION = _Paths.ADD_EDIT_USER_INFORMATION;
   static const RIDE_CALL_SENDBIRD = _Paths.RIDE_CALL_SENDBIRD;
+  static const RIDE_CHAT_SENDBIRD = _Paths.RIDE_CHAT_SENDBIRD;
 }
 
 abstract class _Paths {
@@ -84,4 +85,5 @@ abstract class _Paths {
   static const ONBOARDING_REGISTRATION_FORM = '/onboarding-registration-form';
   static const ADD_EDIT_USER_INFORMATION = '/add-edit-user-information';
   static const RIDE_CALL_SENDBIRD = '/ride-call-sendbird';
+  static const RIDE_CHAT_SENDBIRD = '/ride-chat-sendbird';
 }

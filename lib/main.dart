@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -61,6 +62,7 @@ Future<void> main() async {
   Get.put(FirebasePushNotificationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
   Get.put(SendbirdServices(), permanent: true);
+  Get.put(SendbirdChatServices(), permanent: true);
 
   runApp(
     GetMaterialApp(

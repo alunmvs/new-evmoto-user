@@ -983,9 +983,53 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                                 Expanded(
                                                   child: LoaderElevatedButton(
                                                     onPressed: () async {
+                                                      // Get.toNamed(
+                                                      //   Routes.RIDE_CHAT,
+                                                      // );
+
                                                       Get.toNamed(
-                                                        Routes.RIDE_CHAT,
+                                                        Routes
+                                                            .RIDE_CHAT_SENDBIRD,
+                                                        arguments: {
+                                                          "driver_id": controller
+                                                              .orderRideDetail
+                                                              .value
+                                                              .driverId,
+                                                          "driver_name":
+                                                              controller
+                                                                  .orderRideDetail
+                                                                  .value
+                                                                  .driverName,
+                                                          "driver_avatar_url":
+                                                              controller
+                                                                  .orderRideDetail
+                                                                  .value
+                                                                  .driverAvatar,
+                                                          "order_id": controller
+                                                              .orderRideDetail
+                                                              .value
+                                                              .orderId,
+                                                          "order_type": controller
+                                                              .orderRideDetail
+                                                              .value
+                                                              .orderType,
+                                                          "state": controller
+                                                              .orderRideDetail
+                                                              .value
+                                                              .state,
+                                                          "driver_license_plate":
+                                                              controller
+                                                                  .orderRideDetail
+                                                                  .value
+                                                                  .licensePlate,
+                                                        },
                                                       );
+
+                                                      // await controller
+                                                      //     .sendbirdChatServices
+                                                      //     .searchChannelById(
+                                                      //       driverId: 184,
+                                                      //     );
                                                     },
                                                     child: Text(
                                                       controller

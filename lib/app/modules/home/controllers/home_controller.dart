@@ -16,6 +16,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -49,6 +50,7 @@ class HomeController extends GetxController {
       Get.find<FirebasePushNotificationServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final sendBirdServices = Get.find<SendbirdServices>();
+  final sendbirdChatServices = Get.find<SendbirdChatServices>();
 
   final bannerUrlList = [
     "assets/images/img_promo_1.png",
@@ -94,7 +96,10 @@ class HomeController extends GetxController {
       } else {
         await displayCoachmark();
         await firebasePushNotificationServices.requestPermission();
-        await sendBirdServices.initialize();
+        await Future.wait([
+          sendBirdServices.initialize(),
+          sendbirdChatServices.initialize(),
+        ]);
         await checkInitialCall();
       }
     });
