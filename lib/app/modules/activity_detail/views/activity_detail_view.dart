@@ -186,7 +186,7 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                               ),
                               child: Center(
                                 child: Text(
-                                  controller.orderRideDetail.value.orderId
+                                  controller.orderRideDetail.value.orderNum
                                       .toString(),
                                   style: controller
                                       .typographyServices
