@@ -24,7 +24,7 @@ class OrderRide {
   String? brand;
   String? carColor;
   double? score;
-  int? orderNum;
+  String? orderNum;
   int? historyNum;
   String? driverPhone;
   double? cancelPayMoney;

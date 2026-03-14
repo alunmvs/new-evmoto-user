@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
@@ -25,6 +27,7 @@ import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pub_semver/pub_semver.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,6 +44,8 @@ class HomeController extends GetxController {
     required this.couponRepository,
     required this.savedAddressRepository,
   });
+
+  final homeRefreshController = RefreshController();
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -76,6 +81,18 @@ class HomeController extends GetxController {
   final isCoachmarkActive = false.obs;
   final lastPressedBackDateTime = DateTime.now().obs;
 
+  // google maps
+  final initialCameraPosition = CameraPosition(
+    target: LatLng(-6.1744651, 106.822745),
+    zoom: 14,
+  ).obs;
+  late GoogleMapController googleMapController;
+
+  // location permission
+  final isPermissionLocationAllow = true.obs;
+  final currentLatitude = Rx<double?>(null);
+  final currentLongitude = Rx<double?>(null);
+
   final isFetch = false.obs;
 
   @override
@@ -90,6 +107,7 @@ class HomeController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await checkForceUpdate();
       await checkSoftUpdate();
+      await moveGoogleMapCameraToCurrentLocation();
 
       if (userInfo.value.name == "" || userInfo.value.name == null) {
         await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
@@ -168,6 +186,43 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
     FlutterCallkitIncoming.endAllCalls();
+  }
+
+  Future<void> requestLocation() async {
+    isPermissionLocationAllow.value = true;
+    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    var permission = await Geolocator.requestPermission();
+
+    if (isLocationServiceEnabled == false ||
+        (permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever)) {
+      isPermissionLocationAllow.value = false;
+      return;
+    }
+
+    var locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    var position = await Geolocator.getCurrentPosition(
+      locationSettings: locationSettings,
+    );
+
+    currentLatitude.value = position.latitude;
+    currentLongitude.value = position.longitude;
+  }
+
+  Future<void> moveGoogleMapCameraToCurrentLocation() async {
+    await requestLocation();
+
+    if (currentLatitude.value != null) {
+      googleMapController.moveCamera(
+        CameraUpdate.newLatLng(
+          LatLng(currentLatitude.value!, currentLongitude.value!),
+        ),
+      );
+    }
   }
 
   Future<void> refreshAll() async {
