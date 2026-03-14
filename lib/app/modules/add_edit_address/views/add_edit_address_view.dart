@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
@@ -188,6 +189,17 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[A-Za-z0-9 ]'),
+                                ),
+                              ],
+                              validationMessages: {
+                                ValidationMessage.required: (error) =>
+                                    "Wajib diisi",
+                                ValidationMessage.maxLength: (error) =>
+                                    "Maksimal 50 karakter",
+                              },
                             ),
                             SizedBox(height: 16),
                             Row(

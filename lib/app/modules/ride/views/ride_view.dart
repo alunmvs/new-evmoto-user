@@ -691,6 +691,8 @@ class RideView extends GetView<RideController> {
                                           ),
                                           TextField(
                                             autofocus: true,
+                                            canRequestFocus: controller
+                                                .isLatLngOriginFilled(),
                                             focusNode:
                                                 controller.focusNodeDestination,
                                             controller: controller
@@ -886,7 +888,7 @@ class RideView extends GetView<RideController> {
                                                           MainAxisSize.min,
                                                       children: [
                                                         GestureDetector(
-                                                          onTap: () {
+                                                          onTap: () async {
                                                             controller
                                                                     .keywordDestination
                                                                     .value =
@@ -919,6 +921,13 @@ class RideView extends GetView<RideController> {
                                                                     .destinationGeocodingPlaceList
                                                                     .value =
                                                                 [];
+
+                                                            await Future.delayed(
+                                                              Duration(
+                                                                milliseconds:
+                                                                    100,
+                                                              ),
+                                                            );
                                                             controller
                                                                 .focusNodeDestination
                                                                 .requestFocus();
@@ -1422,6 +1431,11 @@ class RideView extends GetView<RideController> {
                                                         recommendationOriginCurrentLocation
                                                             .addressDetail ??
                                                         "-";
+                                                    await Future.delayed(
+                                                      Duration(
+                                                        milliseconds: 100,
+                                                      ),
+                                                    );
                                                     controller
                                                         .focusNodeDestination
                                                         .requestFocus();
@@ -1617,6 +1631,11 @@ class RideView extends GetView<RideController> {
                                                         recommendationOriginLocation
                                                             .addressDetail ??
                                                         "-";
+                                                    await Future.delayed(
+                                                      Duration(
+                                                        milliseconds: 100,
+                                                      ),
+                                                    );
                                                     controller
                                                         .focusNodeDestination
                                                         .requestFocus();
@@ -1816,6 +1835,9 @@ class RideView extends GetView<RideController> {
                                                       originGeocodingPlace
                                                           .address ??
                                                       "-";
+                                                  await Future.delayed(
+                                                    Duration(milliseconds: 100),
+                                                  );
                                                   controller
                                                       .focusNodeDestination
                                                       .requestFocus();
@@ -2062,6 +2084,11 @@ class RideView extends GetView<RideController> {
                                                         recommendationDestinationLocation
                                                             .longitude!;
 
+                                                    await Future.delayed(
+                                                      Duration(
+                                                        milliseconds: 100,
+                                                      ),
+                                                    );
                                                     controller
                                                         .focusNodeDestination
                                                         .requestFocus();
@@ -2286,6 +2313,9 @@ class RideView extends GetView<RideController> {
                                                           .destinationGeocodingPlace
                                                           .value =
                                                       destinationGeocodingPlace;
+                                                  await Future.delayed(
+                                                    Duration(milliseconds: 100),
+                                                  );
                                                   controller
                                                       .focusNodeDestination
                                                       .requestFocus();
@@ -2914,9 +2944,12 @@ class RideView extends GetView<RideController> {
                                           ),
                                           SizedBox(height: 4),
                                           GestureDetector(
-                                            onTap: () {
+                                            onTap: () async {
                                               controller.status.value =
                                                   "fill_origin_and_destination";
+                                              await Future.delayed(
+                                                Duration(milliseconds: 100),
+                                              );
                                               controller.focusNodeDestination
                                                   .requestFocus();
                                             },

@@ -24,7 +24,7 @@ class AddEditAddressController extends GetxController {
 
   final formGroup = FormGroup({
     "address_name": FormControl<String>(
-      validators: <Validator>[Validators.required, Validators.maxLength(255)],
+      validators: <Validator>[Validators.required, Validators.maxLength(50)],
     ),
     "address_detail": FormControl<String>(
       validators: <Validator>[Validators.required],

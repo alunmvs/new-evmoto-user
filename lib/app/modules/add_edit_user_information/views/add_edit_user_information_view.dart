@@ -256,7 +256,7 @@ class AddEditUserInformationView
                           },
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                              RegExp(r'[A-ZA-z ]'),
+                              RegExp(r'[A-Za-z0-9 ]'),
                             ),
                           ],
                         ),
