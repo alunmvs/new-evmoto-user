@@ -44,6 +44,8 @@ abstract class Routes {
   static const ADD_EDIT_USER_INFORMATION = _Paths.ADD_EDIT_USER_INFORMATION;
   static const RIDE_CALL_SENDBIRD = _Paths.RIDE_CALL_SENDBIRD;
   static const RIDE_CHAT_SENDBIRD = _Paths.RIDE_CHAT_SENDBIRD;
+  static const SENDBIRD_CHAT_LIST = _Paths.SENDBIRD_CHAT_LIST;
+  static const SENDBIRD_CHAT_DETAIL = _Paths.SENDBIRD_CHAT_DETAIL;
 }
 
 abstract class _Paths {
@@ -86,4 +88,6 @@ abstract class _Paths {
   static const ADD_EDIT_USER_INFORMATION = '/add-edit-user-information';
   static const RIDE_CALL_SENDBIRD = '/ride-call-sendbird';
   static const RIDE_CHAT_SENDBIRD = '/ride-chat-sendbird';
+  static const SENDBIRD_CHAT_LIST = '/sendbird-chat-list';
+  static const SENDBIRD_CHAT_DETAIL = '/sendbird-chat-detail';
 }

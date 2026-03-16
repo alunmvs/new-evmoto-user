@@ -107,7 +107,9 @@ class IntroductionDeliveryServiceView
                       );
 
                       Get.back();
-                      await controller.homeController.onTapRideService();
+                      await controller.homeController.onTapRideService(
+                        isFillCurrentLocation: false,
+                      );
                     },
                     borderSide: BorderSide(
                       color: controller

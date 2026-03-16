@@ -362,6 +362,12 @@ class RideController extends GetxController {
         ),
       );
 
+      focusNodeDestination.requestFocus();
+
+      await getOriginPlaceLocationList(keyword: originAddress.value);
+    }
+
+    if (Get.arguments?['end_address'] != null) {
       destinationTextEditingController.text =
           Get.arguments['end_address'] ?? "-";
       destinationLatitude.value = Get.arguments['end_lat'].toString();
@@ -382,13 +388,13 @@ class RideController extends GetxController {
           ),
         ),
       );
+    }
 
-      focusNodeDestination.requestFocus();
+    selectedCoupon.value = Coupon();
 
-      selectedCoupon.value = Coupon();
-
+    if (Get.arguments?['start_address'] != null &&
+        Get.arguments['end_address'] != null) {
       await Future.wait([
-        getOriginPlaceLocationList(keyword: originAddress.value),
         getDestinationPlaceLocationList(keyword: destinationAddress.value),
         generatePolylinesOpenMapsApi(),
         refocusMapsBound(),

@@ -422,7 +422,6 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                 ),
                               ),
                             ),
-
                             SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -555,7 +554,6 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                                                             .value,
                                                       ),
                                                 ),
-
                                                 Text(
                                                   DateFormat(
                                                     'HH:mm',

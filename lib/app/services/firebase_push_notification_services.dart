@@ -165,6 +165,27 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     }
   }
 
+  var isSendbird = message.data.keys.contains('sendbird');
+  if (isSendbird) {
+    flutterLocalNotificationsPlugin.show(
+      DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      "Anda mendapatkan pesan baru dari Driver",
+      message.data['message'].replaceFirst(RegExp(r'^.*?:'), '').trim(),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          'default_channel',
+          'Default',
+          importance: Importance.max,
+          priority: Priority.high,
+          largeIcon: DrawableResourceAndroidBitmap('ic_notification_large'),
+          icon: 'ic_notification_small',
+          color: const Color(0XFF0060C6),
+        ),
+      ),
+    );
+    return;
+  }
+
   flutterLocalNotificationsPlugin.show(
     DateTime.now().millisecondsSinceEpoch ~/ 1000,
     message.notification?.title,
@@ -359,6 +380,27 @@ class FirebasePushNotificationServices extends GetxService {
         if (excludeShowNotification.contains(commandType)) {
           return;
         }
+      }
+
+      var isSendbird = message.data.keys.contains('sendbird');
+      if (isSendbird) {
+        flutterLocalNotificationsPlugin.show(
+          DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          "Anda mendapatkan pesan baru dari Driver",
+          message.data['message'].replaceFirst(RegExp(r'^.*?:'), '').trim(),
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              'default_channel',
+              'Default',
+              importance: Importance.max,
+              priority: Priority.high,
+              largeIcon: DrawableResourceAndroidBitmap('ic_notification_large'),
+              icon: 'ic_notification_small',
+              color: const Color(0XFF0060C6),
+            ),
+          ),
+        );
+        return;
       }
 
       flutterLocalNotificationsPlugin.show(

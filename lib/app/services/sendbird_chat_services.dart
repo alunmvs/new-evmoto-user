@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 
@@ -7,6 +8,8 @@ class SendbirdChatServices extends GetxService {
   Future<void> initialize() async {
     final firebaseRemoteConfigServices =
         Get.find<FirebaseRemoteConfigServices>();
+    final firebasePushNotificationServices =
+        Get.find<FirebasePushNotificationServices>();
     final homeController = Get.find<HomeController>();
 
     await SendbirdChat.init(
@@ -18,6 +21,11 @@ class SendbirdChatServices extends GetxService {
     await SendbirdChat.connect(
       "user_${homeController.userInfo.value.id}",
       nickname: homeController.userInfo.value.name,
+    );
+
+    await SendbirdChat.registerPushToken(
+      type: PushTokenType.fcm,
+      token: firebasePushNotificationServices.fcmToken.value,
     );
   }
 

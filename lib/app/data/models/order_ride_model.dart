@@ -11,10 +11,10 @@ class OrderRide {
   String? arriveTime;
   double? startLon;
   double? startLat;
-  String? startAddress;
-  String? startCity;
   double? endLon;
   double? endLat;
+  String? startAddress;
+  String? startCity;
   String? endAddress;
   String? endCity;
   int? driverId;

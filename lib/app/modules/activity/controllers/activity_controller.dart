@@ -35,7 +35,7 @@ class ActivityController extends GetxController
   final historyOrderRefreshController = RefreshController();
   final historyOrderList = <HistoryOrder>[].obs;
   final historyOrderPageNum = 1.obs;
-  final historyOrderSize = 5.obs;
+  final historyOrderSize = 10.obs;
   final historyOrderSeeMore = true.obs;
 
   final historyOrderSelectedOrderType = 1.obs;

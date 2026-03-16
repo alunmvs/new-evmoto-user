@@ -20,6 +20,10 @@ class HistoryOrder {
   int? orderType;
   int? insertTime;
   double? collectionFees;
+  String? startLon;
+  String? startLat;
+  String? endLon;
+  String? endLat;
 
   HistoryOrder({
     this.orderId,
@@ -41,6 +45,10 @@ class HistoryOrder {
     this.orderType,
     this.insertTime,
     this.collectionFees,
+    this.startLon,
+    this.startLat,
+    this.endLon,
+    this.endLat,
   });
 
   HistoryOrder.fromJson(Map<String, dynamic> json) {
@@ -63,6 +71,10 @@ class HistoryOrder {
     orderType = json['orderType'];
     insertTime = json['insertTime'];
     collectionFees = json['collectionFees'];
+    startLon = json['startLon'];
+    startLat = json['startLat'];
+    endLon = json['endLon'];
+    endLat = json['endLat'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +98,10 @@ class HistoryOrder {
     data['orderType'] = this.orderType;
     data['insertTime'] = this.insertTime;
     data['collectionFees'] = this.collectionFees;
+    data['startLon'] = this.startLon;
+    data['startLat'] = this.startLat;
+    data['endLon'] = this.endLon;
+    data['endLat'] = this.endLat;
     return data;
   }
 }

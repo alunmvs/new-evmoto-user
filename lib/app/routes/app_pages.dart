@@ -60,6 +60,10 @@ import '../modules/search_address/bindings/search_address_binding.dart';
 import '../modules/search_address/views/search_address_view.dart';
 import '../modules/select_promo/bindings/select_promo_binding.dart';
 import '../modules/select_promo/views/select_promo_view.dart';
+import '../modules/sendbird_chat_detail/bindings/sendbird_chat_detail_binding.dart';
+import '../modules/sendbird_chat_detail/views/sendbird_chat_detail_view.dart';
+import '../modules/sendbird_chat_list/bindings/sendbird_chat_list_binding.dart';
+import '../modules/sendbird_chat_list/views/sendbird_chat_list_view.dart';
 import '../modules/setting_language/bindings/setting_language_binding.dart';
 import '../modules/setting_language/views/setting_language_view.dart';
 import '../modules/setting_payment/bindings/setting_payment_binding.dart';
@@ -263,6 +267,16 @@ class AppPages {
       name: _Paths.RIDE_CHAT_SENDBIRD,
       page: () => const RideChatSendbirdView(),
       binding: RideChatSendbirdBinding(),
+    ),
+    GetPage(
+      name: _Paths.SENDBIRD_CHAT_LIST,
+      page: () => const SendbirdChatListView(),
+      binding: SendbirdChatListBinding(),
+    ),
+    GetPage(
+      name: _Paths.SENDBIRD_CHAT_DETAIL,
+      page: () => const SendbirdChatDetailView(),
+      binding: SendbirdChatDetailBinding(),
     ),
   ];
 }

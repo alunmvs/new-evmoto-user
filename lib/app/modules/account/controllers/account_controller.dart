@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
-import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
@@ -24,10 +23,12 @@ import 'package:url_launcher/url_launcher.dart';
 class AccountController extends GetxController {
   final OtpRepository otpRepository;
   final UserRepository userRepository;
+  final OrderRideRepository orderRideRepository;
 
   AccountController({
     required this.otpRepository,
     required this.userRepository,
+    required this.orderRideRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -393,93 +394,177 @@ class AccountController extends GetxController {
   }
 
   Future<void> onTapDeleteAccount() async {
-    await Get.bottomSheet(
-      Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-            child: Material(
-              color: themeColorServices.neutralsColorGrey0.value,
-              child: Container(
-                padding: EdgeInsets.all(16),
-                width: Get.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 52,
-                      height: 52,
-                      decoration: BoxDecoration(
-                        color: Color(0XFFFFEAE9),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/icon_alert_circle.svg",
-                            width: 26,
-                            height: 26,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      "Yakin Ingin Hapus Akun?",
-                      style: typographyServices.bodyLargeBold.value,
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "Akun dan seluruh data Anda akan dihapus secara permanen dan tidak dapat dipulihkan.",
-                      style: typographyServices.bodySmallRegular.value.copyWith(
-                        color: Color(0XFFB3B3B3),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    LoaderElevatedButton(
-                      onPressed: () async {
-                        Get.close(1);
-                        await onTapValidateOtpDeleteAccount();
-                      },
-                      buttonColor: themeColorServices.sematicColorRed400.value,
-                      child: Text(
-                        "Hapus Akun",
-                        style: typographyServices.bodyLargeBold.value.copyWith(
-                          color: themeColorServices.neutralsColorGrey0.value,
+    var activeOrderList = await orderRideRepository.getActiveOrderList(
+      language: languageServices.languageCodeSystem.value,
+    );
+
+    if (activeOrderList.isNotEmpty) {
+      await Get.bottomSheet(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  width: Get.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFFFEAE9),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_alert_circle.svg",
+                              width: 26,
+                              height: 26,
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    LoaderElevatedButton(
-                      onPressed: () async {
-                        Get.close(1);
-                      },
-                      buttonColor: Color(0XFFD9D9D9),
-                      child: Text(
-                        "Batalkan",
-                        style: typographyServices.bodyLargeBold.value.copyWith(
-                          color: Colors.black,
+                      SizedBox(height: 16),
+                      Text(
+                        "Perjalanan Anda Belum Selesai",
+                        style: typographyServices.bodyLargeBold.value,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        "Anda masih memiliki perjalanan yang belum selesai. Silakan selesaikan atau batalkan perjalanan tersebut sebelum menghapus akun Anda.",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(color: Color(0XFFB3B3B3)),
+                      ),
+                      SizedBox(height: 16),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        buttonColor:
+                            themeColorServices.sematicColorRed400.value,
+                        child: Text(
+                          "Mengerti",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                  ],
+
+                      SizedBox(height: 16),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      isDismissible: true,
-      isScrollControlled: true,
-    );
+          ],
+        ),
+        isDismissible: true,
+        isScrollControlled: true,
+      );
+    } else {
+      await Get.bottomSheet(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  width: Get.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFFFEAE9),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_alert_circle.svg",
+                              width: 26,
+                              height: 26,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        "Yakin Ingin Hapus Akun?",
+                        style: typographyServices.bodyLargeBold.value,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        "Akun dan seluruh data Anda akan dihapus secara permanen dan tidak dapat dipulihkan.",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(color: Color(0XFFB3B3B3)),
+                      ),
+                      SizedBox(height: 16),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                          await onTapValidateOtpDeleteAccount();
+                        },
+                        buttonColor:
+                            themeColorServices.sematicColorRed400.value,
+                        child: Text(
+                          "Hapus Akun",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        buttonColor: Color(0XFFD9D9D9),
+                        child: Text(
+                          "Batalkan",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        isDismissible: true,
+        isScrollControlled: true,
+      );
+    }
   }
 
   Future<void> onTapValidateOtpDeleteAccount() async {
@@ -789,6 +874,77 @@ class AccountController extends GetxController {
 
     if (await inAppReview.isAvailable()) {
       await inAppReview.requestReview();
+    }
+  }
+
+  Future<void> onTapCheckUpdate() async {
+    await firebaseRemoteConfigServices.remoteConfig.fetch();
+    var isForceUpdate = await homeController.checkForceUpdate();
+    var isSoftUpdate = await homeController.checkSoftUpdate();
+
+    if (!isForceUpdate && !isSoftUpdate) {
+      Get.dialog(
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Material(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 16),
+                        Container(
+                          width: 42,
+                          height: 42,
+                          decoration: BoxDecoration(
+                            color: Color(0XFFDDFFE6),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_checkmark_circle.svg",
+                                width: 26,
+                                height: 26,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Anda menggunakan versi terbaru',
+                          style: typographyServices.bodyLargeBold.value,
+                        ),
+                        SizedBox(height: 16),
+                        LoaderElevatedButton(
+                          child: Text(
+                            "Kembali",
+                            style: typographyServices.bodyLargeBold.value
+                                .copyWith(color: Colors.white),
+                          ),
+                          onPressed: () async {
+                            Get.close(1);
+                          },
+                        ),
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
   }
 }

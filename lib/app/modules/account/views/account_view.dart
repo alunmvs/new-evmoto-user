@@ -565,9 +565,64 @@ class AccountView extends GetView<AccountController> {
                               ),
                             ),
                           ),
+                          // InkWell(
+                          //   onTap: () async {
+                          //     await controller.onTapRatingAndReviewApp();
+                          //   },
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(16),
+                          //     color: Colors.transparent,
+                          //     child: Row(
+                          //       children: [
+                          //         Container(
+                          //           padding: EdgeInsets.all(4),
+                          //           decoration: BoxDecoration(
+                          //             color: controller
+                          //                 .themeColorServices
+                          //                 .sematicColorBlue100
+                          //                 .value,
+                          //             borderRadius: BorderRadius.circular(8),
+                          //           ),
+                          //           child: SvgPicture.asset(
+                          //             "assets/icons/icon_star.svg",
+                          //             width: 16,
+                          //             height: 16,
+                          //             color: controller
+                          //                 .themeColorServices
+                          //                 .sematicColorBlue500
+                          //                 .value,
+                          //           ),
+                          //         ),
+                          //         SizedBox(width: 8),
+                          //         Text(
+                          //           controller
+                          //                   .languageServices
+                          //                   .language
+                          //                   .value
+                          //                   .rateUs ??
+                          //               "-",
+                          //           style: controller
+                          //               .typographyServices
+                          //               .bodySmallBold
+                          //               .value,
+                          //         ),
+                          //         Spacer(),
+                          //         Row(
+                          //           children: [
+                          //             SvgPicture.asset(
+                          //               "assets/icons/icon_arrow_right.svg",
+                          //               width: 6,
+                          //               height: 12,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                           InkWell(
                             onTap: () async {
-                              await controller.onTapRatingAndReviewApp();
+                              await controller.onTapCheckUpdate();
                             },
                             child: Container(
                               padding: EdgeInsets.all(16),
@@ -584,9 +639,9 @@ class AccountView extends GetView<AccountController> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: SvgPicture.asset(
-                                      "assets/icons/icon_star.svg",
-                                      width: 16,
-                                      height: 16,
+                                      "assets/icons/icon_refresh.svg",
+                                      width: 14.4,
+                                      height: 11.2,
                                       color: controller
                                           .themeColorServices
                                           .sematicColorBlue500
@@ -595,12 +650,7 @@ class AccountView extends GetView<AccountController> {
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .rateUs ??
-                                        "-",
+                                    "Periksa Pembaruan",
                                     style: controller
                                         .typographyServices
                                         .bodySmallBold

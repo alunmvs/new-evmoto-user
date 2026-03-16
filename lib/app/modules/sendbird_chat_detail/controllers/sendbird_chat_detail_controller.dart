@@ -1,57 +1,55 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
-import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../../routes/app_pages.dart';
 
 class MyGroupChannelHandler extends GroupChannelHandler {
   @override
   void onMessageReceived(BaseChannel channel, BaseMessage message) {
-    Get.find<RideChatSendbirdController>().messageList.add(message);
+    Get.find<SendbirdChatDetailController>().messageList.add(message);
+
+    if (Get.currentRoute == Routes.SENDBIRD_CHAT_DETAIL) {
+      Get.find<SendbirdChatDetailController>().groupChannel.value!.markAsRead();
+    }
   }
 
   @override
   void onReadStatusUpdated(GroupChannel channel) {
-    Get.find<RideChatSendbirdController>().getMemberReadStatus();
+    Get.find<SendbirdChatDetailController>().getMemberReadStatus();
   }
 }
 
-class RideChatSendbirdController extends GetxController {
+class SendbirdChatDetailController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
 
-  final sendbirdChatServices = Get.find<SendbirdChatServices>();
-  final homeController = Get.find<HomeController>();
-
   final textEditingController = TextEditingController();
   final refreshController = RefreshController();
+  final isAttachmentOptionOpen = false.obs;
 
+  final driverId = Rx<String?>(null);
+  final driverName = Rx<String?>(null);
+  final driverProfileUrl = Rx<String?>(null);
+
+  final groupChannelUrl = Rx<String?>(null);
   final groupChannel = Rx<GroupChannel?>(null);
 
-  final driverId = Rx<int?>(null);
-  final driverName = Rx<String?>(null);
-  final driverLicensePlate = Rx<String?>(null);
-  final driverAvatarUrl = Rx<String?>(null);
-
-  final orderId = Rx<int?>(null);
-  final orderType = Rx<int?>(null);
-  final state = Rx<int?>(null);
+  final membersReadStatus = {}.obs;
 
   final messageList = <RootMessage>[].obs;
   final isSeeMoreMessageList = true.obs;
-
-  final isAttachmentOptionOpen = false.obs;
-
-  final membersReadStatus = {}.obs;
+  final uniqueHandlerUuid = "".obs;
 
   final isFetch = false.obs;
 
@@ -59,26 +57,23 @@ class RideChatSendbirdController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    driverId.value = Get.arguments['driver_id'];
-    driverName.value = Get.arguments['driver_name'];
-    driverAvatarUrl.value = Get.arguments['driver_avatar_url'];
-    driverLicensePlate.value = Get.arguments['driver_license_plate'];
-    orderId.value = Get.arguments['order_id'];
-    orderType.value = Get.arguments['order_type'];
-    state.value = Get.arguments['state'];
-    await getChannelUrl();
-    await updateMetaData();
-
+    groupChannelUrl.value = Get.arguments['group_channel_url'];
+    await getGroupChannel();
     await getMessageList();
+    await groupChannel.value!.markAsRead();
+    getMemberReadStatus();
 
-    SendbirdChat.removeAllChannelHandlers();
+    getDriverProfileUrl();
+    getDriverName();
+    getDriverId();
+
+    var uuid = Uuid();
+    uniqueHandlerUuid.value = uuid.v4();
+
     SendbirdChat.addChannelHandler(
-      'UNIQUE_HANDLER_ID',
+      uniqueHandlerUuid.value,
       MyGroupChannelHandler(),
     );
-
-    await getMemberReadStatus();
-    await groupChannel.value!.markAsRead();
 
     isFetch.value = false;
   }
@@ -91,36 +86,17 @@ class RideChatSendbirdController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-
-    SendbirdChat.removeAllChannelHandlers();
+    SendbirdChat.removeChannelHandler(uniqueHandlerUuid.value);
   }
 
-  Future<void> getMemberReadStatus() async {
+  void getMemberReadStatus() {
     final membersReadStatus = groupChannel.value!.getReadStatus(true);
     this.membersReadStatus.value = membersReadStatus;
     this.membersReadStatus.refresh();
   }
 
-  Future<void> getChannelUrl() async {
-    groupChannel.value = await sendbirdChatServices.getChannelByDriverId(
-      driverId: driverId.value!,
-    );
-    if (groupChannel.value == null) {
-      groupChannel.value = (await sendbirdChatServices.createChannelByDriverId(
-        driverId: driverId.value!,
-        driverName: driverName.value,
-        driverAvatarUrl: driverAvatarUrl.value,
-      ))!;
-    }
-  }
-
-  Future<void> updateMetaData() async {
-    await sendbirdChatServices.updateMetaData(
-      groupChannel: groupChannel.value!,
-      orderId: orderId.value!,
-      orderType: orderType.value!,
-      state: state.value!,
-    );
+  Future<void> getGroupChannel() async {
+    groupChannel.value = await GroupChannel.getChannel(groupChannelUrl.value!);
   }
 
   Future<void> getMessageList() async {
@@ -143,18 +119,6 @@ class RideChatSendbirdController extends GetxController {
       ..includeReactions = true
       ..includeMetaArray = true;
 
-    // print(
-    //   DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
-    //     DateTime.fromMillisecondsSinceEpoch(this.messageList.first.createdAt),
-    //   ),
-    // );
-
-    // print(
-    //   DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
-    //     DateTime.fromMillisecondsSinceEpoch(this.messageList.last.createdAt),
-    //   ),
-    // );
-
     var messageList = await groupChannel.value!.getMessagesByTimestamp(
       this.messageList.first.createdAt,
       params,
@@ -163,12 +127,6 @@ class RideChatSendbirdController extends GetxController {
     isSeeMoreMessageList.value = messageList.isEmpty;
 
     for (var message in messageList.reversed) {
-      // print(
-      //   DateFormat(
-      //     'dd MMMM yyyy ⬩ HH:mm',
-      //   ).format(DateTime.fromMillisecondsSinceEpoch(message.createdAt)),
-      // );
-
       this.messageList.insert(0, message);
     }
   }
@@ -180,6 +138,30 @@ class RideChatSendbirdController extends GetxController {
 
     messageList.add(userMessage);
     textEditingController.clear();
+  }
+
+  void getDriverProfileUrl() {
+    for (var member in groupChannel.value!.members) {
+      if (member.userId.contains("driver_")) {
+        driverProfileUrl.value = member.profileUrl;
+      }
+    }
+  }
+
+  void getDriverName() {
+    for (var member in groupChannel.value!.members) {
+      if (member.userId.contains("driver_")) {
+        driverName.value = member.nickname;
+      }
+    }
+  }
+
+  void getDriverId() {
+    for (var member in groupChannel.value!.members) {
+      if (member.userId.contains("driver_")) {
+        driverId.value = member.userId;
+      }
+    }
   }
 
   Future<void> sendAttachmentFromGallery() async {

@@ -4,6 +4,7 @@ class ActiveOrder {
   int? orderId;
   int? orderType;
   int? state;
+  String? startAddress;
   String? endAddress;
   String? travelTime;
   double? collectionFees;
@@ -13,6 +14,7 @@ class ActiveOrder {
     this.orderId,
     this.orderType,
     this.state,
+    this.startAddress,
     this.endAddress,
     this.travelTime,
     this.collectionFees,
@@ -24,6 +26,7 @@ class ActiveOrder {
     orderType = json['orderType'];
     state = json['state'];
 
+    startAddress = json['startAddress'];
     endAddress = json['endAddress'];
     travelTime = json['travelTime'];
     collectionFees = json['collectionFees'];

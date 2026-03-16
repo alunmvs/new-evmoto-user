@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 
@@ -11,6 +12,7 @@ class AccountBinding extends Bindings {
       () => AccountController(
         otpRepository: OtpRepository(),
         userRepository: UserRepository(),
+        orderRideRepository: OrderRideRepository(),
       ),
     );
   }
