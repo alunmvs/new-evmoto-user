@@ -463,7 +463,7 @@ class HomeController extends GetxController {
     var currentVersion = Version.parse(packageInfo.version);
     var latestAppVersion = Version.parse(userAppVersion['latest_app_version']);
 
-    if (latestAppVersion < currentVersion) {
+    if (latestAppVersion > currentVersion) {
       await showDialogSoftUpdate(
         isSoftUpdateWithContent: isSoftUpdateWithContent,
       );
