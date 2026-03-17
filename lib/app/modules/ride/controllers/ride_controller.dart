@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
@@ -76,6 +77,8 @@ class RideController extends GetxController {
   final destinationLongitude = "".obs;
   final destinationAddress = "".obs;
 
+  final originGeocodingAddressSearch = GeocodingAddress().obs;
+  final destinationGeocodingAddressSearch = GeocodingAddress().obs;
   final originGeocodeAddressSearch = Rx<String?>(null);
   final destinationGeocodeAddressSearch = Rx<String?>(null);
   final originSearchLatitude = "".obs;
@@ -527,11 +530,13 @@ class RideController extends GetxController {
     focusNodeOrigin.requestFocus();
 
     if (currentLatitude.value != null) {
-      var currentLocationDetail = await geocodingRepository
-          .getAddressByLatitudeLongitude(
+      var geocodingAddress =
+          (await geocodingRepository.getAddressByLatitudeLongitude(
             latitude: double.parse(currentLatitude.value!),
             longitude: double.parse(currentLongitude.value!),
-          );
+          )) ??
+          GeocodingAddress();
+      var currentLocationDetail = geocodingAddress.address;
 
       recommendationOriginCurrentLocationList.value = [];
       if (currentLocationDetail != null) {
@@ -1338,6 +1343,7 @@ class RideController extends GetxController {
       amount: selectedOrderRidePricing.value.amount,
       payType: payType.value,
       couponId: selectedCoupon.value.id,
+      priceNo: selectedOrderRidePricing.value.priceNo,
     ));
   }
 
@@ -1391,11 +1397,14 @@ class RideController extends GetxController {
           originSearchLongitude.value == longitude) {
         if (originSearchIsLoading.value == false) {
           originSearchIsLoading.value = true;
-          originGeocodeAddressSearch.value = await geocodingRepository
-              .getAddressByLatitudeLongitude(
+          originGeocodingAddressSearch.value =
+              await geocodingRepository.getAddressByLatitudeLongitude(
                 latitude: double.parse(latitude),
                 longitude: double.parse(longitude),
-              );
+              ) ??
+              GeocodingAddress();
+          originGeocodeAddressSearch.value =
+              originGeocodingAddressSearch.value.address;
           originSearchIsLoading.value = false;
         }
       }
@@ -1416,11 +1425,15 @@ class RideController extends GetxController {
           destinationSearchLongitude.value == longitude) {
         if (destinationSearchIsLoading.value == false) {
           destinationSearchIsLoading.value = true;
-          destinationGeocodeAddressSearch.value = await geocodingRepository
-              .getAddressByLatitudeLongitude(
+
+          destinationGeocodingAddressSearch.value =
+              await geocodingRepository.getAddressByLatitudeLongitude(
                 latitude: double.parse(latitude),
                 longitude: double.parse(longitude),
-              );
+              ) ??
+              GeocodingAddress();
+          destinationGeocodeAddressSearch.value =
+              destinationGeocodingAddressSearch.value.address;
           destinationSearchIsLoading.value = false;
         }
       }

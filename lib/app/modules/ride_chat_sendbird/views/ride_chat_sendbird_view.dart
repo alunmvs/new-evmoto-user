@@ -91,8 +91,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor:
-            controller.themeColorServices.sematicColorBlue100.value,
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
         body: controller.isFetch.value
             ? Center(
                 child: SizedBox(
@@ -106,20 +105,21 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
             : Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Image.asset(
-                      "assets/images/img_background_chat.png",
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      fit: BoxFit.cover,
-                      opacity: const AlwaysStoppedAnimation(0.05),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 0,
+                  //   left: 0,
+                  //   right: 0,
+                  //   child: Image.asset(
+                  //     "assets/images/img_background_chat.png",
+                  //     width: MediaQuery.of(context).size.width,
+                  //     height: MediaQuery.of(context).size.height,
+                  //     fit: BoxFit.cover,
+                  //     opacity: const AlwaysStoppedAnimation(0.05),
+                  //   ),
+                  // ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -274,7 +274,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                               ),
                                               color: controller
                                                   .themeColorServices
-                                                  .neutralsColorGrey0
+                                                  .neutralsColorGrey100
                                                   .value,
                                             ),
                                             child: Column(
@@ -452,7 +452,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                               ),
                                               color: controller
                                                   .themeColorServices
-                                                  .neutralsColorGrey0
+                                                  .neutralsColorGrey100
                                                   .value,
                                             ),
                                             child: Column(
@@ -513,21 +513,21 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                 .neutralsColorGrey0
                                 .value,
                             borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
+                              topLeft: Radius.circular(0),
+                              topRight: Radius.circular(0),
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: controller
-                                    .themeColorServices
-                                    .overlayDark100
-                                    .value
-                                    .withValues(alpha: 0.1),
-                                blurRadius: 16,
-                                spreadRadius: 2,
-                                offset: Offset(0, -1),
-                              ),
-                            ],
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: controller
+                            //         .themeColorServices
+                            //         .overlayDark100
+                            //         .value
+                            //         .withValues(alpha: 0.1),
+                            //     blurRadius: 16,
+                            //     spreadRadius: 2,
+                            //     offset: Offset(0, -1),
+                            //   ),
+                            // ],
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -585,10 +585,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                       height: 40,
                                       width: 40,
                                       decoration: BoxDecoration(
-                                        color: controller
-                                            .themeColorServices
-                                            .primaryBlue
-                                            .value,
+                                        color: Colors.transparent,
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Row(
@@ -597,13 +594,20 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_add_square.svg",
-                                            width: 12,
-                                            height: 12,
+                                          // SvgPicture.asset(
+                                          //   "assets/icons/icon_add_square.svg",
+                                          //   width: 12,
+                                          //   height: 12,
+                                          //   color: controller
+                                          //       .themeColorServices
+                                          //       .neutralsColorGrey0
+                                          //       .value,
+                                          // ),
+                                          Icon(
+                                            Icons.add_box_outlined,
                                             color: controller
                                                 .themeColorServices
-                                                .neutralsColorGrey0
+                                                .primaryBlue
                                                 .value,
                                           ),
                                         ],
@@ -615,7 +619,25 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                     child: TextField(
                                       controller:
                                           controller.textEditingController,
+                                      onSubmitted: (value) async {
+                                        if (controller
+                                                .textEditingController
+                                                .text
+                                                .trim() !=
+                                            "") {
+                                          await controller.sendMessage(
+                                            message: controller
+                                                .textEditingController
+                                                .text,
+                                          );
+                                        }
+                                      },
                                       decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey100
+                                            .value,
                                         contentPadding: EdgeInsets.symmetric(
                                           horizontal: 12,
                                           vertical: 12,
@@ -639,29 +661,29 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                             ),
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                            8,
+                                            9999,
                                           ),
                                           borderSide: BorderSide(
                                             color: controller
                                                 .themeColorServices
-                                                .neutralsColorGrey400
+                                                .neutralsColorGrey100
                                                 .value,
                                           ),
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                            8,
+                                            9999,
                                           ),
                                           borderSide: BorderSide(
                                             color: controller
                                                 .themeColorServices
-                                                .neutralsColorGrey400
+                                                .neutralsColorGrey100
                                                 .value,
                                           ),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
-                                            8,
+                                            9999,
                                           ),
                                           borderSide: BorderSide(
                                             color: controller
@@ -673,48 +695,49 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 12),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      if (controller.textEditingController.text
-                                              .trim() !=
-                                          "") {
-                                        await controller.sendMessage(
-                                          message: controller
-                                              .textEditingController
-                                              .text,
-                                        );
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 40,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                        color: controller
-                                            .themeColorServices
-                                            .primaryBlue
-                                            .value,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_send_message.svg",
-                                            width: 16,
-                                            height: 16,
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+
+                                  // SizedBox(width: 12),
+                                  // GestureDetector(
+                                  //   onTap: () async {
+                                  //     if (controller.textEditingController.text
+                                  //             .trim() !=
+                                  //         "") {
+                                  //       await controller.sendMessage(
+                                  //         message: controller
+                                  //             .textEditingController
+                                  //             .text,
+                                  //       );
+                                  //     }
+                                  //   },
+                                  //   child: Container(
+                                  //     height: 40,
+                                  //     width: 40,
+                                  //     decoration: BoxDecoration(
+                                  //       color: controller
+                                  //           .themeColorServices
+                                  //           .primaryBlue
+                                  //           .value,
+                                  //       borderRadius: BorderRadius.circular(8),
+                                  //     ),
+                                  //     child: Row(
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.center,
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.center,
+                                  //       children: [
+                                  //         SvgPicture.asset(
+                                  //           "assets/icons/icon_send_message.svg",
+                                  //           width: 16,
+                                  //           height: 16,
+                                  //           color: controller
+                                  //               .themeColorServices
+                                  //               .neutralsColorGrey0
+                                  //               .value,
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                               if (controller.isAttachmentOptionOpen.value) ...[

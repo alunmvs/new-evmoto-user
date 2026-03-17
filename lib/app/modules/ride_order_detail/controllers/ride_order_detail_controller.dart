@@ -22,8 +22,7 @@ import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 
-class RideOrderDetailController extends GetxController
-    with WidgetsBindingObserver {
+class RideOrderDetailController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
   final OpenMapsRepository openMapsRepository;
@@ -88,8 +87,6 @@ class RideOrderDetailController extends GetxController
     orderType.value = Get.arguments['order_type'] ?? 1;
 
     await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
-    await joinFirestoreChatRooms();
-    WidgetsBinding.instance.addObserver(this);
     isFetch.value = false;
     await Future.delayed(Duration(seconds: 1));
 
@@ -158,19 +155,6 @@ class RideOrderDetailController extends GetxController
   @override
   Future<void> onClose() async {
     super.onClose();
-
-    WidgetsBinding.instance.removeObserver(this);
-
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderRideDetail.value.orderId.toString())
-        .set({
-          "userId": orderRideDetail.value.userId,
-          "userName": homeController.userInfo.value.name,
-          "userIsOnline": false,
-          "userLastSeen": FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
-
     try {
       googleMapController.dispose();
     } catch (e) {}
@@ -183,54 +167,6 @@ class RideOrderDetailController extends GetxController
     try {
       refreshStatusDriverGivePriceTimer?.cancel();
     } catch (e) {}
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.resumed) {
-      await FirebaseFirestore.instance
-          .collection('evmoto_order_chat_participants')
-          .doc(orderRideDetail.value.orderId.toString())
-          .set({
-            "userId": orderRideDetail.value.userId,
-            "userName": homeController.userInfo.value.name,
-            "userIsOnline": true,
-            "userLastSeen": FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
-      await refreshAll();
-    } else if (state == AppLifecycleState.paused) {
-      await FirebaseFirestore.instance
-          .collection('evmoto_order_chat_participants')
-          .doc(orderRideDetail.value.orderId.toString())
-          .set({
-            "userId": orderRideDetail.value.userId,
-            "userName": homeController.userInfo.value.name,
-            "userIsOnline": false,
-            "userLastSeen": FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
-    }
-  }
-
-  Future<void> joinFirestoreChatRooms() async {
-    FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderRideDetail.value.orderId.toString())
-        .snapshots()
-        .listen((event) {
-          evmotoOrderChatParticipants.value =
-              EvmotoOrderChatParticipants.fromJson(event.data()!);
-        });
-
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderRideDetail.value.orderId.toString())
-        .set({
-          "userId": orderRideDetail.value.userId,
-          "userName": homeController.userInfo.value.name,
-          "userIsOnline": true,
-          "userLastSeen": FieldValue.serverTimestamp(),
-          "userJoinedAt": FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
   }
 
   void generateEstimatedDistanceAndTimeInMinutes() {

@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view.dart';
+import 'package:new_evmoto_user/app/modules/home/views/home_view/home_advertisement_list_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/home/views/home_view/home_bookmark_location_subview.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/main.dart';
@@ -403,24 +404,70 @@ class HomeView extends GetView<HomeController> {
                                                                 ),
                                                               ),
                                                             ] else ...[
-                                                              Text(
-                                                                controller
-                                                                        .currentAddress
-                                                                        .value ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .captionLargeRegular
-                                                                    .value
-                                                                    .copyWith(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Container(
+                                                                    constraints:
+                                                                        BoxConstraints(
+                                                                          maxWidth:
+                                                                              175 -
+                                                                              11,
+                                                                        ),
+                                                                    child: Text(
+                                                                      controller
+                                                                              .currentGeocodingAddress
+                                                                              .value
+                                                                              .name ??
+                                                                          "-",
+                                                                      style: controller
+                                                                          .typographyServices
+                                                                          .captionLargeRegular
+                                                                          .value
+                                                                          .copyWith(
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                          ),
+                                                                      maxLines:
+                                                                          1,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
                                                                     ),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 4,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        SvgPicture.asset(
+                                                                          "assets/icons/icon_arrow_right.svg",
+                                                                          width:
+                                                                              4.76,
+                                                                          height:
+                                                                              8.65,
+                                                                          color: Color(
+                                                                            0XFF272727,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ],
                                                           ],
@@ -445,8 +492,7 @@ class HomeView extends GetView<HomeController> {
                                   MediaQuery.of(context).size.height -
                                   (65 +
                                       MediaQuery.of(context).size.width /
-                                          (375 / 369)) +
-                                  (41 + 16),
+                                          (375 / 369)),
                               maxHeight: MediaQuery.of(context).size.height,
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(16),
@@ -458,62 +504,62 @@ class HomeView extends GetView<HomeController> {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              await controller
-                                                  .moveGoogleMapCameraToCurrentLocation();
-                                            },
-                                            child: Container(
-                                              width: 41,
-                                              height: 41,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                      99999999,
-                                                    ),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .overlayDark200
-                                                        .value
-                                                        .withValues(
-                                                          alpha: 0.12,
-                                                        ),
-                                                    blurRadius: 16,
-                                                    spreadRadius: 2,
-                                                    offset: Offset(0, -1),
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "assets/icons/icon_current_location.svg",
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(height: 16),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.symmetric(
+                                    //     horizontal: 16,
+                                    //   ),
+                                    //   child: Row(
+                                    //     crossAxisAlignment:
+                                    //         CrossAxisAlignment.end,
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.end,
+                                    //     children: [
+                                    //       GestureDetector(
+                                    //         onTap: () async {
+                                    //           await controller
+                                    //               .moveGoogleMapCameraToCurrentLocation();
+                                    //         },
+                                    //         child: Container(
+                                    //           width: 41,
+                                    //           height: 41,
+                                    //           decoration: BoxDecoration(
+                                    //             color: Colors.white,
+                                    //             borderRadius:
+                                    //                 BorderRadius.circular(
+                                    //                   99999999,
+                                    //                 ),
+                                    //             boxShadow: [
+                                    //               BoxShadow(
+                                    //                 color: controller
+                                    //                     .themeColorServices
+                                    //                     .overlayDark200
+                                    //                     .value
+                                    //                     .withValues(
+                                    //                       alpha: 0.12,
+                                    //                     ),
+                                    //                 blurRadius: 16,
+                                    //                 spreadRadius: 2,
+                                    //                 offset: Offset(0, -1),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //           child: Row(
+                                    //             mainAxisAlignment:
+                                    //                 MainAxisAlignment.center,
+                                    //             crossAxisAlignment:
+                                    //                 CrossAxisAlignment.center,
+                                    //             children: [
+                                    //               SvgPicture.asset(
+                                    //                 "assets/icons/icon_current_location.svg",
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    // SizedBox(height: 16),
                                     Expanded(
                                       child: SmartRefresher(
                                         controller:
@@ -836,118 +882,8 @@ class HomeView extends GetView<HomeController> {
                                                   ],
                                                 ),
                                               ),
-                                              // SizedBox(height: 16),
-                                              // Padding(
-                                              //   padding:
-                                              //       const EdgeInsets.symmetric(
-                                              //         horizontal: 16,
-                                              //       ),
-                                              //   child: Container(
-                                              //     padding: EdgeInsets.all(16),
-                                              //     decoration: BoxDecoration(
-                                              //       color: Color(0XFFF8FBFE),
-                                              //       borderRadius:
-                                              //           BorderRadius.circular(
-                                              //             16,
-                                              //           ),
-                                              //       border: Border.all(
-                                              //         color: Color(0XFFE3F0FF),
-                                              //       ),
-                                              //     ),
-                                              //     child: Column(
-                                              //       crossAxisAlignment:
-                                              //           CrossAxisAlignment
-                                              //               .start,
-                                              //       children: [
-                                              //         Row(
-                                              //           mainAxisAlignment:
-                                              //               MainAxisAlignment
-                                              //                   .spaceBetween,
-                                              //           children: [
-                                              //             Container(
-                                              //               width: 32,
-                                              //               height: 32,
-                                              //               decoration: BoxDecoration(
-                                              //                 gradient: LinearGradient(
-                                              //                   colors: [
-                                              //                     Color(
-                                              //                       0XFFF5F9FF,
-                                              //                     ),
-                                              //                     Color(
-                                              //                       0XFFCDE2F8,
-                                              //                     ),
-                                              //                   ],
-                                              //                   begin: Alignment
-                                              //                       .topCenter,
-                                              //                   end: Alignment
-                                              //                       .bottomCenter,
-                                              //                   stops: [
-                                              //                     0.0,
-                                              //                     1.0,
-                                              //                   ],
-                                              //                 ),
-                                              //                 borderRadius:
-                                              //                     BorderRadius.circular(
-                                              //                       9.23,
-                                              //                     ),
-                                              //               ),
-                                              //               child: Row(
-                                              //                 mainAxisAlignment:
-                                              //                     MainAxisAlignment
-                                              //                         .center,
-                                              //                 crossAxisAlignment:
-                                              //                     CrossAxisAlignment
-                                              //                         .center,
-                                              //                 children: [
-                                              //                   SvgPicture.asset(
-                                              //                     "assets/icons/icon_ride.svg",
-                                              //                     width: 23.38,
-                                              //                     height: 17.31,
-                                              //                   ),
-                                              //                 ],
-                                              //               ),
-                                              //             ),
-                                              //             SizedBox(width: 16),
-                                              //             Expanded(
-                                              //               child: Text(
-                                              //                 'Driver segera tiba, menunggu: 12 menit',
-                                              //                 style: controller
-                                              //                     .typographyServices
-                                              //                     .bodyLargeBold
-                                              //                     .value
-                                              //                     .copyWith(
-                                              //                       color: controller
-                                              //                           .themeColorServices
-                                              //                           .primaryBlue
-                                              //                           .value,
-                                              //                     ),
-                                              //               ),
-                                              //             ),
-                                              //             SizedBox(width: 16),
-                                              //             SizedBox(
-                                              //               width: 24,
-                                              //               height: 24,
-                                              //               child: Center(
-                                              //                 child: SvgPicture.asset(
-                                              //                   "assets/icons/icon_arrow_right.svg",
-                                              //                   width: 13 * 1.3,
-                                              //                   height:
-                                              //                       7.5 * 1.3,
-                                              //                   color: controller
-                                              //                       .themeColorServices
-                                              //                       .primaryBlue
-                                              //                       .value,
-                                              //                 ),
-                                              //               ),
-                                              //             ),
-                                              //           ],
-                                              //         ),
-                                              //       ],
-                                              //     ),
-                                              //   ),
-                                              // ),
-                                              // SizedBox(height: 16),
-                                              // HomeCouponListSubView(),
+                                              SizedBox(height: 16),
+                                              HomeAdvertisementListSubView(),
                                             ],
                                           ),
                                         ),
@@ -956,6 +892,128 @@ class HomeView extends GetView<HomeController> {
                                   ],
                                 );
                               },
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Visibility(
+                                visible:
+                                    controller.activeOrderStatus.value != '-',
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    await controller.onTapRideService(
+                                      isFillCurrentLocation: false,
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 0,
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color: Color(0XFFF8FBFE),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(16),
+                                          topRight: Radius.circular(16),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: controller
+                                                .themeColorServices
+                                                .overlayDark200
+                                                .value
+                                                .withValues(alpha: 0.25),
+                                            blurRadius: 16,
+                                            spreadRadius: 0,
+                                            offset: Offset(0, -2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: 32,
+                                                height: 32,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color(0XFFF5F9FF),
+                                                      Color(0XFFCDE2F8),
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    stops: [0.0, 1.0],
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        9.23,
+                                                      ),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "assets/icons/icon_ride.svg",
+                                                      width: 23.38,
+                                                      height: 17.31,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(width: 16),
+                                              Expanded(
+                                                child: Text(
+                                                  controller
+                                                      .activeOrderStatus
+                                                      .value,
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodyLargeBold
+                                                      .value
+                                                      .copyWith(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .primaryBlue
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 16),
+                                              SizedBox(
+                                                width: 24,
+                                                height: 24,
+                                                child: Center(
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/icon_arrow_right.svg",
+                                                    width: 13 * 1.3,
+                                                    height: 7.5 * 1.3,
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),

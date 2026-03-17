@@ -10,6 +10,7 @@ class Coupon {
   double? discount;
   String? name;
   int? state;
+  String? couponStatus;
 
   Coupon({
     this.id,
@@ -23,6 +24,7 @@ class Coupon {
     this.discount,
     this.name,
     this.state,
+    this.couponStatus,
   });
 
   Coupon.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class Coupon {
     discount = json['discount'];
     name = json['name'];
     state = json['state'];
+    couponStatus = json['couponStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +55,7 @@ class Coupon {
     data['discount'] = this.discount;
     data['name'] = this.name;
     data['state'] = this.state;
+    data['couponStatus'] = this.couponStatus;
     return data;
   }
 }

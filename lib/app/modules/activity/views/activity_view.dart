@@ -140,20 +140,6 @@ class ActivityView extends GetView<ActivityController> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // for (var activeOrder in controller.activeOrderList) ...[
-                                    //   ActivityActiveOrderCardSubView(
-                                    //     activeOrder: activeOrder,
-                                    //   ),
-                                    //   DashedLine(
-                                    //     height: 0,
-                                    //     dashSpace: 8,
-                                    //     dashWidth: 8,
-                                    //     color: controller
-                                    //         .themeColorServices
-                                    //         .neutralsColorGrey200
-                                    //         .value,
-                                    //   ),
-                                    // ],
                                     for (var historyOrder
                                         in controller.historyOrderList) ...[
                                       ActivityHistoryOrderCardSubView(

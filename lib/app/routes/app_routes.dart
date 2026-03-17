@@ -46,6 +46,7 @@ abstract class Routes {
   static const RIDE_CHAT_SENDBIRD = _Paths.RIDE_CHAT_SENDBIRD;
   static const SENDBIRD_CHAT_LIST = _Paths.SENDBIRD_CHAT_LIST;
   static const SENDBIRD_CHAT_DETAIL = _Paths.SENDBIRD_CHAT_DETAIL;
+  static const VOUCHER_LIST = _Paths.VOUCHER_LIST;
 }
 
 abstract class _Paths {
@@ -90,4 +91,5 @@ abstract class _Paths {
   static const RIDE_CHAT_SENDBIRD = '/ride-chat-sendbird';
   static const SENDBIRD_CHAT_LIST = '/sendbird-chat-list';
   static const SENDBIRD_CHAT_DETAIL = '/sendbird-chat-detail';
+  static const VOUCHER_LIST = '/voucher-list';
 }

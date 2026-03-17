@@ -84,6 +84,72 @@ class SendbirdChatListView extends GetView<SendbirdChatListController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 16),
+                                if (controller.groupChannelList.isEmpty) ...[
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                147 /
+                                                812,
+                                          ),
+                                          Image.asset(
+                                            "assets/images/img_chat_empty.png",
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                176 /
+                                                375,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            "Belum ada pesan",
+                                            style: controller
+                                                .typographyServices
+                                                .bodyLargeBold
+                                                .value,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 8),
+                                          SizedBox(
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                297 /
+                                                375,
+                                            child: Text(
+                                              "Percakapan akan muncul di sini setelah Anda mulai mengirim pesan atau menerima chat dari pengguna lain.",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodySmallRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey600
+                                                        .value,
+                                                  ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                                 for (var groupChannel
                                     in controller.groupChannelList) ...[
                                   GestureDetector(
@@ -232,6 +298,7 @@ class SendbirdChatListView extends GetView<SendbirdChatListController> {
                                   ),
                                   SizedBox(height: 16),
                                 ],
+
                                 SizedBox(height: 16),
                               ],
                             ),

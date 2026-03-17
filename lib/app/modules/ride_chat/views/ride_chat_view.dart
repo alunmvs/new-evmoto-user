@@ -109,18 +109,18 @@ class RideChatView extends GetView<RideChatController> {
         body: Stack(
           clipBehavior: Clip.none,
           children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Image.asset(
-                "assets/images/img_background_chat.png",
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                fit: BoxFit.cover,
-                opacity: const AlwaysStoppedAnimation(0.05),
-              ),
-            ),
+            // Positioned(
+            //   top: 0,
+            //   left: 0,
+            //   right: 0,
+            //   child: Image.asset(
+            //     "assets/images/img_background_chat.png",
+            //     width: MediaQuery.of(context).size.width,
+            //     height: MediaQuery.of(context).size.height,
+            //     fit: BoxFit.cover,
+            //     opacity: const AlwaysStoppedAnimation(0.05),
+            //   ),
+            // ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

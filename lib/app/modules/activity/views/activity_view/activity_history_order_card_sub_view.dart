@@ -102,6 +102,18 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                       .themeColorServices
                                       .sematicColorRed100
                                       .value
+                                : !([
+                                        1,
+                                        2,
+                                        3,
+                                        4,
+                                        5,
+                                        6,
+                                        7,
+                                      ].contains(historyOrder.state)) &&
+                                      !(historyOrder.state == 10) &&
+                                      (historyOrder.orderScore ?? 0) == 0
+                                ? Color(0XFFFFFAE8)
                                 : controller
                                       .themeColorServices
                                       .sematicColorGreen100
@@ -126,6 +138,18 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                         .themeColorServices
                                         .sematicColorRed400
                                         .value
+                                  : !([
+                                          1,
+                                          2,
+                                          3,
+                                          4,
+                                          5,
+                                          6,
+                                          7,
+                                        ].contains(historyOrder.state)) &&
+                                        !(historyOrder.state == 10) &&
+                                        (historyOrder.orderScore ?? 0) == 0
+                                  ? Color(0XFFF7E9BC)
                                   : controller
                                         .themeColorServices
                                         .sematicColorGreen200
@@ -148,6 +172,18 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                           .value
                                           .canceled ??
                                       "-"
+                                : !([
+                                        1,
+                                        2,
+                                        3,
+                                        4,
+                                        5,
+                                        6,
+                                        7,
+                                      ].contains(historyOrder.state)) &&
+                                      !(historyOrder.state == 10) &&
+                                      (historyOrder.orderScore ?? 0) == 0
+                                ? "Penilaian"
                                 : controller
                                           .languageServices
                                           .language
@@ -178,6 +214,18 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                             .themeColorServices
                                             .sematicColorRed500
                                             .value
+                                      : !([
+                                              1,
+                                              2,
+                                              3,
+                                              4,
+                                              5,
+                                              6,
+                                              7,
+                                            ].contains(historyOrder.state)) &&
+                                            !(historyOrder.state == 10) &&
+                                            (historyOrder.orderScore ?? 0) == 0
+                                      ? Color(0XFFEAA82D)
                                       : controller
                                             .themeColorServices
                                             .sematicColorGreen500
@@ -333,61 +381,127 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                             ].contains(historyOrder.state) ==
                             false) ...[
                           SizedBox(height: 8),
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(
-                                Routes.RIDE,
-                                arguments: {
-                                  "start_address": historyOrder.startAddress,
-                                  "start_lat": historyOrder.startLat,
-                                  "start_lon": historyOrder.startLon,
-                                  "end_address": historyOrder.endAddress,
-                                  "end_lat": historyOrder.endLat,
-                                  "end_lon": historyOrder.endLon,
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(
+                                    Routes.RIDE,
+                                    arguments: {
+                                      "start_address":
+                                          historyOrder.startAddress,
+                                      "start_lat": historyOrder.startLat,
+                                      "start_lon": historyOrder.startLon,
+                                      "end_address": historyOrder.endAddress,
+                                      "end_lat": historyOrder.endLat,
+                                      "end_lon": historyOrder.endLon,
+                                    },
+                                  );
                                 },
-                              );
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
+                                child: Container(
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .orderAgain ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .bodyLargeBold
                                             .value
-                                            .orderAgain ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .primaryBlue
-                                              .value,
-                                        ),
-                                  ),
-                                  SizedBox(width: 2),
-                                  SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        "assets/icons/icon_arrow_right.svg",
-                                        width: 13,
-                                        height: 7.5,
-                                        color: controller
-                                            .themeColorServices
-                                            .primaryBlue
-                                            .value,
+                                            .copyWith(
+                                              color: controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                            ),
                                       ),
+                                      SizedBox(width: 2),
+                                      SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            "assets/icons/icon_arrow_right.svg",
+                                            width: 13,
+                                            height: 7.5,
+                                            color: controller
+                                                .themeColorServices
+                                                .primaryBlue
+                                                .value,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              if (!([
+                                    1,
+                                    2,
+                                    3,
+                                    4,
+                                    5,
+                                    6,
+                                    7,
+                                  ].contains(historyOrder.state)) &&
+                                  !(historyOrder.state == 10) &&
+                                  (historyOrder.orderScore ?? 0) == 0) ...[
+                                SizedBox(width: 24),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Get.toNamed(
+                                      Routes.RIDE_ORDER_DETAIL,
+                                      arguments: {
+                                        "order_id": historyOrder.orderId
+                                            .toString(),
+                                        "order_type": historyOrder.orderType,
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Berikan Penilaian",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeBold
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                              ),
+                                        ),
+                                        SizedBox(width: 2),
+                                        SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_arrow_right.svg",
+                                              width: 13,
+                                              height: 7.5,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              ],
+                            ],
                           ),
                         ],
                       ],

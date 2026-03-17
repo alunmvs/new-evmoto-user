@@ -52,7 +52,7 @@ class ActivityController extends GetxController
       indexTabBar.value = tabController.index;
     });
 
-    await Future.wait([getActiveOrderList(), getHistoryOrderList()]);
+    await Future.wait([getHistoryOrderList()]);
 
     isFetch.value = false;
   }
@@ -68,7 +68,7 @@ class ActivityController extends GetxController
   }
 
   Future<void> refreshAll() async {
-    await Future.wait([getActiveOrderList(), getHistoryOrderList()]);
+    await Future.wait([getHistoryOrderList()]);
   }
 
   Future<void> getActiveOrderList() async {

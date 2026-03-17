@@ -8,9 +8,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/advertisement_model.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/user_info_model.dart';
+import 'package:new_evmoto_user/app/repositories/advertisement_repository.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -25,7 +28,10 @@ import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/general_helper.dart';
+import 'package:new_evmoto_user/app/utils/maps_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -41,6 +47,7 @@ class HomeController extends GetxController {
   final CouponRepository couponRepository;
   final SavedAddressRepository savedAddressRepository;
   final GeocodingRepository geocodingRepository;
+  final AdvertisementRepository advertisementRepository;
 
   HomeController({
     required this.userRepository,
@@ -48,6 +55,7 @@ class HomeController extends GetxController {
     required this.couponRepository,
     required this.savedAddressRepository,
     required this.geocodingRepository,
+    required this.advertisementRepository,
   });
 
   final homeRefreshController = RefreshController();
@@ -100,10 +108,16 @@ class HomeController extends GetxController {
   final currentLatitude = Rx<double?>(null);
   final currentLongitude = Rx<double?>(null);
   final currentAddress = Rx<String?>(null);
+  final currentGeocodingAddress = GeocodingAddress().obs;
   final currentAddressIsLoading = false.obs;
 
   // notification
   final totalUnreadMessageCount = 0.obs;
+
+  // advertisement
+  final advertisementList = <Advertisement>[].obs;
+
+  final activeOrderStatus = ''.obs;
 
   final isFetch = false.obs;
 
@@ -118,29 +132,30 @@ class HomeController extends GetxController {
 
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await firebasePushNotificationServices.requestPermission();
+      Get.dialog(LoadingDialog(), barrierDismissible: false);
+      await sendbirdChatServices.initialize();
+      await getTotalUnreadSendbirdChat();
+      Get.close(1);
+
       await checkForceUpdate();
       await checkSoftUpdate();
-      await moveGoogleMapCameraToCurrentLocation();
-
       if (userInfo.value.name == "" || userInfo.value.name == null) {
         await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
       } else {
-        // await displayCoachmark();
-        await requestLocation();
-        await getCurrentAddress(
-          latitude: currentLatitude.value ?? -6.1744651,
-          longitude: currentLongitude.value ?? 106.822745,
-        );
-        await firebasePushNotificationServices.requestPermission();
+        await moveGoogleMapCameraToCurrentLocation();
+        await Future.wait([
+          getAdvertisementList(),
+          getCurrentAddress(
+            latitude: currentLatitude.value ?? -6.1744651,
+            longitude: currentLongitude.value ?? 106.822745,
+          ),
+        ]);
 
         await checkInitialCall();
-
         if (isPermissionLocationAllow.value == false) {
           await showRequiredAccessPermission();
         }
-
-        await sendbirdChatServices.initialize();
-        await getTotalUnreadSendbirdChat();
       }
     });
   }
@@ -205,7 +220,7 @@ class HomeController extends GetxController {
   }
 
   @override
-  void onClose() {
+  Future<void> onClose() async {
     super.onClose();
     FlutterCallkitIncoming.endAllCalls();
   }
@@ -258,7 +273,7 @@ class HomeController extends GetxController {
     ]);
 
     if (firstInit == false) {
-      await getTotalUnreadSendbirdChat();
+      await Future.wait([getTotalUnreadSendbirdChat(), getAdvertisementList()]);
     }
   }
 
@@ -276,6 +291,7 @@ class HomeController extends GetxController {
     ));
 
     isActiveOrderListNotEmpty.value = activeOrderList.isNotEmpty;
+    await getActiveOrderStatus();
   }
 
   Future<void> getAvailableCouponList() async {
@@ -469,7 +485,7 @@ class HomeController extends GetxController {
       );
     }
 
-    return latestAppVersion < currentVersion;
+    return latestAppVersion > currentVersion;
   }
 
   Future<bool> checkForceUpdate() async {
@@ -683,11 +699,13 @@ class HomeController extends GetxController {
           currentLongitude.value == longitude) {
         if (currentAddressIsLoading.value == false) {
           currentAddressIsLoading.value = true;
-          currentAddress.value = await geocodingRepository
-              .getAddressByLatitudeLongitude(
+          currentGeocodingAddress.value =
+              (await geocodingRepository.getAddressByLatitudeLongitude(
                 latitude: latitude,
                 longitude: longitude,
-              );
+              )) ??
+              GeocodingAddress();
+          currentAddress.value = currentGeocodingAddress.value.address;
           currentAddressIsLoading.value = false;
         }
       }
@@ -839,5 +857,91 @@ class HomeController extends GetxController {
       }
     }
     return result;
+  }
+
+  Future<void> getAdvertisementList() async {
+    if (currentLatitude.value != null && currentLongitude.value != null) {
+      advertisementList.value = await advertisementRepository
+          .getAdvertisementList(
+            type: 1,
+            lat: currentLatitude.value,
+            lon: currentLongitude.value,
+            language: languageServices.languageCodeSystem.value,
+          );
+
+      advertisementList.sort((a, b) => a.sortNum!.compareTo(b.sortNum!));
+    }
+  }
+
+  Future<void> getActiveOrderStatus() async {
+    var activeOrderStatus = '-';
+
+    if (activeOrderList.isNotEmpty) {
+      var activeOrder = activeOrderList.first;
+      var estimatedSpeedInKmh = 40.0;
+      var orderRideServer = await orderRideRepository.getOrderRideServerDetail(
+        orderId: activeOrder.orderId!.toString(),
+        orderType: activeOrder.orderType!,
+        language: languageServices.languageCodeSystem.value,
+      );
+
+      switch (activeOrder.state) {
+        case 1:
+          activeOrderStatus = 'Pencarian Driver EVMoto...';
+          break;
+        case 2:
+          var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+            originLat: double.parse(orderRideServer.lat!),
+            originLon: double.parse(orderRideServer.lon!),
+            destinationLat: activeOrder.startLat!,
+            destinationLon: activeOrder.startLon!,
+            estimatedSpeedInKmh: estimatedSpeedInKmh,
+          );
+          activeOrderStatus =
+              'Driver segera tiba, menunggu: ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)}';
+          break;
+        case 3:
+          activeOrderStatus = 'Driver tiba di titik penjemputan';
+          break;
+        case 4:
+          activeOrderStatus = 'Berangkat menuju lokasi';
+          break;
+        case 5:
+          var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+            originLat: double.parse(orderRideServer.lat!),
+            originLon: double.parse(orderRideServer.lon!),
+            destinationLat: activeOrder.endLat!,
+            destinationLon: activeOrder.endLon!,
+            estimatedSpeedInKmh: estimatedSpeedInKmh,
+          );
+          var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+            originLat: double.parse(orderRideServer.lat!),
+            originLon: double.parse(orderRideServer.lon!),
+            destinationLat: activeOrder.endLat!,
+            destinationLon: activeOrder.endLon!,
+          );
+          activeOrderStatus =
+              '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)} sampai ke lokasi';
+          break;
+        case 6:
+          var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+            originLat: double.parse(orderRideServer.lat!),
+            originLon: double.parse(orderRideServer.lon!),
+            destinationLat: activeOrder.endLat!,
+            destinationLon: activeOrder.endLon!,
+          );
+          activeOrderStatus =
+              '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 Sampai di lokasi';
+          break;
+        case 7:
+          activeOrderStatus = 'Konfirmasi pembayaran';
+          break;
+        default:
+          activeOrderStatus = '-';
+          break;
+      }
+    }
+
+    this.activeOrderStatus.value = activeOrderStatus;
   }
 }

@@ -23,10 +23,12 @@ class SendbirdChatServices extends GetxService {
       nickname: homeController.userInfo.value.name,
     );
 
-    await SendbirdChat.registerPushToken(
-      type: PushTokenType.fcm,
-      token: firebasePushNotificationServices.fcmToken.value,
-    );
+    if (firebasePushNotificationServices.fcmToken.value != "") {
+      await SendbirdChat.registerPushToken(
+        type: PushTokenType.fcm,
+        token: firebasePushNotificationServices.fcmToken.value,
+      );
+    }
   }
 
   Future<GroupChannel?> getChannelByDriverId({required int driverId}) async {

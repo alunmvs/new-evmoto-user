@@ -213,6 +213,7 @@ class OrderRideRepository {
     required double? amount,
     required int? payType,
     required int? couponId,
+    required dynamic priceNo,
   }) async {
     try {
       var url =
@@ -240,6 +241,7 @@ class OrderRideRepository {
         "amount": amount,
         "payType": payType,
         "couponId": couponId,
+        "priceNo": priceNo,
       });
 
       var storage = FlutterSecureStorage();
@@ -308,6 +310,7 @@ class OrderRideRepository {
       var result = <OrderRidePricing>[];
 
       for (var orderRidePricing in response.data['data']) {
+        print(orderRidePricing);
         result.add(OrderRidePricing.fromJson(orderRidePricing));
       }
 

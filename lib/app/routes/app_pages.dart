@@ -76,6 +76,8 @@ import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.da
 import '../modules/terms_and_conditions/views/terms_and_conditions_view.dart';
 import '../modules/voucher_detail/bindings/voucher_detail_binding.dart';
 import '../modules/voucher_detail/views/voucher_detail_view.dart';
+import '../modules/voucher_list/bindings/voucher_list_binding.dart';
+import '../modules/voucher_list/views/voucher_list_view.dart';
 
 part 'app_routes.dart';
 
@@ -277,6 +279,11 @@ class AppPages {
       name: _Paths.SENDBIRD_CHAT_DETAIL,
       page: () => const SendbirdChatDetailView(),
       binding: SendbirdChatDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.VOUCHER_LIST,
+      page: () => const VoucherListView(),
+      binding: VoucherListBinding(),
     ),
   ];
 }

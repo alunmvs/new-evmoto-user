@@ -186,7 +186,8 @@ class AccountView extends GetView<AccountController> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    width: 24,
+                                    height: 24,
                                     decoration: BoxDecoration(
                                       color: controller
                                           .themeColorServices
@@ -194,14 +195,22 @@ class AccountView extends GetView<AccountController> {
                                           .value,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_language.svg",
-                                      width: 16,
-                                      height: 16,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue500
-                                          .value,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_language.svg",
+                                          width: 16,
+                                          height: 16,
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue500
+                                              .value,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 8),
@@ -266,61 +275,65 @@ class AccountView extends GetView<AccountController> {
                               ),
                             ),
                           ),
-                          // InkWell(
-                          //   onTap: () {
-                          //     Get.toNamed(Routes.SETTING_PAYMENT);
-                          //   },
-                          //   child: Container(
-                          //     padding: EdgeInsets.all(16),
-                          //     color: Colors.transparent,
-                          //     child: Row(
-                          //       children: [
-                          //         Container(
-                          //           padding: EdgeInsets.all(4),
-                          //           decoration: BoxDecoration(
-                          //             color: controller
-                          //                 .themeColorServices
-                          //                 .sematicColorBlue100
-                          //                 .value,
-                          //             borderRadius: BorderRadius.circular(8),
-                          //           ),
-                          //           child: SvgPicture.asset(
-                          //             "assets/icons/icon_wallet.svg",
-                          //             width: 16,
-                          //             height: 16,
-                          //             color: controller
-                          //                 .themeColorServices
-                          //                 .sematicColorBlue500
-                          //                 .value,
-                          //           ),
-                          //         ),
-                          //         SizedBox(width: 8),
-                          //         Text(
-                          //           controller
-                          //                   .languageServices
-                          //                   .language
-                          //                   .value
-                          //                   .settingPayment ??
-                          //               "-",
-                          //           style: controller
-                          //               .typographyServices
-                          //               .bodySmallBold
-                          //               .value,
-                          //         ),
-                          //         Spacer(),
-                          //         Row(
-                          //           children: [
-                          //             SvgPicture.asset(
-                          //               "assets/icons/icon_arrow_right.svg",
-                          //               width: 6,
-                          //               height: 12,
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(Routes.VOUCHER_LIST);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              color: Colors.transparent,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      color: controller
+                                          .themeColorServices
+                                          .sematicColorBlue100
+                                          .value,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_voucher-1.svg",
+                                          width: 13.33,
+                                          height: 10.67,
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue500
+                                              .value,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Voucher Saya",
+                                    style: controller
+                                        .typographyServices
+                                        .bodySmallBold
+                                        .value,
+                                  ),
+                                  Spacer(),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_arrow_right.svg",
+                                        width: 6,
+                                        height: 12,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           InkWell(
                             onTap: () {
                               Get.toNamed(Routes.SETTING_SAVED_LOCATION);
@@ -331,7 +344,8 @@ class AccountView extends GetView<AccountController> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    width: 24,
+                                    height: 24,
                                     decoration: BoxDecoration(
                                       color: controller
                                           .themeColorServices
@@ -339,14 +353,22 @@ class AccountView extends GetView<AccountController> {
                                           .value,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_save.svg",
-                                      width: 16,
-                                      height: 16,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue500
-                                          .value,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_save.svg",
+                                          width: 12.2,
+                                          height: 16,
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue500
+                                              .value,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 8),
@@ -410,7 +432,8 @@ class AccountView extends GetView<AccountController> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    width: 24,
+                                    height: 24,
                                     decoration: BoxDecoration(
                                       color: controller
                                           .themeColorServices
@@ -418,14 +441,22 @@ class AccountView extends GetView<AccountController> {
                                           .value,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_cs.svg",
-                                      width: 16,
-                                      height: 16,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue500
-                                          .value,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_cs.svg",
+                                          width: 16,
+                                          height: 16,
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue500
+                                              .value,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 8),
@@ -465,7 +496,8 @@ class AccountView extends GetView<AccountController> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    width: 24,
+                                    height: 24,
                                     decoration: BoxDecoration(
                                       color: controller
                                           .themeColorServices
@@ -473,14 +505,22 @@ class AccountView extends GetView<AccountController> {
                                           .value,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_docs.svg",
-                                      width: 16,
-                                      height: 16,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue500
-                                          .value,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_docs.svg",
+                                          width: 14.22,
+                                          height: 16,
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue500
+                                              .value,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 8),
@@ -520,7 +560,8 @@ class AccountView extends GetView<AccountController> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    width: 24,
+                                    height: 24,
                                     decoration: BoxDecoration(
                                       color: controller
                                           .themeColorServices
@@ -528,14 +569,22 @@ class AccountView extends GetView<AccountController> {
                                           .value,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_docs.svg",
-                                      width: 16,
-                                      height: 16,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue500
-                                          .value,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_docs.svg",
+                                          width: 14.22,
+                                          height: 16,
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue500
+                                              .value,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 8),
@@ -630,7 +679,8 @@ class AccountView extends GetView<AccountController> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    width: 24,
+                                    height: 24,
                                     decoration: BoxDecoration(
                                       color: controller
                                           .themeColorServices
@@ -638,14 +688,22 @@ class AccountView extends GetView<AccountController> {
                                           .value,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_refresh.svg",
-                                      width: 14.4,
-                                      height: 11.2,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorBlue500
-                                          .value,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/icon_refresh.svg",
+                                          width: 14.4,
+                                          height: 11.2,
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue500
+                                              .value,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 8),

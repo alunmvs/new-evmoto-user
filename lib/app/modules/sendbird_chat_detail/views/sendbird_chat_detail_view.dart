@@ -38,9 +38,12 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                             .themeColorServices
                             .neutralsColorGrey0
                             .value,
-                        backgroundImage: CachedNetworkImageProvider(
-                          controller.driverProfileUrl.value!,
-                        ),
+                        backgroundImage:
+                            controller.driverProfileUrl.value == null
+                            ? AssetImage('assets/icons/icon_profile.png')
+                            : CachedNetworkImageProvider(
+                                controller.driverProfileUrl.value!,
+                              ),
                       ),
                       SizedBox(width: 8),
                       Text(
@@ -72,39 +75,201 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 6),
+                    if (controller.messageList.isEmpty) ...[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 16),
+                              Text(
+                                "Belum ada pesan, mulai percakapan dengan mengirim pesan pertama.",
+                                style: controller
+                                    .typographyServices
+                                    .captionLargeRegular
+                                    .value
+                                    .copyWith(color: Color(0XFF7D7D7D)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                     Expanded(
-                      child: SmartRefresher(
-                        reverse: true,
-                        controller: controller.refreshController,
-                        enablePullDown: false,
-                        enablePullUp: controller.isSeeMoreMessageList.value,
-                        onLoading: () async {
-                          await controller.seeMoreMessageList();
-                          controller.refreshController.loadComplete();
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey0
-                              .value,
-                          child: SingleChildScrollView(
-                            reverse: true,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 16),
-                                  for (var message
-                                      in controller.messageList) ...[
-                                    if (message is FileMessage) ...[
-                                      if (message.sender!.userId.contains(
-                                        "user_",
-                                      )) ...[
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
+                      child: Container(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
+                        child: SmartRefresher(
+                          reverse: true,
+                          controller: controller.refreshController,
+                          enablePullDown: false,
+                          enablePullUp: controller.isSeeMoreMessageList.value,
+                          onLoading: () async {
+                            await controller.seeMoreMessageList();
+                            controller.refreshController.loadComplete();
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey0
+                                .value,
+                            child: SingleChildScrollView(
+                              reverse: true,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 16),
+                                    for (var message
+                                        in controller.messageList) ...[
+                                      if (message is FileMessage) ...[
+                                        if (message.sender!.userId.contains(
+                                          "user_",
+                                        )) ...[
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 14,
+                                                  ),
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 16,
+                                                  vertical: 12,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(16),
+                                                        topLeft:
+                                                            Radius.circular(16),
+                                                        bottomLeft:
+                                                            Radius.circular(16),
+                                                      ),
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color(0XFF2D74BF),
+                                                      Color(0XFF114E8E),
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    stops: [0.0, 1.0],
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Get.toNamed(
+                                                          Routes.PHOTO_VIEWER,
+                                                          arguments: {
+                                                            "photo_attachment_url":
+                                                                message
+                                                                    .secureUrl,
+                                                          },
+                                                        );
+                                                      },
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                              imageUrl: message
+                                                                  .secureUrl,
+                                                              width: 100,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 8),
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          DateFormat(
+                                                            'HH:mm',
+                                                          ).format(
+                                                            DateTime.fromMillisecondsSinceEpoch(
+                                                              message.createdAt,
+                                                            ).toLocal(),
+                                                          ),
+                                                          style: controller
+                                                              .typographyServices
+                                                              .captionLargeRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: Color(
+                                                                  0XFFD0D1DB,
+                                                                ),
+                                                              ),
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        if (controller
+                                                                .membersReadStatus[controller
+                                                                .driverId
+                                                                .value] !=
+                                                            null) ...[
+                                                          SvgPicture.asset(
+                                                            controller.isChatRead(
+                                                                      driverLastSeenAt: DateTime.fromMillisecondsSinceEpoch(
+                                                                        controller
+                                                                            .membersReadStatus[controller
+                                                                            .driverId
+                                                                            .value]['last_seen_at'],
+                                                                      ).toLocal(),
+                                                                      messageCreatedAt: DateTime.fromMillisecondsSinceEpoch(
+                                                                        message
+                                                                            .createdAt,
+                                                                      ).toLocal(),
+                                                                    ) ==
+                                                                    true
+                                                                ? "assets/icons/icon_msg_read.svg"
+                                                                : "assets/icons/icon_msg_delivery.svg",
+                                                            width: 20,
+                                                            height: 20,
+                                                          ),
+                                                        ] else ...[
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_msg_delivery.svg",
+                                                            width: 20,
+                                                            height: 20,
+                                                          ),
+                                                        ],
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                        if (message.sender!.userId.contains(
+                                          "driver_",
+                                        )) ...[
+                                          Padding(
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 14,
                                             ),
@@ -117,23 +282,18 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                                 borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(16),
                                                   topLeft: Radius.circular(16),
-                                                  bottomLeft: Radius.circular(
+                                                  bottomRight: Radius.circular(
                                                     16,
                                                   ),
                                                 ),
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Color(0XFF2D74BF),
-                                                    Color(0XFF114E8E),
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  stops: [0.0, 1.0],
-                                                ),
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey100
+                                                    .value,
                                               ),
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
+                                                    CrossAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   GestureDetector(
@@ -159,142 +319,153 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                                     ),
                                                   ),
                                                   SizedBox(height: 8),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        DateFormat(
-                                                          'HH:mm',
-                                                        ).format(
-                                                          DateTime.fromMillisecondsSinceEpoch(
-                                                            message.createdAt,
-                                                          ).toLocal(),
+                                                  Text(
+                                                    DateFormat('HH:mm').format(
+                                                      DateTime.fromMillisecondsSinceEpoch(
+                                                        message.createdAt,
+                                                      ).toLocal(),
+                                                    ),
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: Color(
+                                                            0XFFD0D1DB,
+                                                          ),
                                                         ),
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: Color(
-                                                                0XFFD0D1DB,
-                                                              ),
-                                                            ),
-                                                      ),
-                                                      SizedBox(width: 4),
-                                                      SvgPicture.asset(
-                                                        controller.isChatRead(
-                                                                  driverLastSeenAt: DateTime.fromMillisecondsSinceEpoch(
-                                                                    controller
-                                                                        .membersReadStatus[controller
-                                                                        .driverId
-                                                                        .value]['last_seen_at'],
-                                                                  ).toLocal(),
-                                                                  messageCreatedAt:
-                                                                      DateTime.fromMillisecondsSinceEpoch(
-                                                                        message
-                                                                            .createdAt,
-                                                                      ).toLocal(),
-                                                                ) ==
-                                                                true
-                                                            ? "assets/icons/icon_msg_read.svg"
-                                                            : "assets/icons/icon_msg_delivery.svg",
-                                                        width: 20,
-                                                        height: 20,
-                                                      ),
-                                                    ],
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                        ),
+                                        ],
+                                        SizedBox(height: 8),
                                       ],
-                                      if (message.sender!.userId.contains(
-                                        "driver_",
-                                      )) ...[
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 14,
-                                          ),
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                              vertical: 12,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(16),
-                                                topLeft: Radius.circular(16),
-                                                bottomRight: Radius.circular(
-                                                  16,
+                                      if (message is UserMessage) ...[
+                                        if (message.sender!.userId.contains(
+                                          "user_",
+                                        )) ...[
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 14,
+                                                  ),
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 16,
+                                                  vertical: 12,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(16),
+                                                        topLeft:
+                                                            Radius.circular(16),
+                                                        bottomLeft:
+                                                            Radius.circular(16),
+                                                      ),
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color(0XFF2D74BF),
+                                                      Color(0XFF114E8E),
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    stops: [0.0, 1.0],
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      message.message,
+                                                      style: controller
+                                                          .typographyServices
+                                                          .bodyLargeRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .neutralsColorGrey0
+                                                                .value,
+                                                          ),
+                                                    ),
+                                                    SizedBox(height: 8),
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Text(
+                                                          DateFormat(
+                                                            'HH:mm',
+                                                          ).format(
+                                                            DateTime.fromMillisecondsSinceEpoch(
+                                                              message.createdAt,
+                                                            ).toLocal(),
+                                                          ),
+                                                          style: controller
+                                                              .typographyServices
+                                                              .captionLargeRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: Color(
+                                                                  0XFFD0D1DB,
+                                                                ),
+                                                              ),
+                                                        ),
+                                                        SizedBox(width: 4),
+
+                                                        if (controller
+                                                                .membersReadStatus[controller
+                                                                .driverId
+                                                                .value] !=
+                                                            null) ...[
+                                                          SvgPicture.asset(
+                                                            controller.isChatRead(
+                                                                      driverLastSeenAt: DateTime.fromMillisecondsSinceEpoch(
+                                                                        controller
+                                                                            .membersReadStatus[controller
+                                                                            .driverId]['last_seen_at'],
+                                                                      ).toLocal(),
+                                                                      messageCreatedAt: DateTime.fromMillisecondsSinceEpoch(
+                                                                        message
+                                                                            .createdAt,
+                                                                      ).toLocal(),
+                                                                    ) ==
+                                                                    true
+                                                                ? "assets/icons/icon_msg_read.svg"
+                                                                : "assets/icons/icon_msg_delivery.svg",
+                                                            width: 20,
+                                                            height: 20,
+                                                          ),
+                                                        ] else ...[
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_msg_delivery.svg",
+                                                            width: 20,
+                                                            height: 20,
+                                                          ),
+                                                        ],
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey100
-                                                  .value,
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                      Routes.PHOTO_VIEWER,
-                                                      arguments: {
-                                                        "photo_attachment_url":
-                                                            message.secureUrl,
-                                                      },
-                                                    );
-                                                  },
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          8,
-                                                        ),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl:
-                                                          message.secureUrl,
-                                                      width: 100,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 8),
-                                                Text(
-                                                  DateFormat('HH:mm').format(
-                                                    DateTime.fromMillisecondsSinceEpoch(
-                                                      message.createdAt,
-                                                    ).toLocal(),
-                                                  ),
-                                                  style: controller
-                                                      .typographyServices
-                                                      .captionLargeRegular
-                                                      .value
-                                                      .copyWith(
-                                                        color: Color(
-                                                          0XFFD0D1DB,
-                                                        ),
-                                                      ),
-                                                ),
-                                              ],
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                      SizedBox(height: 8),
-                                    ],
-                                    if (message is UserMessage) ...[
-                                      if (message.sender!.userId.contains(
-                                        "user_",
-                                      )) ...[
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
+                                        ],
+                                        if (message.sender!.userId.contains(
+                                          "driver_",
+                                        )) ...[
+                                          Padding(
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 14,
                                             ),
@@ -307,23 +478,18 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                                 borderRadius: BorderRadius.only(
                                                   topRight: Radius.circular(16),
                                                   topLeft: Radius.circular(16),
-                                                  bottomLeft: Radius.circular(
+                                                  bottomRight: Radius.circular(
                                                     16,
                                                   ),
                                                 ),
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Color(0XFF2D74BF),
-                                                    Color(0XFF114E8E),
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  stops: [0.0, 1.0],
-                                                ),
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey100
+                                                    .value,
                                               ),
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
+                                                    CrossAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Text(
@@ -335,66 +501,35 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                                         .copyWith(
                                                           color: controller
                                                               .themeColorServices
-                                                              .neutralsColorGrey0
+                                                              .neutralsColorGrey900
                                                               .value,
                                                         ),
                                                   ),
                                                   SizedBox(height: 8),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        DateFormat(
-                                                          'HH:mm',
-                                                        ).format(
-                                                          DateTime.fromMillisecondsSinceEpoch(
-                                                            message.createdAt,
-                                                          ).toLocal(),
+                                                  Text(
+                                                    DateFormat('HH:mm').format(
+                                                      DateTime.fromMillisecondsSinceEpoch(
+                                                        message.createdAt,
+                                                      ).toLocal(),
+                                                    ),
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: Color(
+                                                            0XFFD0D1DB,
+                                                          ),
                                                         ),
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: Color(
-                                                                0XFFD0D1DB,
-                                                              ),
-                                                            ),
-                                                      ),
-                                                      SizedBox(width: 4),
-                                                      SvgPicture.asset(
-                                                        controller.isChatRead(
-                                                                  driverLastSeenAt: DateTime.fromMillisecondsSinceEpoch(
-                                                                    controller
-                                                                        .membersReadStatus[controller
-                                                                        .driverId]['last_seen_at'],
-                                                                  ).toLocal(),
-                                                                  messageCreatedAt:
-                                                                      DateTime.fromMillisecondsSinceEpoch(
-                                                                        message
-                                                                            .createdAt,
-                                                                      ).toLocal(),
-                                                                ) ==
-                                                                true
-                                                            ? "assets/icons/icon_msg_read.svg"
-                                                            : "assets/icons/icon_msg_delivery.svg",
-                                                        width: 20,
-                                                        height: 20,
-                                                      ),
-                                                    ],
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                        ),
+                                        ],
+                                        SizedBox(height: 8),
                                       ],
-                                      if (message.sender!.userId.contains(
-                                        "driver_",
-                                      )) ...[
+                                      if (message is AdminMessage) ...[
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 14,
@@ -456,12 +591,12 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                             ),
                                           ),
                                         ),
+                                        SizedBox(height: 8),
                                       ],
-                                      SizedBox(height: 8),
                                     ],
+                                    SizedBox(height: 16),
                                   ],
-                                  SizedBox(height: 16),
-                                ],
+                                ),
                               ),
                             ),
                           ),
@@ -477,21 +612,21 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                             .neutralsColorGrey0
                             .value,
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16),
+                          topLeft: Radius.circular(0),
+                          topRight: Radius.circular(0),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: controller
-                                .themeColorServices
-                                .overlayDark100
-                                .value
-                                .withValues(alpha: 0.1),
-                            blurRadius: 16,
-                            spreadRadius: 2,
-                            offset: Offset(0, -1),
-                          ),
-                        ],
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: controller
+                        //         .themeColorServices
+                        //         .overlayDark100
+                        //         .value
+                        //         .withValues(alpha: 0.1),
+                        //     blurRadius: 16,
+                        //     spreadRadius: 2,
+                        //     offset: Offset(0, -1),
+                        //   ),
+                        // ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -547,10 +682,7 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                   height: 40,
                                   width: 40,
                                   decoration: BoxDecoration(
-                                    color: controller
-                                        .themeColorServices
-                                        .primaryBlue
-                                        .value,
+                                    color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Row(
@@ -558,13 +690,11 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/icon_add_square.svg",
-                                        width: 12,
-                                        height: 12,
+                                      Icon(
+                                        Icons.add_box_outlined,
                                         color: controller
                                             .themeColorServices
-                                            .neutralsColorGrey0
+                                            .primaryBlue
                                             .value,
                                       ),
                                     ],
@@ -575,7 +705,23 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                               Expanded(
                                 child: TextField(
                                   controller: controller.textEditingController,
+                                  onSubmitted: (value) async {
+                                    if (controller.textEditingController.text
+                                            .trim() !=
+                                        "") {
+                                      await controller.sendMessage(
+                                        message: controller
+                                            .textEditingController
+                                            .text,
+                                      );
+                                    }
+                                  },
                                   decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey100
+                                        .value,
                                     contentPadding: EdgeInsets.symmetric(
                                       horizontal: 12,
                                       vertical: 12,
@@ -598,25 +744,25 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                               .value,
                                         ),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(9999),
                                       borderSide: BorderSide(
                                         color: controller
                                             .themeColorServices
-                                            .neutralsColorGrey400
+                                            .neutralsColorGrey100
                                             .value,
                                       ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(9999),
                                       borderSide: BorderSide(
                                         color: controller
                                             .themeColorServices
-                                            .neutralsColorGrey400
+                                            .neutralsColorGrey100
                                             .value,
                                       ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(9999),
                                       borderSide: BorderSide(
                                         color: controller
                                             .themeColorServices
@@ -627,46 +773,46 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 12),
-                              GestureDetector(
-                                onTap: () async {
-                                  if (controller.textEditingController.text
-                                          .trim() !=
-                                      "") {
-                                    await controller.sendMessage(
-                                      message:
-                                          controller.textEditingController.text,
-                                    );
-                                  }
-                                },
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    color: controller
-                                        .themeColorServices
-                                        .primaryBlue
-                                        .value,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/icon_send_message.svg",
-                                        width: 16,
-                                        height: 16,
-                                        color: controller
-                                            .themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // SizedBox(width: 12),
+                              // GestureDetector(
+                              //   onTap: () async {
+                              //     if (controller.textEditingController.text
+                              //             .trim() !=
+                              //         "") {
+                              //       await controller.sendMessage(
+                              //         message:
+                              //             controller.textEditingController.text,
+                              //       );
+                              //     }
+                              //   },
+                              //   child: Container(
+                              //     height: 40,
+                              //     width: 40,
+                              //     decoration: BoxDecoration(
+                              //       color: controller
+                              //           .themeColorServices
+                              //           .primaryBlue
+                              //           .value,
+                              //       borderRadius: BorderRadius.circular(8),
+                              //     ),
+                              //     child: Row(
+                              //       mainAxisAlignment: MainAxisAlignment.center,
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.center,
+                              //       children: [
+                              //         SvgPicture.asset(
+                              //           "assets/icons/icon_send_message.svg",
+                              //           width: 16,
+                              //           height: 16,
+                              //           color: controller
+                              //               .themeColorServices
+                              //               .neutralsColorGrey0
+                              //               .value,
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                           if (controller.isAttachmentOptionOpen.value) ...[

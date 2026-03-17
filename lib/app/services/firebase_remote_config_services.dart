@@ -20,6 +20,7 @@ class FirebaseRemoteConfigServices extends GetxService {
     await remoteConfig.setDefaults({
       "user_base_url": "https://8.215.203.97",
       "customer_cs_whatsapp": "6285167020937",
+      "sendbird_app_id": "E3B73B26-53A0-4460-894F-AF6E3D6AD40F",
     });
 
     await remoteConfig.fetchAndActivate();

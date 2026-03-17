@@ -28,6 +28,13 @@ class SocketServices extends GetxService {
   }
 
   Future<void> setupWebsocket() async {
+    try {
+      if (socket != null) {
+        await socket?.close();
+      }
+    } catch (e) {}
+    socket = null;
+
     socket = await Socket.connect(
       firebaseRemoteConfigServices.remoteConfig.getString('user_websocket_url'),
       8888,
@@ -109,6 +116,10 @@ class SocketServices extends GetxService {
   }
 
   Future<void> schedulerDataSocket() async {
+    if (schedulerDataSocketTimer?.isActive ?? false) {
+      return;
+    }
+
     await sendHeartBeat();
 
     schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 3), (

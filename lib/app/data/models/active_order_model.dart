@@ -1,5 +1,3 @@
-import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
-
 class ActiveOrder {
   int? orderId;
   int? orderType;
@@ -9,6 +7,10 @@ class ActiveOrder {
   String? travelTime;
   double? collectionFees;
   double? orderMoney;
+  double? startLat;
+  double? startLon;
+  double? endLat;
+  double? endLon;
 
   ActiveOrder({
     this.orderId,
@@ -19,18 +21,25 @@ class ActiveOrder {
     this.travelTime,
     this.collectionFees,
     this.orderMoney,
+    this.startLat,
+    this.startLon,
+    this.endLat,
+    this.endLon,
   });
 
   ActiveOrder.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
     orderType = json['orderType'];
     state = json['state'];
-
     startAddress = json['startAddress'];
     endAddress = json['endAddress'];
     travelTime = json['travelTime'];
     collectionFees = json['collectionFees'];
     orderMoney = json['orderMoney'];
+    startLat = json['startLat'];
+    startLon = json['startLon'];
+    endLat = json['endLat'];
+    endLon = json['endLon'];
   }
 
   Map<String, dynamic> toJson() {

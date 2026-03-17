@@ -2700,6 +2700,34 @@ class RideView extends GetView<RideController> {
                                                   controller.status.value ==
                                                           "origin_select_via_map"
                                                       ? (controller
+                                                                .originGeocodingAddressSearch
+                                                                .value
+                                                                .name ??
+                                                            "-")
+                                                      : (controller
+                                                                .destinationGeocodingAddressSearch
+                                                                .value
+                                                                .name ??
+                                                            "-"),
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value
+                                                      .copyWith(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorSlate800
+                                                            .value,
+                                                      ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 6),
+                                                Text(
+                                                  controller.status.value ==
+                                                          "origin_select_via_map"
+                                                      ? (controller
                                                                 .originGeocodeAddressSearch
                                                                 .value ??
                                                             "-")
