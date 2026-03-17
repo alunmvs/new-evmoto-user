@@ -61,7 +61,6 @@ class SendbirdChatListController extends GetxController {
     removeAllChannelHandlers();
     var groupChannelList = <GroupChannel>[];
     unreadMessageCountGroupChannel.value = {};
-    SendbirdChat.removeAllChannelHandlers();
 
     var query = GroupChannelListQuery();
     var channelList = await query.next();

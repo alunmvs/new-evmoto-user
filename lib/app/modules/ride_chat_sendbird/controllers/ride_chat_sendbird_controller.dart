@@ -71,7 +71,7 @@ class RideChatSendbirdController extends GetxController {
 
     await getMessageList();
 
-    SendbirdChat.removeAllChannelHandlers();
+    SendbirdChat.removeChannelHandler('UNIQUE_HANDLER_ID');
     SendbirdChat.addChannelHandler(
       'UNIQUE_HANDLER_ID',
       MyGroupChannelHandler(),
@@ -92,7 +92,7 @@ class RideChatSendbirdController extends GetxController {
   void onClose() {
     super.onClose();
 
-    SendbirdChat.removeAllChannelHandlers();
+    SendbirdChat.removeChannelHandler('UNIQUE_HANDLER_ID');
   }
 
   Future<void> getMemberReadStatus() async {
