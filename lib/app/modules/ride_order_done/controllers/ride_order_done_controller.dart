@@ -5,9 +5,11 @@ import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -76,19 +78,16 @@ class RideOrderDoneController extends GetxController {
 
   Future<void> onTapDone() async {
     try {
-      if (rating.value != 0.0) {
-        await Future.wait([
-          orderRideRepository.submitRatingAndReviewOrder(
-            orderType: orderType.value,
-            orderId: orderId.value,
-            content: formGroup.control("review").value,
-            fraction: rating.value,
-            language: languageServices.languageCodeSystem.value,
-          ),
-        ]);
-      }
-
-      await Future.wait([homeController.refreshAll()]);
+      await Future.wait([
+        orderRideRepository.paidOrder(
+          orderId: orderId.value,
+          payType: orderRideDetail.value.payType!,
+          type: 1,
+          orderType: orderType.value,
+          language: languageServices.languageCodeSystem.value,
+          couponId: orderRideDetail.value.couponId!,
+        ),
+      ]);
 
       Get.back();
 
@@ -105,10 +104,20 @@ class RideOrderDoneController extends GetxController {
 
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 
+      Get.dialog(LoadingDialog(), barrierDismissible: false);
+      var processList = <Future>[];
+      processList.add(homeController.refreshAll());
       if (Get.isRegistered<ActivityController>()) {
         var activityController = Get.find<ActivityController>();
-        await Future.wait([activityController.refreshAll()]);
+        processList.add(activityController.refreshAll());
       }
+      await Future.wait(processList);
+      Get.close(1);
+
+      await Get.toNamed(
+        Routes.ACTIVITY_DETAIL,
+        arguments: {"order_id": orderId.value, "order_type": orderType.value},
+      );
     } catch (e) {
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
@@ -122,5 +131,30 @@ class RideOrderDoneController extends GetxController {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
+  }
+
+  double getTravelFare() {
+    var travelFare = 0.0;
+
+    travelFare += orderRideDetail.value.startMoney ?? 0.0;
+    travelFare += orderRideDetail.value.waitMoney ?? 0.0;
+    travelFare += orderRideDetail.value.mileageMoney ?? 0.0;
+    travelFare += orderRideDetail.value.durationMoney ?? 0.0;
+    travelFare += orderRideDetail.value.longDistanceMoney ?? 0.0;
+    travelFare += orderRideDetail.value.nightMoney ?? 0.0;
+    travelFare += orderRideDetail.value.fastigiumMoney ?? 0.0;
+
+    return travelFare;
+  }
+
+  double getPromoMoney() {
+    var promoMoney = 0.0;
+    if (orderRideDetail.value.couponMoney != null &&
+        orderRideDetail.value.couponMoney != 0) {
+      promoMoney += orderRideDetail.value.couponMoney!;
+      return promoMoney;
+    }
+    promoMoney += orderRideDetail.value.discountMoney ?? 0.0;
+    return promoMoney;
   }
 }

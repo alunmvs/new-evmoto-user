@@ -420,7 +420,7 @@ class VoucherListView extends GetView<VoucherListController> {
                                                 SizedBox(width: 4),
                                                 Expanded(
                                                   child: Text(
-                                                    "Berlaku sampai 03-12-2026",
+                                                    "Berlaku hingga ${voucher.time}",
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeRegular
@@ -570,7 +570,7 @@ class VoucherListView extends GetView<VoucherListController> {
                                                 SizedBox(width: 4),
                                                 Expanded(
                                                   child: Text(
-                                                    "Berlaku sampai 03-12-2026",
+                                                    "Berlaku hingga ${voucher.time}",
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeRegular

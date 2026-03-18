@@ -26,9 +26,9 @@ class GeocodingRepository {
         'Authorization': "Bearer $token",
       };
 
-      // print(url);
-      // print(headers);
-      // print({"lat": latitude, "lng": longitude});
+      print(url);
+      print(headers);
+      print({"lat": latitude, "lng": longitude});
 
       var dio = apiServices.dio;
       var response = await dio.get(
@@ -37,8 +37,11 @@ class GeocodingRepository {
         queryParameters: {"lat": latitude, "lng": longitude},
       );
 
+      print(response.data);
+
       return GeocodingAddress.fromJson(response.data['data']);
     } on DioException catch (e) {
+      print(e.response?.data);
       rethrow;
     }
   }

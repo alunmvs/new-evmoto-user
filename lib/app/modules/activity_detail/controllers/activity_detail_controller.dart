@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/rating_label_model.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -13,6 +14,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
+import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -51,6 +53,11 @@ class ActivityDetailController extends GetxController {
   final orderType = 0.obs;
 
   final rating = 5.0.obs;
+  final ratingLabelList = <RatingLabel>[].obs;
+
+  final estimatedTimeInMinutes = 0.0.obs;
+  final estimatedDistanceInKm = 0.0.obs;
+  final estimatedSpeedInKmh = 40.obs;
 
   final isFetch = false.obs;
 
@@ -61,8 +68,10 @@ class ActivityDetailController extends GetxController {
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
     await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
+    await getRatingLabelList(rating: 5);
     isFetch.value = false;
     await setupGoogleMapOriginToDestination();
+    generateEstimatedDistanceAndTimeInMinutes();
   }
 
   @override
@@ -73,6 +82,157 @@ class ActivityDetailController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void generateEstimatedDistanceAndTimeInMinutes() {
+    estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
+    estimatedTimeInMinutes.value =
+        (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
+  }
+
+  Future<void> getRatingLabelList({required int rating}) async {
+    var ratingLabelConfiguration = {
+      "ID": {
+        "rate_5": [
+          {"id": 1, "value": "Pengemudi sangat ramah"},
+          {"id": 2, "value": "Mengemudi dengan aman"},
+          {"id": 3, "value": "Kendaraan dan perlengkapan bersih"},
+          {"id": 4, "value": "Datang tepat waktu"},
+          {"id": 5, "value": "Mengemudi dengan halus"},
+          {"id": 6, "value": "Pengalaman keseluruhan sangat baik"},
+        ],
+        "rate_4": [
+          {"id": 6, "value": "Pengemudi sopan"},
+          {"id": 7, "value": "Mengemudi dengan halus"},
+          {"id": 8, "value": "Waktu tunggu agak lama"},
+          {"id": 9, "value": "Rute bisa lebih baik"},
+          {"id": 10, "value": "Kondisi kendaraan biasa"},
+        ],
+        "rate_3": [
+          {"id": 11, "value": "Pengalaman biasa saja"},
+          {"id": 12, "value": "Waktu tunggu agak lama"},
+          {"id": 13, "value": "Rute bisa lebih baik"},
+          {"id": 14, "value": "Komunikasi kurang lancar"},
+          {"id": 15, "value": "Kendaraan kurang bersih"},
+        ],
+        "rate_2": [
+          {"id": 16, "value": "Pengemudi terlambat"},
+          {"id": 17, "value": "Mengemudi kurang aman"},
+          {"id": 18, "value": "Kendaraan kurang bersih"},
+          {"id": 19, "value": "Waktu tunggu terlalu lama"},
+          {"id": 20, "value": "Pengemudi kurang sopan"},
+          {"id": 21, "value": "Pilihan rute kurang baik"},
+        ],
+        "rate_1": [
+          {"id": 22, "value": "Pengemudi tidak sopan"},
+          {"id": 23, "value": "Mengemudi sangat berbahaya"},
+          {"id": 24, "value": "Ada masalah dengan perjalanan"},
+          {"id": 25, "value": "Pelayanan sangat buruk"},
+          {"id": 26, "value": "Pengemudi sangat terlambat"},
+        ],
+      },
+      "EN": {
+        "rate_5": [
+          {"id": 1, "value": "Pengemudi sangat ramah"},
+          {"id": 2, "value": "Mengemudi dengan aman"},
+          {"id": 3, "value": "Kendaraan dan perlengkapan bersih"},
+          {"id": 4, "value": "Datang tepat waktu"},
+          {"id": 5, "value": "Mengemudi dengan halus"},
+          {"id": 6, "value": "Pengalaman keseluruhan sangat baik"},
+        ],
+        "rate_4": [
+          {"id": 6, "value": "Pengemudi sopan"},
+          {"id": 7, "value": "Mengemudi dengan halus"},
+          {"id": 8, "value": "Waktu tunggu agak lama"},
+          {"id": 9, "value": "Rute bisa lebih baik"},
+          {"id": 10, "value": "Kondisi kendaraan biasa"},
+        ],
+        "rate_3": [
+          {"id": 11, "value": "Pengalaman biasa saja"},
+          {"id": 12, "value": "Waktu tunggu agak lama"},
+          {"id": 13, "value": "Rute bisa lebih baik"},
+          {"id": 14, "value": "Komunikasi kurang lancar"},
+          {"id": 15, "value": "Kendaraan kurang bersih"},
+        ],
+        "rate_2": [
+          {"id": 16, "value": "Pengemudi terlambat"},
+          {"id": 17, "value": "Mengemudi kurang aman"},
+          {"id": 18, "value": "Kendaraan kurang bersih"},
+          {"id": 19, "value": "Waktu tunggu terlalu lama"},
+          {"id": 20, "value": "Pengemudi kurang sopan"},
+          {"id": 21, "value": "Pilihan rute kurang baik"},
+        ],
+        "rate_1": [
+          {"id": 22, "value": "Pengemudi tidak sopan"},
+          {"id": 23, "value": "Mengemudi sangat berbahaya"},
+          {"id": 24, "value": "Ada masalah dengan perjalanan"},
+          {"id": 25, "value": "Pelayanan sangat buruk"},
+          {"id": 26, "value": "Pengemudi sangat terlambat"},
+        ],
+      },
+      "ZH_CN": {
+        "rate_5": [
+          {"id": 1, "value": "Pengemudi sangat ramah"},
+          {"id": 2, "value": "Mengemudi dengan aman"},
+          {"id": 3, "value": "Kendaraan dan perlengkapan bersih"},
+          {"id": 4, "value": "Datang tepat waktu"},
+          {"id": 5, "value": "Mengemudi dengan halus"},
+          {"id": 6, "value": "Pengalaman keseluruhan sangat baik"},
+        ],
+        "rate_4": [
+          {"id": 6, "value": "Pengemudi sopan"},
+          {"id": 7, "value": "Mengemudi dengan halus"},
+          {"id": 8, "value": "Waktu tunggu agak lama"},
+          {"id": 9, "value": "Rute bisa lebih baik"},
+          {"id": 10, "value": "Kondisi kendaraan biasa"},
+        ],
+        "rate_3": [
+          {"id": 11, "value": "Pengalaman biasa saja"},
+          {"id": 12, "value": "Waktu tunggu agak lama"},
+          {"id": 13, "value": "Rute bisa lebih baik"},
+          {"id": 14, "value": "Komunikasi kurang lancar"},
+          {"id": 15, "value": "Kendaraan kurang bersih"},
+        ],
+        "rate_2": [
+          {"id": 16, "value": "Pengemudi terlambat"},
+          {"id": 17, "value": "Mengemudi kurang aman"},
+          {"id": 18, "value": "Kendaraan kurang bersih"},
+          {"id": 19, "value": "Waktu tunggu terlalu lama"},
+          {"id": 20, "value": "Pengemudi kurang sopan"},
+          {"id": 21, "value": "Pilihan rute kurang baik"},
+        ],
+        "rate_1": [
+          {"id": 22, "value": "Pengemudi tidak sopan"},
+          {"id": 23, "value": "Mengemudi sangat berbahaya"},
+          {"id": 24, "value": "Ada masalah dengan perjalanan"},
+          {"id": 25, "value": "Pelayanan sangat buruk"},
+          {"id": 26, "value": "Pengemudi sangat terlambat"},
+        ],
+      },
+    };
+
+    ratingLabelList.value = [];
+    if ((orderRideDetail.value.orderScore == null ||
+            orderRideDetail.value.orderScore == 0) &&
+        orderRideDetail.value.state != 10) {
+      for (var ratingLabel
+          in ratingLabelConfiguration[languageServices
+              .languageCode
+              .value]!['rate_${rating.toInt()}']!) {
+        ratingLabelList.add(RatingLabel.fromJson(ratingLabel));
+      }
+    } else {
+      for (var ratingLabel
+          in ratingLabelConfiguration[languageServices
+              .languageCode
+              .value]!['rate_${rating.toInt()}']!) {
+        for (var ratingLabelId in orderRideDetail.value.ratingLabels ?? []) {
+          if (ratingLabelId == ratingLabel['id']) {
+            ratingLabelList.add(RatingLabel.fromJson(ratingLabel));
+          }
+        }
+      }
+    }
   }
 
   Future<void> getOrderRideDetail() async {
@@ -106,8 +266,8 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.startLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_origin.svg',
-        Size(22.67, 22.67),
+        'assets/icons/icon_pinpoint_green.svg',
+        Size(28, 35),
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -120,8 +280,8 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.endLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint.svg',
-        Size(27, 31),
+        'assets/icons/icon_pinpoint_red.svg',
+        Size(28, 35),
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -149,7 +309,7 @@ class ActivityDetailController extends GetxController {
       Polyline(
         polylineId: PolylineId("route"),
         points: polylineCoordinates,
-        color: Color(0XFF37C086),
+        color: Color(0XFF4DABF5),
         width: 6,
       ),
     );
@@ -246,6 +406,14 @@ class ActivityDetailController extends GetxController {
 
   Future<void> onTapSubmitAndReview() async {
     if (rating.value != 0.0) {
+      var ratingLabels = <int>[];
+
+      for (var ratingLabel in ratingLabelList) {
+        if (ratingLabel.isSelected == true) {
+          ratingLabels.add(ratingLabel.id!);
+        }
+      }
+
       await Future.wait([
         orderRideRepository.submitRatingAndReviewOrder(
           orderType: orderType.value,
@@ -253,10 +421,12 @@ class ActivityDetailController extends GetxController {
           content: formGroup.control("review").value,
           fraction: rating.value,
           language: languageServices.languageCodeSystem.value,
+          ratingLabels: ratingLabels,
         ),
       ]);
 
       await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
+      await getRatingLabelList(rating: orderRideDetail.value.orderScore!);
 
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
@@ -271,5 +441,30 @@ class ActivityDetailController extends GetxController {
 
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
+  }
+
+  double getTravelFare() {
+    var travelFare = 0.0;
+
+    travelFare += orderRideDetail.value.startMoney ?? 0.0;
+    travelFare += orderRideDetail.value.waitMoney ?? 0.0;
+    travelFare += orderRideDetail.value.mileageMoney ?? 0.0;
+    travelFare += orderRideDetail.value.durationMoney ?? 0.0;
+    travelFare += orderRideDetail.value.longDistanceMoney ?? 0.0;
+    travelFare += orderRideDetail.value.nightMoney ?? 0.0;
+    travelFare += orderRideDetail.value.fastigiumMoney ?? 0.0;
+
+    return travelFare;
+  }
+
+  double getPromoMoney() {
+    var promoMoney = 0.0;
+    if (orderRideDetail.value.couponMoney != null &&
+        orderRideDetail.value.couponMoney != 0) {
+      promoMoney += orderRideDetail.value.couponMoney!;
+      return promoMoney;
+    }
+    promoMoney += orderRideDetail.value.discountMoney ?? 0.0;
+    return promoMoney;
   }
 }

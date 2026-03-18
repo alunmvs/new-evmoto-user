@@ -7,13 +7,14 @@ import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_d
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_id_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_origin_and_destination_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_payment_method_sub_view.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class RideOrderWaitingDriverPickUpPanelSubView
+import '../../../../routes/app_pages.dart';
+
+class RideOrderDriverReadyToGoDestinationPanelSubView
     extends GetView<RideOrderDetailController> {
-  const RideOrderWaitingDriverPickUpPanelSubView({super.key});
+  const RideOrderDriverReadyToGoDestinationPanelSubView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class RideOrderWaitingDriverPickUpPanelSubView
         topLeft: Radius.circular(16),
         topRight: Radius.circular(16),
       ),
+
       color: Colors.transparent,
       boxShadow: [],
       panelBuilder: (sc) {
@@ -38,11 +40,6 @@ class RideOrderWaitingDriverPickUpPanelSubView
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color: Color(0XFFCEE2F8),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
-                    ),
                     boxShadow: [
                       BoxShadow(
                         color: controller
@@ -55,6 +52,11 @@ class RideOrderWaitingDriverPickUpPanelSubView
                         offset: Offset(0, -1),
                       ),
                     ],
+                    color: Color(0XFFCEE2F8),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -80,7 +82,7 @@ class RideOrderWaitingDriverPickUpPanelSubView
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Driver segera tiba, menunggu: ${controller.getEstimatedTimeInMinutesInText().toLowerCase()}",
+                              "Berangkat menuju lokasi",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold
@@ -198,75 +200,6 @@ class RideOrderWaitingDriverPickUpPanelSubView
                                         child: RideOrderIdSubView(),
                                       ),
                                       SizedBox(height: 16),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                        ),
-                                        child: SizedBox(
-                                          height: 54,
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              Get.toNamed(
-                                                Routes.RIDE_ORDER_CANCEL,
-                                                arguments: {
-                                                  "order_id": controller
-                                                      .orderRideDetail
-                                                      .value
-                                                      .orderId
-                                                      .toString(),
-                                                  "order_type": controller
-                                                      .orderRideDetail
-                                                      .value
-                                                      .type,
-                                                },
-                                              );
-                                            },
-                                            style: ButtonStyle(
-                                              overlayColor:
-                                                  WidgetStateProperty.all(
-                                                    controller
-                                                        .themeColorServices
-                                                        .sematicColorRed400
-                                                        .value
-                                                        .withValues(alpha: 0.1),
-                                                  ),
-                                              shape: WidgetStateProperty.all(
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(16),
-                                                ),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              controller
-                                                      .languageServices
-                                                      .language
-                                                      .value
-                                                      .cancel ??
-                                                  "-",
-                                              style: controller
-                                                  .typographyServices
-                                                  .bodyLargeBold
-                                                  .value
-                                                  .copyWith(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .sematicColorRed500
-                                                        .value,
-                                                  ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ),

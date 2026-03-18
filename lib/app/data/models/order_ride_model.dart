@@ -78,6 +78,9 @@ class OrderRide {
   int? weight;
   int? payType;
   String? content;
+  List? ratingLabels;
+  String? startAddressName;
+  String? endAddressName;
 
   OrderRide({
     this.orderId,
@@ -159,9 +162,13 @@ class OrderRide {
     this.weight,
     this.payType,
     this.content,
+    this.ratingLabels,
+    this.startAddressName,
+    this.endAddressName,
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
+    print("ini rating labels ${json['ratingLabels']}");
     orderId = json['orderId'];
     orderType = json['orderType'];
     type = json['type'];
@@ -241,6 +248,9 @@ class OrderRide {
     weight = json['weight'];
     payType = json['payType'];
     content = json['content'];
+    ratingLabels = json['ratingLabels'];
+    startAddressName = json['startAddressName'];
+    endAddressName = json['endAddressName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -324,6 +334,9 @@ class OrderRide {
     data['weight'] = this.weight;
     data['payType'] = this.payType;
     data['content'] = this.content;
+    data['ratingLabels'] = this.ratingLabels;
+    data['startAddressName'] = this.startAddressName;
+    data['endAddressName'] = this.endAddressName;
     return data;
   }
 }

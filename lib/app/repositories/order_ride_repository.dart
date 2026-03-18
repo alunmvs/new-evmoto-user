@@ -40,12 +40,18 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
+      print(url);
+      print(headers);
+      print({"orderId": orderId, "orderType": orderType, "language": language});
+
       var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
         options: Options(headers: headers),
       );
+
+      print(response.data);
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -174,6 +180,10 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
+      print(url);
+      print(headers);
+      print({"orderId": orderId, "orderType": orderType, "language": language});
+
       var dio = apiServices.dio;
       var response = await dio.post(
         url,
@@ -220,6 +230,31 @@ class OrderRideRepository {
           "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/orderPrivateCar/saveOrderPrivateCar";
 
       var formData = FormData.fromMap({
+        "passengersPhone": passengersPhone,
+        "orderType": orderType,
+        "startLat": startLat,
+        "orderSource": orderSource,
+        "travelTime": travelTime,
+        "passengers": passengers,
+        "placementLat": placementLat,
+        "tipMoney": tipMoney,
+        "endLon": endLon,
+        "startAddress": startAddress,
+        "serverCarModelId": serverCarModelId,
+        "type": type,
+        "substitute": substitute,
+        "endLat": endLat,
+        "startLon": startLon,
+        "endAddress": endAddress,
+        "placementLon": placementLon,
+        "language": language,
+        "amount": amount,
+        "payType": payType,
+        "couponId": couponId,
+        "priceNo": priceNo,
+      });
+
+      print({
         "passengersPhone": passengersPhone,
         "orderType": orderType,
         "startLat": startLat,
@@ -412,6 +447,7 @@ class OrderRideRepository {
     required String? content,
     required double fraction,
     required int language,
+    required List<int> ratingLabels,
   }) async {
     try {
       var url =
@@ -423,6 +459,7 @@ class OrderRideRepository {
         "content": content,
         "fraction": fraction.toInt(),
         "language": language,
+        "ratingLabels": ratingLabels,
       });
 
       var storage = FlutterSecureStorage();

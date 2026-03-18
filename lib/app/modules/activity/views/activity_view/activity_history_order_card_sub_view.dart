@@ -276,9 +276,9 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                     height: 16,
                                     child: Center(
                                       child: SvgPicture.asset(
-                                        "assets/icons/icon_origin.svg",
-                                        width: 13.33,
-                                        height: 13.33,
+                                        "assets/icons/icon_pinpoint_green.svg",
+                                        width: 11,
+                                        height: 14.14,
                                       ),
                                     ),
                                   );
@@ -289,13 +289,9 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                   height: 16,
                                   child: Center(
                                     child: SvgPicture.asset(
-                                      "assets/icons/icon_pinpoint.svg",
-                                      width: 12,
-                                      height: 14,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorRed400
-                                          .value,
+                                      "assets/icons/icon_pinpoint_red.svg",
+                                      width: 11,
+                                      height: 14.14,
                                     ),
                                   ),
                                 );

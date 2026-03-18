@@ -265,6 +265,8 @@ class HomeController extends GetxController {
   }
 
   Future<void> refreshAll({bool firstInit = false}) async {
+    await requestLocation();
+
     await Future.wait([
       getUserInfo(),
       getActiveOrderList(),
@@ -278,11 +280,9 @@ class HomeController extends GetxController {
   }
 
   Future<void> getUserInfo() async {
-    try {
-      userInfo.value = (await userRepository.getUserInfo(
-        language: languageServices.languageCodeSystem.value,
-      ));
-    } catch (e) {}
+    userInfo.value = (await userRepository.getUserInfo(
+      language: languageServices.languageCodeSystem.value,
+    ));
   }
 
   Future<void> getActiveOrderList() async {
@@ -295,21 +295,17 @@ class HomeController extends GetxController {
   }
 
   Future<void> getAvailableCouponList() async {
-    try {
-      availableCouponList.value = await couponRepository.getCouponList(
-        pageNum: 1,
-        size: 7,
-        language: languageServices.languageCodeSystem.value,
-        state: 1,
-      );
-    } catch (e) {}
+    availableCouponList.value = await couponRepository.getCouponList(
+      pageNum: 1,
+      size: 7,
+      language: languageServices.languageCodeSystem.value,
+      state: 1,
+    );
   }
 
   Future<void> getSavedAddressList() async {
-    try {
-      savedAddressList.value = (await savedAddressRepository
-          .getSavedAddressList());
-    } catch (e) {}
+    savedAddressList.value = (await savedAddressRepository
+        .getSavedAddressList());
   }
 
   Future<void> onTapRideService({required bool isFillCurrentLocation}) async {

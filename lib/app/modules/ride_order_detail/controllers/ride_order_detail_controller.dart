@@ -13,6 +13,7 @@ import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -40,6 +41,7 @@ class RideOrderDetailController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
 
   final sendbirdChatServices = Get.find<SendbirdChatServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -358,7 +360,7 @@ class RideOrderDetailController extends GetxController {
         Polyline(
           polylineId: PolylineId("route"),
           points: polylineCoordinates,
-          color: Color(0XFF37C086),
+          color: Color(0XFF4DABF5),
           width: 6,
         ),
       );
@@ -414,8 +416,8 @@ class RideOrderDetailController extends GetxController {
         orderRideDetail.value.startLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_origin.svg',
-        Size(22.67, 22.67),
+        'assets/icons/icon_pinpoint_green.svg',
+        Size(28, 35),
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -428,8 +430,8 @@ class RideOrderDetailController extends GetxController {
         orderRideDetail.value.endLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint.svg',
-        Size(27, 31),
+        'assets/icons/icon_pinpoint_red.svg',
+        Size(28, 35),
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -472,7 +474,7 @@ class RideOrderDetailController extends GetxController {
       Polyline(
         polylineId: PolylineId("route"),
         points: polylineCoordinates,
-        color: Color(0XFF37C086),
+        color: Color(0XFF4DABF5),
         width: 6,
       ),
     );
@@ -625,7 +627,7 @@ class RideOrderDetailController extends GetxController {
           Polyline(
             polylineId: PolylineId("route"),
             points: polylineCoordinates,
-            color: Color(0XFF37C086),
+            color: Color(0XFF4DABF5),
             width: 6,
           ),
         );
@@ -694,8 +696,8 @@ class RideOrderDetailController extends GetxController {
             orderRideDetail.value.endLon!,
           ),
           icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-            'assets/icons/icon_pinpoint.svg',
-            Size(27, 31),
+            'assets/icons/icon_pinpoint_red.svg',
+            Size(28, 35),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -721,7 +723,7 @@ class RideOrderDetailController extends GetxController {
           Polyline(
             polylineId: PolylineId("route"),
             points: polylineCoordinates,
-            color: Color(0XFF37C086),
+            color: Color(0XFF4DABF5),
             width: 6,
           ),
         );
@@ -777,7 +779,7 @@ class RideOrderDetailController extends GetxController {
       polylines.add(
         Polyline(
           polylineId: PolylineId("route"),
-          color: Color(0XFF37C086),
+          color: Color(0XFF4DABF5),
           width: 5,
           points: polylinesCoordinate,
         ),
