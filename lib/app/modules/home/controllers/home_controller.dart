@@ -308,7 +308,10 @@ class HomeController extends GetxController {
         .getSavedAddressList());
   }
 
-  Future<void> onTapRideService({required bool isFillCurrentLocation}) async {
+  Future<void> onTapRideService({
+    required bool isFillCurrentLocation,
+    dynamic arguments,
+  }) async {
     var prefs = await SharedPreferences.getInstance();
 
     var isIntroductionDeliveryServiceShown =
@@ -329,7 +332,7 @@ class HomeController extends GetxController {
       } else {
         if (isFillCurrentLocation == true) {
           await Get.toNamed(
-            Routes.RIDE,
+            Routes.CREATE_ORDER_RIDE,
             arguments: {
               "start_address": currentAddress.value,
               "start_lat": currentLatitude.value,
@@ -337,7 +340,7 @@ class HomeController extends GetxController {
             },
           );
         } else {
-          await Get.toNamed(Routes.RIDE);
+          await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);
         }
       }
     }
@@ -870,74 +873,75 @@ class HomeController extends GetxController {
   }
 
   Future<void> getActiveOrderStatus() async {
-    var activeOrderStatus = '-';
+    // var activeOrderStatus = '-';
 
-    if (activeOrderList.isNotEmpty) {
-      var activeOrder = activeOrderList.first;
-      var estimatedSpeedInKmh = 40.0;
-      var orderRideServer = await orderRideRepository.getOrderRideServerDetail(
-        orderId: activeOrder.orderId!.toString(),
-        orderType: activeOrder.orderType!,
-        language: languageServices.languageCodeSystem.value,
-      );
+    // if (activeOrderList.isNotEmpty) {
+    //   var activeOrder = activeOrderList.first;
+    //   var estimatedSpeedInKmh = 40.0;
+    //   var orderRideServer = await orderRideRepository.getOrderRideServerDetail(
+    //     orderId: activeOrder.orderId!.toString(),
+    //     orderType: activeOrder.orderType!,
+    //     language: languageServices.languageCodeSystem.value,
+    //   );
 
-      switch (activeOrder.state) {
-        case 1:
-          activeOrderStatus = 'Pencarian Driver EVMoto...';
-          break;
-        case 2:
-          var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
-            originLat: double.parse(orderRideServer.lat!),
-            originLon: double.parse(orderRideServer.lon!),
-            destinationLat: activeOrder.startLat!,
-            destinationLon: activeOrder.startLon!,
-            estimatedSpeedInKmh: estimatedSpeedInKmh,
-          );
-          activeOrderStatus =
-              'Driver segera tiba, menunggu: ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)}';
-          break;
-        case 3:
-          activeOrderStatus = 'Driver tiba di titik penjemputan';
-          break;
-        case 4:
-          activeOrderStatus = 'Berangkat menuju lokasi';
-          break;
-        case 5:
-          var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
-            originLat: double.parse(orderRideServer.lat!),
-            originLon: double.parse(orderRideServer.lon!),
-            destinationLat: activeOrder.endLat!,
-            destinationLon: activeOrder.endLon!,
-            estimatedSpeedInKmh: estimatedSpeedInKmh,
-          );
-          var estimatedDistanceInKm = await getEstimatedDistanceInKm(
-            originLat: double.parse(orderRideServer.lat!),
-            originLon: double.parse(orderRideServer.lon!),
-            destinationLat: activeOrder.endLat!,
-            destinationLon: activeOrder.endLon!,
-          );
-          activeOrderStatus =
-              '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)} sampai ke lokasi';
-          break;
-        case 6:
-          var estimatedDistanceInKm = await getEstimatedDistanceInKm(
-            originLat: double.parse(orderRideServer.lat!),
-            originLon: double.parse(orderRideServer.lon!),
-            destinationLat: activeOrder.endLat!,
-            destinationLon: activeOrder.endLon!,
-          );
-          activeOrderStatus =
-              '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 Sampai di lokasi';
-          break;
-        case 7:
-          activeOrderStatus = 'Konfirmasi pembayaran';
-          break;
-        default:
-          activeOrderStatus = '-';
-          break;
-      }
-    }
+    //   switch (activeOrder.state) {
+    //     case 1:
+    //       activeOrderStatus = 'Pencarian Driver EVMoto...';
+    //       break;
+    //     case 2:
+    //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+    //         originLat: double.parse(orderRideServer.lat!),
+    //         originLon: double.parse(orderRideServer.lon!),
+    //         destinationLat: activeOrder.startLat!,
+    //         destinationLon: activeOrder.startLon!,
+    //         estimatedSpeedInKmh: estimatedSpeedInKmh,
+    //       );
+    //       activeOrderStatus =
+    //           'Driver segera tiba, menunggu: ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)}';
+    //       break;
+    //     case 3:
+    //       activeOrderStatus = 'Driver tiba di titik penjemputan';
+    //       break;
+    //     case 4:
+    //       activeOrderStatus = 'Berangkat menuju lokasi';
+    //       break;
+    //     case 5:
+    //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+    //         originLat: double.parse(orderRideServer.lat!),
+    //         originLon: double.parse(orderRideServer.lon!),
+    //         destinationLat: activeOrder.endLat!,
+    //         destinationLon: activeOrder.endLon!,
+    //         estimatedSpeedInKmh: estimatedSpeedInKmh,
+    //       );
+    //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+    //         originLat: double.parse(orderRideServer.lat!),
+    //         originLon: double.parse(orderRideServer.lon!),
+    //         destinationLat: activeOrder.endLat!,
+    //         destinationLon: activeOrder.endLon!,
+    //       );
+    //       activeOrderStatus =
+    //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)} sampai ke lokasi';
+    //       break;
+    //     case 6:
+    //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+    //         originLat: double.parse(orderRideServer.lat!),
+    //         originLon: double.parse(orderRideServer.lon!),
+    //         destinationLat: activeOrder.endLat!,
+    //         destinationLon: activeOrder.endLon!,
+    //       );
+    //       activeOrderStatus =
+    //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 Sampai di lokasi';
+    //       break;
+    //     case 7:
+    //       activeOrderStatus = 'Konfirmasi pembayaran';
+    //       break;
+    //     default:
+    //       activeOrderStatus = '-';
+    //       break;
+    //   }
+    // }
 
-    this.activeOrderStatus.value = activeOrderStatus;
+    // this.activeOrderStatus.value = activeOrderStatus;
+    this.activeOrderStatus.value = "Sedang Berjalan";
   }
 }

@@ -91,7 +91,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                   glowColor: Color(0XFF01AC63),
                                   glowCount: 3,
                                   child: SvgPicture.asset(
-                                    "assets/icons/icon_pinpoint_green.svg",
+                                    "assets/icons/icon_pinpoint_map_green.svg",
                                     width: 32 - 10,
                                     height: 42 - 10,
                                   ),

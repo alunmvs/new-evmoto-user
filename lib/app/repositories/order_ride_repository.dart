@@ -506,6 +506,10 @@ class OrderRideRepository {
         'Authorization': "Bearer $token",
       };
 
+      print(url);
+      print(headers);
+      print({"orderType": orderType, "orderId": orderId});
+
       var dio = apiServices.dio;
       var response = await dio.post(
         url,

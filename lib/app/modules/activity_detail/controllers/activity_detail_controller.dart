@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/rating_label_model.dart';
+import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -39,6 +40,7 @@ class ActivityDetailController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+  final homeController = Get.find<HomeController>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -71,7 +73,13 @@ class ActivityDetailController extends GetxController {
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
     await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
-    await getRatingLabelList(rating: 5);
+    await getRatingLabelList(
+      rating:
+          orderRideDetail.value.orderScore == 0 ||
+              orderRideDetail.value.orderScore == null
+          ? 5
+          : orderRideDetail.value.orderScore!,
+    );
     isFetch.value = false;
     await setupGoogleMapOriginToDestination();
     generateEstimatedDistanceAndTimeInMinutes();
@@ -117,7 +125,9 @@ class ActivityDetailController extends GetxController {
               .value]!['rate_${rating.toInt()}']!) {
         for (var ratingLabelId in orderRideDetail.value.ratingLabels ?? []) {
           if (ratingLabelId == ratingLabel['id']) {
-            ratingLabelList.add(RatingLabel.fromJson(ratingLabel));
+            var selectedRatingLabel = RatingLabel.fromJson(ratingLabel);
+            selectedRatingLabel.isSelected = true;
+            ratingLabelList.add(selectedRatingLabel);
           }
         }
       }
@@ -155,7 +165,7 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.startLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_green.svg',
+        'assets/icons/icon_pinpoint_map_green.svg',
         Size(28, 35),
       ),
     );
@@ -169,7 +179,7 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.endLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_red.svg',
+        'assets/icons/icon_pinpoint_map_red.svg',
         Size(28, 35),
       ),
     );
@@ -280,8 +290,8 @@ class ActivityDetailController extends GetxController {
       return;
     }
 
-    Get.toNamed(
-      Routes.RIDE,
+    await homeController.onTapRideService(
+      isFillCurrentLocation: false,
       arguments: {
         "start_address": orderRideDetail.value.startAddress,
         "start_lat": orderRideDetail.value.startLat,

@@ -416,7 +416,7 @@ class RideOrderDetailController extends GetxController {
         orderRideDetail.value.startLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_green.svg',
+        'assets/icons/icon_pinpoint_map_green.svg',
         Size(28, 35),
       ),
     );
@@ -430,7 +430,7 @@ class RideOrderDetailController extends GetxController {
         orderRideDetail.value.endLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_red.svg',
+        'assets/icons/icon_pinpoint_map_red.svg',
         Size(28, 35),
       ),
     );
@@ -696,7 +696,7 @@ class RideOrderDetailController extends GetxController {
             orderRideDetail.value.endLon!,
           ),
           icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-            'assets/icons/icon_pinpoint_red.svg',
+            'assets/icons/icon_pinpoint_map_red.svg',
             Size(28, 35),
           ),
         );

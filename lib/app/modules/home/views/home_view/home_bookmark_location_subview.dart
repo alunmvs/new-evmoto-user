@@ -163,9 +163,12 @@ class HomeBookmarkLocationSubview extends GetView<HomeController> {
               for (var savedAddress in controller.savedAddressList) ...[
                 GestureDetector(
                   onTap: () async {
-                    await controller.onTapShortcutSavedLocation(
-                      savedAddress: savedAddress,
-                    );
+                    // await controller.onTapRideService(
+                    //   isFillCurrentLocation: false,
+                    //   arguments: {
+                    //     ""
+                    //   }
+                    // );
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),

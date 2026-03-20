@@ -380,19 +380,21 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                           Row(
                             children: [
                               GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(
-                                    Routes.RIDE,
-                                    arguments: {
-                                      "start_address":
-                                          historyOrder.startAddress,
-                                      "start_lat": historyOrder.startLat,
-                                      "start_lon": historyOrder.startLon,
-                                      "end_address": historyOrder.endAddress,
-                                      "end_lat": historyOrder.endLat,
-                                      "end_lon": historyOrder.endLon,
-                                    },
-                                  );
+                                onTap: () async {
+                                  await controller.homeController
+                                      .onTapRideService(
+                                        isFillCurrentLocation: false,
+                                        arguments: {
+                                          "start_address":
+                                              historyOrder.startAddress,
+                                          "start_lat": historyOrder.startLat,
+                                          "start_lon": historyOrder.startLon,
+                                          "end_address":
+                                              historyOrder.endAddress,
+                                          "end_lat": historyOrder.endLat,
+                                          "end_lon": historyOrder.endLon,
+                                        },
+                                      );
                                 },
                                 child: Container(
                                   color: Colors.transparent,

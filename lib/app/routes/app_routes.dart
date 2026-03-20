@@ -47,6 +47,11 @@ abstract class Routes {
   static const SENDBIRD_CHAT_LIST = _Paths.SENDBIRD_CHAT_LIST;
   static const SENDBIRD_CHAT_DETAIL = _Paths.SENDBIRD_CHAT_DETAIL;
   static const VOUCHER_LIST = _Paths.VOUCHER_LIST;
+  static const CREATE_ORDER_RIDE = _Paths.CREATE_ORDER_RIDE;
+  static const CREATE_ORDER_RIDE_CHECKOUT = _Paths.CREATE_ORDER_RIDE_CHECKOUT;
+  static const CREATE_ORDER_RIDE_PROMO = _Paths.CREATE_ORDER_RIDE_PROMO;
+  static const CREATE_ORDER_RIDE_MAP_SELECT =
+      _Paths.CREATE_ORDER_RIDE_MAP_SELECT;
 }
 
 abstract class _Paths {
@@ -92,4 +97,8 @@ abstract class _Paths {
   static const SENDBIRD_CHAT_LIST = '/sendbird-chat-list';
   static const SENDBIRD_CHAT_DETAIL = '/sendbird-chat-detail';
   static const VOUCHER_LIST = '/voucher-list';
+  static const CREATE_ORDER_RIDE = '/create-order-ride';
+  static const CREATE_ORDER_RIDE_CHECKOUT = '/create-order-ride-checkout';
+  static const CREATE_ORDER_RIDE_PROMO = '/create-order-ride-promo';
+  static const CREATE_ORDER_RIDE_MAP_SELECT = '/create-order-ride-map-select';
 }

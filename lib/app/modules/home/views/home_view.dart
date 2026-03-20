@@ -278,7 +278,7 @@ class HomeView extends GetView<HomeController> {
                                                             .center,
                                                     children: [
                                                       SvgPicture.asset(
-                                                        "assets/icons/icon_pinpoint_green.svg",
+                                                        "assets/icons/icon_pinpoint_map_green.svg",
                                                         width: 22.67,
                                                         height: 22.67,
                                                       ),

@@ -10,6 +10,14 @@ import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
 import '../modules/add_edit_user_information/bindings/add_edit_user_information_binding.dart';
 import '../modules/add_edit_user_information/views/add_edit_user_information_view.dart';
+import '../modules/create_order_ride/bindings/create_order_ride_binding.dart';
+import '../modules/create_order_ride/views/create_order_ride_view.dart';
+import '../modules/create_order_ride_checkout/bindings/create_order_ride_checkout_binding.dart';
+import '../modules/create_order_ride_checkout/views/create_order_ride_checkout_view.dart';
+import '../modules/create_order_ride_map_select/bindings/create_order_ride_map_select_binding.dart';
+import '../modules/create_order_ride_map_select/views/create_order_ride_map_select_view.dart';
+import '../modules/create_order_ride_promo/bindings/create_order_ride_promo_binding.dart';
+import '../modules/create_order_ride_promo/views/create_order_ride_promo_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -284,6 +292,26 @@ class AppPages {
       name: _Paths.VOUCHER_LIST,
       page: () => const VoucherListView(),
       binding: VoucherListBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_ORDER_RIDE,
+      page: () => const CreateOrderRideView(),
+      binding: CreateOrderRideBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_ORDER_RIDE_CHECKOUT,
+      page: () => const CreateOrderRideCheckoutView(),
+      binding: CreateOrderRideCheckoutBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_ORDER_RIDE_PROMO,
+      page: () => const CreateOrderRidePromoView(),
+      binding: CreateOrderRidePromoBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_ORDER_RIDE_MAP_SELECT,
+      page: () => const CreateOrderRideMapSelectView(),
+      binding: CreateOrderRideMapSelectBinding(),
     ),
   ];
 }

@@ -139,7 +139,7 @@ class Waypoints {
     hint = json['hint'];
     location = json['location'].cast<double>();
     name = json['name'];
-    distance = json['distance'];
+    distance = double.tryParse(json['distance'].toString());
   }
 
   Map<String, dynamic> toJson() {

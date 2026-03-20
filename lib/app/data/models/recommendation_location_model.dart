@@ -4,6 +4,8 @@ class RecommendationLocation {
   String? addressDetail;
   String? latitude;
   String? longitude;
+  double? customDistanceM;
+  double? customDistanceKm;
 
   RecommendationLocation({
     this.name,
@@ -11,9 +13,12 @@ class RecommendationLocation {
     this.latitude,
     this.longitude,
     this.id,
+    this.customDistanceM,
+    this.customDistanceKm,
   });
 
   RecommendationLocation.fromJson(Map<String, dynamic> json) {
+    print(json);
     id = json['id'];
     name = json['name'];
     addressDetail = json['address_detail'];
