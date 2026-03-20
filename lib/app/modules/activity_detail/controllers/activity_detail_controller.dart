@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
@@ -36,6 +38,7 @@ class ActivityDetailController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -91,125 +94,11 @@ class ActivityDetailController extends GetxController {
   }
 
   Future<void> getRatingLabelList({required int rating}) async {
-    var ratingLabelConfiguration = {
-      "ID": {
-        "rate_5": [
-          {"id": 1, "value": "Pengemudi sangat ramah"},
-          {"id": 2, "value": "Mengemudi dengan aman"},
-          {"id": 3, "value": "Kendaraan dan perlengkapan bersih"},
-          {"id": 4, "value": "Datang tepat waktu"},
-          {"id": 5, "value": "Mengemudi dengan halus"},
-          {"id": 6, "value": "Pengalaman keseluruhan sangat baik"},
-        ],
-        "rate_4": [
-          {"id": 6, "value": "Pengemudi sopan"},
-          {"id": 7, "value": "Mengemudi dengan halus"},
-          {"id": 8, "value": "Waktu tunggu agak lama"},
-          {"id": 9, "value": "Rute bisa lebih baik"},
-          {"id": 10, "value": "Kondisi kendaraan biasa"},
-        ],
-        "rate_3": [
-          {"id": 11, "value": "Pengalaman biasa saja"},
-          {"id": 12, "value": "Waktu tunggu agak lama"},
-          {"id": 13, "value": "Rute bisa lebih baik"},
-          {"id": 14, "value": "Komunikasi kurang lancar"},
-          {"id": 15, "value": "Kendaraan kurang bersih"},
-        ],
-        "rate_2": [
-          {"id": 16, "value": "Pengemudi terlambat"},
-          {"id": 17, "value": "Mengemudi kurang aman"},
-          {"id": 18, "value": "Kendaraan kurang bersih"},
-          {"id": 19, "value": "Waktu tunggu terlalu lama"},
-          {"id": 20, "value": "Pengemudi kurang sopan"},
-          {"id": 21, "value": "Pilihan rute kurang baik"},
-        ],
-        "rate_1": [
-          {"id": 22, "value": "Pengemudi tidak sopan"},
-          {"id": 23, "value": "Mengemudi sangat berbahaya"},
-          {"id": 24, "value": "Ada masalah dengan perjalanan"},
-          {"id": 25, "value": "Pelayanan sangat buruk"},
-          {"id": 26, "value": "Pengemudi sangat terlambat"},
-        ],
-      },
-      "EN": {
-        "rate_5": [
-          {"id": 1, "value": "Pengemudi sangat ramah"},
-          {"id": 2, "value": "Mengemudi dengan aman"},
-          {"id": 3, "value": "Kendaraan dan perlengkapan bersih"},
-          {"id": 4, "value": "Datang tepat waktu"},
-          {"id": 5, "value": "Mengemudi dengan halus"},
-          {"id": 6, "value": "Pengalaman keseluruhan sangat baik"},
-        ],
-        "rate_4": [
-          {"id": 6, "value": "Pengemudi sopan"},
-          {"id": 7, "value": "Mengemudi dengan halus"},
-          {"id": 8, "value": "Waktu tunggu agak lama"},
-          {"id": 9, "value": "Rute bisa lebih baik"},
-          {"id": 10, "value": "Kondisi kendaraan biasa"},
-        ],
-        "rate_3": [
-          {"id": 11, "value": "Pengalaman biasa saja"},
-          {"id": 12, "value": "Waktu tunggu agak lama"},
-          {"id": 13, "value": "Rute bisa lebih baik"},
-          {"id": 14, "value": "Komunikasi kurang lancar"},
-          {"id": 15, "value": "Kendaraan kurang bersih"},
-        ],
-        "rate_2": [
-          {"id": 16, "value": "Pengemudi terlambat"},
-          {"id": 17, "value": "Mengemudi kurang aman"},
-          {"id": 18, "value": "Kendaraan kurang bersih"},
-          {"id": 19, "value": "Waktu tunggu terlalu lama"},
-          {"id": 20, "value": "Pengemudi kurang sopan"},
-          {"id": 21, "value": "Pilihan rute kurang baik"},
-        ],
-        "rate_1": [
-          {"id": 22, "value": "Pengemudi tidak sopan"},
-          {"id": 23, "value": "Mengemudi sangat berbahaya"},
-          {"id": 24, "value": "Ada masalah dengan perjalanan"},
-          {"id": 25, "value": "Pelayanan sangat buruk"},
-          {"id": 26, "value": "Pengemudi sangat terlambat"},
-        ],
-      },
-      "ZH_CN": {
-        "rate_5": [
-          {"id": 1, "value": "Pengemudi sangat ramah"},
-          {"id": 2, "value": "Mengemudi dengan aman"},
-          {"id": 3, "value": "Kendaraan dan perlengkapan bersih"},
-          {"id": 4, "value": "Datang tepat waktu"},
-          {"id": 5, "value": "Mengemudi dengan halus"},
-          {"id": 6, "value": "Pengalaman keseluruhan sangat baik"},
-        ],
-        "rate_4": [
-          {"id": 6, "value": "Pengemudi sopan"},
-          {"id": 7, "value": "Mengemudi dengan halus"},
-          {"id": 8, "value": "Waktu tunggu agak lama"},
-          {"id": 9, "value": "Rute bisa lebih baik"},
-          {"id": 10, "value": "Kondisi kendaraan biasa"},
-        ],
-        "rate_3": [
-          {"id": 11, "value": "Pengalaman biasa saja"},
-          {"id": 12, "value": "Waktu tunggu agak lama"},
-          {"id": 13, "value": "Rute bisa lebih baik"},
-          {"id": 14, "value": "Komunikasi kurang lancar"},
-          {"id": 15, "value": "Kendaraan kurang bersih"},
-        ],
-        "rate_2": [
-          {"id": 16, "value": "Pengemudi terlambat"},
-          {"id": 17, "value": "Mengemudi kurang aman"},
-          {"id": 18, "value": "Kendaraan kurang bersih"},
-          {"id": 19, "value": "Waktu tunggu terlalu lama"},
-          {"id": 20, "value": "Pengemudi kurang sopan"},
-          {"id": 21, "value": "Pilihan rute kurang baik"},
-        ],
-        "rate_1": [
-          {"id": 22, "value": "Pengemudi tidak sopan"},
-          {"id": 23, "value": "Mengemudi sangat berbahaya"},
-          {"id": 24, "value": "Ada masalah dengan perjalanan"},
-          {"id": 25, "value": "Pelayanan sangat buruk"},
-          {"id": 26, "value": "Pengemudi sangat terlambat"},
-        ],
-      },
-    };
+    var ratingLabelConfiguration = jsonDecode(
+      firebaseRemoteConfigServices.remoteConfig.getString(
+        'user_order_rating_label',
+      ),
+    );
 
     ratingLabelList.value = [];
     if ((orderRideDetail.value.orderScore == null ||

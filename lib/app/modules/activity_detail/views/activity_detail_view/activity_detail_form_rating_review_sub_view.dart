@@ -79,8 +79,11 @@ class ActivityDetailFormRatingReviewSubView
                         ],
                       ),
                     ),
-                    onRatingUpdate: (rating) {
+                    onRatingUpdate: (rating) async {
                       controller.rating.value = rating;
+                      await controller.getRatingLabelList(
+                        rating: rating.toInt(),
+                      );
                     },
                     glow: false,
                   ),
