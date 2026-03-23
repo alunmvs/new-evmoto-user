@@ -55,20 +55,22 @@ class CreateOrderRideSearchedLocationSubView
                               ],
                             ),
                           ),
-                          SizedBox(height: 6),
-                          Text(
-                            "${location.customDistanceKm!.toStringAsFixed(2)}km",
-                            style: controller
-                                .typographyServices
-                                .captionSmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey500
-                                      .value,
-                                ),
-                          ),
+                          if (location.customDistanceKm != null) ...[
+                            SizedBox(height: 6),
+                            Text(
+                              "${location.customDistanceKm!.toStringAsFixed(2)}${controller.languageServices.language.value.km}",
+                              style: controller
+                                  .typographyServices
+                                  .captionSmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey500
+                                        .value,
+                                  ),
+                            ),
+                          ],
                         ],
                       ),
                       SizedBox(width: 8),
@@ -156,20 +158,22 @@ class CreateOrderRideSearchedLocationSubView
                               ],
                             ),
                           ),
-                          SizedBox(height: 6),
-                          Text(
-                            "${location.customDistanceKm!.toStringAsFixed(2)}km",
-                            style: controller
-                                .typographyServices
-                                .captionSmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey500
-                                      .value,
-                                ),
-                          ),
+                          if (location.customDistanceKm != null) ...[
+                            SizedBox(height: 6),
+                            Text(
+                              "${location.customDistanceKm!.toStringAsFixed(2)}km",
+                              style: controller
+                                  .typographyServices
+                                  .captionSmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey500
+                                        .value,
+                                  ),
+                            ),
+                          ],
                         ],
                       ),
                       SizedBox(width: 8),

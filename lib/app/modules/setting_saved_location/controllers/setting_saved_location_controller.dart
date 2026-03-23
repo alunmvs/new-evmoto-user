@@ -69,7 +69,7 @@ class SettingSavedLocationController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Menu Lainnya",
+                          languageServices.language.value.otherMenu ?? "-",
                           style: typographyServices.bodyLargeBold.value,
                         ),
                         GestureDetector(
@@ -136,7 +136,8 @@ class SettingSavedLocationController extends GetxController {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  "Edit Alamat",
+                                  languageServices.language.value.editAddress ??
+                                      "-",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -182,7 +183,11 @@ class SettingSavedLocationController extends GetxController {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  "Hapus Alamat",
+                                  languageServices
+                                          .language
+                                          .value
+                                          .deleteAddress ??
+                                      "-",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -472,7 +477,7 @@ class SettingSavedLocationController extends GetxController {
                                   Get.close(1);
                                 },
                                 child: Text(
-                                  "Batal",
+                                  languageServices.language.value.cancel ?? "-",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color: themeColorServices

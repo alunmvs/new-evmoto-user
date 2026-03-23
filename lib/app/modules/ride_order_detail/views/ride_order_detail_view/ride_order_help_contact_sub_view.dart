@@ -67,7 +67,12 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
                   backgroundColor:
                       controller.themeColorServices.sematicColorRed400.value,
                   content: Text(
-                    "Tidak dapat membuka whatsapp",
+                    controller
+                            .languageServices
+                            .language
+                            .value
+                            .unableOpenWhatsapp ??
+                        "-",
                     style: controller.typographyServices.bodySmallRegular.value
                         .copyWith(
                           color: controller

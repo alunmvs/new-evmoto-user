@@ -29,6 +29,9 @@ class AddEditAddressController extends GetxController {
     "address_detail": FormControl<String>(
       validators: <Validator>[Validators.required],
     ),
+    "address_notes": FormControl<String>(
+      validators: <Validator>[Validators.required],
+    ),
   });
 
   final geocodingPlace = GeocodingPlace().obs;
@@ -51,6 +54,8 @@ class AddEditAddressController extends GetxController {
       formGroup.control("address_detail").value =
           savedAddress.value.addressDetail!;
       formGroup.control("address_name").value = savedAddress.value.addressName!;
+      formGroup.control("address_notes").value =
+          savedAddress.value.addressNotes;
     } else {
       geocodingPlace.value =
           Get.arguments['geocoding_place'] ?? GeocodingPlace();
@@ -80,6 +85,7 @@ class AddEditAddressController extends GetxController {
             addressName: formGroup.control("address_name").value,
             addressTitle: geocodingPlace.value.name ?? "",
             addressDetail: formGroup.control("address_detail").value,
+            addressNotes: formGroup.control("address_notes").value,
             latitude: geocodingPlace.value.lat.toString(),
             longitude: geocodingPlace.value.lng.toString(),
             addressType: addressType.value,
@@ -97,7 +103,7 @@ class AddEditAddressController extends GetxController {
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorGreen400.value,
             content: Text(
-              'Berhasil menyimpan alamat',
+              languageServices.language.value.successfullySavedAddress ?? "-",
               style: typographyServices.bodySmallRegular.value.copyWith(
                 color: themeColorServices.neutralsColorGrey0.value,
               ),
@@ -111,6 +117,7 @@ class AddEditAddressController extends GetxController {
             addressTitle:
                 geocodingPlace.value.name ?? savedAddress.value.addressTitle!,
             addressDetail: formGroup.control("address_detail").value,
+            addressNotes: formGroup.control("address_notes").value,
             latitude: (geocodingPlace.value.lat ?? savedAddress.value.latitude!)
                 .toString(),
             longitude:

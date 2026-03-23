@@ -26,7 +26,7 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Biaya Perjalanan",
+                controller.languageServices.language.value.travelExpense ?? "-",
                 style: controller.typographyServices.bodySmallRegular.value
                     .copyWith(
                       color: controller
@@ -57,7 +57,8 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Biaya Tambahan",
+                  controller.languageServices.language.value.additionalCost ??
+                      "-",
                   style: controller.typographyServices.bodySmallRegular.value
                       .copyWith(
                         color: controller
@@ -89,7 +90,7 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Promosi",
+                  controller.languageServices.language.value.promotion ?? "-",
                   style: controller.typographyServices.bodySmallRegular.value
                       .copyWith(
                         color: controller
@@ -120,7 +121,7 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Metode Pembayaran",
+                controller.languageServices.language.value.paymentMethod ?? "-",
                 style: controller.typographyServices.bodySmallRegular.value
                     .copyWith(
                       color: controller
@@ -148,7 +149,12 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
                     ),
                     SizedBox(width: 4),
                     Text(
-                      "Saldo EVMoto",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .evmotoBalance ??
+                          "-",
                       style: controller.typographyServices.bodySmallBold.value,
                     ),
                   ],
@@ -186,7 +192,7 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Total",
+                controller.languageServices.language.value.total ?? "-",
                 style: controller.typographyServices.bodySmallBold.value
                     .copyWith(
                       color: controller

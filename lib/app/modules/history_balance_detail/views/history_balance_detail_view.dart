@@ -225,7 +225,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                                             .value
                                             .payType ==
                                         2
-                                    ? "Saldo EVMoto"
+                                    ? (controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .evmotoBalance ??
+                                          "-")
                                     : controller
                                               .balanceHistoryConsumption
                                               .value
@@ -569,7 +574,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Total",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .total ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallBold

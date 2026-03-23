@@ -82,7 +82,12 @@ class ActivityView extends GetView<ActivityController> {
                                 ),
                                 SizedBox(height: 16),
                                 Text(
-                                  "Kamu sudah mencoba EVMoto?",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .haveTriedEvmoto ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodyLargeBold
@@ -91,7 +96,12 @@ class ActivityView extends GetView<ActivityController> {
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  "Kamu bisa berpergian dengan nyaman, aman dan tentunya gak nambahin polusi di jakarta dong!",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .travelComfort ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular

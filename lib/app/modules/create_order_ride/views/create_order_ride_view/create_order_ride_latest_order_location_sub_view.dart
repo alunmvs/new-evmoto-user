@@ -17,7 +17,7 @@ class CreateOrderRideLatestOrderLocationSubView
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              "Lokasi Terakhir",
+              controller.languageServices.language.value.lastLocation ?? "-",
               style: controller.typographyServices.bodySmallBold.value.copyWith(
                 color: Color(0XFF7D7D7D),
               ),
@@ -72,20 +72,22 @@ class CreateOrderRideLatestOrderLocationSubView
                             ],
                           ),
                         ),
-                        SizedBox(height: 6),
-                        Text(
-                          "${latestLocation.customDistanceKm!.toStringAsFixed(2)}km",
-                          style: controller
-                              .typographyServices
-                              .captionSmallRegular
-                              .value
-                              .copyWith(
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey500
-                                    .value,
-                              ),
-                        ),
+                        if (latestLocation.customDistanceKm != null) ...[
+                          SizedBox(height: 6),
+                          Text(
+                            "${latestLocation.customDistanceKm!.toStringAsFixed(2)}${controller.languageServices.language.value.km}",
+                            style: controller
+                                .typographyServices
+                                .captionSmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey500
+                                      .value,
+                                ),
+                          ),
+                        ],
                       ],
                     ),
                     SizedBox(width: 8),

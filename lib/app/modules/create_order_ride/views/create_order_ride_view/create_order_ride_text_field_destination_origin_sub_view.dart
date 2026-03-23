@@ -31,7 +31,7 @@ class CreateOrderRideTextFieldDestinationOriginSubView
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
-                autofocus: true,
+                autofocus: false,
                 focusNode: controller.focusNodeOrigin,
                 controller: controller.originTextEditingController,
                 style: controller.typographyServices.captionLargeRegular.value
@@ -182,7 +182,7 @@ class CreateOrderRideTextFieldDestinationOriginSubView
               ),
               SizedBox(height: 12),
               TextField(
-                autofocus: true,
+                autofocus: false,
                 canRequestFocus: controller.isLatLngOriginFilled(),
                 focusNode: controller.focusNodeDestination,
                 controller: controller.destinationTextEditingController,
@@ -213,7 +213,11 @@ class CreateOrderRideTextFieldDestinationOriginSubView
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  hintText: 'Masukkan lokasi tujuan',
+                  hintText: controller
+                      .languageServices
+                      .language
+                      .value
+                      .enterDestinationLocation,
                   hintStyle: controller
                       .typographyServices
                       .bodySmallRegular

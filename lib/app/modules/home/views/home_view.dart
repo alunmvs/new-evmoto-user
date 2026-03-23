@@ -566,7 +566,6 @@ class HomeView extends GetView<HomeController> {
                                             controller.homeRefreshController,
                                         onRefresh: () async {
                                           await controller.refreshAll();
-                                          await controller.requestLocation();
                                           controller.homeRefreshController
                                               .refreshCompleted();
                                         },

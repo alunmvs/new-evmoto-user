@@ -16,7 +16,7 @@ class CreateOrderRideView extends GetView<CreateOrderRideController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Kembali",
+            controller.languageServices.language.value.back ?? "-",
             selectionColor:
                 controller.themeColorServices.neutralsColorGrey600.value,
 

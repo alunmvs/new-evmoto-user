@@ -30,7 +30,7 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   final isPermissionLocationAllow = false.obs;
   final isFetchAddress = false.obs;
-  final isFetch = true.obs;
+  final isFetch = false.obs;
 
   @override
   Future<void> onInit() async {
@@ -54,8 +54,6 @@ class CreateOrderRideMapSelectController extends GetxController {
     addressName.value = Get.arguments?['address_name'];
     latitude.value = Get.arguments?['latitude'];
     longitude.value = Get.arguments?['longitude'];
-
-    print("ini get arguments ${Get.arguments}");
 
     if (latitude.value != null) {
       var searchedAddress = await geocodingRepository

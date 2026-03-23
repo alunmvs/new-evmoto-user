@@ -34,6 +34,7 @@ class PromoUsedCardSubView extends GetView<CreateOrderRidePromoController> {
               SizedBox(width: 4),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       NumberFormat.currency(
@@ -47,7 +48,7 @@ class PromoUsedCardSubView extends GetView<CreateOrderRidePromoController> {
                     SizedBox(height: 6),
                     RichText(
                       text: TextSpan(
-                        text: "Promo tidak tersedia",
+                        text: "Promo sudah digunakan",
                         style: controller
                             .typographyServices
                             .captionLargeBold
@@ -55,12 +56,13 @@ class PromoUsedCardSubView extends GetView<CreateOrderRidePromoController> {
                             .copyWith(
                               color: controller
                                   .themeColorServices
-                                  .primaryBlue
+                                  .neutralsColorGrey500
                                   .value,
                             ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: " · Berlaku hingga ${coupon.time}",
+                            text:
+                                " · ${controller.languageServices.language.value.validUntil ?? "-"} ${coupon.time}",
                             style: controller
                                 .typographyServices
                                 .captionLargeRegular

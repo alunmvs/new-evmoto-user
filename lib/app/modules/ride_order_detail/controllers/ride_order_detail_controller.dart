@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'dart:ui';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,6 +18,8 @@ import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'dart:async';
+import 'dart:ui';
 
 class RideOrderDetailController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
@@ -1021,7 +1019,7 @@ class RideOrderDetailController extends GetxController {
                               buttonColor:
                                   themeColorServices.sematicColorRed400.value,
                               child: Text(
-                                "Batalkan",
+                                languageServices.language.value.cancel ?? "-",
                                 style: typographyServices.bodyLargeBold.value
                                     .copyWith(
                                       color: themeColorServices

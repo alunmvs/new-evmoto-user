@@ -80,7 +80,7 @@ class AccountController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
         content: Text(
-          "Tidak dapat membuka whatsapp",
+          languageServices.language.value.unableOpenWhatsapp ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),
@@ -110,12 +110,16 @@ class AccountController extends GetxController {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kelola Akun",
+                      languageServices.language.value.manageAccount ?? "-",
                       style: typographyServices.bodyLargeBold.value,
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "Kelola akses akun, keluar dari aplikasi, atau ajukan penghapusan akun.",
+                      languageServices
+                              .language
+                              .value
+                              .manageAccountLogoutAppRequestAccountDelete ??
+                          "-",
                       style: typographyServices.bodySmallRegular.value.copyWith(
                         color: Color(0XFFB3B3B3),
                       ),
@@ -169,13 +173,21 @@ class AccountController extends GetxController {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Keluar dari Akun",
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .signOutAccount ??
+                                                "-",
                                             style: typographyServices
                                                 .bodySmallBold
                                                 .value,
                                           ),
                                           Text(
-                                            "Keluar dari akun untuk mengamankan akses Anda.",
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .logoutAccountSecureAccess ??
+                                                "-",
                                             style: typographyServices
                                                 .bodySmallRegular
                                                 .value
@@ -250,13 +262,21 @@ class AccountController extends GetxController {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Hapus Akun",
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .deleteAccount ??
+                                                "-",
                                             style: typographyServices
                                                 .bodySmallBold
                                                 .value,
                                           ),
                                           Text(
-                                            "Tindakan ini akan menghapus akun dan data Anda secara permanen.",
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .actionPermanentlyDeleteAccountData ??
+                                                "-",
                                             style: typographyServices
                                                 .bodySmallRegular
                                                 .value
@@ -345,12 +365,17 @@ class AccountController extends GetxController {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      "Yakin Ingin Keluar Dari Akun?",
+                      languageServices
+                              .language
+                              .value
+                              .logoutAccountConfirmation ??
+                          "-",
                       style: typographyServices.bodyLargeBold.value,
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "Anda akan keluar dari akun ini dan perlu masuk kembali untuk menggunakan layanan.",
+                      languageServices.language.value.logoutAndNeedLogBack ??
+                          "-",
                       style: typographyServices.bodySmallRegular.value.copyWith(
                         color: Color(0XFFB3B3B3),
                       ),
@@ -361,7 +386,7 @@ class AccountController extends GetxController {
                         await logout();
                       },
                       child: Text(
-                        "Keluar Sekarang",
+                        languageServices.language.value.exitNow ?? "-",
                         style: typographyServices.bodyLargeBold.value.copyWith(
                           color: themeColorServices.neutralsColorGrey0.value,
                         ),
@@ -374,7 +399,7 @@ class AccountController extends GetxController {
                       },
                       buttonColor: Color(0XFFD9D9D9),
                       child: Text(
-                        "Batalkan",
+                        languageServices.language.value.cancel ?? "-",
                         style: typographyServices.bodyLargeBold.value.copyWith(
                           color: Colors.black,
                         ),
@@ -438,12 +463,17 @@ class AccountController extends GetxController {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        "Perjalanan Anda Belum Selesai",
+                        languageServices.language.value.journeyNotOverYet ??
+                            "-",
                         style: typographyServices.bodyLargeBold.value,
                       ),
                       SizedBox(height: 4),
                       Text(
-                        "Anda masih memiliki perjalanan yang belum selesai. Silakan selesaikan atau batalkan perjalanan tersebut sebelum menghapus akun Anda.",
+                        languageServices
+                                .language
+                                .value
+                                .unfinishedTripsDeleteAccount ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value
                             .copyWith(color: Color(0XFFB3B3B3)),
                       ),
@@ -455,7 +485,7 @@ class AccountController extends GetxController {
                         buttonColor:
                             themeColorServices.sematicColorRed400.value,
                         child: Text(
-                          "Mengerti",
+                          languageServices.language.value.understand ?? "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(
                                 color:
@@ -515,12 +545,20 @@ class AccountController extends GetxController {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        "Yakin Ingin Hapus Akun?",
+                        languageServices
+                                .language
+                                .value
+                                .deleteAccountConfirmation ??
+                            "-",
                         style: typographyServices.bodyLargeBold.value,
                       ),
                       SizedBox(height: 4),
                       Text(
-                        "Akun dan seluruh data Anda akan dihapus secara permanen dan tidak dapat dipulihkan.",
+                        languageServices
+                                .language
+                                .value
+                                .accountPermanentlyDeletedCannotRecovered ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value
                             .copyWith(color: Color(0XFFB3B3B3)),
                       ),
@@ -533,7 +571,7 @@ class AccountController extends GetxController {
                         buttonColor:
                             themeColorServices.sematicColorRed400.value,
                         child: Text(
-                          "Hapus Akun",
+                          languageServices.language.value.deleteAccount ?? "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(
                                 color:
@@ -548,7 +586,7 @@ class AccountController extends GetxController {
                         },
                         buttonColor: Color(0XFFD9D9D9),
                         child: Text(
-                          "Batalkan",
+                          languageServices.language.value.cancel ?? "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(color: Colors.black),
                         ),
@@ -599,12 +637,13 @@ class AccountController extends GetxController {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Masukkan Kode OTP",
+                        languageServices.language.value.enterOtpCode ?? "-",
                         style: typographyServices.bodyLargeBold.value,
                       ),
                       SizedBox(height: 4),
                       Text(
-                        "Untuk mengonfirmasi penghapusan akun Anda",
+                        languageServices.language.value.confirmDeleteAccount ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value
                             .copyWith(color: Color(0XFFB3B3B3)),
                       ),
@@ -712,7 +751,8 @@ class AccountController extends GetxController {
                                 ),
                               ),
                               child: Text(
-                                "Kirim ulang code",
+                                languageServices.language.value.resendCode ??
+                                    "-",
                                 style: typographyServices.bodySmallBold.value
                                     .copyWith(color: Colors.white),
                               ),
@@ -760,7 +800,11 @@ class AccountController extends GetxController {
                             backgroundColor:
                                 themeColorServices.sematicColorGreen400.value,
                             content: Text(
-                              "Berhasil menghapus akun",
+                              languageServices
+                                      .language
+                                      .value
+                                      .successDeleteAccount ??
+                                  "-",
                               style: typographyServices.bodySmallRegular.value
                                   .copyWith(
                                     color: themeColorServices
@@ -774,7 +818,8 @@ class AccountController extends GetxController {
                           );
                         },
                         child: Text(
-                          "Konfirmasi OTP",
+                          languageServices.language.value.otpConfirmation ??
+                              "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(
                                 color:
@@ -789,7 +834,7 @@ class AccountController extends GetxController {
                           Get.close(1);
                         },
                         child: Text(
-                          "Batalkan",
+                          languageServices.language.value.cancel ?? "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(color: Colors.black),
                         ),
@@ -845,12 +890,17 @@ class AccountController extends GetxController {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        "Akun Anda telah berhasil dihapus.",
+                        languageServices
+                                .language
+                                .value
+                                .accountSuccessfullyDeleted ??
+                            "-",
                         style: typographyServices.bodyLargeBold.value,
                       ),
                       SizedBox(height: 8),
                       Text(
-                        "Terima kasih telah menggunakan EVMoto.",
+                        languageServices.language.value.thankyouUsingEvmoto ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value,
                       ),
                     ],
@@ -878,73 +928,8 @@ class AccountController extends GetxController {
   }
 
   Future<void> onTapCheckUpdate() async {
-    await firebaseRemoteConfigServices.remoteConfig.fetch();
-    var isForceUpdate = await homeController.checkForceUpdate();
-    var isSoftUpdate = await homeController.checkSoftUpdate();
-
-    if (!isForceUpdate && !isSoftUpdate) {
-      Get.dialog(
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Material(
-                  color: themeColorServices.neutralsColorGrey0.value,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 16),
-                        Container(
-                          width: 42,
-                          height: 42,
-                          decoration: BoxDecoration(
-                            color: Color(0XFFDDFFE6),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/icon_checkmark_circle.svg",
-                                width: 26,
-                                height: 26,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Anda menggunakan versi terbaru',
-                          style: typographyServices.bodyLargeBold.value,
-                        ),
-                        SizedBox(height: 16),
-                        LoaderElevatedButton(
-                          child: Text(
-                            "Kembali",
-                            style: typographyServices.bodyLargeBold.value
-                                .copyWith(color: Colors.white),
-                          ),
-                          onPressed: () async {
-                            Get.close(1);
-                          },
-                        ),
-                        SizedBox(height: 16),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+    await homeController.checkAppVersioning(
+      isShowVersionNewestConfirmationDialog: true,
+    );
   }
 }

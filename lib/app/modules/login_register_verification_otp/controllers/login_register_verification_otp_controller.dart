@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/repositories/login_register_repository.dart'
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/main.dart';
@@ -24,14 +25,12 @@ class LoginRegisterVerificationOtpController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final locationServices = Get.find<LocationServices>();
 
   final isOTPInvalid = false.obs;
 
   final mobilePhone = "".obs;
   final otpCode = "".obs;
-
-  final latitude = "".obs;
-  final longitude = "".obs;
 
   final otpProtectionTimerSeconds = 0.obs;
   Timer? otpProtectionTimer;
@@ -102,45 +101,24 @@ class LoginRegisterVerificationOtpController extends GetxController {
     }
   }
 
-  Future<void> requestLocation() async {
-    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    var permission = await Geolocator.requestPermission();
-
-    if (isLocationServiceEnabled == false ||
-        (permission == LocationPermission.denied ||
-            permission == LocationPermission.deniedForever)) {
-      return;
-    }
-
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
-    latitude.value = position.latitude.toString();
-    longitude.value = position.longitude.toString();
-  }
-
   Future<void> onSubmitOTP() async {
     try {
-      await requestLocation();
+      await locationServices.requestLocation();
 
-      var loginData = await loginRegisterRepository.loginByOtp(
-        phone: mobilePhone.value,
-        code: otpCode.value,
-        language: languageServices.languageCodeSystem.value,
-        lat: latitude.value,
-        lng: longitude.value,
-      );
+      if (locationServices.currentLatitude.value != null) {
+        var loginData = await loginRegisterRepository.loginByOtp(
+          phone: mobilePhone.value,
+          code: otpCode.value,
+          language: languageServices.languageCodeSystem.value,
+          lat: locationServices.currentLatitude.value.toString(),
+          lng: locationServices.currentLongitude.value.toString(),
+        );
 
-      var storage = FlutterSecureStorage();
-      await storage.write(key: "token", value: loginData.token);
+        var storage = FlutterSecureStorage();
+        await storage.write(key: "token", value: loginData.token);
 
-      Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed(Routes.HOME);
+      }
     } catch (e) {
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,

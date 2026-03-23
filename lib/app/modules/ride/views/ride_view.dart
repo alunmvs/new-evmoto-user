@@ -736,8 +736,11 @@ class RideView extends GetView<RideController> {
                                                     horizontal: 12,
                                                     vertical: 8,
                                                   ),
-                                              hintText:
-                                                  'Masukkan lokasi tujuan',
+                                              hintText: controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .enterDestinationLocation,
                                               hintStyle: controller
                                                   .typographyServices
                                                   .bodySmallRegular
@@ -1397,7 +1400,12 @@ class RideView extends GetView<RideController> {
                                                         false) {
                                                       SnackbarHelper.showSnackbarError(
                                                         text:
-                                                            'Alamat diluar wilayah layanan tersedia',
+                                                            controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .addressOutsideService ??
+                                                            "-",
                                                       );
                                                       return;
                                                     }
@@ -1597,7 +1605,12 @@ class RideView extends GetView<RideController> {
                                                         false) {
                                                       SnackbarHelper.showSnackbarError(
                                                         text:
-                                                            'Alamat diluar wilayah layanan tersedia',
+                                                            controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .addressOutsideService ??
+                                                            "-",
                                                       );
                                                       return;
                                                     }
@@ -1796,7 +1809,12 @@ class RideView extends GetView<RideController> {
                                                       false) {
                                                     SnackbarHelper.showSnackbarError(
                                                       text:
-                                                          'Alamat diluar wilayah layanan tersedia',
+                                                          controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .addressOutsideService ??
+                                                          "-",
                                                     );
                                                     return;
                                                   }
@@ -2067,7 +2085,12 @@ class RideView extends GetView<RideController> {
                                                         false) {
                                                       SnackbarHelper.showSnackbarError(
                                                         text:
-                                                            'Alamat diluar wilayah layanan tersedia',
+                                                            controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .addressOutsideService ??
+                                                            "-",
                                                       );
                                                       return;
                                                     }
@@ -2291,7 +2314,12 @@ class RideView extends GetView<RideController> {
                                                       false) {
                                                     SnackbarHelper.showSnackbarError(
                                                       text:
-                                                          'Alamat diluar wilayah layanan tersedia',
+                                                          controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .addressOutsideService ??
+                                                          "-",
                                                     );
                                                     return;
                                                   }
@@ -3515,7 +3543,12 @@ class RideView extends GetView<RideController> {
                                                             ),
                                                             SizedBox(width: 4),
                                                             Text(
-                                                              "Saldo EVMoto",
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .evmotoBalance ??
+                                                                  "-",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodySmallBold
@@ -3614,21 +3647,7 @@ class RideView extends GetView<RideController> {
                                                     ),
                                                   ),
                                                   GestureDetector(
-                                                    onTap: () async {
-                                                      var result =
-                                                          await Get.toNamed(
-                                                            Routes.SELECT_PROMO,
-                                                          );
-
-                                                      if (result != null) {
-                                                        controller
-                                                                .selectedCoupon
-                                                                .value =
-                                                            result;
-                                                        await controller
-                                                            .getOrderRidePricingList();
-                                                      }
-                                                    },
+                                                    onTap: () async {},
                                                     child: Container(
                                                       padding: EdgeInsets.all(
                                                         12,

@@ -191,6 +191,85 @@ class Language {
   String? activityNotFoundTitle;
   String? activityNotFoundDescription;
   String? selectLocationType;
+  String? myVoucher;
+  String? checkForUpdates;
+  String? manageAccount;
+  String? manageAccountLogoutAppRequestAccountDelete;
+  String? signOutAccount;
+  String? logoutAccountSecureAccess;
+  String? actionPermanentlyDeleteAccountData;
+  String? logoutAccountConfirmation;
+  String? logoutAndNeedLogBack;
+  String? exitNow;
+  String? deleteAccountConfirmation;
+  String? accountPermanentlyDeletedCannotRecovered;
+  String? deleteAccount;
+  String? enterOtpCode;
+  String? confirmDeleteAccount;
+  String? resendCode;
+  String? otpConfirmation;
+  String? unableOpenWhatsapp;
+  String? journeyNotOverYet;
+  String? unfinishedTripsDeleteAccount;
+  String? understand;
+  String? successDeleteAccount;
+  String? accountSuccessfullyDeleted;
+  String? thankyouUsingEvmoto;
+  String? giveRating;
+  String? haveTriedEvmoto;
+  String? travelComfort;
+  String? successfullyRatingReview;
+  String? travelExpense;
+  String? additionalCost;
+  String? promotion;
+  String? evmotoBalance;
+  String? submitReview;
+  String? locationName;
+  String? enterLocation;
+  String? requiredFields;
+  String? maxCharacter50;
+  String? successfullySavedAddress;
+  String? maxCharacter20;
+  String? changeUserInformation;
+  String? avatarPhoto;
+  String? changePhoto;
+  String? fullName;
+  String? gender;
+  String? man;
+  String? woman;
+  String? selectGender;
+  String? mobilePhoneNumber;
+  String? uploadAvatarPhoto;
+  String? successfullySavedUserInformation;
+  String? back;
+  String? lastLocation;
+  String? noPromoAvailable;
+  String? selectPromo;
+  String? discount;
+  String? enterFullName;
+  String? enterMobileNumber;
+  String? addBenchmark;
+  String? addressOutsideService;
+  String? enterDestinationLocation;
+  String? promoVoucher;
+  String? voucherAvailable;
+  String? voucherNotAvailable;
+  String? promoVoucherNotAvailable;
+  String? noHaveAnyPromo;
+  String? minOrder;
+  String? use;
+  String? validUntil;
+  String? expired;
+  String? used;
+  String? otherMenu;
+  String? editAddress;
+  String? deleteAddress;
+  String? cancelled;
+  String? message;
+  String? noMessageYet;
+  String? conversationWillAppear;
+  String? noMessageYetStartConverstation;
+  String? makesureAddressCorrect;
 
   Language({
     this.onboardingIntroTitle1,
@@ -385,6 +464,85 @@ class Language {
     this.activityNotFoundTitle,
     this.activityNotFoundDescription,
     this.selectLocationType,
+    this.myVoucher,
+    this.checkForUpdates,
+    this.manageAccount,
+    this.manageAccountLogoutAppRequestAccountDelete,
+    this.signOutAccount,
+    this.logoutAccountSecureAccess,
+    this.actionPermanentlyDeleteAccountData,
+    this.logoutAccountConfirmation,
+    this.logoutAndNeedLogBack,
+    this.exitNow,
+    this.deleteAccountConfirmation,
+    this.accountPermanentlyDeletedCannotRecovered,
+    this.deleteAccount,
+    this.enterOtpCode,
+    this.confirmDeleteAccount,
+    this.resendCode,
+    this.otpConfirmation,
+    this.unableOpenWhatsapp,
+    this.journeyNotOverYet,
+    this.unfinishedTripsDeleteAccount,
+    this.understand,
+    this.successDeleteAccount,
+    this.accountSuccessfullyDeleted,
+    this.thankyouUsingEvmoto,
+    this.giveRating,
+    this.haveTriedEvmoto,
+    this.travelComfort,
+    this.successfullyRatingReview,
+    this.travelExpense,
+    this.additionalCost,
+    this.promotion,
+    this.evmotoBalance,
+    this.submitReview,
+    this.locationName,
+    this.enterLocation,
+    this.requiredFields,
+    this.maxCharacter50,
+    this.successfullySavedAddress,
+    this.maxCharacter20,
+    this.changeUserInformation,
+    this.avatarPhoto,
+    this.changePhoto,
+    this.fullName,
+    this.gender,
+    this.man,
+    this.woman,
+    this.selectGender,
+    this.mobilePhoneNumber,
+    this.uploadAvatarPhoto,
+    this.successfullySavedUserInformation,
+    this.back,
+    this.lastLocation,
+    this.noPromoAvailable,
+    this.selectPromo,
+    this.discount,
+    this.enterFullName,
+    this.enterMobileNumber,
+    this.addBenchmark,
+    this.addressOutsideService,
+    this.enterDestinationLocation,
+    this.promoVoucher,
+    this.voucherAvailable,
+    this.voucherNotAvailable,
+    this.promoVoucherNotAvailable,
+    this.noHaveAnyPromo,
+    this.minOrder,
+    this.use,
+    this.validUntil,
+    this.expired,
+    this.used,
+    this.otherMenu,
+    this.editAddress,
+    this.deleteAddress,
+    this.cancelled,
+    this.message,
+    this.noMessageYet,
+    this.conversationWillAppear,
+    this.noMessageYetStartConverstation,
+    this.makesureAddressCorrect,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -585,6 +743,89 @@ class Language {
     activityNotFoundTitle = json['activity_not_found_title'];
     activityNotFoundDescription = json['activity_not_found_description'];
     selectLocationType = json['select_location_type'];
+    myVoucher = json['my_voucher'];
+    checkForUpdates = json['check_for_updates'];
+    manageAccount = json['manage_account'];
+    manageAccountLogoutAppRequestAccountDelete =
+        json['manage_account_logout_app_request_account_delete'];
+    signOutAccount = json['sign_out_account'];
+    logoutAccountSecureAccess = json['logout_account_secure_access'];
+    actionPermanentlyDeleteAccountData =
+        json['action_permanently_delete_account_data'];
+    logoutAccountConfirmation = json['logout_account_confirmation'];
+    logoutAndNeedLogBack = json['logout_and_need_log_back'];
+    exitNow = json['exit_now'];
+    deleteAccountConfirmation = json['delete_account_confirmation'];
+    accountPermanentlyDeletedCannotRecovered =
+        json['account_permanently_deleted_cannot_recovered'];
+    deleteAccount = json['delete_account'];
+    enterOtpCode = json['enter_otp_code'];
+    confirmDeleteAccount = json['confirm_delete_account'];
+    resendCode = json['resend_code'];
+    otpConfirmation = json['otp_confirmation'];
+    unableOpenWhatsapp = json['unable_open_whatsapp'];
+    journeyNotOverYet = json['journey_not_over_yet'];
+    unfinishedTripsDeleteAccount = json['unfinished_trips_delete_account'];
+    understand = json['understand'];
+    successDeleteAccount = json['success_delete_account'];
+    accountSuccessfullyDeleted = json['account_successfully_deleted'];
+    thankyouUsingEvmoto = json['thankyou_using_evmoto'];
+    giveRating = json['give_rating'];
+    haveTriedEvmoto = json['have_tried_evmoto'];
+    travelComfort = json['travel_comfort'];
+    successfullyRatingReview = json['successfully_rating_review'];
+    travelExpense = json['travel_expense'];
+    additionalCost = json['additional_cost'];
+    promotion = json['promotion'];
+    evmotoBalance = json['evmoto_balance'];
+    submitReview = json['submit_review'];
+    locationName = json['location_name'];
+    enterLocation = json['enter_location'];
+    requiredFields = json['required_fields'];
+    maxCharacter50 = json['max_character_50'];
+    successfullySavedAddress = json['successfully_saved_address'];
+    maxCharacter20 = json['max_character_20'];
+    changeUserInformation = json['change_user_information'];
+    avatarPhoto = json['avatar_photo'];
+    changePhoto = json['change_photo'];
+    fullName = json['full_name'];
+    gender = json['gender'];
+    man = json['man'];
+    woman = json['woman'];
+    selectGender = json['select_gender'];
+    mobilePhoneNumber = json['mobile_phone_number'];
+    uploadAvatarPhoto = json['upload_avatar_photo'];
+    successfullySavedUserInformation =
+        json['successfully_saved_user_information'];
+    back = json['back'];
+    lastLocation = json['last_location'];
+    noPromoAvailable = json['no_promo_available'];
+    selectPromo = json['select_promo'];
+    discount = json['discount'];
+    enterFullName = json['enter_full_name'];
+    enterMobileNumber = json['enter_mobile_number'];
+    addBenchmark = json['add_benchmark'];
+    addressOutsideService = json['address_outside_service'];
+    enterDestinationLocation = json['enter_destination_location'];
+    promoVoucher = json['promo_voucher'];
+    voucherAvailable = json['voucher_available'];
+    voucherNotAvailable = json['voucher_not_available'];
+    promoVoucherNotAvailable = json['promo_voucher_not_available'];
+    noHaveAnyPromo = json['no_have_any_promo'];
+    minOrder = json['min_order'];
+    use = json['use'];
+    validUntil = json['valid_until'];
+    expired = json['expired'];
+    used = json['used'];
+    otherMenu = json['other_menu'];
+    editAddress = json['edit_address'];
+    deleteAddress = json['delete_address'];
+    cancelled = json['cancelled'];
+    message = json['message'];
+    noMessageYet = json['no_message_yet'];
+    conversationWillAppear = json['conversation_will_appear'];
+    noMessageYetStartConverstation = json['no_message_yet_start_converstation'];
+    makesureAddressCorrect = json['makesure_address_correct'];
   }
 
   Map<String, dynamic> toJson() {
@@ -789,6 +1030,90 @@ class Language {
     data['activity_not_found_title'] = this.activityNotFoundTitle;
     data['activity_not_found_description'] = this.activityNotFoundDescription;
     data['select_location_type'] = this.selectLocationType;
+    data['my_voucher'] = this.myVoucher;
+    data['check_for_updates'] = this.checkForUpdates;
+    data['manage_account'] = this.manageAccount;
+    data['manage_account_logout_app_request_account_delete'] =
+        this.manageAccountLogoutAppRequestAccountDelete;
+    data['sign_out_account'] = this.signOutAccount;
+    data['logout_account_secure_access'] = this.logoutAccountSecureAccess;
+    data['action_permanently_delete_account_data'] =
+        this.actionPermanentlyDeleteAccountData;
+    data['logout_account_confirmation'] = this.logoutAccountConfirmation;
+    data['logout_and_need_log_back'] = this.logoutAndNeedLogBack;
+    data['exit_now'] = this.exitNow;
+    data['delete_account_confirmation'] = this.deleteAccountConfirmation;
+    data['account_permanently_deleted_cannot_recovered'] =
+        this.accountPermanentlyDeletedCannotRecovered;
+    data['delete_account'] = this.deleteAccount;
+    data['enter_otp_code'] = this.enterOtpCode;
+    data['confirm_delete_account'] = this.confirmDeleteAccount;
+    data['resend_code'] = this.resendCode;
+    data['otp_confirmation'] = this.otpConfirmation;
+    data['unable_open_whatsapp'] = this.unableOpenWhatsapp;
+    data['journey_not_over_yet'] = this.journeyNotOverYet;
+    data['unfinished_trips_delete_account'] = this.unfinishedTripsDeleteAccount;
+    data['understand'] = this.understand;
+    data['success_delete_account'] = this.successDeleteAccount;
+    data['account_successfully_deleted'] = this.accountSuccessfullyDeleted;
+    data['thankyou_using_evmoto'] = this.thankyouUsingEvmoto;
+    data['give_rating'] = this.giveRating;
+    data['have_tried_evmoto'] = this.haveTriedEvmoto;
+    data['travel_comfort'] = this.travelComfort;
+    data['successfully_rating_review'] = this.successfullyRatingReview;
+    data['travel_expense'] = this.travelExpense;
+    data['additional_cost'] = this.additionalCost;
+    data['promotion'] = this.promotion;
+    data['evmoto_balance'] = this.evmotoBalance;
+    data['submit_review'] = this.submitReview;
+    data['location_name'] = this.locationName;
+    data['enter_location'] = this.enterLocation;
+    data['required_fields'] = this.requiredFields;
+    data['max_character_50'] = this.maxCharacter50;
+    data['successfully_saved_address'] = this.successfullySavedAddress;
+    data['max_character_20'] = this.maxCharacter20;
+    data['change_user_information'] = this.changeUserInformation;
+    data['avatar_photo'] = this.avatarPhoto;
+    data['change_photo'] = this.changePhoto;
+    data['full_name'] = this.fullName;
+    data['gender'] = this.gender;
+    data['man'] = this.man;
+    data['woman'] = this.woman;
+    data['select_gender'] = this.selectGender;
+    data['mobile_phone_number'] = this.mobilePhoneNumber;
+    data['upload_avatar_photo'] = this.uploadAvatarPhoto;
+    data['successfully_saved_user_information'] =
+        this.successfullySavedUserInformation;
+    data['back'] = this.back;
+    data['last_location'] = this.lastLocation;
+    data['no_promo_available'] = this.noPromoAvailable;
+    data['select_promo'] = this.selectPromo;
+    data['discount'] = this.discount;
+    data['enter_full_name'] = this.enterFullName;
+    data['enter_mobile_number'] = this.enterMobileNumber;
+    data['add_benchmark'] = this.addBenchmark;
+    data['address_outside_service'] = this.addressOutsideService;
+    data['enter_destination_location'] = this.enterDestinationLocation;
+    data['promo_voucher'] = this.promoVoucher;
+    data['voucher_available'] = this.voucherAvailable;
+    data['voucher_not_available'] = this.voucherNotAvailable;
+    data['promo_voucher_not_available'] = this.promoVoucherNotAvailable;
+    data['no_have_any_promo'] = this.noHaveAnyPromo;
+    data['min_order'] = this.minOrder;
+    data['use'] = this.use;
+    data['valid_until'] = this.validUntil;
+    data['expired'] = this.expired;
+    data['used'] = this.used;
+    data['other_menu'] = this.otherMenu;
+    data['edit_address'] = this.editAddress;
+    data['delete_address'] = this.deleteAddress;
+    data['cancelled'] = this.cancelled;
+    data['message'] = this.message;
+    data['no_message_yet'] = this.noMessageYet;
+    data['conversation_will_appear'] = this.conversationWillAppear;
+    data['no_message_yet_start_converstation'] =
+        this.noMessageYetStartConverstation;
+    data['makesure_address_correct'] = this.makesureAddressCorrect;
     return data;
   }
 }

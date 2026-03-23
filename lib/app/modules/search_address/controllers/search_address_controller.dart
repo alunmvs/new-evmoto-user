@@ -5,6 +5,7 @@ import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
@@ -16,6 +17,7 @@ class SearchAddressController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final locationServices = Get.find<LocationServices>();
 
   final addressType = 0.obs;
   final keyword = "".obs;
@@ -27,8 +29,6 @@ class SearchAddressController extends GetxController {
 
   // final googlePlaceTextSearchList = <GooglePlaceTextSearch>[].obs;
   final geocodingPlaceList = <GeocodingPlace>[].obs;
-  final currentLatitude = "".obs;
-  final currentLongitude = "".obs;
 
   final isEdit = false.obs;
 
@@ -39,7 +39,6 @@ class SearchAddressController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    await requestLocation();
 
     if (Get.arguments?['address_type'] == null) {
       isEdit.value = true;
@@ -75,6 +74,7 @@ class SearchAddressController extends GetxController {
       getPlaceLocationList(keyword: keyword.value);
     });
     isFetch.value = false;
+    await locationServices.requestLocation();
   }
 
   @override
@@ -87,29 +87,6 @@ class SearchAddressController extends GetxController {
     super.onClose();
   }
 
-  Future<void> requestLocation() async {
-    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    var permission = await Geolocator.requestPermission();
-
-    if (isLocationServiceEnabled == false ||
-        (permission == LocationPermission.denied ||
-            permission == LocationPermission.deniedForever)) {
-      return;
-    }
-
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
-    currentLatitude.value = position.latitude.toString();
-    currentLongitude.value = position.longitude.toString();
-  }
-
   Future<void> getPlaceLocationList({String? keyword}) async {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       isFetchAddressSearch.value = true;
@@ -120,34 +97,38 @@ class SearchAddressController extends GetxController {
         geocodingPlaceList.value = await geocodingRepository
             .getGeocodingPlaceByQuery(limit: 5, query: this.keyword.value);
 
-        for (var location in geocodingPlaceList) {
-          var distanceMeter = Geolocator.distanceBetween(
-            double.parse(currentLatitude.value),
-            double.parse(currentLongitude.value),
-            location.lat!,
-            location.lng!,
-          );
-          var distanceKm = (distanceMeter / 1000);
+        if (locationServices.currentLatitude.value != null) {
+          for (var location in geocodingPlaceList) {
+            var distanceMeter = Geolocator.distanceBetween(
+              locationServices.currentLatitude.value!,
+              locationServices.currentLongitude.value!,
+              location.lat!,
+              location.lng!,
+            );
+            var distanceKm = (distanceMeter / 1000);
 
-          location.customDistanceKm = distanceKm;
-          location.customDistanceM = distanceMeter;
+            location.customDistanceKm = distanceKm;
+            location.customDistanceM = distanceMeter;
 
-          if (distanceKm < 1) {
-            highlightedWordAddress["${distanceMeter.round()} m ⬩"] =
-                HighlightedWord(
-                  onTap: () {},
-                  textStyle: typographyServices.captionLargeBold.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey500.value,
-                  ),
-                );
-          } else {
-            highlightedWordAddress["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
-                HighlightedWord(
-                  onTap: () {},
-                  textStyle: typographyServices.captionLargeBold.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey500.value,
-                  ),
-                );
+            if (distanceKm < 1) {
+              highlightedWordAddress["${distanceMeter.round()} m ⬩"] =
+                  HighlightedWord(
+                    onTap: () {},
+                    textStyle: typographyServices.captionLargeBold.value
+                        .copyWith(
+                          color: themeColorServices.neutralsColorGrey500.value,
+                        ),
+                  );
+            } else {
+              highlightedWordAddress["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
+                  HighlightedWord(
+                    onTap: () {},
+                    textStyle: typographyServices.captionLargeBold.value
+                        .copyWith(
+                          color: themeColorServices.neutralsColorGrey500.value,
+                        ),
+                  );
+            }
           }
         }
         isFetchAddressSearch.value = false;

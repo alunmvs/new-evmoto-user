@@ -331,7 +331,7 @@ class ActivityDetailController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorGreen400.value,
         content: Text(
-          "Berhasil mengirimkan penilaian dan ulasan",
+          languageServices.language.value.successfullyRatingReview ?? "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),

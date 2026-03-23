@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../../../routes/app_pages.dart';
@@ -163,12 +164,40 @@ class HomeBookmarkLocationSubview extends GetView<HomeController> {
               for (var savedAddress in controller.savedAddressList) ...[
                 GestureDetector(
                   onTap: () async {
-                    // await controller.onTapRideService(
-                    //   isFillCurrentLocation: false,
-                    //   arguments: {
-                    //     ""
-                    //   }
-                    // );
+                    var prefs = await SharedPreferences.getInstance();
+                    var isIntroductionDeliveryServiceShown =
+                        prefs.getBool(
+                          'is_introduction_delivery_service_shown',
+                        ) ??
+                        false;
+                    if (isIntroductionDeliveryServiceShown == false) {
+                      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
+                      return;
+                    }
+
+                    await controller.refreshAll(firstInit: true);
+                    if (controller.isActiveOrderListNotEmpty.value) {
+                      await Get.toNamed(
+                        Routes.RIDE_ORDER_DETAIL,
+                        arguments: {
+                          "order_id": controller.activeOrderList.first.orderId
+                              .toString(),
+                          "order_type":
+                              controller.activeOrderList.first.orderType,
+                        },
+                      );
+                      return;
+                    }
+
+                    await Get.toNamed(
+                      Routes.CREATE_ORDER_RIDE,
+                      arguments: {
+                        "origin_address_name": savedAddress.addressName,
+                        "origin_address": savedAddress.addressDetail,
+                        "origin_latitude": savedAddress.latitude.toString(),
+                        "origin_longitude": savedAddress.longitude.toString(),
+                      },
+                    );
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),

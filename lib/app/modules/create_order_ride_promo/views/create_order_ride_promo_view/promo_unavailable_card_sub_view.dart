@@ -34,6 +34,7 @@ class PromoExpiredCardSubView extends GetView<CreateOrderRidePromoController> {
               SizedBox(width: 4),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       NumberFormat.currency(
@@ -55,7 +56,7 @@ class PromoExpiredCardSubView extends GetView<CreateOrderRidePromoController> {
                             .copyWith(
                               color: controller
                                   .themeColorServices
-                                  .primaryBlue
+                                  .neutralsColorGrey500
                                   .value,
                             ),
                       ),

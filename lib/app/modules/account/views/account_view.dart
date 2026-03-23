@@ -314,7 +314,12 @@ class AccountView extends GetView<AccountController> {
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    "Voucher Saya",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .myVoucher ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallBold
@@ -708,7 +713,12 @@ class AccountView extends GetView<AccountController> {
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    "Periksa Pembaruan",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .checkForUpdates ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallBold
@@ -772,7 +782,12 @@ class AccountView extends GetView<AccountController> {
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    "Kelola Akun",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .manageAccount ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallBold

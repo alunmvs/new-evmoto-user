@@ -16,6 +16,7 @@ class CreateOrderRidePromoController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
 
   final selectedCouponId = Rx<int?>(null);
+  final selectedCoupon = Coupon().obs;
   final couponList = <Coupon>[].obs;
 
   final refreshController = RefreshController();
@@ -29,6 +30,8 @@ class CreateOrderRidePromoController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
+    selectedCoupon.value = Get.arguments['selected_coupon'] ?? Coupon();
+    selectedCouponId.value = selectedCoupon.value.id;
     await getCouponList();
     isFetch.value = false;
   }

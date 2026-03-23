@@ -156,9 +156,19 @@ class OnboardingRegistrationFormView
                             ),
                             validationMessages: {
                               ValidationMessage.required: (error) =>
-                                  'Wajib diisi',
+                                  controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .requiredFields ??
+                                  "-",
                               ValidationMessage.maxLength: (error) =>
-                                  'Maksimal 20 karakter',
+                                  controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .maxCharacter20 ??
+                                  "-",
                             },
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(

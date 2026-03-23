@@ -16,7 +16,7 @@ class SendbirdChatListView extends GetView<SendbirdChatListController> {
         appBar: AppBar(
           titleSpacing: 0,
           title: Text(
-            "Pesan",
+            controller.languageServices.language.value.message ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -115,7 +115,12 @@ class SendbirdChatListView extends GetView<SendbirdChatListController> {
                                           ),
                                           SizedBox(height: 8),
                                           Text(
-                                            "Belum ada pesan",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .noMessageYet ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeBold
@@ -131,7 +136,12 @@ class SendbirdChatListView extends GetView<SendbirdChatListController> {
                                                 297 /
                                                 375,
                                             child: Text(
-                                              "Percakapan akan muncul di sini setelah Anda mulai mengirim pesan atau menerima chat dari pengguna lain.",
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .conversationWillAppear ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .bodySmallRegular

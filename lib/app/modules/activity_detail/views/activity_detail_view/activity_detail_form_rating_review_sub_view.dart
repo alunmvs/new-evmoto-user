@@ -147,7 +147,7 @@ class ActivityDetailFormRatingReviewSubView
             SizedBox(height: 12),
             LoaderElevatedButton(
               child: Text(
-                "Kirim Ulasan",
+                controller.languageServices.language.value.submitReview ?? "-",
                 style: controller.typographyServices.bodyLargeBold.value
                     .copyWith(color: Colors.white),
               ),

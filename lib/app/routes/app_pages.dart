@@ -46,8 +46,6 @@ import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
-import '../modules/promotion/bindings/promotion_binding.dart';
-import '../modules/promotion/views/promotion_view.dart';
 import '../modules/ride/bindings/ride_binding.dart';
 import '../modules/ride/views/ride_view.dart';
 import '../modules/ride_call/bindings/ride_call_binding.dart';
@@ -66,24 +64,18 @@ import '../modules/ride_order_done/bindings/ride_order_done_binding.dart';
 import '../modules/ride_order_done/views/ride_order_done_view.dart';
 import '../modules/search_address/bindings/search_address_binding.dart';
 import '../modules/search_address/views/search_address_view.dart';
-import '../modules/select_promo/bindings/select_promo_binding.dart';
-import '../modules/select_promo/views/select_promo_view.dart';
 import '../modules/sendbird_chat_detail/bindings/sendbird_chat_detail_binding.dart';
 import '../modules/sendbird_chat_detail/views/sendbird_chat_detail_view.dart';
 import '../modules/sendbird_chat_list/bindings/sendbird_chat_list_binding.dart';
 import '../modules/sendbird_chat_list/views/sendbird_chat_list_view.dart';
 import '../modules/setting_language/bindings/setting_language_binding.dart';
 import '../modules/setting_language/views/setting_language_view.dart';
-import '../modules/setting_payment/bindings/setting_payment_binding.dart';
-import '../modules/setting_payment/views/setting_payment_view.dart';
 import '../modules/setting_saved_location/bindings/setting_saved_location_binding.dart';
 import '../modules/setting_saved_location/views/setting_saved_location_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.dart';
 import '../modules/terms_and_conditions/views/terms_and_conditions_view.dart';
-import '../modules/voucher_detail/bindings/voucher_detail_binding.dart';
-import '../modules/voucher_detail/views/voucher_detail_view.dart';
 import '../modules/voucher_list/bindings/voucher_list_binding.dart';
 import '../modules/voucher_list/views/voucher_list_view.dart';
 
@@ -164,16 +156,6 @@ class AppPages {
       binding: HistoryBalanceDetailBinding(),
     ),
     GetPage(
-      name: _Paths.PROMOTION,
-      page: () => const PromotionView(),
-      binding: PromotionBinding(),
-    ),
-    GetPage(
-      name: _Paths.VOUCHER_DETAIL,
-      page: () => const VoucherDetailView(),
-      binding: VoucherDetailBinding(),
-    ),
-    GetPage(
       name: _Paths.ADD_EDIT_ADDRESS,
       page: () => const AddEditAddressView(),
       binding: AddEditAddressBinding(),
@@ -189,11 +171,6 @@ class AppPages {
       binding: SettingLanguageBinding(),
     ),
     GetPage(
-      name: _Paths.SETTING_PAYMENT,
-      page: () => const SettingPaymentView(),
-      binding: SettingPaymentBinding(),
-    ),
-    GetPage(
       name: _Paths.SETTING_SAVED_LOCATION,
       page: () => const SettingSavedLocationView(),
       binding: SettingSavedLocationBinding(),
@@ -202,11 +179,6 @@ class AppPages {
       name: _Paths.RIDE,
       page: () => const RideView(),
       binding: RideBinding(),
-    ),
-    GetPage(
-      name: _Paths.SELECT_PROMO,
-      page: () => const SelectPromoView(),
-      binding: SelectPromoBinding(),
     ),
     GetPage(
       name: _Paths.RIDE_CHAT,

@@ -100,14 +100,54 @@ class CreateOrderRideMapSelectView
                         SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            controller.type.value == "origin"
-                                ? "Lokasi Penjemputan"
-                                : "Lokasi Tujuan",
-                            style: controller
-                                .typographyServices
-                                .bodyLargeBold
-                                .value,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                controller.type.value == "origin"
+                                    ? "Lokasi Penjemputan"
+                                    : "Lokasi Tujuan",
+                                style: controller
+                                    .typographyServices
+                                    .bodyLargeBold
+                                    .value,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Container(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey0
+                                      .value,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Edit",
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                      SizedBox(width: 6),
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_edit.svg",
+                                        width: 12,
+                                        height: 12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(height: 12),

@@ -213,7 +213,7 @@ class SearchAddressView extends StatelessWidget {
                           .neutralsColorGrey0
                           .value,
                       onRefresh: () async {
-                        await controller.requestLocation();
+                        await controller.locationServices.requestLocation();
                         await controller.getPlaceLocationList(
                           keyword: controller.keyword.value,
                         );
@@ -436,7 +436,12 @@ class SearchAddressView extends StatelessWidget {
                                               ),
                                               SizedBox(height: 8),
                                               Text(
-                                                "Pastikan alamat yang dimasukkan sudah benar",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .makesureAddressCorrect ??
+                                                    '-',
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallRegular
@@ -456,21 +461,26 @@ class SearchAddressView extends StatelessWidget {
                                                 true) {
                                               Get.back(result: geocodingPlace);
                                             } else {
-                                              var isInsideserviceArea =
-                                                  isLatLngInsideServiceArea(
-                                                    latitude:
-                                                        geocodingPlace.lat!,
-                                                    longitude:
-                                                        geocodingPlace.lng!,
-                                                  );
-                                              if (isInsideserviceArea ==
-                                                  false) {
-                                                SnackbarHelper.showSnackbarError(
-                                                  text:
-                                                      'Alamat diluar wilayah layanan tersedia',
-                                                );
-                                                return;
-                                              }
+                                              // var isInsideserviceArea =
+                                              //     isLatLngInsideServiceArea(
+                                              //       latitude:
+                                              //           geocodingPlace.lat!,
+                                              //       longitude:
+                                              //           geocodingPlace.lng!,
+                                              //     );
+                                              // if (isInsideserviceArea ==
+                                              //     false) {
+                                              //   SnackbarHelper.showSnackbarError(
+                                              //     text:
+                                              //         controller
+                                              //             .languageServices
+                                              //             .language
+                                              //             .value
+                                              //             .addressOutsideService ??
+                                              //         "-",
+                                              //   );
+                                              //   return;
+                                              // }
                                               Get.toNamed(
                                                 Routes.ADD_EDIT_ADDRESS,
                                                 arguments: {
@@ -552,7 +562,12 @@ class SearchAddressView extends StatelessWidget {
                                                       SizedBox(height: 4),
                                                       TextHighlight(
                                                         text:
-                                                            "${controller.getDistanceString(geocodingPlace: geocodingPlace)} ⬩ ${geocodingPlace.address}",
+                                                            geocodingPlace
+                                                                    .customDistanceM !=
+                                                                null
+                                                            ? "${controller.getDistanceString(geocodingPlace: geocodingPlace)} ⬩ ${geocodingPlace.address}"
+                                                            : geocodingPlace
+                                                                  .address!,
                                                         words: controller
                                                             .highlightedWordAddress,
                                                         textStyle: controller

@@ -90,7 +90,12 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                             children: [
                               SizedBox(height: 16),
                               Text(
-                                "Belum ada pesan, mulai percakapan dengan mengirim pesan pertama.",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .noMessageYetStartConverstation ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .captionLargeRegular

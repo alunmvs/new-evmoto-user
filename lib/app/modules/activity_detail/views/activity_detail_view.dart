@@ -7,7 +7,9 @@ import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detai
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_invoice_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_map_origin_destination_information_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_rating_review_sub_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/activity_detail_controller.dart';
 
 class ActivityDetailView extends GetView<ActivityDetailController> {
@@ -170,7 +172,82 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                           ),
                         ),
                         onPressed: () async {
-                          await controller.onTapOrderAgain();
+                          var prefs = await SharedPreferences.getInstance();
+                          var isIntroductionDeliveryServiceShown =
+                              prefs.getBool(
+                                'is_introduction_delivery_service_shown',
+                              ) ??
+                              false;
+                          if (isIntroductionDeliveryServiceShown == false) {
+                            await Get.toNamed(
+                              Routes.INTRODUCTION_DELIVERY_SERVICE,
+                            );
+                            return;
+                          }
+
+                          await controller.homeController.refreshAll(
+                            firstInit: true,
+                          );
+                          if (controller
+                              .homeController
+                              .isActiveOrderListNotEmpty
+                              .value) {
+                            await Get.toNamed(
+                              Routes.RIDE_ORDER_DETAIL,
+                              arguments: {
+                                "order_id": controller
+                                    .homeController
+                                    .activeOrderList
+                                    .first
+                                    .orderId
+                                    .toString(),
+                                "order_type": controller
+                                    .homeController
+                                    .activeOrderList
+                                    .first
+                                    .orderType,
+                              },
+                            );
+                            return;
+                          }
+
+                          await Get.toNamed(
+                            Routes.CREATE_ORDER_RIDE,
+                            arguments: {
+                              "origin_address_name": controller
+                                  .orderRideDetail
+                                  .value
+                                  .startAddressName,
+                              "origin_address":
+                                  controller.orderRideDetail.value.startAddress,
+                              "origin_latitude": controller
+                                  .orderRideDetail
+                                  .value
+                                  .startLat
+                                  .toString(),
+                              "origin_longitude": controller
+                                  .orderRideDetail
+                                  .value
+                                  .startLon
+                                  .toString(),
+                              "destination_address_name": controller
+                                  .orderRideDetail
+                                  .value
+                                  .endAddressName,
+                              "destination_address":
+                                  controller.orderRideDetail.value.endAddress,
+                              "destination_latitude": controller
+                                  .orderRideDetail
+                                  .value
+                                  .endLat
+                                  .toString(),
+                              "destination_longitude": controller
+                                  .orderRideDetail
+                                  .value
+                                  .endLon
+                                  .toString(),
+                            },
+                          );
                         },
                         child: Text(
                           controller

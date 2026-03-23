@@ -45,7 +45,8 @@ class RideOrderPaymentMethodSubView extends GetView<RideOrderDetailController> {
                 ),
                 SizedBox(width: 11),
                 Text(
-                  "Saldo EVMoto",
+                  controller.languageServices.language.value.evmotoBalance ??
+                      "-",
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(
                         color: controller
@@ -63,7 +64,7 @@ class RideOrderPaymentMethodSubView extends GetView<RideOrderDetailController> {
                       borderRadius: BorderRadius.circular(9999),
                     ),
                     child: Text(
-                      "Promo",
+                      controller.languageServices.language.value.promo ?? "-",
                       style: controller
                           .typographyServices
                           .captionLargeRegular
@@ -133,7 +134,7 @@ class RideOrderPaymentMethodSubView extends GetView<RideOrderDetailController> {
                       borderRadius: BorderRadius.circular(9999),
                     ),
                     child: Text(
-                      "Promo",
+                      controller.languageServices.language.value.promo ?? "-",
                       style: controller
                           .typographyServices
                           .captionLargeRegular

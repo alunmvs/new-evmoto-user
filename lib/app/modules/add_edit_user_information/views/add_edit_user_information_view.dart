@@ -18,7 +18,8 @@ class AddEditUserInformationView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Ubah Informasi Pengguna",
+            controller.languageServices.language.value.changeUserInformation ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -63,7 +64,12 @@ class AddEditUserInformationView
                       children: [
                         SizedBox(height: 16),
                         Text(
-                          "Foto Avatar",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .avatarPhoto ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -110,7 +116,12 @@ class AddEditUserInformationView
                                         await controller.onTapUpdateAvatar();
                                       },
                                       child: Text(
-                                        "Ubah Foto",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .changePhoto ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular
@@ -170,7 +181,8 @@ class AddEditUserInformationView
                         ],
                         SizedBox(height: 16),
                         Text(
-                          "Nama Lengkap",
+                          controller.languageServices.language.value.fullName ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -190,7 +202,11 @@ class AddEditUserInformationView
                               horizontal: 12,
                               vertical: 12,
                             ),
-                            hintText: "Masukkan nama lengkap",
+                            hintText: controller
+                                .languageServices
+                                .language
+                                .value
+                                .enterFullName,
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -250,9 +266,19 @@ class AddEditUserInformationView
                           ),
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                'Wajib diisi',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .requiredFields ??
+                                "-",
                             ValidationMessage.maxLength: (error) =>
-                                'Maksimal 20 karakter',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .maxCharacter20 ??
+                                "-",
                           },
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
@@ -262,7 +288,8 @@ class AddEditUserInformationView
                         ),
                         SizedBox(height: 16),
                         Text(
-                          "Jenis Kelamin",
+                          controller.languageServices.language.value.gender ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -282,13 +309,23 @@ class AddEditUserInformationView
                               .value,
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                "Wajib diisi",
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .requiredFields ??
+                                "-",
                           },
                           items: [
                             DropdownMenuItem(
                               value: 1,
                               child: Text(
-                                "Laki-laki",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .man ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -299,7 +336,12 @@ class AddEditUserInformationView
                             DropdownMenuItem(
                               value: 2,
                               child: Text(
-                                "Perempuan",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .woman ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -321,7 +363,12 @@ class AddEditUserInformationView
                               children: [
                                 SizedBox(width: 12),
                                 Text(
-                                  "Pilih jenis kelamin",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .selectGender ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -386,7 +433,12 @@ class AddEditUserInformationView
                         ),
                         SizedBox(height: 16),
                         Text(
-                          "Nomor HP",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .mobilePhoneNumber ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -407,7 +459,11 @@ class AddEditUserInformationView
                               horizontal: 12,
                               vertical: 12,
                             ),
-                            hintText: "Masukkan nomor HP",
+                            hintText: controller
+                                .languageServices
+                                .language
+                                .value
+                                .enterMobileNumber,
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -499,7 +555,7 @@ class AddEditUserInformationView
                   await controller.onTapSubmit();
                 },
                 child: Text(
-                  "Simpan",
+                  controller.languageServices.language.value.save ?? "-",
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(color: Colors.white),
                 ),

@@ -341,7 +341,12 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                               ],
                               validationMessages: {
                                 ValidationMessage.required: (error) =>
-                                    'Wajib diisi',
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .requiredFields ??
+                                    "-",
                               },
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(

@@ -108,7 +108,8 @@ class CheckoutPriceListSubView
                           borderRadius: BorderRadius.circular(9999),
                         ),
                         child: Text(
-                          "Promo",
+                          controller.languageServices.language.value.promo ??
+                              "-",
                           style: controller
                               .typographyServices
                               .captionSmallBold

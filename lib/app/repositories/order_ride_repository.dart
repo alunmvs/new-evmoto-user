@@ -10,6 +10,7 @@ import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/models/requested_order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/validate_location_response_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 
@@ -522,6 +523,44 @@ class OrderRideRepository {
       }
 
       return OrderReview.fromJson(response.data['data']);
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ValidateLocationResponse> validateLocation({
+    required String? startLat,
+    required String? startLon,
+    required String? endLat,
+    required String? endLon,
+  }) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/orderPrivateCar/validateLocation";
+
+      var formData = FormData.fromMap({
+        "startLat": startLat,
+        "startLon": startLon,
+        "endLat": endLat,
+        "endLon": endLon,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      return ValidateLocationResponse.fromJson(response.data);
     } on DioException catch (e) {
       rethrow;
     }

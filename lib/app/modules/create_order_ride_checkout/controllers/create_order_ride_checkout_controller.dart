@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -14,12 +12,11 @@ import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
-import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_user/app/widgets/access_location_required_dialog.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
 
@@ -41,6 +38,7 @@ class CreateOrderRideCheckoutController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final locationServices = Get.find<LocationServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -67,9 +65,6 @@ class CreateOrderRideCheckoutController extends GetxController {
   final destinationAddress = Rx<String?>(null);
   final destinationLatitude = Rx<String?>(null);
   final destinationLongitude = Rx<String?>(null);
-
-  final currentLatitude = Rx<String?>(null);
-  final currentLongitude = Rx<String?>(null);
 
   final estimatedTimeInMinutes = 0.0.obs;
   final estimatedDistanceInKm = 0.0.obs;
@@ -101,31 +96,6 @@ class CreateOrderRideCheckoutController extends GetxController {
       pageNum: 1,
       size: 1,
     );
-  }
-
-  Future<void> requestLocation() async {
-    isPermissionLocationAllow.value = true;
-    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    var permission = await Geolocator.requestPermission();
-
-    if (isLocationServiceEnabled == false ||
-        (permission == LocationPermission.denied ||
-            permission == LocationPermission.deniedForever)) {
-      isPermissionLocationAllow.value = false;
-      return;
-    }
-
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
-    currentLatitude.value = position.latitude.toString();
-    currentLongitude.value = position.longitude.toString();
   }
 
   void fillForm() {
@@ -295,62 +265,57 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
-    Get.dialog(LoadingDialog(), barrierDismissible: false);
-    await requestLocation();
+    await locationServices.requestLocation();
+    if (locationServices.isPermissionLocationAllow.value == true) {
+      Get.dialog(LoadingDialog(), barrierDismissible: false);
+      try {
+        var result = (await orderRideRepository.requestOrderRide(
+          language: languageServices.languageCodeSystem.value,
+          endAddress: destinationAddress.value,
+          endLat: destinationLatitude.value,
+          endLon: destinationLongitude.value,
+          startAddress: originAddress.value,
+          startLat: originLatitude.value,
+          startLon: originLongitude.value,
+          orderSource: "1", // statis 1
+          orderType: 1, // 1 = normal, 2 = appointment
+          passengers: homeController.userInfo.value.name,
+          passengersPhone: homeController.userInfo.value.phone,
+          placementLat: locationServices.currentLatitude.value.toString(),
+          placementLon: locationServices.currentLongitude.value.toString(),
+          tipMoney: "0",
+          serverCarModelId: selectedOrderRidePricing.value.id.toString(),
+          substitute: "0", // 0 = no, 1 = yes
+          travelTime: DateFormat('yyyy-MM-dd HH:mm').format(
+            DateTime.now(),
+          ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
+          type: "1", // 1 = Ride, 2 = Intercity
+          amount: selectedOrderRidePricing.value.amount,
+          payType: payType.value,
+          couponId: selectedCoupon.value.id,
+          priceNo: selectedOrderRidePricing.value.priceNo,
+        ));
+        Get.close(1);
 
-    if (isPermissionLocationAllow.value == false) {
-      Get.dialog(AccessLocationRequiredDialog());
-      Get.close(1);
-      return;
-    }
-
-    try {
-      var result = (await orderRideRepository.requestOrderRide(
-        language: languageServices.languageCodeSystem.value,
-        endAddress: destinationAddress.value,
-        endLat: destinationLatitude.value,
-        endLon: destinationLongitude.value,
-        startAddress: originAddress.value,
-        startLat: originLatitude.value,
-        startLon: originLongitude.value,
-        orderSource: "1", // statis 1
-        orderType: 1, // 1 = normal, 2 = appointment
-        passengers: homeController.userInfo.value.name,
-        passengersPhone: homeController.userInfo.value.phone,
-        placementLat: currentLatitude.value,
-        placementLon: currentLongitude.value,
-        tipMoney: "0",
-        serverCarModelId: selectedOrderRidePricing.value.id.toString(),
-        substitute: "0", // 0 = no, 1 = yes
-        travelTime: DateFormat('yyyy-MM-dd HH:mm').format(
-          DateTime.now(),
-        ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
-        type: "1", // 1 = Ride, 2 = Intercity
-        amount: selectedOrderRidePricing.value.amount,
-        payType: payType.value,
-        couponId: selectedCoupon.value.id,
-        priceNo: selectedOrderRidePricing.value.priceNo,
-      ));
-      Get.close(1);
-
-      Get.back();
-      Get.toNamed(
-        Routes.RIDE_ORDER_DETAIL,
-        arguments: {"order_id": result.id.toString(), "order_type": 1},
-      );
-    } catch (e) {
-      Get.close(1);
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
+        Get.back();
+        Get.toNamed(
+          Routes.RIDE_ORDER_DETAIL,
+          arguments: {"order_id": result.id.toString(), "order_type": 1},
+        );
+      } catch (e) {
+        Get.close(1);
+        final SnackBar snackBar = SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          content: Text(
+            e.toString(),
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
           ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        );
+        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      }
     }
   }
 }

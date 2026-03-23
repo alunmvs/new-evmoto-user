@@ -115,7 +115,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
                               buttonColor:
                                   themeColorServices.sematicColorRed400.value,
                               child: Text(
-                                "Batalkan",
+                                languageServices.language.value.cancel ?? "-",
                                 style: typographyServices.bodyLargeBold.value
                                     .copyWith(
                                       color: themeColorServices

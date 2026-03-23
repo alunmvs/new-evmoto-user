@@ -5,6 +5,7 @@ import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
+import 'package:new_evmoto_user/app/repositories/versioning_server_repository.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -19,6 +20,7 @@ class HomeBinding extends Bindings {
         savedAddressRepository: SavedAddressRepository(),
         geocodingRepository: GeocodingRepository(),
         advertisementRepository: AdvertisementRepository(),
+        versioningServerRepository: VersioningServerRepository(),
       ),
     );
   }

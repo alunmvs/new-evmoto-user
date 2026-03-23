@@ -35,6 +35,14 @@ class CouponRepository {
         "Content-Type": "multipart/form-data",
         'Authorization': "Bearer $token",
       };
+      print(url);
+      print(headers);
+      print({
+        "pageNum": pageNum,
+        "size": size,
+        "state": state,
+        "language": language,
+      });
 
       var dio = apiServices.dio;
       var response = await dio.post(

@@ -93,7 +93,8 @@ class AddEditUserInformationController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Unggah Foto Avatar",
+                            languageServices.language.value.uploadAvatarPhoto ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value,
                           ),
                           GestureDetector(
@@ -163,7 +164,8 @@ class AddEditUserInformationController extends GetxController {
                                     ),
                                     SizedBox(width: 16),
                                     Text(
-                                      "Galeri",
+                                      languageServices.language.value.gallery ??
+                                          "-",
                                       style: typographyServices
                                           .bodySmallBold
                                           .value,
@@ -205,7 +207,8 @@ class AddEditUserInformationController extends GetxController {
                                     ),
                                     SizedBox(width: 16),
                                     Text(
-                                      "Kamera",
+                                      languageServices.language.value.camera ??
+                                          "-",
                                       style: typographyServices
                                           .bodySmallBold
                                           .value,
@@ -317,7 +320,7 @@ class AddEditUserInformationController extends GetxController {
       behavior: SnackBarBehavior.fixed,
       backgroundColor: themeColorServices.sematicColorGreen400.value,
       content: Text(
-        "Berhasil menyimpan informasi pengguna",
+        languageServices.language.value.successfullySavedUserInformation ?? "-",
         style: typographyServices.bodySmallRegular.value.copyWith(
           color: themeColorServices.neutralsColorGrey0.value,
         ),

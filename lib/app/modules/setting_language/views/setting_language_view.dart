@@ -100,15 +100,12 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                                             .primaryBlue
                                             .value,
                                         backgroundColor:
-                                            controller.tempLanguageCode.value ==
-                                                "ZH_CN"
-                                            ? WidgetStateProperty.all(
-                                                controller
-                                                    .themeColorServices
-                                                    .sematicColorBlue100
-                                                    .value,
-                                              )
-                                            : null,
+                                            WidgetStateProperty.all(
+                                              controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
                                       ),
                                     ),
                                   ],
@@ -156,15 +153,12 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                                             .primaryBlue
                                             .value,
                                         backgroundColor:
-                                            controller.tempLanguageCode.value ==
-                                                "EN"
-                                            ? WidgetStateProperty.all(
-                                                controller
-                                                    .themeColorServices
-                                                    .sematicColorBlue100
-                                                    .value,
-                                              )
-                                            : null,
+                                            WidgetStateProperty.all(
+                                              controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
                                       ),
                                     ),
                                   ],
@@ -212,15 +206,12 @@ class SettingLanguageView extends GetView<SettingLanguageController> {
                                             .primaryBlue
                                             .value,
                                         backgroundColor:
-                                            controller.tempLanguageCode.value ==
-                                                "ID"
-                                            ? WidgetStateProperty.all(
-                                                controller
-                                                    .themeColorServices
-                                                    .sematicColorBlue100
-                                                    .value,
-                                              )
-                                            : null,
+                                            WidgetStateProperty.all(
+                                              controller
+                                                  .themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
                                       ),
                                     ),
                                   ],

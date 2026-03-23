@@ -69,7 +69,8 @@ class RideOrderDoneInvoiceSubView extends GetView<RideOrderDoneController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Biaya Perjalanan",
+                    controller.languageServices.language.value.travelExpense ??
+                        "-",
                     style: controller.typographyServices.bodySmallRegular.value
                         .copyWith(
                           color: controller
@@ -100,7 +101,12 @@ class RideOrderDoneInvoiceSubView extends GetView<RideOrderDoneController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Biaya Tambahan",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .additionalCost ??
+                          "-",
                       style: controller
                           .typographyServices
                           .bodySmallRegular
@@ -137,7 +143,8 @@ class RideOrderDoneInvoiceSubView extends GetView<RideOrderDoneController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Promosi",
+                      controller.languageServices.language.value.promotion ??
+                          "-",
                       style: controller
                           .typographyServices
                           .bodySmallRegular
@@ -171,7 +178,7 @@ class RideOrderDoneInvoiceSubView extends GetView<RideOrderDoneController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Total",
+                    controller.languageServices.language.value.total ?? "-",
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(
                           color: controller

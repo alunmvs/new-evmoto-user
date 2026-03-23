@@ -15,8 +15,13 @@ class PromoAvailableCardSubView
     return Obx(
       () => GestureDetector(
         onTap: () {
-          controller.selectedCouponId.value = coupon.id;
-          Get.back(result: coupon);
+          if (controller.selectedCouponId.value == coupon.id) {
+            controller.selectedCouponId.value = null;
+            controller.selectedCoupon.value = Coupon();
+          } else {
+            controller.selectedCouponId.value = coupon.id;
+            controller.selectedCoupon.value = coupon;
+          }
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -46,21 +51,44 @@ class PromoAvailableCardSubView
               SizedBox(width: 4),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      NumberFormat.currency(
-                        locale: 'id_ID',
-                        symbol: 'Rp',
-                        decimalDigits: 0,
-                      ).format(coupon.money),
-                      style: controller.typographyServices.bodyLargeBold.value
-                          .copyWith(
-                            fontSize: 18,
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey700
-                                .value,
+                    Row(
+                      children: [
+                        Text(
+                          NumberFormat.currency(
+                            locale: 'id_ID',
+                            symbol: 'Rp',
+                            decimalDigits: 0,
+                          ).format(coupon.money),
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
+                              .value
+                              .copyWith(
+                                fontSize: 18,
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey700
+                                    .value,
+                              ),
+                        ),
+                        if (coupon.fullMoney != 0 &&
+                            coupon.fullMoney != null) ...[
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              "${controller.languageServices.language.value.minOrder ?? "-"} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(coupon.fullMoney)}",
+                              style: controller
+                                  .typographyServices
+                                  .captionLargeRegular
+                                  .value,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
+                        ],
+                      ],
                     ),
                     SizedBox(height: 6),
                     RichText(
@@ -78,7 +106,8 @@ class PromoAvailableCardSubView
                             ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: " · Berlaku hingga ${coupon.time}",
+                            text:
+                                " · ${controller.languageServices.language.value.validUntil ?? "-"} ${coupon.time}",
                             style: controller
                                 .typographyServices
                                 .captionLargeRegular
@@ -97,27 +126,48 @@ class PromoAvailableCardSubView
                 ),
               ),
               SizedBox(width: 4),
-              RadioGroup(
-                groupValue: controller.selectedCouponId.value,
-                onChanged: (value) {
-                  controller.selectedCouponId.value = value;
+              GestureDetector(
+                onTap: () {
+                  if (controller.selectedCouponId.value == coupon.id) {
+                    controller.selectedCouponId.value = null;
+                    controller.selectedCoupon.value = Coupon();
+                  } else {
+                    controller.selectedCouponId.value = coupon.id;
+                    controller.selectedCoupon.value = coupon;
+                  }
                 },
-                child: Radio(
-                  value: coupon.id,
-                  backgroundColor:
-                      controller.selectedCouponId.value == coupon.id
-                      ? WidgetStateProperty.all(
-                          controller
-                              .themeColorServices
-                              .sematicColorBlue100
-                              .value,
-                        )
-                      : WidgetStateProperty.all(
-                          controller
-                              .themeColorServices
-                              .neutralsColorGrey300
-                              .value,
-                        ),
+                child: AbsorbPointer(
+                  child: RadioGroup(
+                    groupValue: controller.selectedCouponId.value,
+                    onChanged: (value) {
+                      if (controller.selectedCouponId.value == coupon.id) {
+                        controller.selectedCouponId.value = null;
+                        controller.selectedCoupon.value = Coupon();
+                      } else {
+                        controller.selectedCouponId.value = coupon.id;
+                        controller.selectedCoupon.value = coupon;
+                      }
+                    },
+                    child: Radio(
+                      value: int.parse(coupon.id.toString()),
+                      activeColor:
+                          controller.themeColorServices.primaryBlue.value,
+                      backgroundColor:
+                          controller.selectedCouponId.value == coupon.id
+                          ? WidgetStateProperty.all(
+                              controller
+                                  .themeColorServices
+                                  .sematicColorBlue100
+                                  .value,
+                            )
+                          : WidgetStateProperty.all(
+                              controller
+                                  .themeColorServices
+                                  .neutralsColorGrey0
+                                  .value,
+                            ),
+                    ),
+                  ),
                 ),
               ),
             ],

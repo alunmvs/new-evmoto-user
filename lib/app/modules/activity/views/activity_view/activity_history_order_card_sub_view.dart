@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
@@ -381,20 +382,68 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  await controller.homeController
-                                      .onTapRideService(
-                                        isFillCurrentLocation: false,
-                                        arguments: {
-                                          "start_address":
-                                              historyOrder.startAddress,
-                                          "start_lat": historyOrder.startLat,
-                                          "start_lon": historyOrder.startLon,
-                                          "end_address":
-                                              historyOrder.endAddress,
-                                          "end_lat": historyOrder.endLat,
-                                          "end_lon": historyOrder.endLon,
-                                        },
-                                      );
+                                  var prefs =
+                                      await SharedPreferences.getInstance();
+                                  var isIntroductionDeliveryServiceShown =
+                                      prefs.getBool(
+                                        'is_introduction_delivery_service_shown',
+                                      ) ??
+                                      false;
+                                  if (isIntroductionDeliveryServiceShown ==
+                                      false) {
+                                    await Get.toNamed(
+                                      Routes.INTRODUCTION_DELIVERY_SERVICE,
+                                    );
+                                    return;
+                                  }
+
+                                  await controller.homeController.refreshAll(
+                                    firstInit: true,
+                                  );
+                                  if (controller
+                                      .homeController
+                                      .isActiveOrderListNotEmpty
+                                      .value) {
+                                    await Get.toNamed(
+                                      Routes.RIDE_ORDER_DETAIL,
+                                      arguments: {
+                                        "order_id": controller
+                                            .activeOrderList
+                                            .first
+                                            .orderId
+                                            .toString(),
+                                        "order_type": controller
+                                            .activeOrderList
+                                            .first
+                                            .orderType,
+                                      },
+                                    );
+                                    return;
+                                  }
+
+                                  await Get.toNamed(
+                                    Routes.CREATE_ORDER_RIDE,
+                                    arguments: {
+                                      "origin_address_name":
+                                          historyOrder.startAddressName,
+                                      "origin_address":
+                                          historyOrder.startAddress,
+                                      "origin_latitude": historyOrder.startLat
+                                          .toString(),
+                                      "origin_longitude": historyOrder.startLon
+                                          .toString(),
+                                      "destination_address_name":
+                                          historyOrder.endAddressName,
+                                      "destination_address":
+                                          historyOrder.endAddress,
+                                      "destination_latitude": historyOrder
+                                          .endLat
+                                          .toString(),
+                                      "destination_longitude": historyOrder
+                                          .endLon
+                                          .toString(),
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -450,52 +499,45 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                   !(historyOrder.state == 10) &&
                                   (historyOrder.orderScore ?? 0) == 0) ...[
                                 SizedBox(width: 24),
-                                GestureDetector(
-                                  onTap: () async {
-                                    await Get.toNamed(
-                                      Routes.RIDE_ORDER_DETAIL,
-                                      arguments: {
-                                        "order_id": historyOrder.orderId
-                                            .toString(),
-                                        "order_type": historyOrder.orderType,
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Berikan Penilaian",
-                                          style: controller
-                                              .typographyServices
-                                              .bodyLargeBold
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .primaryBlue
-                                                    .value,
-                                              ),
-                                        ),
-                                        SizedBox(width: 2),
-                                        SizedBox(
-                                          width: 24,
-                                          height: 24,
-                                          child: Center(
-                                            child: SvgPicture.asset(
-                                              "assets/icons/icon_arrow_right.svg",
-                                              width: 13,
-                                              height: 7.5,
+                                Container(
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .giveRating ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .bodyLargeBold
+                                            .value
+                                            .copyWith(
                                               color: controller
                                                   .themeColorServices
                                                   .primaryBlue
                                                   .value,
                                             ),
+                                      ),
+                                      SizedBox(width: 2),
+                                      SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            "assets/icons/icon_arrow_right.svg",
+                                            width: 13,
+                                            height: 7.5,
+                                            color: controller
+                                                .themeColorServices
+                                                .primaryBlue
+                                                .value,
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

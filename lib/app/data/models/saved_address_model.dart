@@ -4,6 +4,7 @@ class SavedAddress {
   String? addressName;
   String? addressTitle;
   String? addressDetail;
+  String? addressNotes;
   String? latitude;
   String? longitude;
   int? addressType;
@@ -17,6 +18,7 @@ class SavedAddress {
     this.addressName,
     this.addressTitle,
     this.addressDetail,
+    this.addressNotes,
     this.latitude,
     this.longitude,
     this.addressType,
@@ -31,6 +33,7 @@ class SavedAddress {
     addressName = json['addressName'];
     addressTitle = json['addressTitle'];
     addressDetail = json['addressDetail'];
+    addressNotes = json['addressNotes'];
     latitude = json['latitude'];
     longitude = json['longitude'];
     addressType = json['addressType'];
@@ -46,6 +49,7 @@ class SavedAddress {
     data['addressName'] = this.addressName;
     data['addressTitle'] = this.addressTitle;
     data['addressDetail'] = this.addressDetail;
+    data['addressNotes'] = this.addressNotes;
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
     data['addressType'] = this.addressType;

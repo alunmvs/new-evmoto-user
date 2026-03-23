@@ -16,7 +16,7 @@ class VoucherListView extends GetView<VoucherListController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Voucher Promo",
+            controller.languageServices.language.value.promoVoucher ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -67,7 +67,12 @@ class VoucherListView extends GetView<VoucherListController> {
                         ),
                         child: Center(
                           child: Text(
-                            'Voucher Tersedia',
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .voucherAvailable ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -117,7 +122,12 @@ class VoucherListView extends GetView<VoucherListController> {
                         ),
                         child: Center(
                           child: Text(
-                            'Voucher Tidak Tersedia',
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .voucherNotAvailable ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -274,7 +284,12 @@ class VoucherListView extends GetView<VoucherListController> {
                                             horizontal: 16,
                                           ),
                                           child: Text(
-                                            "Anda tidak memiliki voucher promo yang dapat digunakan saat ini.",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .noHaveAnyPromo ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular
@@ -328,24 +343,30 @@ class VoucherListView extends GetView<VoucherListController> {
                                                             .bodyLargeBold
                                                             .value,
                                                       ),
-                                                      SizedBox(width: 2),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "*Min order ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(voucher.fullMoney)}",
-                                                          style: controller
-                                                              .typographyServices
-                                                              .captionLargeRegular
-                                                              .value
-                                                              .copyWith(
-                                                                color: Color(
-                                                                  0XFFEB5757,
+                                                      if (voucher.fullMoney !=
+                                                              0 &&
+                                                          voucher.fullMoney !=
+                                                              null) ...[
+                                                        SizedBox(width: 2),
+                                                        Expanded(
+                                                          child: Text(
+                                                            "${controller.languageServices.language.value.minOrder ?? "-"} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(voucher.fullMoney)}",
+                                                            style: controller
+                                                                .typographyServices
+                                                                .captionLargeRegular
+                                                                .value
+                                                                .copyWith(
+                                                                  color: Color(
+                                                                    0XFFEB5757,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ],
                                                   ),
                                                 ),
@@ -374,7 +395,12 @@ class VoucherListView extends GetView<VoucherListController> {
                                                           .value,
                                                     ),
                                                     child: Text(
-                                                      "Pakai",
+                                                      controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .use ??
+                                                          "-",
                                                       style: controller
                                                           .typographyServices
                                                           .captionLargeRegular
@@ -420,7 +446,7 @@ class VoucherListView extends GetView<VoucherListController> {
                                                 SizedBox(width: 4),
                                                 Expanded(
                                                   child: Text(
-                                                    "Berlaku hingga ${voucher.time}",
+                                                    "${controller.languageServices.language.value.validUntil ?? "-"} ${voucher.time}",
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeRegular
@@ -486,24 +512,30 @@ class VoucherListView extends GetView<VoucherListController> {
                                                               ),
                                                             ),
                                                       ),
-                                                      SizedBox(width: 2),
-                                                      Expanded(
-                                                        child: Text(
-                                                          "*Min order ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(voucher.fullMoney)}",
-                                                          style: controller
-                                                              .typographyServices
-                                                              .captionLargeRegular
-                                                              .value
-                                                              .copyWith(
-                                                                color: Color(
-                                                                  0XFF939393,
+                                                      if (voucher.fullMoney !=
+                                                              0 &&
+                                                          voucher.fullMoney !=
+                                                              null) ...[
+                                                        SizedBox(width: 2),
+                                                        Expanded(
+                                                          child: Text(
+                                                            "${controller.languageServices.language.value.minOrder ?? "-"} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(voucher.fullMoney)}",
+                                                            style: controller
+                                                                .typographyServices
+                                                                .captionLargeRegular
+                                                                .value
+                                                                .copyWith(
+                                                                  color: Color(
+                                                                    0XFF939393,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ],
                                                   ),
                                                 ),
@@ -522,8 +554,18 @@ class VoucherListView extends GetView<VoucherListController> {
                                                   child: Text(
                                                     voucher.couponStatus ==
                                                             "expired"
-                                                        ? "Expired"
-                                                        : "Used",
+                                                        ? (controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .expired ??
+                                                              "-")
+                                                        : (controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .used ??
+                                                              "-"),
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeRegular
@@ -570,7 +612,7 @@ class VoucherListView extends GetView<VoucherListController> {
                                                 SizedBox(width: 4),
                                                 Expanded(
                                                   child: Text(
-                                                    "Berlaku hingga ${voucher.time}",
+                                                    "${controller.languageServices.language.value.validUntil ?? "-"} ${voucher.time}",
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeRegular

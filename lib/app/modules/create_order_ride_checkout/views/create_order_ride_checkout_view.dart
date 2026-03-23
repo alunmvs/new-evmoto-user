@@ -37,6 +37,7 @@ class CreateOrderRideCheckoutView
                             controller.refocusMapsBound(),
                             controller.getOrderRidePricingList(),
                             controller.setLatitudeLongitudeMarker(),
+                            controller.getAvailableCouponList(),
                           ]);
 
                           controller

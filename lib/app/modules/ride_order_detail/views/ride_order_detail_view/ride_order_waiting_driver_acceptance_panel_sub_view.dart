@@ -77,7 +77,7 @@ class RideOrderWaitingDriverAcceptancePanelSubView
                   ),
                 ),
                 child: Text(
-                  "Batalkan",
+                  controller.languageServices.language.value.cancel ?? "-",
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(
                         color: controller

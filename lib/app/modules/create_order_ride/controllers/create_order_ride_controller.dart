@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
@@ -10,11 +11,10 @@ import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/app/utils/service_area_helper.dart';
-import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import '../../../routes/app_pages.dart';
 
 class CreateOrderRideController extends GetxController {
@@ -31,6 +31,7 @@ class CreateOrderRideController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final locationServices = Get.find<LocationServices>();
 
   // Form
   final originTextEditingController = TextEditingController();
@@ -66,7 +67,6 @@ class CreateOrderRideController extends GetxController {
   // My Location
   final currentLatitude = Rx<String?>(null);
   final currentLongitude = Rx<String?>(null);
-  final isPermissionLocationAllow = false.obs;
 
   final isFetch = false.obs;
 
@@ -76,8 +76,6 @@ class CreateOrderRideController extends GetxController {
     isFetch.value = true;
     await requestLocation();
     await Future.wait([getSavedAddressList(), getHistoryOrderList()]);
-    isOriginHasPrimaryFocus.value = true;
-    isDestinationHasPrimaryFocus.value = false;
 
     focusNodeOrigin.addListener(() {
       isOriginHasPrimaryFocus.value = focusNodeOrigin.hasPrimaryFocus;
@@ -90,6 +88,7 @@ class CreateOrderRideController extends GetxController {
     });
 
     isFetch.value = false;
+    await fillForm();
   }
 
   @override
@@ -100,6 +99,88 @@ class CreateOrderRideController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> fillForm() async {
+    // fill origin
+    var isOriginFilled = false;
+    originAddressName.value = Get.arguments?['origin_address_name'] ?? "";
+    originAddress.value = Get.arguments?['origin_address'] ?? "";
+    originLatitude.value = Get.arguments?['origin_latitude'] ?? "";
+    originLongitude.value = Get.arguments?['origin_longitude'] ?? "";
+
+    if (originAddress.value != '' && originAddressName.value == '') {
+      originAddressName.value = originAddress.value;
+    }
+
+    originTextEditingController.text = originAddressName.value;
+    keywordOrigin.value = originAddressName.value;
+
+    if (originLatitude.value != "") {
+      isOriginFilled = true;
+    }
+
+    // fill destination
+    var isDestinationFilled = false;
+    destinationAddressName.value =
+        Get.arguments?['destination_address_name'] ?? "";
+    destinationAddress.value = Get.arguments?['destination_address'] ?? "";
+    destinationLatitude.value = Get.arguments?['destination_latitude'] ?? "";
+    destinationLongitude.value = Get.arguments?['destination_longitude'] ?? "";
+
+    if (destinationAddress.value != '' && destinationAddressName.value == '') {
+      destinationAddressName.value = destinationAddress.value;
+    }
+
+    destinationTextEditingController.text = destinationAddressName.value;
+    keywordDestination.value = destinationAddressName.value;
+
+    if (destinationLatitude.value != "") {
+      isDestinationFilled = true;
+    }
+
+    if (isOriginFilled == false && isDestinationFilled == false) {
+      isOriginHasPrimaryFocus.value = true;
+      isDestinationHasPrimaryFocus.value = false;
+      focusNodeOrigin.requestFocus();
+    }
+
+    if (isOriginFilled == true && isDestinationFilled == false) {
+      isOriginHasPrimaryFocus.value = false;
+      isDestinationHasPrimaryFocus.value = true;
+      focusNodeDestination.requestFocus();
+
+      await Future.wait([
+        getOriginPlaceLocationList(keyword: originTextEditingController.text),
+      ]);
+    }
+
+    if (isOriginFilled == false && isDestinationFilled == true) {
+      isOriginHasPrimaryFocus.value = true;
+      isDestinationHasPrimaryFocus.value = false;
+      focusNodeOrigin.requestFocus();
+
+      await Future.wait([
+        getDestinationPlaceLocationList(
+          keyword: originTextEditingController.text,
+        ),
+      ]);
+    }
+
+    if (isOriginFilled == true && isDestinationFilled == true) {
+      isOriginHasPrimaryFocus.value = false;
+      isDestinationHasPrimaryFocus.value = true;
+      focusNodeDestination.requestFocus();
+
+      await Future.wait([
+        getOriginPlaceLocationList(keyword: originTextEditingController.text),
+        getDestinationPlaceLocationList(
+          keyword: destinationTextEditingController.text,
+        ),
+      ]);
+
+      await onTapSubmit();
+    }
   }
 
   Future<void> getSavedAddressList() async {
@@ -201,51 +282,35 @@ class CreateOrderRideController extends GetxController {
   }
 
   Future<void> requestLocation() async {
-    isPermissionLocationAllow.value = true;
-    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    var permission = await Geolocator.requestPermission();
+    await locationServices.requestLocation();
+    if (locationServices.currentLatitude.value != null) {
+      currentLatitude.value = locationServices.currentLatitude.value.toString();
+      currentLongitude.value = locationServices.currentLongitude.value
+          .toString();
 
-    if (isLocationServiceEnabled == false ||
-        (permission == LocationPermission.denied ||
-            permission == LocationPermission.deniedForever)) {
-      isPermissionLocationAllow.value = false;
-      return;
-    }
+      focusNodeOrigin.requestFocus();
 
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
+      if (currentLatitude.value != null) {
+        var geocodingAddress =
+            (await geocodingRepository.getAddressByLatitudeLongitude(
+              latitude: double.parse(currentLatitude.value!),
+              longitude: double.parse(currentLongitude.value!),
+            )) ??
+            GeocodingAddress();
+        var currentLocationDetail = geocodingAddress.address;
 
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
-    currentLatitude.value = position.latitude.toString();
-    currentLongitude.value = position.longitude.toString();
-
-    focusNodeOrigin.requestFocus();
-
-    if (currentLatitude.value != null) {
-      var geocodingAddress =
-          (await geocodingRepository.getAddressByLatitudeLongitude(
-            latitude: double.parse(currentLatitude.value!),
-            longitude: double.parse(currentLongitude.value!),
-          )) ??
-          GeocodingAddress();
-      var currentLocationDetail = geocodingAddress.address;
-
-      recommendationCurrentLocationList.value = [];
-      if (currentLocationDetail != null) {
-        recommendationCurrentLocationList.add(
-          RecommendationLocation(
-            name: geocodingAddress.name,
-            id: currentLocationDetail,
-            latitude: currentLatitude.value,
-            longitude: currentLongitude.value,
-            addressDetail: currentLocationDetail,
-          ),
-        );
+        recommendationCurrentLocationList.value = [];
+        if (currentLocationDetail != null) {
+          recommendationCurrentLocationList.add(
+            RecommendationLocation(
+              name: geocodingAddress.name,
+              id: currentLocationDetail,
+              latitude: currentLatitude.value,
+              longitude: currentLongitude.value,
+              addressDetail: currentLocationDetail,
+            ),
+          );
+        }
       }
     }
   }
@@ -255,8 +320,6 @@ class CreateOrderRideController extends GetxController {
       if (keywordOrigin.value == keyword) {
         originGeocodingPlaceList.value = await geocodingRepository
             .getGeocodingPlaceByQuery(limit: 5, query: keywordOrigin.value);
-
-        print(originGeocodingPlaceList);
 
         if (currentLatitude.value != null) {
           for (var location in originGeocodingPlaceList) {
@@ -363,16 +426,16 @@ class CreateOrderRideController extends GetxController {
   Future<void> onTapOriginCurrentLocation() async {
     var selectedCurrentLocation = recommendationCurrentLocationList.first;
 
-    var isInsideserviceArea = isLatLngInsideServiceArea(
-      latitude: double.parse(selectedCurrentLocation.latitude!),
-      longitude: double.parse(selectedCurrentLocation.longitude!),
-    );
-    if (isInsideserviceArea == false) {
-      SnackbarHelper.showSnackbarError(
-        text: 'Alamat diluar wilayah layanan tersedia',
-      );
-      return;
-    }
+    // var isInsideserviceArea = isLatLngInsideServiceArea(
+    //   latitude: double.parse(selectedCurrentLocation.latitude!),
+    //   longitude: double.parse(selectedCurrentLocation.longitude!),
+    // );
+    // if (isInsideserviceArea == false) {
+    //   SnackbarHelper.showSnackbarError(
+    //     text: languageServices.language.value.addressOutsideService ?? "-",
+    //   );
+    //   return;
+    // }
 
     var result = await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_MAP_SELECT,
@@ -405,16 +468,16 @@ class CreateOrderRideController extends GetxController {
   Future<void> onTapOriginSearchedLocation({
     required GeocodingPlace selectedCurrentLocation,
   }) async {
-    var isInsideserviceArea = isLatLngInsideServiceArea(
-      latitude: selectedCurrentLocation.lat!,
-      longitude: selectedCurrentLocation.lng!,
-    );
-    if (isInsideserviceArea == false) {
-      SnackbarHelper.showSnackbarError(
-        text: 'Alamat diluar wilayah layanan tersedia',
-      );
-      return;
-    }
+    // var isInsideserviceArea = isLatLngInsideServiceArea(
+    //   latitude: selectedCurrentLocation.lat!,
+    //   longitude: selectedCurrentLocation.lng!,
+    // );
+    // if (isInsideserviceArea == false) {
+    //   SnackbarHelper.showSnackbarError(
+    //     text: languageServices.language.value.addressOutsideService ?? "-",
+    //   );
+    //   return;
+    // }
 
     var result = await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_MAP_SELECT,
@@ -446,16 +509,16 @@ class CreateOrderRideController extends GetxController {
   Future<void> onTapOriginLatestOrderLocation({
     required RecommendationLocation selectedCurrentLocation,
   }) async {
-    var isInsideserviceArea = isLatLngInsideServiceArea(
-      latitude: double.parse(selectedCurrentLocation.latitude!),
-      longitude: double.parse(selectedCurrentLocation.longitude!),
-    );
-    if (isInsideserviceArea == false) {
-      SnackbarHelper.showSnackbarError(
-        text: 'Alamat diluar wilayah layanan tersedia',
-      );
-      return;
-    }
+    // var isInsideserviceArea = isLatLngInsideServiceArea(
+    //   latitude: double.parse(selectedCurrentLocation.latitude!),
+    //   longitude: double.parse(selectedCurrentLocation.longitude!),
+    // );
+    // if (isInsideserviceArea == false) {
+    //   SnackbarHelper.showSnackbarError(
+    //     text: languageServices.language.value.addressOutsideService ?? "-",
+    //   );
+    //   return;
+    // }
 
     var result = await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_MAP_SELECT,
@@ -488,16 +551,16 @@ class CreateOrderRideController extends GetxController {
   Future<void> onTapDestinationCurrentLocation() async {
     var selectedCurrentLocation = recommendationCurrentLocationList.first;
 
-    var isInsideserviceArea = isLatLngInsideServiceArea(
-      latitude: double.parse(selectedCurrentLocation.latitude!),
-      longitude: double.parse(selectedCurrentLocation.longitude!),
-    );
-    if (isInsideserviceArea == false) {
-      SnackbarHelper.showSnackbarError(
-        text: 'Alamat diluar wilayah layanan tersedia',
-      );
-      return;
-    }
+    // var isInsideserviceArea = isLatLngInsideServiceArea(
+    //   latitude: double.parse(selectedCurrentLocation.latitude!),
+    //   longitude: double.parse(selectedCurrentLocation.longitude!),
+    // );
+    // if (isInsideserviceArea == false) {
+    //   SnackbarHelper.showSnackbarError(
+    //     text: languageServices.language.value.addressOutsideService ?? "-",
+    //   );
+    //   return;
+    // }
 
     var result = await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_MAP_SELECT,
@@ -528,16 +591,16 @@ class CreateOrderRideController extends GetxController {
   Future<void> onTapDestinationSearchedLocation({
     required GeocodingPlace selectedCurrentLocation,
   }) async {
-    var isInsideserviceArea = isLatLngInsideServiceArea(
-      latitude: selectedCurrentLocation.lat!,
-      longitude: selectedCurrentLocation.lng!,
-    );
-    if (isInsideserviceArea == false) {
-      SnackbarHelper.showSnackbarError(
-        text: 'Alamat diluar wilayah layanan tersedia',
-      );
-      return;
-    }
+    // var isInsideserviceArea = isLatLngInsideServiceArea(
+    //   latitude: selectedCurrentLocation.lat!,
+    //   longitude: selectedCurrentLocation.lng!,
+    // );
+    // if (isInsideserviceArea == false) {
+    //   SnackbarHelper.showSnackbarError(
+    //     text: languageServices.language.value.addressOutsideService ?? "-",
+    //   );
+    //   return;
+    // }
 
     var result = await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_MAP_SELECT,
@@ -568,16 +631,16 @@ class CreateOrderRideController extends GetxController {
   Future<void> onTapDestinationLatestOrderLocation({
     required RecommendationLocation selectedCurrentLocation,
   }) async {
-    var isInsideserviceArea = isLatLngInsideServiceArea(
-      latitude: double.parse(selectedCurrentLocation.latitude!),
-      longitude: double.parse(selectedCurrentLocation.longitude!),
-    );
-    if (isInsideserviceArea == false) {
-      SnackbarHelper.showSnackbarError(
-        text: 'Alamat diluar wilayah layanan tersedia',
-      );
-      return;
-    }
+    // var isInsideserviceArea = isLatLngInsideServiceArea(
+    //   latitude: double.parse(selectedCurrentLocation.latitude!),
+    //   longitude: double.parse(selectedCurrentLocation.longitude!),
+    // );
+    // if (isInsideserviceArea == false) {
+    //   SnackbarHelper.showSnackbarError(
+    //     text: languageServices.language.value.addressOutsideService ?? "-",
+    //   );
+    //   return;
+    // }
     var result = await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_MAP_SELECT,
       arguments: {
@@ -648,6 +711,293 @@ class CreateOrderRideController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
+    var validateLocationResponse = await orderRideRepository.validateLocation(
+      startLat: originLatitude.value,
+      startLon: originLongitude.value,
+      endLat: destinationLatitude.value,
+      endLon: destinationLongitude.value,
+    );
+
+    if (validateLocationResponse.code == 500) {
+      if (validateLocationResponse.data == "outside_service_area") {
+        Get.dialog(
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Material(
+                    color: themeColorServices.neutralsColorGrey0.value,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 18,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Diluar Area Layanan",
+                                style: typographyServices.bodyLargeBold.value,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.close(1);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  width: 24,
+                                  height: 24,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_close.svg",
+                                        width: 12,
+                                        height: 12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: AspectRatio(
+                              aspectRatio: 303 / 125,
+                              child: Image.asset(
+                                "assets/images/img_outside_service_area.png",
+                                width: Get.width,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            "Titik penjemputan atau pengantaran berada di luar area layanan.",
+                            style: typographyServices.bodySmallRegular.value,
+                          ),
+                          SizedBox(height: 16),
+                          LoaderElevatedButton(
+                            onPressed: () async {
+                              Get.close(1);
+                            },
+                            child: Text(
+                              "Ubah Lokasi",
+                              style: typographyServices.bodyLargeBold.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      if (validateLocationResponse.data == "city_invalid") {
+        Get.dialog(
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Material(
+                    color: themeColorServices.neutralsColorGrey0.value,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 18,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Kota Tujuan Tidak Sesuai",
+                                style: typographyServices.bodyLargeBold.value,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.close(1);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  width: 24,
+                                  height: 24,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_close.svg",
+                                        width: 12,
+                                        height: 12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: AspectRatio(
+                              aspectRatio: 303 / 125,
+                              child: Image.asset(
+                                "assets/images/img_city_invalid.png",
+                                width: Get.width,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            "Lokasi penjemputan dan pengantaran berada di kota yang berbeda.",
+                            style: typographyServices.bodySmallRegular.value,
+                          ),
+                          SizedBox(height: 16),
+                          LoaderElevatedButton(
+                            onPressed: () async {
+                              Get.close(1);
+                            },
+                            child: Text(
+                              "Ubah Lokasi",
+                              style: typographyServices.bodyLargeBold.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      if (validateLocationResponse.data == "distance_exceeds_limit") {
+        Get.dialog(
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Material(
+                    color: themeColorServices.neutralsColorGrey0.value,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 18,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Jarak Melebihi Batas Layanan",
+                                style: typographyServices.bodyLargeBold.value,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.close(1);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  width: 24,
+                                  height: 24,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_close.svg",
+                                        width: 12,
+                                        height: 12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: AspectRatio(
+                              aspectRatio: 303 / 125,
+                              child: Image.asset(
+                                "assets/images/img_distance_exceeds_limit.png",
+                                width: Get.width,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            "Jarak perjalanan yang telah ditentukan melebihi 60 kilometer.",
+                            style: typographyServices.bodySmallRegular.value,
+                          ),
+                          SizedBox(height: 16),
+                          LoaderElevatedButton(
+                            onPressed: () async {
+                              Get.close(1);
+                            },
+                            child: Text(
+                              "Ubah Lokasi",
+                              style: typographyServices.bodyLargeBold.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      return;
+    }
+
     Get.toNamed(
       Routes.CREATE_ORDER_RIDE_CHECKOUT,
       arguments: {

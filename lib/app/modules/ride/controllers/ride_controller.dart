@@ -687,7 +687,11 @@ class RideController extends GetxController {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Saldo EVMoto",
+                                                languageServices
+                                                        .language
+                                                        .value
+                                                        .evmotoBalance ??
+                                                    "-",
                                                 style: typographyServices
                                                     .bodySmallBold
                                                     .value
@@ -1448,7 +1452,7 @@ class RideController extends GetxController {
       );
       if (isInsideserviceArea == false) {
         SnackbarHelper.showSnackbarError(
-          text: 'Alamat diluar wilayah layanan tersedia',
+          text: languageServices.language.value.addressOutsideService ?? "-",
         );
         return;
       }
@@ -1484,7 +1488,7 @@ class RideController extends GetxController {
       );
       if (isInsideserviceArea == false) {
         SnackbarHelper.showSnackbarError(
-          text: 'Alamat diluar wilayah layanan tersedia',
+          text: languageServices.language.value.addressOutsideService ?? "-",
         );
         return;
       }

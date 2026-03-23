@@ -1,5 +1,4 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -11,10 +10,7 @@ import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_d
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_driver_ready_to_go_destination_panel_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_waiting_driver_acceptance_panel_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_waiting_driver_pick_up_panel_sub_view.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
-import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../controllers/ride_order_detail_controller.dart';
 

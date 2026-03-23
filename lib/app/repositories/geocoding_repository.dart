@@ -64,6 +64,8 @@ class GeocodingRepository {
         'Authorization': "Bearer $token",
       };
 
+      print("ini debug ${{"query": query, "limit": limit}}");
+
       var response = await dio.get(
         url,
         queryParameters: {"query": query, "limit": limit},

@@ -130,19 +130,4 @@ class ActivityController extends GetxController
 
     this.historyOrderList.addAll(historyOrderList);
   }
-
-  String getStatusActivityByState({required int state}) {
-    switch (state) {
-      case 1:
-        return 'Pencarian Driver Evmoto';
-      case 2:
-        return 'Driver Menerima Pesanan';
-      case 3:
-        return 'Driver Berangkat ke Lokasi Penjemputan';
-      case 4:
-        return 'Driver Sampai di Lokasi Penjemputan';
-      default:
-        return '-';
-    }
-  }
 }

@@ -4,7 +4,9 @@ class HistoryOrder {
   int? orderId;
   String? orderTime;
   String? time;
+  String? startAddressName;
   String? startAddress;
+  String? endAddressName;
   String? endAddress;
   int? num;
   int? driverId;
@@ -30,7 +32,9 @@ class HistoryOrder {
     this.orderId,
     this.orderTime,
     this.time,
+    this.startAddressName,
     this.startAddress,
+    this.endAddressName,
     this.endAddress,
     this.num,
     this.driverId,
@@ -58,7 +62,9 @@ class HistoryOrder {
     orderTime = json['orderTime'];
     time = json['time'];
     startAddress = json['startAddress'];
+    startAddressName = json['startAddressName'];
     endAddress = json['endAddress'];
+    endAddressName = json['endAddressName'];
     num = json['num'];
     driverId = json['driverId'];
     state = json['state'];
