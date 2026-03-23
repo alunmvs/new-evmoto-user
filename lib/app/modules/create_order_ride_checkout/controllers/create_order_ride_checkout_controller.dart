@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride/controllers/create_order_ride_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -16,6 +18,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/access_location_required_dialog.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
@@ -24,11 +27,13 @@ class CreateOrderRideCheckoutController extends GetxController {
   final OrderRideRepository orderRideRepository;
   final GeocodingRepository geocodingRepository;
   final OpenMapsRepository openMapsRepository;
+  final CouponRepository couponRepository;
 
   CreateOrderRideCheckoutController({
     required this.orderRideRepository,
     required this.geocodingRepository,
     required this.openMapsRepository,
+    required this.couponRepository,
   });
 
   final homeController = Get.find<HomeController>();
@@ -49,6 +54,7 @@ class CreateOrderRideCheckoutController extends GetxController {
 
   final orderRidePricingList = <OrderRidePricing>[].obs;
   final selectedOrderRidePricing = OrderRidePricing().obs;
+  final availableCouponList = <Coupon>[].obs;
 
   final payType = 3.obs;
   final selectedCoupon = Coupon().obs;
@@ -86,6 +92,15 @@ class CreateOrderRideCheckoutController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> getAvailableCouponList() async {
+    availableCouponList.value = await couponRepository.getCouponList(
+      state: 1,
+      language: languageServices.languageCodeSystem.value,
+      pageNum: 1,
+      size: 1,
+    );
   }
 
   Future<void> requestLocation() async {

@@ -95,6 +95,34 @@ class CheckoutPriceListSubView
                     ),
                     Spacer(),
                     SizedBox(width: 8),
+                    if (orderRidePricing.discountMoney != null &&
+                        orderRidePricing.discountMoney != 0.0) ...[
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color:
+                              controller.themeColorServices.primaryBlue.value,
+                          borderRadius: BorderRadius.circular(9999),
+                        ),
+                        child: Text(
+                          "Promo",
+                          style: controller
+                              .typographyServices
+                              .captionSmallBold
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey0
+                                    .value,
+                              ),
+                        ),
+                      ),
+                    ],
+                    SizedBox(width: 6),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [

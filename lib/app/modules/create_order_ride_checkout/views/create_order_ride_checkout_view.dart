@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/views/create_order_ride_checkout_view/checkout_estimated_distance_and_time_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/views/create_order_ride_checkout_view/checkout_payment_and_promo_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/views/create_order_ride_checkout_view/checkout_price_list_sub_view.dart';
-import 'package:new_evmoto_user/app/utils/general_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_user/main.dart';
-
-import '../../../routes/app_pages.dart';
 import '../controllers/create_order_ride_checkout_controller.dart';
 
 class CreateOrderRideCheckoutView

@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/controllers/create_order_ride_checkout_controller.dart';
-
-import '../../../../routes/app_pages.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 
 class CheckoutPaymentAndPromoSubView
     extends GetView<CreateOrderRideCheckoutController> {
@@ -53,82 +56,168 @@ class CheckoutPaymentAndPromoSubView
                   child: VerticalDivider(width: 0, color: Color(0XFFB9B9B9)),
                 ),
                 SizedBox(width: 38),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/icon_discount.svg",
-                            width: 16,
-                            height: 16,
-                            color: Color(0XFFB3B3B3),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 4),
-                      Text(
-                        "Tidak ada promo tersedia",
-                        style: controller
-                            .typographyServices
-                            .bodySmallRegular
-                            .value
-                            .copyWith(color: Color(0XFFB3B3B3)),
-                      ),
-                    ],
+                if (controller.availableCouponList.isEmpty) ...[
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_discount.svg",
+                              width: 16,
+                              height: 16,
+                              color: Color(0XFFB3B3B3),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          "Tidak ada promo tersedia",
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
+                              .copyWith(color: Color(0XFFB3B3B3)),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                // Expanded(
-                //   child: GestureDetector(
-                //     onTap: () async {
-                //       var result = await Get.toNamed(Routes.SELECT_PROMO);
+                ],
+                if (controller.availableCouponList.isNotEmpty) ...[
+                  if (controller.selectedCoupon.value.id == null) ...[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          var result = await Get.toNamed(
+                            Routes.CREATE_ORDER_RIDE_PROMO,
+                          );
 
-                //       if (result != null) {
-                //         controller.selectedCoupon.value = result;
-                //         await controller.getOrderRidePricingList();
-                //       }
-                //     },
-                //     child: Container(
-                //       color: Colors.white,
-                //       child: Row(
-                //         children: [
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             crossAxisAlignment: CrossAxisAlignment.center,
-                //             children: [
-                //               SvgPicture.asset(
-                //                 "assets/icons/icon_discount.svg",
-                //                 width: 16,
-                //                 height: 16,
-                //               ),
-                //             ],
-                //           ),
-                //           SizedBox(width: 4),
-                //           Text(
-                //             controller.selectedCoupon.value.id == null
-                //                 ? "Pilih Promo"
-                //                 : controller.selectedCoupon.value.id.toString(),
-                //             style: controller
-                //                 .typographyServices
-                //                 .bodySmallBold
-                //                 .value,
-                //           ),
-                //           Spacer(),
-                //           SizedBox(width: 8),
-                //           SvgPicture.asset(
-                //             "assets/icons/icon_arrow_right.svg",
-                //             width: 10.83 * 1.3,
-                //             height: 6.25 * 1.3,
-                //             color: Color(0XFF2E2E2E),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                          if (result != null) {
+                            controller.selectedCoupon.value = result;
+                            try {
+                              await controller.getOrderRidePricingList();
+                            } on DioException catch (e) {
+                              controller.selectedCoupon.value = Coupon();
+                              SnackbarHelper.showSnackbarError(
+                                text: e.response?.data,
+                              );
+                            }
+                          }
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_discount.svg",
+                                    width: 16,
+                                    height: 16,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                "Pilih Promo",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallBold
+                                    .value,
+                              ),
+                              Spacer(),
+                              SizedBox(width: 8),
+                              SvgPicture.asset(
+                                "assets/icons/icon_arrow_right.svg",
+                                width: 10.83 * 1.3,
+                                height: 6.25 * 1.3,
+                                color: Color(0XFF2E2E2E),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (controller.selectedCoupon.value.id != null) ...[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          var result = await Get.toNamed(
+                            Routes.CREATE_ORDER_RIDE_PROMO,
+                          );
+
+                          if (result != null) {
+                            controller.selectedCoupon.value = result;
+                            try {
+                              await controller.getOrderRidePricingList();
+                            } on DioException catch (e) {
+                              controller.selectedCoupon.value = Coupon();
+                              SnackbarHelper.showSnackbarError(
+                                text: e.response?.data,
+                              );
+                            }
+                          }
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_discount.svg",
+                                    width: 16,
+                                    height: 16,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 4),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Color(0XFFEFF7FF),
+                                  borderRadius: BorderRadius.circular(9999),
+                                ),
+                                child: Text(
+                                  "Diskon ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.selectedCoupon.value.money)}",
+                                  style: controller
+                                      .typographyServices
+                                      .captionLargeRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      ),
+                                ),
+                              ),
+                              Spacer(),
+                              SizedBox(width: 8),
+                              SvgPicture.asset(
+                                "assets/icons/icon_arrow_right.svg",
+                                width: 10.83 * 1.3,
+                                height: 6.25 * 1.3,
+                                color: Color(0XFF2E2E2E),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ],
             ),
           ),
