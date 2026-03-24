@@ -1421,9 +1421,6 @@ class RideController extends GetxController {
   }) async {
     destinationSearchLatitude.value = latitude;
     destinationSearchLongitude.value = longitude;
-    print(
-      "${destinationSearchLatitude.value}, ${destinationSearchLongitude.value}",
-    );
     Future.delayed(Duration(seconds: 1), () async {
       if (destinationSearchLatitude.value == latitude &&
           destinationSearchLongitude.value == longitude) {

@@ -85,7 +85,7 @@ class SocketServices extends GetxService {
               break;
             case 'OFFLINE':
               var storage = FlutterSecureStorage();
-              await storage.deleteAll();
+              await storage.delete(key: 'token');
               await closeWebsocket();
 
               Get.offAllNamed(Routes.LOGIN_REGISTER);

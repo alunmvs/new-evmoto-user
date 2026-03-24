@@ -453,164 +453,170 @@ class HomeController extends GetxController {
     versioningServer.value = await versioningServerRepository
         .getVersioningServer(type: 1);
 
-    var packageInfo = await PackageInfo.fromPlatform();
-    var currentVersion = Version.parse(packageInfo.version);
-    var serverVersion = Version.parse(versioningServer.value.version!);
+    if (versioningServer.value.version != null) {
+      var packageInfo = await PackageInfo.fromPlatform();
+      var currentVersion = Version.parse(packageInfo.version);
+      var serverVersion = Version.parse(versioningServer.value.version!);
 
-    if (currentVersion < serverVersion) {
-      await Get.dialog(
-        PopScope(
-          canPop: versioningServer.value.mandatory == 0,
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Material(
-                    color: themeColorServices.neutralsColorGrey0.value,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(height: 24),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Image.asset(
-                              "assets/images/img_soft_update.png",
-                              width: Get.width * 169.25 / 375,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            "Pembaruan Aplikasi Tersedia",
-                            style: typographyServices.bodyLargeBold.value,
-                            textAlign: TextAlign.center,
-                          ),
-                          if (versioningServer.value.content != null &&
-                              versioningServer.value.content != '') ...[
-                            SizedBox(height: 8),
-                            Text(
-                              versioningServer.value.content ?? "-",
-                              style: typographyServices.bodySmallRegular.value
-                                  .copyWith(color: Color(0XFFB3B3B3)),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                          SizedBox(height: 16),
-                          LoaderElevatedButton(
-                            onPressed: () async {
-                              await onTapUpdateVersion();
-                            },
-                            child: Text(
-                              "Update Sekarang",
-                              style: typographyServices.bodyLargeBold.value
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                          if (versioningServer.value.mandatory == 0) ...[
-                            SizedBox(height: 10),
-                            SizedBox(
-                              height: 46,
-                              width: Get.width,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Color(0XFFDBDBDB)),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  Get.close(1);
-                                },
-                                child: Text(
-                                  "Update Nanti",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(color: Color(0XFFAFAFAF)),
-                                ),
+      if (currentVersion < serverVersion) {
+        await Get.dialog(
+          PopScope(
+            canPop: versioningServer.value.mandatory == 0,
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(height: 24),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Image.asset(
+                                "assets/images/img_soft_update.png",
+                                width: Get.width * 169.25 / 375,
                               ),
                             ),
-                          ],
-                          SizedBox(height: 16),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        barrierDismissible: false,
-      );
-    } else {
-      if (isShowVersionNewestConfirmationDialog == true) {
-        Get.dialog(
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Material(
-                    color: themeColorServices.neutralsColorGrey0.value,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 16),
-                          Container(
-                            width: 42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color: Color(0XFFDDFFE6),
-                              borderRadius: BorderRadius.circular(8),
+                            SizedBox(height: 16),
+                            Text(
+                              "Pembaruan Aplikasi Tersedia",
+                              style: typographyServices.bodyLargeBold.value,
+                              textAlign: TextAlign.center,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/icon_checkmark_circle.svg",
-                                  width: 26,
-                                  height: 26,
+                            if (versioningServer.value.content != null &&
+                                versioningServer.value.content != '') ...[
+                              SizedBox(height: 8),
+                              Text(
+                                versioningServer.value.content ?? "-",
+                                style: typographyServices.bodySmallRegular.value
+                                    .copyWith(color: Color(0XFFB3B3B3)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                            SizedBox(height: 16),
+                            LoaderElevatedButton(
+                              onPressed: () async {
+                                await onTapUpdateVersion();
+                              },
+                              child: Text(
+                                "Update Sekarang",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                            if (versioningServer.value.mandatory == 0) ...[
+                              SizedBox(height: 10),
+                              SizedBox(
+                                height: 46,
+                                width: Get.width,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(color: Color(0XFFDBDBDB)),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    Get.close(1);
+                                  },
+                                  child: Text(
+                                    "Update Nanti",
+                                    style: typographyServices
+                                        .bodyLargeBold
+                                        .value
+                                        .copyWith(color: Color(0XFFAFAFAF)),
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Anda menggunakan versi terbaru',
-                            style: typographyServices.bodyLargeBold.value,
-                          ),
-                          SizedBox(height: 16),
-                          LoaderElevatedButton(
-                            child: Text(
-                              languageServices.language.value.back ?? "-",
-                              style: typographyServices.bodyLargeBold.value
-                                  .copyWith(color: Colors.white),
-                            ),
-                            onPressed: () async {
-                              Get.close(1);
-                            },
-                          ),
-                          SizedBox(height: 16),
-                        ],
+                              ),
+                            ],
+                            SizedBox(height: 16),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          barrierDismissible: false,
         );
+      } else {
+        if (isShowVersionNewestConfirmationDialog == true) {
+          Get.dialog(
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 16),
+                            Container(
+                              width: 42,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color: Color(0XFFDDFFE6),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_checkmark_circle.svg",
+                                    width: 26,
+                                    height: 26,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Anda menggunakan versi terbaru',
+                              style: typographyServices.bodyLargeBold.value,
+                            ),
+                            SizedBox(height: 16),
+                            LoaderElevatedButton(
+                              child: Text(
+                                languageServices.language.value.back ?? "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(color: Colors.white),
+                              ),
+                              onPressed: () async {
+                                Get.close(1);
+                              },
+                            ),
+                            SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
       }
     }
   }
@@ -1015,75 +1021,75 @@ class HomeController extends GetxController {
   }
 
   Future<void> getActiveOrderStatus() async {
-    // var activeOrderStatus = '-';
+    var activeOrderStatus = '-';
 
-    // if (activeOrderList.isNotEmpty) {
-    //   var activeOrder = activeOrderList.first;
-    //   var estimatedSpeedInKmh = 40.0;
-    //   var orderRideServer = await orderRideRepository.getOrderRideServerDetail(
-    //     orderId: activeOrder.orderId!.toString(),
-    //     orderType: activeOrder.orderType!,
-    //     language: languageServices.languageCodeSystem.value,
-    //   );
+    if (activeOrderList.isNotEmpty) {
+      activeOrderStatus = "Sedang Berjalan";
+      // var activeOrder = activeOrderList.first;
+      // var estimatedSpeedInKmh = 40.0;
+      // var orderRideServer = await orderRideRepository.getOrderRideServerDetail(
+      //   orderId: activeOrder.orderId!.toString(),
+      //   orderType: activeOrder.orderType!,
+      //   language: languageServices.languageCodeSystem.value,
+      // );
 
-    //   switch (activeOrder.state) {
-    //     case 1:
-    //       activeOrderStatus = 'Pencarian Driver EVMoto...';
-    //       break;
-    //     case 2:
-    //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
-    //         originLat: double.parse(orderRideServer.lat!),
-    //         originLon: double.parse(orderRideServer.lon!),
-    //         destinationLat: activeOrder.startLat!,
-    //         destinationLon: activeOrder.startLon!,
-    //         estimatedSpeedInKmh: estimatedSpeedInKmh,
-    //       );
-    //       activeOrderStatus =
-    //           'Driver segera tiba, menunggu: ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)}';
-    //       break;
-    //     case 3:
-    //       activeOrderStatus = 'Driver tiba di titik penjemputan';
-    //       break;
-    //     case 4:
-    //       activeOrderStatus = 'Berangkat menuju lokasi';
-    //       break;
-    //     case 5:
-    //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
-    //         originLat: double.parse(orderRideServer.lat!),
-    //         originLon: double.parse(orderRideServer.lon!),
-    //         destinationLat: activeOrder.endLat!,
-    //         destinationLon: activeOrder.endLon!,
-    //         estimatedSpeedInKmh: estimatedSpeedInKmh,
-    //       );
-    //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
-    //         originLat: double.parse(orderRideServer.lat!),
-    //         originLon: double.parse(orderRideServer.lon!),
-    //         destinationLat: activeOrder.endLat!,
-    //         destinationLon: activeOrder.endLon!,
-    //       );
-    //       activeOrderStatus =
-    //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)} sampai ke lokasi';
-    //       break;
-    //     case 6:
-    //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
-    //         originLat: double.parse(orderRideServer.lat!),
-    //         originLon: double.parse(orderRideServer.lon!),
-    //         destinationLat: activeOrder.endLat!,
-    //         destinationLon: activeOrder.endLon!,
-    //       );
-    //       activeOrderStatus =
-    //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 Sampai di lokasi';
-    //       break;
-    //     case 7:
-    //       activeOrderStatus = 'Konfirmasi pembayaran';
-    //       break;
-    //     default:
-    //       activeOrderStatus = '-';
-    //       break;
-    //   }
-    // }
+      //   switch (activeOrder.state) {
+      //     case 1:
+      //       activeOrderStatus = 'Pencarian Driver EVMoto...';
+      //       break;
+      //     case 2:
+      //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+      //         originLat: double.parse(orderRideServer.lat!),
+      //         originLon: double.parse(orderRideServer.lon!),
+      //         destinationLat: activeOrder.startLat!,
+      //         destinationLon: activeOrder.startLon!,
+      //         estimatedSpeedInKmh: estimatedSpeedInKmh,
+      //       );
+      //       activeOrderStatus =
+      //           'Driver segera tiba, menunggu: ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)}';
+      //       break;
+      //     case 3:
+      //       activeOrderStatus = 'Driver tiba di titik penjemputan';
+      //       break;
+      //     case 4:
+      //       activeOrderStatus = 'Berangkat menuju lokasi';
+      //       break;
+      //     case 5:
+      //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+      //         originLat: double.parse(orderRideServer.lat!),
+      //         originLon: double.parse(orderRideServer.lon!),
+      //         destinationLat: activeOrder.endLat!,
+      //         destinationLon: activeOrder.endLon!,
+      //         estimatedSpeedInKmh: estimatedSpeedInKmh,
+      //       );
+      //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+      //         originLat: double.parse(orderRideServer.lat!),
+      //         originLon: double.parse(orderRideServer.lon!),
+      //         destinationLat: activeOrder.endLat!,
+      //         destinationLon: activeOrder.endLon!,
+      //       );
+      //       activeOrderStatus =
+      //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)} sampai ke lokasi';
+      //       break;
+      //     case 6:
+      //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+      //         originLat: double.parse(orderRideServer.lat!),
+      //         originLon: double.parse(orderRideServer.lon!),
+      //         destinationLat: activeOrder.endLat!,
+      //         destinationLon: activeOrder.endLon!,
+      //       );
+      //       activeOrderStatus =
+      //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 Sampai di lokasi';
+      //       break;
+      //     case 7:
+      //       activeOrderStatus = 'Konfirmasi pembayaran';
+      //       break;
+      //     default:
+      //       activeOrderStatus = '-';
+      //       break;
+      //   }
+    }
 
-    // this.activeOrderStatus.value = activeOrderStatus;
-    this.activeOrderStatus.value = "Sedang Berjalan";
+    this.activeOrderStatus.value = activeOrderStatus;
   }
 }

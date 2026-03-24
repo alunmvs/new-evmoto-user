@@ -41,11 +41,9 @@ class AdvertisementRepository {
         options: Options(headers: headers),
       );
 
-      print(response.data);
-
       var advertisementList = <Advertisement>[];
 
-      for (var advertisement in response.data['data']) {
+      for (var advertisement in response.data?['data'] ?? []) {
         advertisementList.add(Advertisement.fromJson(advertisement));
       }
 

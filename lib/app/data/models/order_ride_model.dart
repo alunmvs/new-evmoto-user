@@ -168,7 +168,6 @@ class OrderRide {
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
-    print("ini rating labels ${json['ratingLabels']}");
     orderId = json['orderId'];
     orderType = json['orderType'];
     type = json['type'];

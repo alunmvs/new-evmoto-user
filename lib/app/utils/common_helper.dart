@@ -71,7 +71,7 @@ Future<void> clearDataLogout() async {
 
   await Future.wait([
     firebasePushNotificationServices.onUnsubscribe(),
-    storage.deleteAll(),
+    storage.delete(key: 'token'),
     socketServices.closeWebsocket(),
   ]);
 }
@@ -87,7 +87,7 @@ Future<void> logout() async {
 
   await Future.wait([
     firebasePushNotificationServices.onUnsubscribe(),
-    storage.deleteAll(),
+    storage.delete(key: 'token'),
     socketServices.closeWebsocket(),
   ]);
 

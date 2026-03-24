@@ -24,10 +24,6 @@ class VersioningServerRepository {
         'Authorization': "Bearer $token",
       };
 
-      print(url);
-      print({"type": type});
-      print(headers);
-
       var dio = apiServices.dio;
       var response = await dio.post(
         url,
@@ -39,7 +35,7 @@ class VersioningServerRepository {
         throw response.data['msg'];
       }
 
-      return VersioningServer.fromJson(response.data['data']);
+      return VersioningServer.fromJson(response.data?['data'] ?? {});
     } on DioException catch (e) {
       rethrow;
     }

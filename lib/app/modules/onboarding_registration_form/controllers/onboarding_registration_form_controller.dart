@@ -115,7 +115,7 @@ class OnboardingRegistrationFormController extends GetxController {
                             child: LoaderElevatedButton(
                               onPressed: () async {
                                 var storage = FlutterSecureStorage();
-                                await storage.deleteAll();
+                                await storage.delete(key: 'token');
 
                                 Get.offAllNamed(Routes.LOGIN_REGISTER);
 

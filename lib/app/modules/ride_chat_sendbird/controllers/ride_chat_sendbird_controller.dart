@@ -143,18 +143,6 @@ class RideChatSendbirdController extends GetxController {
       ..includeReactions = true
       ..includeMetaArray = true;
 
-    // print(
-    //   DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
-    //     DateTime.fromMillisecondsSinceEpoch(this.messageList.first.createdAt),
-    //   ),
-    // );
-
-    // print(
-    //   DateFormat('dd MMMM yyyy ⬩ HH:mm').format(
-    //     DateTime.fromMillisecondsSinceEpoch(this.messageList.last.createdAt),
-    //   ),
-    // );
-
     var messageList = await groupChannel.value!.getMessagesByTimestamp(
       this.messageList.first.createdAt,
       params,
@@ -163,12 +151,6 @@ class RideChatSendbirdController extends GetxController {
     isSeeMoreMessageList.value = messageList.isEmpty;
 
     for (var message in messageList.reversed) {
-      // print(
-      //   DateFormat(
-      //     'dd MMMM yyyy ⬩ HH:mm',
-      //   ).format(DateTime.fromMillisecondsSinceEpoch(message.createdAt)),
-      // );
-
       this.messageList.insert(0, message);
     }
   }
