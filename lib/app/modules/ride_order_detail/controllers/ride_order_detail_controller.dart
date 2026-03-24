@@ -966,7 +966,7 @@ class RideOrderDetailController extends GetxController {
                                   Get.close(1);
                                 },
                                 child: Text(
-                                  "Tutup",
+                                  languageServices.language.value.close ?? "-",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color: themeColorServices

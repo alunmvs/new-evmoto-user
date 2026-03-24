@@ -39,7 +39,12 @@ class RideOrderDoneInvoiceSubView extends GetView<RideOrderDoneController> {
               ),
               SizedBox(height: 16),
               Text(
-                "Silahkan melakukan pembayaran sesuai dengan jumlah yang tertera",
+                controller
+                        .languageServices
+                        .language
+                        .value
+                        .pleaseMakePaymentAccording ??
+                    "-",
                 style: controller.typographyServices.bodySmallRegular.value
                     .copyWith(
                       color: controller

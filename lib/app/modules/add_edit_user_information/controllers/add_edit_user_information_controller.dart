@@ -111,8 +111,8 @@ class AddEditUserInformationController extends GetxController {
                                 children: [
                                   SvgPicture.asset(
                                     "assets/icons/icon_close.svg",
-                                    width: 12,
-                                    height: 12,
+                                    width: 18,
+                                    height: 18,
                                   ),
                                 ],
                               ),

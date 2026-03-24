@@ -23,7 +23,8 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
               if (await canLaunchUrl(url)) {
                 await launchUrl(url);
               } else {
-                throw 'Tidak bisa melakukan panggilan';
+                throw controller.languageServices.language.value.cantMakeCall ??
+                    "-";
               }
             },
             child: Container(

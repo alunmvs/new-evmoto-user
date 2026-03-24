@@ -125,7 +125,11 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Persetujuan Akses Lokasi",
+                              languageServices
+                                      .language
+                                      .value
+                                      .locationAccessConsent ??
+                                  "-",
                               style: typographyServices.bodyLargeBold.value
                                   .copyWith(
                                     fontWeight: FontWeight.w700,
@@ -148,8 +152,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
                                   children: [
                                     SvgPicture.asset(
                                       "assets/icons/icon_close.svg",
-                                      width: 12,
-                                      height: 12,
+                                      width: 18,
+                                      height: 18,
                                     ),
                                   ],
                                 ),
@@ -170,13 +174,15 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          "Kami membutuhkan lokasi Anda yang tepat agar dapat melayani Anda dengan lebih baik.",
+                          languageServices.language.value.needExactLocation ??
+                              "-",
                           style: typographyServices.bodySmallRegular.value,
                         ),
                         SizedBox(height: 16),
                         LoaderElevatedButton(
                           child: Text(
-                            "Aktifkan Lokasi",
+                            languageServices.language.value.enableLocation ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value
                                 .copyWith(
                                   color: themeColorServices

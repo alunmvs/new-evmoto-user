@@ -30,7 +30,10 @@ class SettingLanguageController extends GetxController {
   }
 
   Future<void> onTapSave() async {
-    await languageServices.switchLanguage(languageCode: tempLanguageCode.value);
+    await languageServices.switchLanguage(
+      languageCode: tempLanguageCode.value,
+      isSave: true,
+    );
     Get.back();
     var snackBar = SnackBar(
       behavior: SnackBarBehavior.fixed,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
@@ -11,6 +12,7 @@ class AccessLocationRequiredWidget extends StatelessWidget {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   Future<void> checkAndEnableLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -57,13 +59,17 @@ class AccessLocationRequiredWidget extends StatelessWidget {
             ),
             SizedBox(height: 26),
             Text(
-              'Persetujuan Akses Lokasi',
+              languageServices.language.value.locationAccessConsent ?? "-",
               style: typographyServices.bodyLargeBold.value,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 8),
             Text(
-              'Lokasi digunakan untuk menampilkan fitur dan layanan berdasarkan posisi Anda saat ini.',
+              languageServices
+                      .language
+                      .value
+                      .locationUsedDisplayFeaturesAndService ??
+                  "-",
               style: typographyServices.bodySmallRegular.value,
               textAlign: TextAlign.center,
             ),
@@ -84,7 +90,7 @@ class AccessLocationRequiredWidget extends StatelessWidget {
                   padding: EdgeInsets.all(0),
                 ),
                 child: Text(
-                  'Aktifkan Lokasi',
+                  languageServices.language.value.enableLocation ?? "-",
                   style: typographyServices.bodyLargeBold.value.copyWith(
                     color: Colors.white,
                   ),

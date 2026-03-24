@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/language_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,9 +19,29 @@ class LanguageServices extends GetxService {
     var languageCode = prefs.getString('language_code');
 
     if (languageCode != null) {
-      await switchLanguage(languageCode: languageCode);
+      await switchLanguage(languageCode: languageCode, isSave: false);
     } else {
-      await switchLanguage(languageCode: "ID");
+      var currentLocale = Intl.getCurrentLocale();
+
+      var languageCode = "ID";
+
+      if (currentLocale == "id" || currentLocale == "id_ID") {
+        languageCode = "ID";
+      }
+
+      if (currentLocale == "en" ||
+          currentLocale == "en_US" ||
+          currentLocale == "en_GB") {
+        languageCode = "EN";
+      }
+
+      if (currentLocale == "zh" ||
+          currentLocale == "zh_CN" ||
+          currentLocale == "zh_TW") {
+        languageCode = "ZH_CN";
+      }
+
+      await switchLanguage(languageCode: languageCode, isSave: false);
     }
   }
 
@@ -34,11 +55,16 @@ class LanguageServices extends GetxService {
     super.onClose();
   }
 
-  Future<void> switchLanguage({required String languageCode}) async {
+  Future<void> switchLanguage({
+    required String languageCode,
+    required bool isSave,
+  }) async {
     this.languageCode.value = languageCode;
 
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language_code', languageCode);
+    if (isSave == true) {
+      var prefs = await SharedPreferences.getInstance();
+      await prefs.setString('language_code', languageCode);
+    }
 
     switch (languageCode) {
       case "ZH_CN":

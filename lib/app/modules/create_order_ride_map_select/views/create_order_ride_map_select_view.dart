@@ -105,8 +105,18 @@ class CreateOrderRideMapSelectView
                             children: [
                               Text(
                                 controller.type.value == "origin"
-                                    ? "Lokasi Penjemputan"
-                                    : "Lokasi Tujuan",
+                                    ? (controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .pickupLocation ??
+                                          "-")
+                                    : (controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .destinationLocation ??
+                                          "-"),
                                 style: controller
                                     .typographyServices
                                     .bodyLargeBold
@@ -124,7 +134,12 @@ class CreateOrderRideMapSelectView
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Edit",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .edit ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular

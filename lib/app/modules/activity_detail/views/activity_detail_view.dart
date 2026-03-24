@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_cancel_driver_information_sub_view.dart';
+import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_cancel_reason_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_driver_information_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_form_rating_review_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_invoice_sub_view.dart';
@@ -63,10 +65,18 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: ActivityDetailDriverInformationSubView(),
-                      ),
+                      if (controller.orderRideDetail.value.state == 10 ||
+                          controller.orderRideDetail.value.state == 12) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ActivityDetailCancelDriverInformationSubView(),
+                        ),
+                      ] else ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ActivityDetailDriverInformationSubView(),
+                        ),
+                      ],
                       SizedBox(height: 12),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -134,6 +144,11 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: ActivityDetailInvoiceSubView(),
+                      ),
+                      SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ActivityDetailCancelReasonSubView(),
                       ),
                       if (controller.orderRideDetail.value.orderScore != null &&
                           controller.orderRideDetail.value.orderScore != 0) ...[

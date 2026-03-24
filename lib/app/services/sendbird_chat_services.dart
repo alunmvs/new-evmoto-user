@@ -5,6 +5,8 @@ import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dar
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 
 class SendbirdChatServices extends GetxService {
+  final isSuccessInitialize = false.obs;
+
   Future<void> initialize() async {
     final firebaseRemoteConfigServices =
         Get.find<FirebaseRemoteConfigServices>();
@@ -12,23 +14,27 @@ class SendbirdChatServices extends GetxService {
         Get.find<FirebasePushNotificationServices>();
     final homeController = Get.find<HomeController>();
 
-    await SendbirdChat.init(
-      appId: firebaseRemoteConfigServices.remoteConfig.getString(
-        'sendbird_app_id',
-      ),
-    );
-
-    await SendbirdChat.connect(
-      "user_${homeController.userInfo.value.id}",
-      nickname: homeController.userInfo.value.name,
-    );
-
-    if (firebasePushNotificationServices.fcmToken.value != "") {
-      await SendbirdChat.registerPushToken(
-        type: PushTokenType.fcm,
-        token: firebasePushNotificationServices.fcmToken.value,
+    try {
+      await SendbirdChat.init(
+        appId: firebaseRemoteConfigServices.remoteConfig.getString(
+          'sendbird_app_id',
+        ),
       );
-    }
+
+      if (homeController.userInfo.value.id != null) {
+        await SendbirdChat.connect(
+          "user_${homeController.userInfo.value.id}",
+          nickname: homeController.userInfo.value.name,
+        );
+        isSuccessInitialize.value = true;
+      }
+      if (firebasePushNotificationServices.fcmToken.value != "") {
+        await SendbirdChat.registerPushToken(
+          type: PushTokenType.fcm,
+          token: firebasePushNotificationServices.fcmToken.value,
+        );
+      }
+    } catch (e) {}
   }
 
   Future<GroupChannel?> getChannelByDriverId({required int driverId}) async {

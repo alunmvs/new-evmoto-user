@@ -93,7 +93,13 @@ class PromoAvailableCardSubView
                     SizedBox(height: 6),
                     RichText(
                       text: TextSpan(
-                        text: "Promo tersedia",
+                        text:
+                            controller
+                                .languageServices
+                                .language
+                                .value
+                                .promotionAvailable ??
+                            "-",
                         style: controller
                             .typographyServices
                             .captionLargeBold

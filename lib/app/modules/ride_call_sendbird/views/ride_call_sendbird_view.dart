@@ -18,7 +18,7 @@ class RideCallSendbirdView extends GetView<RideCallSendbirdController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Menelepon...",
+            controller.languageServices.language.value.call ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,

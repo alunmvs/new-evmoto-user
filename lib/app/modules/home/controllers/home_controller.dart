@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,6 +32,8 @@ import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/error_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -106,7 +109,6 @@ class HomeController extends GetxController {
   late GoogleMapController googleMapController;
 
   // location permission
-  final isPermissionLocationAllow = true.obs;
   final currentLatitude = Rx<double?>(null);
   final currentLongitude = Rx<double?>(null);
   final currentAddress = Rx<String?>(null);
@@ -122,31 +124,50 @@ class HomeController extends GetxController {
   // app versioning
   final versioningServer = VersioningServer().obs;
 
-  final activeOrderStatus = ''.obs;
+  final activeOrderStatus = '-'.obs;
 
+  final isCriticalError = false.obs;
   final isFetch = false.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
+    isCriticalError.value = false;
     await refreshAll(firstInit: true);
-    await socketServices.setupWebsocket();
-    await Future.wait([sendBirdServices.initialize()]);
+    try {
+      await socketServices.setupWebsocket();
+    } on DioException catch (e) {
+      print("oke-1");
+      SnackbarHelper.showSnackbarError(
+        text: generateErrorMessageDioException(dioException: e),
+      );
+      isCriticalError.value = true;
+    } on Exception catch (e) {
+      print("oke-2");
+      SnackbarHelper.showSnackbarError(
+        text: generateErrorMessageException(exception: e),
+      );
+      isCriticalError.value = true;
+    }
     isFetch.value = false;
 
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await firebasePushNotificationServices.requestPermission();
-      Get.dialog(LoadingDialog(), barrierDismissible: false);
+      Get.dialog(
+        LoadingDialog(),
+        barrierDismissible: false,
+        barrierColor: Colors.transparent,
+      );
+      await sendBirdServices.initialize();
       await sendbirdChatServices.initialize();
       await getTotalUnreadSendbirdChat();
       Get.close(1);
-
       await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);
-      // await checkForceUpdate();
-      // await checkSoftUpdate();
-      if (userInfo.value.name == "" || userInfo.value.name == null) {
+
+      if ((userInfo.value.name == "" || userInfo.value.name == null) &&
+          userInfo.value.id != null) {
         await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
       } else {
         await moveGoogleMapCameraToCurrentLocation();
@@ -159,64 +180,62 @@ class HomeController extends GetxController {
         ]);
 
         await checkInitialCall();
-        if (isPermissionLocationAllow.value == false) {
-          await showRequiredAccessPermission();
-        }
       }
     });
   }
 
   Future<void> checkInitialCall() async {
-    // Ambil daftar panggilan aktif
-    final calls = await FlutterCallkitIncoming.activeCalls();
+    if (sendBirdServices.isSuccessInitialize.value == true) {
+      try {
+        final calls = await FlutterCallkitIncoming.activeCalls();
 
-    if (calls is List && calls.isNotEmpty) {
-      // Ambil data panggilan terakhir (biasanya yang baru saja diterima)
-      final callData = calls.last;
+        if (calls is List && calls.isNotEmpty) {
+          final callData = calls.last;
 
-      final sendbirdServices = Get.find<SendbirdServices>();
-      await sendbirdServices.handleFirebasePushNotificationData(
-        data: callData['extra'],
-      );
+          await sendBirdServices.handleFirebasePushNotificationData(
+            data: callData['extra'],
+          );
 
-      await Future.delayed(Duration(milliseconds: 500));
+          await Future.delayed(Duration(milliseconds: 500));
 
-      await Permission.microphone.request();
+          await Permission.microphone.request();
 
-      await sendbirdServices.pickupCall(
-        callId: jsonDecode(
-          callData['extra']['sendbird_call'],
-        )['command']['payload']['call_id'],
-      );
-
-      var isActive = await sendbirdServices.checkIsCallActive();
-
-      if (isActive == true) {
-        Get.toNamed(
-          Routes.RIDE_CALL_SENDBIRD,
-          arguments: {
-            "call_id": jsonDecode(
+          await sendBirdServices.pickupCall(
+            callId: jsonDecode(
               callData['extra']['sendbird_call'],
             )['command']['payload']['call_id'],
-            "is_caller": false,
-            "driver_id": null,
-            "driver_name": jsonDecode(
-              callData['extra']['sendbird_call'],
-            )['command']['payload']['caller']['nickname'],
-            "driver_avatar_url":
-                jsonDecode(
-                      callData['extra']['sendbird_call'],
-                    )['command']['payload']['caller']['profile_url'] ==
-                    ''
-                ? null
-                : jsonDecode(
-                    callData['extra']['sendbird_call'],
-                  )['command']['payload']['caller']['profile_url'],
-          },
-        );
-      } else {
-        FlutterCallkitIncoming.endAllCalls();
-      }
+          );
+
+          var isActive = await sendBirdServices.checkIsCallActive();
+
+          if (isActive == true) {
+            Get.toNamed(
+              Routes.RIDE_CALL_SENDBIRD,
+              arguments: {
+                "call_id": jsonDecode(
+                  callData['extra']['sendbird_call'],
+                )['command']['payload']['call_id'],
+                "is_caller": false,
+                "driver_id": null,
+                "driver_name": jsonDecode(
+                  callData['extra']['sendbird_call'],
+                )['command']['payload']['caller']['nickname'],
+                "driver_avatar_url":
+                    jsonDecode(
+                          callData['extra']['sendbird_call'],
+                        )['command']['payload']['caller']['profile_url'] ==
+                        ''
+                    ? null
+                    : jsonDecode(
+                        callData['extra']['sendbird_call'],
+                      )['command']['payload']['caller']['profile_url'],
+              },
+            );
+          } else {
+            FlutterCallkitIncoming.endAllCalls();
+          }
+        }
+      } catch (e) {}
     }
   }
 
@@ -237,11 +256,13 @@ class HomeController extends GetxController {
     currentLongitude.value = locationServices.currentLongitude.value;
 
     if (currentLatitude.value != null) {
-      googleMapController.moveCamera(
-        CameraUpdate.newLatLng(
-          LatLng(currentLatitude.value!, currentLongitude.value!),
-        ),
-      );
+      try {
+        googleMapController.moveCamera(
+          CameraUpdate.newLatLng(
+            LatLng(currentLatitude.value!, currentLongitude.value!),
+          ),
+        );
+      } catch (e) {}
     }
   }
 
@@ -249,7 +270,6 @@ class HomeController extends GetxController {
     await Future.wait([
       getUserInfo(),
       getActiveOrderList(),
-      getAvailableCouponList(),
       getSavedAddressList(),
     ]);
 
@@ -260,18 +280,34 @@ class HomeController extends GetxController {
   }
 
   Future<void> getUserInfo() async {
-    userInfo.value = (await userRepository.getUserInfo(
-      language: languageServices.languageCodeSystem.value,
-    ));
+    try {
+      userInfo.value = (await userRepository.getUserInfo(
+        language: languageServices.languageCodeSystem.value,
+      ));
+    } on DioException catch (e) {
+      print("oke-3");
+      SnackbarHelper.showSnackbarError(
+        text: generateErrorMessageDioException(dioException: e),
+      );
+      isCriticalError.value = true;
+    } on Exception catch (e) {
+      print("oke-4");
+      SnackbarHelper.showSnackbarError(
+        text: generateErrorMessageException(exception: e),
+      );
+      isCriticalError.value = true;
+    }
   }
 
   Future<void> getActiveOrderList() async {
-    activeOrderList.value = (await orderRideRepository.getActiveOrderList(
-      language: languageServices.languageCodeSystem.value,
-    ));
+    try {
+      activeOrderList.value = (await orderRideRepository.getActiveOrderList(
+        language: languageServices.languageCodeSystem.value,
+      ));
 
-    isActiveOrderListNotEmpty.value = activeOrderList.isNotEmpty;
-    await getActiveOrderStatus();
+      isActiveOrderListNotEmpty.value = activeOrderList.isNotEmpty;
+      await getActiveOrderStatus();
+    } catch (e) {}
   }
 
   Future<void> getAvailableCouponList() async {
@@ -284,8 +320,10 @@ class HomeController extends GetxController {
   }
 
   Future<void> getSavedAddressList() async {
-    savedAddressList.value = (await savedAddressRepository
-        .getSavedAddressList());
+    try {
+      savedAddressList.value = (await savedAddressRepository
+          .getSavedAddressList());
+    } catch (e) {}
   }
 
   Future<void> onTapRideService({
@@ -314,9 +352,10 @@ class HomeController extends GetxController {
           await Get.toNamed(
             Routes.CREATE_ORDER_RIDE,
             arguments: {
-              "start_address": currentAddress.value,
-              "start_lat": currentLatitude.value,
-              "start_lon": currentLongitude.value,
+              "origin_address_name": currentGeocodingAddress.value.name,
+              "origin_address": currentGeocodingAddress.value.address,
+              "origin_latitude": currentLatitude.value.toString(),
+              "origin_longitude": currentLongitude.value.toString(),
             },
           );
         } else {
@@ -450,175 +489,194 @@ class HomeController extends GetxController {
   Future<void> checkAppVersioning({
     required bool isShowVersionNewestConfirmationDialog,
   }) async {
-    versioningServer.value = await versioningServerRepository
-        .getVersioningServer(type: 1);
+    try {
+      versioningServer.value = await versioningServerRepository
+          .getVersioningServer(type: 1);
 
-    if (versioningServer.value.version != null) {
-      var packageInfo = await PackageInfo.fromPlatform();
-      var currentVersion = Version.parse(packageInfo.version);
-      var serverVersion = Version.parse(versioningServer.value.version!);
+      if (versioningServer.value.version != null) {
+        var packageInfo = await PackageInfo.fromPlatform();
+        var currentVersion = Version.parse(packageInfo.version);
+        var serverVersion = Version.parse(versioningServer.value.version!);
 
-      if (currentVersion < serverVersion) {
-        await Get.dialog(
-          PopScope(
-            canPop: versioningServer.value.mandatory == 0,
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Material(
-                      color: themeColorServices.neutralsColorGrey0.value,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(height: 24),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Image.asset(
-                                "assets/images/img_soft_update.png",
-                                width: Get.width * 169.25 / 375,
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              "Pembaruan Aplikasi Tersedia",
-                              style: typographyServices.bodyLargeBold.value,
-                              textAlign: TextAlign.center,
-                            ),
-                            if (versioningServer.value.content != null &&
-                                versioningServer.value.content != '') ...[
-                              SizedBox(height: 8),
-                              Text(
-                                versioningServer.value.content ?? "-",
-                                style: typographyServices.bodySmallRegular.value
-                                    .copyWith(color: Color(0XFFB3B3B3)),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                            SizedBox(height: 16),
-                            LoaderElevatedButton(
-                              onPressed: () async {
-                                await onTapUpdateVersion();
-                              },
-                              child: Text(
-                                "Update Sekarang",
-                                style: typographyServices.bodyLargeBold.value
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ),
-                            if (versioningServer.value.mandatory == 0) ...[
-                              SizedBox(height: 10),
-                              SizedBox(
-                                height: 46,
-                                width: Get.width,
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Color(0XFFDBDBDB)),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    Get.close(1);
-                                  },
-                                  child: Text(
-                                    "Update Nanti",
-                                    style: typographyServices
-                                        .bodyLargeBold
-                                        .value
-                                        .copyWith(color: Color(0XFFAFAFAF)),
-                                  ),
+        if (currentVersion < serverVersion) {
+          await Get.dialog(
+            PopScope(
+              canPop: versioningServer.value.mandatory == 0,
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Material(
+                        color: themeColorServices.neutralsColorGrey0.value,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(height: 24),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                child: Image.asset(
+                                  "assets/images/img_soft_update.png",
+                                  width: Get.width * 169.25 / 375,
                                 ),
                               ),
-                            ],
-                            SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          barrierDismissible: false,
-        );
-      } else {
-        if (isShowVersionNewestConfirmationDialog == true) {
-          Get.dialog(
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Material(
-                      color: themeColorServices.neutralsColorGrey0.value,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 16),
-                            Container(
-                              width: 42,
-                              height: 42,
-                              decoration: BoxDecoration(
-                                color: Color(0XFFDDFFE6),
-                                borderRadius: BorderRadius.circular(8),
+                              SizedBox(height: 16),
+                              Text(
+                                languageServices
+                                        .language
+                                        .value
+                                        .appUpdateAvailable ??
+                                    "-",
+                                style: typographyServices.bodyLargeBold.value,
+                                textAlign: TextAlign.center,
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/icon_checkmark_circle.svg",
-                                    width: 26,
-                                    height: 26,
+                              if (versioningServer.value.content != null &&
+                                  versioningServer.value.content != '') ...[
+                                SizedBox(height: 8),
+                                Text(
+                                  versioningServer.value.content ?? "-",
+                                  style: typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(color: Color(0XFFB3B3B3)),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                              SizedBox(height: 16),
+                              LoaderElevatedButton(
+                                onPressed: () async {
+                                  await onTapUpdateVersion();
+                                },
+                                child: Text(
+                                  languageServices.language.value.updateNow ??
+                                      "-",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(color: Colors.white),
+                                ),
+                              ),
+                              if (versioningServer.value.mandatory == 0) ...[
+                                SizedBox(height: 10),
+                                SizedBox(
+                                  height: 46,
+                                  width: Get.width,
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                        color: Color(0XFFDBDBDB),
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      Get.close(1);
+                                    },
+                                    child: Text(
+                                      languageServices
+                                              .language
+                                              .value
+                                              .updateLater ??
+                                          "-",
+                                      style: typographyServices
+                                          .bodyLargeBold
+                                          .value
+                                          .copyWith(color: Color(0XFFAFAFAF)),
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Anda menggunakan versi terbaru',
-                              style: typographyServices.bodyLargeBold.value,
-                            ),
-                            SizedBox(height: 16),
-                            LoaderElevatedButton(
-                              child: Text(
-                                languageServices.language.value.back ?? "-",
-                                style: typographyServices.bodyLargeBold.value
-                                    .copyWith(color: Colors.white),
-                              ),
-                              onPressed: () async {
-                                Get.close(1);
-                              },
-                            ),
-                            SizedBox(height: 16),
-                          ],
+                                ),
+                              ],
+                              SizedBox(height: 16),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+            barrierDismissible: false,
           );
+        } else {
+          if (isShowVersionNewestConfirmationDialog == true) {
+            Get.dialog(
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Material(
+                        color: themeColorServices.neutralsColorGrey0.value,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 16),
+                              Container(
+                                width: 42,
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  color: Color(0XFFDDFFE6),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_checkmark_circle.svg",
+                                      width: 26,
+                                      height: 26,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                languageServices
+                                        .language
+                                        .value
+                                        .usingLatestVersion ??
+                                    "-",
+                                style: typographyServices.bodyLargeBold.value,
+                              ),
+                              SizedBox(height: 16),
+                              LoaderElevatedButton(
+                                child: Text(
+                                  languageServices.language.value.back ?? "-",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  Get.close(1);
+                                },
+                              ),
+                              SizedBox(height: 16),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
         }
       }
-    }
+    } catch (e) {}
   }
 
   Future<bool> checkSoftUpdate() async {
@@ -693,13 +751,21 @@ class HomeController extends GetxController {
                             SizedBox(height: 16),
                           ],
                           Text(
-                            "Pembaruan Aplikasi Tersedia",
+                            languageServices
+                                    .language
+                                    .value
+                                    .appUpdateAvailable ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value,
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 8),
                           Text(
-                            "Perbarui aplikasi untuk pengalaman yang lebih baik.",
+                            languageServices
+                                    .language
+                                    .value
+                                    .updateAppBetterExperience ??
+                                "-",
                             style: typographyServices.bodySmallRegular.value
                                 .copyWith(color: Color(0XFFB3B3B3)),
                             textAlign: TextAlign.center,
@@ -710,7 +776,7 @@ class HomeController extends GetxController {
                               await onTapUpdateVersion();
                             },
                             child: Text(
-                              "Update Sekarang",
+                              languageServices.language.value.updateNow ?? "-",
                               style: typographyServices.bodyLargeBold.value
                                   .copyWith(color: Colors.white),
                             ),
@@ -735,8 +801,8 @@ class HomeController extends GetxController {
                               children: [
                                 SvgPicture.asset(
                                   "assets/icons/icon_close.svg",
-                                  width: 12,
-                                  height: 12,
+                                  width: 18,
+                                  height: 18,
                                 ),
                               ],
                             ),
@@ -782,13 +848,14 @@ class HomeController extends GetxController {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    "Perbarui Aplikasi Anda",
+                    languageServices.language.value.updateApp ?? "-",
                     style: typographyServices.bodyLargeBold.value,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 8),
                   Text(
-                    "Untuk melanjutkan penggunaan, silakan perbarui aplikasi ke versi terbaru.",
+                    languageServices.language.value.updateTheAppLatestVersion ??
+                        "-",
                     style: typographyServices.bodySmallRegular.value.copyWith(
                       color: Color(0XFFB3B3B3),
                     ),
@@ -800,7 +867,7 @@ class HomeController extends GetxController {
                       await onTapUpdateVersion();
                     },
                     child: Text(
-                      "Update Sekarang",
+                      languageServices.language.value.updateNow ?? "-",
                       style: typographyServices.bodyLargeBold.value.copyWith(
                         color: Colors.white,
                       ),
@@ -844,13 +911,15 @@ class HomeController extends GetxController {
           currentLongitude.value == longitude) {
         if (currentAddressIsLoading.value == false) {
           currentAddressIsLoading.value = true;
-          currentGeocodingAddress.value =
-              (await geocodingRepository.getAddressByLatitudeLongitude(
-                latitude: latitude,
-                longitude: longitude,
-              )) ??
-              GeocodingAddress();
-          currentAddress.value = currentGeocodingAddress.value.address;
+          try {
+            currentGeocodingAddress.value =
+                (await geocodingRepository.getAddressByLatitudeLongitude(
+                  latitude: latitude,
+                  longitude: longitude,
+                )) ??
+                GeocodingAddress();
+            currentAddress.value = currentGeocodingAddress.value.address;
+          } catch (e) {}
           currentAddressIsLoading.value = false;
         }
       }
@@ -897,7 +966,11 @@ class HomeController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Persetujuan Akses Lokasi",
+                            languageServices
+                                    .language
+                                    .value
+                                    .locationAccessConsent ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value
                                 .copyWith(
                                   fontWeight: FontWeight.w700,
@@ -920,8 +993,8 @@ class HomeController extends GetxController {
                                 children: [
                                   SvgPicture.asset(
                                     "assets/icons/icon_close.svg",
-                                    width: 12,
-                                    height: 12,
+                                    width: 18,
+                                    height: 18,
                                   ),
                                 ],
                               ),
@@ -942,13 +1015,14 @@ class HomeController extends GetxController {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        "Kami membutuhkan lokasi Anda yang tepat agar dapat melayani Anda dengan lebih baik.",
+                        languageServices.language.value.needExactLocation ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value,
                       ),
                       SizedBox(height: 16),
                       LoaderElevatedButton(
                         child: Text(
-                          "Aktifkan Lokasi",
+                          languageServices.language.value.enableLocation ?? "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(
                                 color:
@@ -972,13 +1046,15 @@ class HomeController extends GetxController {
 
   Future<void> getTotalUnreadSendbirdChat() async {
     totalUnreadMessageCount.value = 0;
-    var query = GroupChannelListQuery();
-    var channelList = await query.next();
+    if (sendbirdChatServices.isSuccessInitialize.value == true) {
+      var query = GroupChannelListQuery();
+      var channelList = await query.next();
 
-    for (var channel in channelList) {
-      for (var member in channel.members) {
-        if (member.userId == "user_${userInfo.value.id}") {
-          totalUnreadMessageCount.value += channel.unreadMessageCount;
+      for (var channel in channelList) {
+        for (var member in channel.members) {
+          if (member.userId == "user_${userInfo.value.id}") {
+            totalUnreadMessageCount.value += channel.unreadMessageCount;
+          }
         }
       }
     }
@@ -1006,18 +1082,20 @@ class HomeController extends GetxController {
 
   Future<void> getAdvertisementList() async {
     advertisementList.value = [];
-    if (locationServices.currentLatitude.value != null &&
-        locationServices.currentLongitude.value != null) {
-      advertisementList.value = await advertisementRepository
-          .getAdvertisementList(
-            type: 1,
-            lat: locationServices.currentLatitude.value,
-            lon: locationServices.currentLongitude.value,
-            language: languageServices.languageCodeSystem.value,
-          );
+    try {
+      if (locationServices.currentLatitude.value != null &&
+          locationServices.currentLongitude.value != null) {
+        advertisementList.value = await advertisementRepository
+            .getAdvertisementList(
+              type: 1,
+              lat: locationServices.currentLatitude.value,
+              lon: locationServices.currentLongitude.value,
+              language: languageServices.languageCodeSystem.value,
+            );
 
-      advertisementList.sort((a, b) => a.sortNum!.compareTo(b.sortNum!));
-    }
+        advertisementList.sort((a, b) => a.sortNum!.compareTo(b.sortNum!));
+      }
+    } catch (e) {}
   }
 
   Future<void> getActiveOrderStatus() async {

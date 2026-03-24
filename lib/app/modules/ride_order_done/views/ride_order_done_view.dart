@@ -93,7 +93,12 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                   await controller.onTapDone();
                 },
                 child: Text(
-                  "Konfirmasi Pembayaran",
+                  controller
+                          .languageServices
+                          .language
+                          .value
+                          .paymentConfirmation ??
+                      "-",
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(color: Colors.white),
                 ),

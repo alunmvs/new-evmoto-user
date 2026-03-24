@@ -81,7 +81,12 @@ class RideOrderDriverArrivedOriginPanelSubView
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Driver tiba di titik penjemputan",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .driverArriveThePickupPoint ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold

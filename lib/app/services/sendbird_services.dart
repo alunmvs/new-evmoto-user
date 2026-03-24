@@ -9,6 +9,7 @@ import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dar
 
 class SendbirdServices extends GetxService {
   var methodChannel = MethodChannel('com.sendbird.calls/method');
+  final isSuccessInitialize = false.obs;
 
   Future<void> initialize() async {
     final firebaseRemoteConfigServices =
@@ -17,15 +18,20 @@ class SendbirdServices extends GetxService {
         Get.find<FirebasePushNotificationServices>();
     final homeController = Get.find<HomeController>();
 
-    methodChannel.setMethodCallHandler(handleNativeListener);
-    await methodChannel.invokeMethod("init", {
-      "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
-        'sendbird_app_id',
-      ),
-      "user_id": "user_${homeController.userInfo.value.id}",
-      "access_token": '',
-      "push_token": firebasePushNotificationServices.fcmToken.value,
-    });
+    try {
+      methodChannel.setMethodCallHandler(handleNativeListener);
+      if (homeController.userInfo.value.id != null) {
+        await methodChannel.invokeMethod("init", {
+          "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
+            'sendbird_app_id',
+          ),
+          "user_id": "user_${homeController.userInfo.value.id}",
+          "access_token": '',
+          "push_token": firebasePushNotificationServices.fcmToken.value,
+        });
+        isSuccessInitialize.value = true;
+      }
+    } catch (e) {}
   }
 
   Future<void> handleNativeListener(MethodCall call) async {

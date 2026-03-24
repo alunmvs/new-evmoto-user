@@ -48,7 +48,13 @@ class PromoExpiredCardSubView extends GetView<CreateOrderRidePromoController> {
                     SizedBox(height: 6),
                     RichText(
                       text: TextSpan(
-                        text: "Promo tidak tersedia",
+                        text:
+                            controller
+                                .languageServices
+                                .language
+                                .value
+                                .promoNotAvailable ??
+                            "-",
                         style: controller
                             .typographyServices
                             .captionLargeBold

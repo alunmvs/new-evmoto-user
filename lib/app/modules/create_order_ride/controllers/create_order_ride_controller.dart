@@ -761,8 +761,8 @@ class CreateOrderRideController extends GetxController {
                                     children: [
                                       SvgPicture.asset(
                                         "assets/icons/icon_close.svg",
-                                        width: 12,
-                                        height: 12,
+                                        width: 18,
+                                        height: 18,
                                       ),
                                     ],
                                   ),
@@ -783,7 +783,11 @@ class CreateOrderRideController extends GetxController {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            "Titik penjemputan atau pengantaran berada di luar area layanan.",
+                            languageServices
+                                    .language
+                                    .value
+                                    .thePickupDropoffOutsideServiceArea ??
+                                "-",
                             style: typographyServices.bodySmallRegular.value,
                           ),
                           SizedBox(height: 16),
@@ -792,7 +796,8 @@ class CreateOrderRideController extends GetxController {
                               Get.close(1);
                             },
                             child: Text(
-                              "Ubah Lokasi",
+                              languageServices.language.value.changeLocation ??
+                                  "-",
                               style: typographyServices.bodyLargeBold.value
                                   .copyWith(
                                     color: themeColorServices
@@ -835,7 +840,11 @@ class CreateOrderRideController extends GetxController {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Kota Tujuan Tidak Sesuai",
+                                languageServices
+                                        .language
+                                        .value
+                                        .destinationCityNotSuitable ??
+                                    "-",
                                 style: typographyServices.bodyLargeBold.value,
                               ),
                               GestureDetector(
@@ -853,8 +862,8 @@ class CreateOrderRideController extends GetxController {
                                     children: [
                                       SvgPicture.asset(
                                         "assets/icons/icon_close.svg",
-                                        width: 12,
-                                        height: 12,
+                                        width: 18,
+                                        height: 18,
                                       ),
                                     ],
                                   ),
@@ -875,7 +884,11 @@ class CreateOrderRideController extends GetxController {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            "Lokasi penjemputan dan pengantaran berada di kota yang berbeda.",
+                            languageServices
+                                    .language
+                                    .value
+                                    .pickupDropoffDifferentCities ??
+                                "-",
                             style: typographyServices.bodySmallRegular.value,
                           ),
                           SizedBox(height: 16),
@@ -884,7 +897,8 @@ class CreateOrderRideController extends GetxController {
                               Get.close(1);
                             },
                             child: Text(
-                              "Ubah Lokasi",
+                              languageServices.language.value.changeLocation ??
+                                  "-",
                               style: typographyServices.bodyLargeBold.value
                                   .copyWith(
                                     color: themeColorServices
@@ -927,7 +941,11 @@ class CreateOrderRideController extends GetxController {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Jarak Melebihi Batas Layanan",
+                                languageServices
+                                        .language
+                                        .value
+                                        .distanceExceedsLimit ??
+                                    "-",
                                 style: typographyServices.bodyLargeBold.value,
                               ),
                               GestureDetector(
@@ -945,8 +963,8 @@ class CreateOrderRideController extends GetxController {
                                     children: [
                                       SvgPicture.asset(
                                         "assets/icons/icon_close.svg",
-                                        width: 12,
-                                        height: 12,
+                                        width: 18,
+                                        height: 18,
                                       ),
                                     ],
                                   ),
@@ -967,7 +985,11 @@ class CreateOrderRideController extends GetxController {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            "Jarak perjalanan yang telah ditentukan melebihi 60 kilometer.",
+                            languageServices
+                                    .language
+                                    .value
+                                    .travelDistanceExceeds60Km ??
+                                "-",
                             style: typographyServices.bodySmallRegular.value,
                           ),
                           SizedBox(height: 16),
@@ -976,7 +998,8 @@ class CreateOrderRideController extends GetxController {
                               Get.close(1);
                             },
                             child: Text(
-                              "Ubah Lokasi",
+                              languageServices.language.value.changeLocation ??
+                                  "-",
                               style: typographyServices.bodyLargeBold.value
                                   .copyWith(
                                     color: themeColorServices

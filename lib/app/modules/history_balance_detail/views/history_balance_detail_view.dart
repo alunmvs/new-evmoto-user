@@ -427,7 +427,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                           ),
                           SizedBox(height: 24),
                           Text(
-                            "Topup Saldo",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .topupBalance ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .headingSmallBold
@@ -532,7 +537,12 @@ class HistoryBalanceDetailView extends GetView<HistoryBalanceDetailController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Topup Saldo",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .topupBalance ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular

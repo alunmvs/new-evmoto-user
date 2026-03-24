@@ -165,7 +165,12 @@ class DepositBalancePaymentWebviewView
                         .sematicColorGreen400
                         .value,
                     content: Text(
-                      "Saldo berhasil ditambah",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .balanceSuccessAdded ??
+                          "-",
                       style: controller
                           .typographyServices
                           .bodySmallRegular
@@ -188,7 +193,12 @@ class DepositBalancePaymentWebviewView
                     backgroundColor:
                         controller.themeColorServices.sematicColorRed400.value,
                     content: Text(
-                      "Transaksi kedaluwarsa",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .transactionExpired ??
+                          "-",
                       style: controller
                           .typographyServices
                           .bodySmallRegular
@@ -233,7 +243,12 @@ class DepositBalancePaymentWebviewView
             backgroundColor:
                 controller.themeColorServices.sematicColorGreen400.value,
             content: Text(
-              "Berhasil menyimpan gambar pada gallery",
+              controller
+                      .languageServices
+                      .language
+                      .value
+                      .successSaveImageGallery ??
+                  "-",
               style: controller.typographyServices.bodySmallRegular.value
                   .copyWith(
                     color:
@@ -251,7 +266,8 @@ class DepositBalancePaymentWebviewView
           backgroundColor:
               controller.themeColorServices.sematicColorRed400.value,
           content: Text(
-            "Tidak memiliki akses menyimpan gambar ke gallery",
+            controller.languageServices.language.value.dontHaveAccessGallery ??
+                "-",
             style: controller.typographyServices.bodySmallRegular.value
                 .copyWith(
                   color: controller.themeColorServices.neutralsColorGrey0.value,

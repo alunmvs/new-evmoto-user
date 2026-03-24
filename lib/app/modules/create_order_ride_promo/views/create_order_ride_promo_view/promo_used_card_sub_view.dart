@@ -48,7 +48,13 @@ class PromoUsedCardSubView extends GetView<CreateOrderRidePromoController> {
                     SizedBox(height: 6),
                     RichText(
                       text: TextSpan(
-                        text: "Promo sudah digunakan",
+                        text:
+                            controller
+                                .languageServices
+                                .language
+                                .value
+                                .promoHasBeenUsed ??
+                            "-",
                         style: controller
                             .typographyServices
                             .captionLargeBold

@@ -58,7 +58,12 @@ class OnboardingRegistrationFormView
                           ),
                           SizedBox(height: 16),
                           Text(
-                            "Siapa Nama Kamu?",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .whatName ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodyLargeBold
@@ -67,7 +72,12 @@ class OnboardingRegistrationFormView
                           ),
                           SizedBox(height: 8),
                           Text(
-                            "Agar kami dapat memberikan layanan terbaik untuk kamu.",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .canProvideBestService ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular

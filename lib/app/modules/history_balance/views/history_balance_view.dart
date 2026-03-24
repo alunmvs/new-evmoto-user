@@ -130,7 +130,12 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                     ),
                                     SizedBox(height: 16),
                                     Text(
-                                      "Transaksimu Masih Kosong",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .transactionEmpty ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold
@@ -139,7 +144,12 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                     ),
                                     SizedBox(height: 8),
                                     Text(
-                                      "Mulai transaksi sekarang dan nikmati proses yang praktis!",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .startTransactionEnjoyConvenientProcess ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -252,7 +262,12 @@ class HistoryBalanceView extends GetView<HistoryBalanceController> {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              "Topup Saldo",
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .topupBalance ??
+                                                                  "-",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodySmallRegular

@@ -2663,8 +2663,18 @@ class RideView extends GetView<RideController> {
                                     child: Text(
                                       controller.status.value ==
                                               "origin_select_via_map"
-                                          ? "Penjemputan"
-                                          : "Tujuan",
+                                          ? (controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .origin ??
+                                                "-")
+                                          : (controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .destination ??
+                                                "-"),
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold

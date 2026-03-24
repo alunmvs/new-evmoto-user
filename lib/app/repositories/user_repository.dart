@@ -15,6 +15,8 @@ class UserRepository {
           "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/user/api/user/queryUserInfo";
 
       var formData = FormData.fromMap({"language": language});
+      print(url);
+      print({"language": language});
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -37,6 +39,7 @@ class UserRepository {
 
       return UserInfo.fromJson(response.data['data']);
     } on DioException catch (e) {
+      print(e.response);
       rethrow;
     }
   }

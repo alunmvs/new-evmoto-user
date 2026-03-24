@@ -264,7 +264,12 @@ class VoucherListView extends GetView<VoucherListController> {
                                             horizontal: 16,
                                           ),
                                           child: Text(
-                                            "Voucher Promo Tidak Tersedia",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .promoVoucherNotAvailable ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeBold

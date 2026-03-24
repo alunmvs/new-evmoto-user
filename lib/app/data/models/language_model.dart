@@ -270,6 +270,57 @@ class Language {
   String? conversationWillAppear;
   String? noMessageYetStartConverstation;
   String? makesureAddressCorrect;
+  String? pickupLocation;
+  String? destinationLocation;
+  String? edit;
+  String? promotionAvailable;
+  String? promoNotAvailable;
+  String? promoHasBeenUsed;
+  String? cancelBalanceTopupConfirmation;
+  String? close;
+  String? balanceSuccessAdded;
+  String? transactionExpired;
+  String? successSaveImageGallery;
+  String? dontHaveAccessGallery;
+  String? transactionEmpty;
+  String? startTransactionEnjoyConvenientProcess;
+  String? whatName;
+  String? canProvideBestService;
+  String? origin;
+  String? destination;
+  String? call;
+  String? driverArriveThePickupPoint;
+  String? cantMakeCall;
+  String? driverWillArriveSoon;
+  String? paymentConfirmation;
+  String? pleaseMakePaymentAccording;
+  String? thereErrorSystem;
+  String? networkUnreachable;
+  String? connectionTimeout;
+  String? appUpdateAvailable;
+  String? updateNow;
+  String? updateLater;
+  String? usingLatestVersion;
+  String? updateAppBetterExperience;
+  String? updateApp;
+  String? updateTheAppLatestVersion;
+  String? locationAccessConsent;
+  String? needExactLocation;
+  String? enableLocation;
+  String? pressAgainExit;
+  String? helloWhereToday;
+  String? pickupPoint;
+  String? thePickupDropoffOutsideServiceArea;
+  String? outsideServiceArea;
+  String? pickupDropoffDifferentCities;
+  String? changeLocation;
+  String? distanceExceedsLimit;
+  String? travelDistanceExceeds60Km;
+  String? destinationCityNotSuitable;
+  String? locationUsedDisplayFeaturesAndService;
+  String? mustStartWith8;
+  String? min8DigitMobilePhone;
+  String? max15DigitMobilePhone;
 
   Language({
     this.onboardingIntroTitle1,
@@ -543,6 +594,57 @@ class Language {
     this.conversationWillAppear,
     this.noMessageYetStartConverstation,
     this.makesureAddressCorrect,
+    this.pickupLocation,
+    this.destinationLocation,
+    this.edit,
+    this.promotionAvailable,
+    this.promoNotAvailable,
+    this.promoHasBeenUsed,
+    this.cancelBalanceTopupConfirmation,
+    this.close,
+    this.balanceSuccessAdded,
+    this.transactionExpired,
+    this.successSaveImageGallery,
+    this.dontHaveAccessGallery,
+    this.transactionEmpty,
+    this.startTransactionEnjoyConvenientProcess,
+    this.whatName,
+    this.canProvideBestService,
+    this.origin,
+    this.destination,
+    this.call,
+    this.driverArriveThePickupPoint,
+    this.cantMakeCall,
+    this.driverWillArriveSoon,
+    this.paymentConfirmation,
+    this.pleaseMakePaymentAccording,
+    this.thereErrorSystem,
+    this.networkUnreachable,
+    this.connectionTimeout,
+    this.appUpdateAvailable,
+    this.updateNow,
+    this.updateLater,
+    this.usingLatestVersion,
+    this.updateAppBetterExperience,
+    this.updateApp,
+    this.updateTheAppLatestVersion,
+    this.locationAccessConsent,
+    this.needExactLocation,
+    this.enableLocation,
+    this.pressAgainExit,
+    this.helloWhereToday,
+    this.pickupPoint,
+    this.thePickupDropoffOutsideServiceArea,
+    this.outsideServiceArea,
+    this.pickupDropoffDifferentCities,
+    this.changeLocation,
+    this.distanceExceedsLimit,
+    this.travelDistanceExceeds60Km,
+    this.destinationCityNotSuitable,
+    this.locationUsedDisplayFeaturesAndService,
+    this.mustStartWith8,
+    this.min8DigitMobilePhone,
+    this.max15DigitMobilePhone,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -826,6 +928,60 @@ class Language {
     conversationWillAppear = json['conversation_will_appear'];
     noMessageYetStartConverstation = json['no_message_yet_start_converstation'];
     makesureAddressCorrect = json['makesure_address_correct'];
+    pickupLocation = json['pickup_location'];
+    destinationLocation = json['destination_location'];
+    edit = json['edit'];
+    promotionAvailable = json['promotion_available'];
+    promoNotAvailable = json['promo_not_available'];
+    promoHasBeenUsed = json['promo_has_been_used'];
+    cancelBalanceTopupConfirmation = json['cancel_balance_topup_confirmation'];
+    close = json['close'];
+    balanceSuccessAdded = json['balance_success_added'];
+    transactionExpired = json['transaction_expired'];
+    successSaveImageGallery = json['success_save_image_gallery'];
+    dontHaveAccessGallery = json['dont_have_access_gallery'];
+    transactionEmpty = json['transaction_empty'];
+    startTransactionEnjoyConvenientProcess =
+        json['start_transaction_enjoy_convenient_process'];
+    whatName = json['what_name'];
+    canProvideBestService = json['can_provide_best_service'];
+    origin = json['origin'];
+    destination = json['destination'];
+    call = json['call'];
+    driverArriveThePickupPoint = json['driver_arrive_the_pickup_point'];
+    cantMakeCall = json['cant_make_call'];
+    driverWillArriveSoon = json['driver_will_arrive_soon'];
+    paymentConfirmation = json['payment_confirmation'];
+    pleaseMakePaymentAccording = json['please_make_payment_according'];
+    thereErrorSystem = json['there_error_system'];
+    networkUnreachable = json['network_unreachable'];
+    connectionTimeout = json['connection_timeout'];
+    appUpdateAvailable = json['app_update_available'];
+    updateNow = json['update_now'];
+    updateLater = json['update_later'];
+    usingLatestVersion = json['using_latest_version'];
+    updateAppBetterExperience = json['update_app_better_experience'];
+    updateApp = json['update_app'];
+    updateTheAppLatestVersion = json['update_the_app_latest_version'];
+    locationAccessConsent = json['location_access_consent'];
+    needExactLocation = json['need_exact_location'];
+    enableLocation = json['enable_location'];
+    pressAgainExit = json['press_again_exit'];
+    helloWhereToday = json['hello_where_today'];
+    pickupPoint = json['pickup_point'];
+    thePickupDropoffOutsideServiceArea =
+        json['the_pickup_dropoff_outside_service_area'];
+    outsideServiceArea = json['outside_service_area'];
+    pickupDropoffDifferentCities = json['pickup_dropoff_different_cities'];
+    changeLocation = json['change_location'];
+    distanceExceedsLimit = json['distance_exceeds_limit'];
+    travelDistanceExceeds60Km = json['travel_distance_exceeds_60_km'];
+    destinationCityNotSuitable = json['destination_city_not_suitable'];
+    locationUsedDisplayFeaturesAndService =
+        json['location_used_display_features_and_service'];
+    mustStartWith8 = json['must_start_with_8'];
+    min8DigitMobilePhone = json['min_8_digit_mobile_phone'];
+    max15DigitMobilePhone = json['max_15_digit_mobile_phone'];
   }
 
   Map<String, dynamic> toJson() {
@@ -1114,6 +1270,61 @@ class Language {
     data['no_message_yet_start_converstation'] =
         this.noMessageYetStartConverstation;
     data['makesure_address_correct'] = this.makesureAddressCorrect;
+    data['pickup_location'] = this.pickupLocation;
+    data['destination_location'] = this.destinationLocation;
+    data['edit'] = this.edit;
+    data['promotion_available'] = this.promotionAvailable;
+    data['promo_not_available'] = this.promoNotAvailable;
+    data['promo_has_been_used'] = this.promoHasBeenUsed;
+    data['cancel_balance_topup_confirmation'] =
+        this.cancelBalanceTopupConfirmation;
+    data['close'] = this.close;
+    data['balance_success_added'] = this.balanceSuccessAdded;
+    data['transaction_expired'] = this.transactionExpired;
+    data['success_save_image_gallery'] = this.successSaveImageGallery;
+    data['dont_have_access_gallery'] = this.dontHaveAccessGallery;
+    data['transaction_empty'] = this.transactionEmpty;
+    data['start_transaction_enjoy_convenient_process'] =
+        this.startTransactionEnjoyConvenientProcess;
+    data['what_name'] = this.whatName;
+    data['can_provide_best_service'] = this.canProvideBestService;
+    data['origin'] = this.origin;
+    data['destination'] = this.destination;
+    data['call'] = this.call;
+    data['driver_arrive_the_pickup_point'] = this.driverArriveThePickupPoint;
+    data['cant_make_call'] = this.cantMakeCall;
+    data['driver_will_arrive_soon'] = this.driverWillArriveSoon;
+    data['payment_confirmation'] = this.paymentConfirmation;
+    data['please_make_payment_according'] = this.pleaseMakePaymentAccording;
+    data['there_error_system'] = this.thereErrorSystem;
+    data['network_unreachable'] = this.networkUnreachable;
+    data['connection_timeout'] = this.connectionTimeout;
+    data['app_update_available'] = this.appUpdateAvailable;
+    data['update_now'] = this.updateNow;
+    data['update_later'] = this.updateLater;
+    data['using_latest_version'] = this.usingLatestVersion;
+    data['update_app_better_experience'] = this.updateAppBetterExperience;
+    data['update_app'] = this.updateApp;
+    data['update_the_app_latest_version'] = this.updateTheAppLatestVersion;
+    data['location_access_consent'] = this.locationAccessConsent;
+    data['need_exact_location'] = this.needExactLocation;
+    data['enable_location'] = this.enableLocation;
+    data['press_again_exit'] = this.pressAgainExit;
+    data['hello_where_today'] = this.helloWhereToday;
+    data['pickup_point'] = this.pickupPoint;
+    data['the_pickup_dropoff_outside_service_area'] =
+        this.thePickupDropoffOutsideServiceArea;
+    data['outside_service_area'] = this.outsideServiceArea;
+    data['pickup_dropoff_different_cities'] = this.pickupDropoffDifferentCities;
+    data['change_location'] = this.changeLocation;
+    data['distance_exceeds_limit'] = this.distanceExceedsLimit;
+    data['travel_distance_exceeds_60_km'] = this.travelDistanceExceeds60Km;
+    data['destination_city_not_suitable'] = this.destinationCityNotSuitable;
+    data['location_used_display_features_and_service'] =
+        this.locationUsedDisplayFeaturesAndService;
+    data['must_start_with_8'] = this.mustStartWith8;
+    data['min_8_digit_mobile_phone'] = this.min8DigitMobilePhone;
+    data['max_15_digit_mobile_phone'] = this.max15DigitMobilePhone;
     return data;
   }
 }

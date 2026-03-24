@@ -80,7 +80,7 @@ class RideOrderWaitingDriverPickUpPanelSubView
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Driver segera tiba, menunggu: ${controller.getEstimatedTimeInMinutesInText().toLowerCase()}",
+                              "${controller.languageServices.language.value.driverWillArriveSoon ?? "-"} ${controller.getEstimatedTimeInMinutesInText().toLowerCase()}",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold

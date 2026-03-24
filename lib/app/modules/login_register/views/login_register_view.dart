@@ -382,14 +382,26 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                 if (value.isNotEmpty) {
                                                   if (value.substring(0, 1) !=
                                                       "8") {
-                                                    return 'Harus diawali dengan angka 8';
+                                                    return controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .mustStartWith8;
                                                   }
                                                 }
                                                 if (value.length < 8) {
-                                                  return 'Minimal nomor handphone 8 angka';
+                                                  return controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .min8DigitMobilePhone;
                                                 }
                                                 if (value.length > 15) {
-                                                  return 'Maksimal nomor handphone 15 angka';
+                                                  return controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .max15DigitMobilePhone;
                                                 }
                                               }
                                               return null;
