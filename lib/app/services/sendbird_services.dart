@@ -40,10 +40,10 @@ class SendbirdServices extends GetxService {
         print("testing debug : ${call.arguments['note']}");
         break;
       case "direct_call_ended":
-        FlutterCallkitIncoming.endCall(call.arguments['call_id']);
         if (Get.currentRoute == Routes.RIDE_CALL_SENDBIRD) {
           Get.back();
         }
+        FlutterCallkitIncoming.endCall(call.arguments['call_id']);
         break;
       case "start_direct_call_connected":
         final rideCallSendbirdController =
@@ -58,7 +58,6 @@ class SendbirdServices extends GetxService {
         if (Get.currentRoute == Routes.RIDE_CALL_SENDBIRD) {
           Get.back();
         }
-
         break;
     }
   }

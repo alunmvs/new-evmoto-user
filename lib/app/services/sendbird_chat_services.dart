@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
@@ -33,6 +35,15 @@ class SendbirdChatServices extends GetxService {
           type: PushTokenType.fcm,
           token: firebasePushNotificationServices.fcmToken.value,
         );
+      }
+
+      if (firebasePushNotificationServices.apnsToken.value != "") {
+        if (Platform.isIOS) {
+          await SendbirdChat.registerPushToken(
+            type: PushTokenType.apns,
+            token: firebasePushNotificationServices.apnsToken.value,
+          );
+        }
       }
     } catch (e) {}
   }

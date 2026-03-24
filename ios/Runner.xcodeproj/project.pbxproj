@@ -12,6 +12,11 @@
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3764F92228CC7002AD4817BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FE4D5DBED7B8FA1D63D976E1 /* GoogleService-Info.plist */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		5B4A27A42F72964600849E03 /* Ringing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5B4A27A22F72964500849E03 /* Ringing.mp3 */; };
+		5B4A27A52F72964600849E03 /* AppDelegate+SendbirdFlutter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A279F2F72964500849E03 /* AppDelegate+SendbirdFlutter.swift */; };
+		5B4A27A62F72964600849E03 /* AppDelegate+SendbirdPushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A27A02F72964500849E03 /* AppDelegate+SendbirdPushNotifications.swift */; };
+		5B4A27A72F72964600849E03 /* AppDelegate+SendbirdDirectCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A279E2F72964500849E03 /* AppDelegate+SendbirdDirectCalls.swift */; };
+		5B4A27A82F72964600849E03 /* AppDelegate+SendbirdVoIP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A27A12F72964500849E03 /* AppDelegate+SendbirdVoIP.swift */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -53,6 +58,11 @@
 		4B6A25E8CD20C1E36E8BD672 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		5043FEA212C1696B18490FA8 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5B099E3E2F0E783700A3003A /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		5B4A279E2F72964500849E03 /* AppDelegate+SendbirdDirectCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+SendbirdDirectCalls.swift"; sourceTree = "<group>"; };
+		5B4A279F2F72964500849E03 /* AppDelegate+SendbirdFlutter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+SendbirdFlutter.swift"; sourceTree = "<group>"; };
+		5B4A27A02F72964500849E03 /* AppDelegate+SendbirdPushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+SendbirdPushNotifications.swift"; sourceTree = "<group>"; };
+		5B4A27A12F72964500849E03 /* AppDelegate+SendbirdVoIP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+SendbirdVoIP.swift"; sourceTree = "<group>"; };
+		5B4A27A22F72964500849E03 /* Ringing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ringing.mp3; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
@@ -107,6 +117,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5B4A27A32F72964500849E03 /* Sendbird */ = {
+			isa = PBXGroup;
+			children = (
+				5B4A279E2F72964500849E03 /* AppDelegate+SendbirdDirectCalls.swift */,
+				5B4A279F2F72964500849E03 /* AppDelegate+SendbirdFlutter.swift */,
+				5B4A27A02F72964500849E03 /* AppDelegate+SendbirdPushNotifications.swift */,
+				5B4A27A12F72964500849E03 /* AppDelegate+SendbirdVoIP.swift */,
+				5B4A27A22F72964500849E03 /* Ringing.mp3 */,
+			);
+			path = Sendbird;
+			sourceTree = "<group>";
+		};
 		92BC4B03BB5D031F920ABB5E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +178,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				5B4A27A32F72964500849E03 /* Sendbird */,
 				5B099E3E2F0E783700A3003A /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -271,6 +294,7 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				3764F92228CC7002AD4817BF /* GoogleService-Info.plist in Resources */,
+				5B4A27A42F72964600849E03 /* Ringing.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,13 +347,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -362,13 +382,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -427,6 +443,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B4A27A52F72964600849E03 /* AppDelegate+SendbirdFlutter.swift in Sources */,
+				5B4A27A62F72964600849E03 /* AppDelegate+SendbirdPushNotifications.swift in Sources */,
+				5B4A27A72F72964600849E03 /* AppDelegate+SendbirdDirectCalls.swift in Sources */,
+				5B4A27A82F72964600849E03 /* AppDelegate+SendbirdVoIP.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);

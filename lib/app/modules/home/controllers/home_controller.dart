@@ -138,13 +138,11 @@ class HomeController extends GetxController {
     try {
       await socketServices.setupWebsocket();
     } on DioException catch (e) {
-      print("oke-1");
       SnackbarHelper.showSnackbarError(
         text: generateErrorMessageDioException(dioException: e),
       );
       isCriticalError.value = true;
     } on Exception catch (e) {
-      print("oke-2");
       SnackbarHelper.showSnackbarError(
         text: generateErrorMessageException(exception: e),
       );
@@ -285,13 +283,11 @@ class HomeController extends GetxController {
         language: languageServices.languageCodeSystem.value,
       ));
     } on DioException catch (e) {
-      print("oke-3");
       SnackbarHelper.showSnackbarError(
         text: generateErrorMessageDioException(dioException: e),
       );
       isCriticalError.value = true;
     } on Exception catch (e) {
-      print("oke-4");
       SnackbarHelper.showSnackbarError(
         text: generateErrorMessageException(exception: e),
       );

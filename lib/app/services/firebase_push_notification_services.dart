@@ -256,6 +256,7 @@ class FirebasePushNotificationServices extends GetxService {
       final fcmToken = await FirebaseMessaging.instance.getToken();
 
       this.fcmToken.value = fcmToken ?? '';
+      this.apnsToken.value = apnsToken ?? '';
       // print("ini fcm token $fcmToken");
 
       var deviceId = await getDeviceId();
@@ -296,6 +297,7 @@ class FirebasePushNotificationServices extends GetxService {
         .onError((err) {});
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("ini push notification ${message.data}");
       var isSendbirdCall = message.data.keys.contains('sendbird_call');
       if (isSendbirdCall) {
         var data = message.data;

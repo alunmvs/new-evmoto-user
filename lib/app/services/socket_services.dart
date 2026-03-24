@@ -47,8 +47,6 @@ class SocketServices extends GetxService {
         if (dataJson != null) {
           var method = dataJson['method'] ?? "";
 
-          print("debug ${dataJson}");
-
           switch (method) {
             case 'DRIVER_POSITION':
               if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {

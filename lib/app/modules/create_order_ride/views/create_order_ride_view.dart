@@ -127,12 +127,25 @@ class CreateOrderRideView extends GetView<CreateOrderRideController> {
                               CreateOrderRideSearchedLocationSubView(),
                             ],
                           ],
-                          Container(
-                            height: 6,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(color: Color(0XFFE8E8E8)),
-                          ),
-                          CreateOrderRideLatestOrderLocationSubView(),
+                          if ((controller.isOriginHasPrimaryFocus.value ==
+                                      true &&
+                                  controller
+                                      .recommendationOriginLocationList
+                                      .isNotEmpty) ||
+                              (controller.isDestinationHasPrimaryFocus.value ==
+                                      true &&
+                                  controller
+                                      .recommendationDestinationLocationList
+                                      .isNotEmpty)) ...[
+                            Container(
+                              height: 6,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: Color(0XFFE8E8E8),
+                              ),
+                            ),
+                            CreateOrderRideLatestOrderLocationSubView(),
+                          ],
                         ],
                       ),
                     ),

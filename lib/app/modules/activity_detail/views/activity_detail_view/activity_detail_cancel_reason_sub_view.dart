@@ -20,7 +20,10 @@ class ActivityDetailCancelReasonSubView
         ),
       ),
       child: Text(
-        controller.orderRideDetail.value.remark ?? "-",
+        controller.orderRideDetail.value.remark == null ||
+                controller.orderRideDetail.value.remark == ""
+            ? "-"
+            : controller.orderRideDetail.value.remark!,
         style: controller.typographyServices.bodySmallBold.value,
       ),
     );

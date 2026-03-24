@@ -201,17 +201,17 @@ class HomeView extends GetView<HomeController> {
           extendBodyBehindAppBar: controller.indexNavigationBar.value == 0
               ? true
               : false,
-          body: GlobalBodyHandler(
-            isFetch: controller.isFetch.value,
-            isCriticalError: controller.isCriticalError.value,
-            onInit: () async {
-              await controller.onInit();
-            },
-            body: Column(
-              children: [
-                if (controller.indexNavigationBar.value == 0) ...[
-                  Expanded(
-                    child: Stack(
+          body: Column(
+            children: [
+              if (controller.indexNavigationBar.value == 0) ...[
+                Expanded(
+                  child: GlobalBodyHandler(
+                    isFetch: controller.isFetch.value,
+                    isCriticalError: controller.isCriticalError.value,
+                    onInit: () async {
+                      await controller.onInit();
+                    },
+                    body: Stack(
                       children: [
                         Column(
                           children: [
@@ -1008,15 +1008,15 @@ class HomeView extends GetView<HomeController> {
                       ],
                     ),
                   ),
-                ],
-                if (controller.indexNavigationBar.value == 1) ...[
-                  Expanded(child: ActivityView()),
-                ],
-                if (controller.indexNavigationBar.value == 2) ...[
-                  Expanded(child: AccountView()),
-                ],
+                ),
               ],
-            ),
+              if (controller.indexNavigationBar.value == 1) ...[
+                Expanded(child: ActivityView()),
+              ],
+              if (controller.indexNavigationBar.value == 2) ...[
+                Expanded(child: AccountView()),
+              ],
+            ],
           ),
           bottomNavigationBar: controller.isFetch.value
               ? null

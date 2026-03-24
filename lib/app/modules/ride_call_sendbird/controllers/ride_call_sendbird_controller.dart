@@ -37,7 +37,7 @@ class RideCallSendbirdController extends GetxController {
       driverId.value = Get.arguments['driver_id'].toString();
       final sendBirdServices = Get.find<SendbirdServices>();
 
-      await sendBirdServices.startCall(
+      sendBirdServices.startCall(
         calleeId: driverId.value == "999999"
             ? driverId.value
             : "driver_${driverId.value}",

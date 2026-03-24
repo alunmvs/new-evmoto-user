@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,7 +16,9 @@ import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
+import 'package:new_evmoto_user/app/utils/error_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'dart:async';
@@ -77,6 +80,7 @@ class RideOrderDetailController extends GetxController {
 
   final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
 
+  final isCriticalError = false.obs;
   final isFetch = false.obs;
 
   @override
@@ -86,64 +90,80 @@ class RideOrderDetailController extends GetxController {
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
 
-    await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+    try {
+      await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(
+        text: generateErrorMessageDioException(dioException: e),
+      );
+      isCriticalError.value = true;
+    } on Exception catch (e) {
+      SnackbarHelper.showSnackbarError(
+        text: generateErrorMessageException(exception: e),
+      );
+      isCriticalError.value = true;
+    }
+
     isFetch.value = false;
-    await Future.delayed(Duration(seconds: 1));
 
-    if (orderRideDetail.value.state == 1) {
-      await setupMapWaitingForDriver();
-    }
-    if (orderRideDetail.value.state == 2) {
-      // Driver Grab / Accepted
-      await setupGoogleMapsPickUpCustomer();
-    }
-    if (orderRideDetail.value.state == 3) {
-      // Driver On Going Origin
-      await setupGoogleMapsPickUpCustomer();
-    }
+    if (isCriticalError.value == false) {
+      await Future.delayed(Duration(seconds: 1));
 
-    if (orderRideDetail.value.state == 4) {
-      // Driver Arrived on Origin
-      await setupGoogleMapOriginToDestination();
-    }
+      if (orderRideDetail.value.state == 1) {
+        await setupMapWaitingForDriver();
+      }
+      if (orderRideDetail.value.state == 2) {
+        // Driver Grab / Accepted
+        await setupGoogleMapsPickUpCustomer();
+      }
+      if (orderRideDetail.value.state == 3) {
+        // Driver On Going Origin
+        await setupGoogleMapsPickUpCustomer();
+      }
 
-    if (orderRideDetail.value.state == 5) {
-      // Driver On Going Destination
-      await setupGoogleMapOriginToDestination();
-    }
+      if (orderRideDetail.value.state == 4) {
+        // Driver Arrived on Origin
+        await setupGoogleMapOriginToDestination();
+      }
 
-    if (orderRideDetail.value.state == 6) {
-      // Driver Arrived on Destination
-      await setupGoogleMapOriginToDestination();
-    }
+      if (orderRideDetail.value.state == 5) {
+        // Driver On Going Destination
+        await setupGoogleMapOriginToDestination();
+      }
 
-    if (orderRideDetail.value.state == 7) {
-      // Driver Give Price
-      await setupGoogleMapOriginToDestination();
-    }
+      if (orderRideDetail.value.state == 6) {
+        // Driver Arrived on Destination
+        await setupGoogleMapOriginToDestination();
+      }
 
-    await Future.wait([
-      setupSchedulerDriverCurrentLocation(),
-      setupSchedulerDriverRefocusMapBound(),
-      setupRefreshStatusDriverGivePrice(),
-    ]);
+      if (orderRideDetail.value.state == 7) {
+        // Driver Give Price
+        await setupGoogleMapOriginToDestination();
+      }
 
-    generateEstimatedDistanceAndTimeInMinutes();
+      await Future.wait([
+        setupSchedulerDriverCurrentLocation(),
+        setupSchedulerDriverRefocusMapBound(),
+        setupRefreshStatusDriverGivePrice(),
+      ]);
 
-    if (orderRideDetail.value.state == 7) {
-      // Driver Give Price
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
-            Get.currentRoute != Routes.HOME) {
-          Get.offAndToNamed(
-            Routes.RIDE_ORDER_DONE,
-            arguments: {
-              "order_id": orderId.value,
-              "order_type": orderType.value,
-            },
-          );
-        }
-      });
+      generateEstimatedDistanceAndTimeInMinutes();
+
+      if (orderRideDetail.value.state == 7) {
+        // Driver Give Price
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+              Get.currentRoute != Routes.HOME) {
+            Get.offAndToNamed(
+              Routes.RIDE_ORDER_DONE,
+              arguments: {
+                "order_id": orderId.value,
+                "order_type": orderType.value,
+              },
+            );
+          }
+        });
+      }
     }
   }
 
