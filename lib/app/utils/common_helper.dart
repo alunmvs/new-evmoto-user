@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:new_evmoto_user/app/services/socket_services.dart';
 
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 
 String formatDouble(double value) {
@@ -69,11 +71,15 @@ Future<void> clearDataLogout() async {
       Get.find<FirebasePushNotificationServices>();
   var storage = FlutterSecureStorage();
 
-  await Future.wait([
-    firebasePushNotificationServices.onUnsubscribe(),
-    storage.delete(key: 'token'),
-    socketServices.closeWebsocket(),
-  ]);
+  try {
+    await Future.wait([
+      firebasePushNotificationServices.onUnsubscribe(),
+      storage.delete(key: 'token'),
+      socketServices.closeWebsocket(),
+    ]);
+  } on DioException catch (e) {
+    SnackbarHelper.showSnackbarError(text: e.error.toString());
+  } catch (e) {}
 }
 
 Future<void> logout() async {
@@ -85,11 +91,15 @@ Future<void> logout() async {
       Get.find<FirebasePushNotificationServices>();
   var storage = FlutterSecureStorage();
 
-  await Future.wait([
-    firebasePushNotificationServices.onUnsubscribe(),
-    storage.delete(key: 'token'),
-    socketServices.closeWebsocket(),
-  ]);
+  try {
+    await Future.wait([
+      firebasePushNotificationServices.onUnsubscribe(),
+      storage.delete(key: 'token'),
+      socketServices.closeWebsocket(),
+    ], eagerError: false);
+  } on DioException catch (e) {
+    SnackbarHelper.showSnackbarError(text: e.error.toString());
+  } catch (e) {}
 
   Get.offAllNamed(Routes.LOGIN_REGISTER);
 

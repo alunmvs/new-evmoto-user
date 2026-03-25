@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
@@ -45,8 +47,12 @@ class SettingSavedLocationController extends GetxController {
   }
 
   Future<void> getSavedAddressList() async {
-    savedAddressList.value = (await savedAddressRepository
-        .getSavedAddressList());
+    try {
+      savedAddressList.value = (await savedAddressRepository
+          .getSavedAddressList());
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
   }
 
   Future<void> onTapMoreOptions({required SavedAddress savedAddress}) async {
@@ -521,26 +527,10 @@ class SettingSavedLocationController extends GetxController {
                                       ?.showSnackBar(snackBar);
 
                                   await getSavedAddressList();
-                                } catch (e) {
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorRed400
-                                        .value,
-                                    content: Text(
-                                      e.toString(),
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
+                                } on DioException catch (e) {
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.error.toString(),
                                   );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
                                 }
                               },
                               buttonColor:

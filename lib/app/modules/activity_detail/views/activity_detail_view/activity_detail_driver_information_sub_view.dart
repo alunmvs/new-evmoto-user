@@ -36,85 +36,91 @@ class ActivityDetailDriverInformationSubView
                   style: controller.typographyServices.bodySmallRegular.value
                       .copyWith(color: Color(0XFF7D7D7D)),
                 ),
-                Text(
-                  "${controller.orderRideDetail.value.driverName}",
-                  style: controller.typographyServices.bodySmallRegular.value
-                      .copyWith(color: Color(0XFF7D7D7D)),
-                ),
+                if (controller.orderRideDetail.value.state != 9) ...[
+                  Text(
+                    "${controller.orderRideDetail.value.driverName}",
+                    style: controller.typographyServices.bodySmallRegular.value
+                        .copyWith(color: Color(0XFF7D7D7D)),
+                  ),
+                ],
               ],
             ),
           ),
-          SizedBox(width: 16),
-          Stack(
-            alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: [
-              Column(
-                children: [
-                  CircleAvatar(
-                    radius: 48 / 2,
-                    backgroundImage: CachedNetworkImageProvider(
-                      controller.orderRideDetail.value.driverAvatar!,
+          if (controller.orderRideDetail.value.state != 9) ...[
+            SizedBox(width: 16),
+            Stack(
+              alignment: Alignment.center,
+              clipBehavior: Clip.none,
+              children: [
+                Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 48 / 2,
+                      backgroundImage: CachedNetworkImageProvider(
+                        controller.orderRideDetail.value.driverAvatar!,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color:
-                        controller.themeColorServices.neutralsColorGrey0.value,
-                    border: Border.all(
+                    SizedBox(height: 20),
+                  ],
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
                       color: controller
                           .themeColorServices
-                          .neutralsColorGrey200
+                          .neutralsColorGrey0
                           .value,
+                      border: Border.all(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey200
+                            .value,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 12,
-                        width: 12,
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/icon_star.svg",
-                              width: 9.75,
-                              height: 9,
-                              color: controller
-                                  .themeColorServices
-                                  .sematicColorYellow400
-                                  .value,
-                            ),
-                          ],
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 12,
+                          width: 12,
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_star.svg",
+                                width: 9.75,
+                                height: 9,
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorYellow400
+                                    .value,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 2),
-                      Text(
-                        controller.orderRideDetail.value.score!
-                            .toStringAsPrecision(2),
-                        style: controller
-                            .typographyServices
-                            .captionLargeBold
-                            .value
-                            .copyWith(
-                              color: controller
-                                  .themeColorServices
-                                  .neutralsColorGrey700
-                                  .value,
-                            ),
-                      ),
-                    ],
+                        SizedBox(width: 2),
+                        Text(
+                          controller.orderRideDetail.value.score!
+                              .toStringAsPrecision(2),
+                          style: controller
+                              .typographyServices
+                              .captionLargeBold
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey700
+                                    .value,
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ],
       ),
     );

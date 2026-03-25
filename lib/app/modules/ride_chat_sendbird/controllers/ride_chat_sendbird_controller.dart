@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
@@ -53,12 +54,15 @@ class RideChatSendbirdController extends GetxController {
 
   final membersReadStatus = {}.obs;
 
+  final isCriticalError = false.obs;
   final isFetch = false.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
+    isCriticalError.value = false;
+
     driverId.value = Get.arguments['driver_id'];
     driverName.value = Get.arguments['driver_name'];
     driverAvatarUrl.value = Get.arguments['driver_avatar_url'];
@@ -66,19 +70,26 @@ class RideChatSendbirdController extends GetxController {
     orderId.value = Get.arguments['order_id'];
     orderType.value = Get.arguments['order_type'];
     state.value = Get.arguments['state'];
-    await getChannelUrl();
-    await updateMetaData();
+    try {
+      await getChannelUrl();
+      await updateMetaData();
 
-    await getMessageList();
+      await getMessageList();
 
-    SendbirdChat.removeChannelHandler('UNIQUE_HANDLER_ID');
-    SendbirdChat.addChannelHandler(
-      'UNIQUE_HANDLER_ID',
-      MyGroupChannelHandler(),
-    );
+      SendbirdChat.removeChannelHandler('UNIQUE_HANDLER_ID');
+      SendbirdChat.addChannelHandler(
+        'UNIQUE_HANDLER_ID',
+        MyGroupChannelHandler(),
+      );
 
-    await getMemberReadStatus();
-    await groupChannel.value!.markAsRead();
+      await getMemberReadStatus();
+      await groupChannel.value!.markAsRead();
+    } on RequestFailedException catch (e) {
+      SnackbarHelper.showSnackbarError(
+        text: "Terjadi kesalahan dari server (${e.code})",
+      );
+      isCriticalError.value = true;
+    }
 
     isFetch.value = false;
   }

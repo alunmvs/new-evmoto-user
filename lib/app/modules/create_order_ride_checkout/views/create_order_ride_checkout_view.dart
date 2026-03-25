@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/views/create_order_ride_checkout_view/checkout_estimated_distance_and_time_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/views/create_order_ride_checkout_view/checkout_payment_and_promo_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/views/create_order_ride_checkout_view/checkout_price_list_sub_view.dart';
-import 'package:new_evmoto_user/app/utils/error_helper.dart';
+
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
@@ -36,27 +36,22 @@ class CreateOrderRideCheckoutView
                           controller.googleMapController = googleMapController;
 
                           try {
+                            await controller.getAvailableCouponList();
+
                             await Future.wait([
                               controller.generatePolylinesOpenMapsApi(),
                               controller.refocusMapsBound(),
                               controller.getOrderRidePricingList(),
                               controller.setLatitudeLongitudeMarker(),
-                              controller.getAvailableCouponList(),
                             ]);
 
                             controller
                                 .generateEstimatedDistanceAndTimeInMinutes();
                           } on DioException catch (e) {
                             Get.back();
+
                             SnackbarHelper.showSnackbarError(
-                              text: generateErrorMessageDioException(
-                                dioException: e,
-                              ),
-                            );
-                          } on Exception catch (e) {
-                            Get.back();
-                            SnackbarHelper.showSnackbarError(
-                              text: generateErrorMessageException(exception: e),
+                              text: e.error.toString(),
                             );
                           }
                         },

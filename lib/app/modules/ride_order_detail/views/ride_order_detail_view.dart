@@ -21,6 +21,14 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
+        appBar: controller.isCriticalError.value == false
+            ? null
+            : AppBar(
+                shadowColor:
+                    controller.themeColorServices.neutralsColorGrey0.value,
+                backgroundColor:
+                    controller.themeColorServices.neutralsColorGrey0.value,
+              ),
         backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
         body: GlobalBodyHandler(
           isFetch: controller.isFetch.value,
@@ -38,6 +46,7 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                       children: [
                         GoogleMap(
                           mapType: MapType.normal,
+                          zoomControlsEnabled: false,
                           initialCameraPosition:
                               controller.initialCameraPosition.value,
                           onMapCreated:
@@ -74,28 +83,30 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                             ),
                           ),
                         ),
-                        if (controller
-                                .isPinLocationWaitingForDriverHide
-                                .value ==
-                            false) ...[
-                          Center(
-                            child: AvatarGlow(
-                              glowRadiusFactor: 2,
-                              glowColor: Color(0XFF01AC63),
-                              glowCount: 3,
-                              child: SvgPicture.asset(
-                                "assets/icons/icon_pinpoint_map_green.svg",
-                                width: 32 - 10,
-                                height: 42 - 10,
-                              ),
-                            ),
-                          ),
-                        ],
+                        // if (controller
+                        //         .isPinLocationWaitingForDriverHide
+                        //         .value ==
+                        //     false) ...[
+                        //   Center(
+                        //     child: AvatarGlow(
+                        //       glowRadiusFactor: 2,
+                        //       glowColor: Color(0XFF01AC63),
+                        //       glowCount: 3,
+                        //       child: SvgPicture.asset(
+                        //         "assets/icons/icon_pinpoint_map_green.svg",
+                        //         width: 32 - 10,
+                        //         height: 42 - 10,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ],
                       ],
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * (150 / 812),
+                    height: controller.orderRideDetail.value.state == 1
+                        ? 100
+                        : MediaQuery.of(context).size.height * (150 / 812),
                   ),
                 ],
               ),

@@ -5,7 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
@@ -53,7 +53,65 @@ class ApiServices extends GetxService {
               : "others";
           options.headers['role'] = "user";
           options.headers['nonce'] = generateMd5Timestamp();
+
           return handler.next(options);
+        },
+        onError: (error, handler) {
+          // Debug Error
+          print("request API base URL ${error.requestOptions.uri.path}");
+          if (error.requestOptions.data is FormData) {
+            final formData = error.requestOptions.data as FormData;
+            final Map<String, dynamic> dataMap = {};
+            for (var field in formData.fields) {
+              dataMap[field.key] = field.value;
+            }
+            for (var file in formData.files) {
+              dataMap[file.key] = file.value.filename;
+            }
+            print("request API data $dataMap");
+          }
+
+          print("response API ${error.response?.data}");
+
+          // Override Error
+          String customMessage;
+
+          switch (error.type) {
+            case DioExceptionType.connectionError:
+              customMessage =
+                  "Tidak dapat terhubung ke server. Periksa koneksi internet kamu.";
+              break;
+
+            case DioExceptionType.connectionTimeout:
+              customMessage = "Koneksi timeout. Coba lagi nanti.";
+              break;
+
+            case DioExceptionType.receiveTimeout:
+              customMessage = "Server terlalu lama merespons.";
+              break;
+
+            case DioExceptionType.badResponse:
+              customMessage =
+                  "Terjadi kesalahan dari server (${error.response?.statusCode}).";
+              break;
+
+            case DioExceptionType.cancel:
+              customMessage = "Request dibatalkan.";
+              break;
+
+            default:
+              customMessage = "Terjadi kesalahan yang tidak diketahui.";
+          }
+
+          // Override error message
+          final customError = DioException(
+            requestOptions: error.requestOptions,
+            response: error.response,
+            type: error.type,
+            error: customMessage,
+          );
+
+          handler.next(customError);
         },
         onResponse: (response, handler) async {
           if (response.data != null) {

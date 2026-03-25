@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -32,30 +33,43 @@ class CheckoutPriceListSubView
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0XFFF5F9FF), Color(0XFFCDE2F8)],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.0, 1.0],
-                        ),
+                    if (orderRidePricing.img != null) ...[
+                      ClipRRect(
                         borderRadius: BorderRadius.circular(9.23),
+                        child: CachedNetworkImage(
+                          imageUrl: orderRidePricing.img!,
+                          width: 32,
+                          height: 32,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/icon_ride.svg",
-                            width: 23.38,
-                            height: 17.31,
+                    ],
+                    if (orderRidePricing.img == null) ...[
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0XFFF5F9FF), Color(0XFFCDE2F8)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            stops: [0.0, 1.0],
                           ),
-                        ],
+                          borderRadius: BorderRadius.circular(9.23),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_ride.svg",
+                              width: 23.38,
+                              height: 17.31,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                     SizedBox(width: 8),
                     Text(
                       orderRidePricing.name ?? "-",

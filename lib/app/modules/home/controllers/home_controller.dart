@@ -32,7 +32,7 @@ import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/app/utils/error_helper.dart';
+
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
@@ -138,16 +138,10 @@ class HomeController extends GetxController {
     try {
       await socketServices.setupWebsocket();
     } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageDioException(dioException: e),
-      );
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;
-    } on Exception catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageException(exception: e),
-      );
-      isCriticalError.value = true;
-    }
+    } on Exception catch (e) {}
+
     isFetch.value = false;
 
     ShowcaseView.register();
@@ -265,45 +259,38 @@ class HomeController extends GetxController {
   }
 
   Future<void> refreshAll({bool firstInit = false}) async {
-    await Future.wait([
-      getUserInfo(),
-      getActiveOrderList(),
-      getSavedAddressList(),
-    ]);
+    try {
+      await Future.wait([
+        getUserInfo(),
+        getActiveOrderList(),
+        getSavedAddressList(),
+      ], eagerError: false);
 
-    if (firstInit == false) {
-      await locationServices.requestLocation();
-      await Future.wait([getTotalUnreadSendbirdChat(), getAdvertisementList()]);
+      if (firstInit == false) {
+        await locationServices.requestLocation();
+        await Future.wait([
+          getTotalUnreadSendbirdChat(),
+          getAdvertisementList(),
+        ], eagerError: false);
+      }
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
   }
 
   Future<void> getUserInfo() async {
-    try {
-      userInfo.value = (await userRepository.getUserInfo(
-        language: languageServices.languageCodeSystem.value,
-      ));
-    } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageDioException(dioException: e),
-      );
-      isCriticalError.value = true;
-    } on Exception catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageException(exception: e),
-      );
-      isCriticalError.value = true;
-    }
+    userInfo.value = (await userRepository.getUserInfo(
+      language: languageServices.languageCodeSystem.value,
+    ));
   }
 
   Future<void> getActiveOrderList() async {
-    try {
-      activeOrderList.value = (await orderRideRepository.getActiveOrderList(
-        language: languageServices.languageCodeSystem.value,
-      ));
+    activeOrderList.value = (await orderRideRepository.getActiveOrderList(
+      language: languageServices.languageCodeSystem.value,
+    ));
 
-      isActiveOrderListNotEmpty.value = activeOrderList.isNotEmpty;
-      await getActiveOrderStatus();
-    } catch (e) {}
+    isActiveOrderListNotEmpty.value = activeOrderList.isNotEmpty;
+    await getActiveOrderStatus();
   }
 
   Future<void> getAvailableCouponList() async {
@@ -316,10 +303,115 @@ class HomeController extends GetxController {
   }
 
   Future<void> getSavedAddressList() async {
-    try {
-      savedAddressList.value = (await savedAddressRepository
-          .getSavedAddressList());
-    } catch (e) {}
+    savedAddressList.value = (await savedAddressRepository
+        .getSavedAddressList());
+  }
+
+  Future<void> onTapPickUpLocation() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    var isIntroductionDeliveryServiceShown =
+        prefs.getBool('is_introduction_delivery_service_shown') ?? false;
+
+    if (isIntroductionDeliveryServiceShown == false) {
+      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
+    } else {
+      await refreshAll(firstInit: true);
+      if (isActiveOrderListNotEmpty.value) {
+        await Get.toNamed(
+          Routes.RIDE_ORDER_DETAIL,
+          arguments: {
+            "order_id": activeOrderList.first.orderId.toString(),
+            "order_type": activeOrderList.first.orderType,
+          },
+        );
+      } else {
+        try {
+          Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
+          var geocodingAddress = await geocodingRepository
+              .getAddressByLatitudeLongitude(
+                latitude: currentLatitude.value,
+                longitude: currentLongitude.value,
+              );
+          Get.close(1);
+
+          var result = await Get.toNamed(
+            Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+            arguments: {
+              "type": "origin",
+              "address": geocodingAddress!.name,
+              "address_name": geocodingAddress.address,
+              "latitude": currentLatitude.value.toString(),
+              "longitude": currentLongitude.value.toString(),
+            },
+          );
+
+          if (result != null) {
+            await Get.toNamed(
+              Routes.CREATE_ORDER_RIDE,
+              arguments: {
+                "origin_address_name": result['address_name'],
+                "origin_address": result['address'],
+                "origin_latitude": result['latitude'],
+                "origin_longitude": result['longitude'],
+              },
+            );
+          }
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+          Get.close(1);
+        }
+      }
+    }
+    await refreshAll();
+  }
+
+  Future<void> onTapWhereAreYouGoingToday() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    var isIntroductionDeliveryServiceShown =
+        prefs.getBool('is_introduction_delivery_service_shown') ?? false;
+
+    if (isIntroductionDeliveryServiceShown == false) {
+      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
+    } else {
+      await refreshAll(firstInit: true);
+      if (isActiveOrderListNotEmpty.value) {
+        await Get.toNamed(
+          Routes.RIDE_ORDER_DETAIL,
+          arguments: {
+            "order_id": activeOrderList.first.orderId.toString(),
+            "order_type": activeOrderList.first.orderType,
+          },
+        );
+      } else {
+        try {
+          Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
+          var geocodingAddress = await geocodingRepository
+              .getAddressByLatitudeLongitude(
+                latitude: locationServices.currentLatitude.value,
+                longitude: locationServices.currentLongitude.value,
+              );
+          Get.close(1);
+
+          await Get.toNamed(
+            Routes.CREATE_ORDER_RIDE,
+            arguments: {
+              "origin_address_name": geocodingAddress!.name,
+              "origin_address": geocodingAddress.address,
+              "origin_latitude": locationServices.currentLatitude.value
+                  .toString(),
+              "origin_longitude": locationServices.currentLongitude.value
+                  .toString(),
+            },
+          );
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+          Get.close(1);
+        }
+      }
+    }
+    await refreshAll();
   }
 
   Future<void> onTapRideService({
@@ -482,6 +574,10 @@ class HomeController extends GetxController {
     }
   }
 
+  bool isSameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
   Future<void> checkAppVersioning({
     required bool isShowVersionNewestConfirmationDialog,
   }) async {
@@ -495,112 +591,152 @@ class HomeController extends GetxController {
         var serverVersion = Version.parse(versioningServer.value.version!);
 
         if (currentVersion < serverVersion) {
-          await Get.dialog(
-            PopScope(
-              canPop: versioningServer.value.mandatory == 0,
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Material(
-                        color: themeColorServices.neutralsColorGrey0.value,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(height: 24),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                child: Image.asset(
-                                  "assets/images/img_soft_update.png",
-                                  width: Get.width * 169.25 / 375,
-                                ),
-                              ),
-                              SizedBox(height: 16),
-                              Text(
-                                languageServices
-                                        .language
-                                        .value
-                                        .appUpdateAvailable ??
-                                    "-",
-                                style: typographyServices.bodyLargeBold.value,
-                                textAlign: TextAlign.center,
-                              ),
-                              if (versioningServer.value.content != null &&
-                                  versioningServer.value.content != '') ...[
-                                SizedBox(height: 8),
-                                Text(
-                                  versioningServer.value.content ?? "-",
-                                  style: typographyServices
-                                      .bodySmallRegular
-                                      .value
-                                      .copyWith(color: Color(0XFFB3B3B3)),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                              SizedBox(height: 16),
-                              LoaderElevatedButton(
-                                onPressed: () async {
-                                  await onTapUpdateVersion();
-                                },
-                                child: Text(
-                                  languageServices.language.value.updateNow ??
-                                      "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(color: Colors.white),
-                                ),
-                              ),
-                              if (versioningServer.value.mandatory == 0) ...[
-                                SizedBox(height: 10),
-                                SizedBox(
-                                  height: 46,
-                                  width: Get.width,
-                                  child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(
-                                        color: Color(0XFFDBDBDB),
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                    ),
-                                    onPressed: () async {
-                                      Get.close(1);
-                                    },
-                                    child: Text(
-                                      languageServices
-                                              .language
-                                              .value
-                                              .updateLater ??
-                                          "-",
-                                      style: typographyServices
-                                          .bodyLargeBold
-                                          .value
-                                          .copyWith(color: Color(0XFFAFAFAF)),
-                                    ),
+          var prefs = await SharedPreferences.getInstance();
+          var lastUpdateLaterClickAt = prefs.getString(
+            "last_update_later_click_at",
+          );
+
+          var isShow = false;
+
+          if (isShowVersionNewestConfirmationDialog == true) {
+            isShow = true;
+          } else {
+            if (lastUpdateLaterClickAt != null) {
+              var lastUpdateLaterClickAtDateTime =
+                  DateTime.fromMillisecondsSinceEpoch(
+                    int.parse(lastUpdateLaterClickAt),
+                  );
+
+              if (isSameDay(lastUpdateLaterClickAtDateTime, DateTime.now())) {
+                isShow = false;
+              } else {
+                isShow = true;
+              }
+            } else {
+              isShow = true;
+            }
+          }
+
+          if (isShow == true) {
+            await Get.dialog(
+              PopScope(
+                canPop: false,
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Material(
+                          color: themeColorServices.neutralsColorGrey0.value,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(height: 24),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Image.asset(
+                                    "assets/images/img_soft_update.png",
+                                    width: Get.width * 169.25 / 375,
                                   ),
                                 ),
+                                SizedBox(height: 16),
+                                Text(
+                                  languageServices
+                                          .language
+                                          .value
+                                          .appUpdateAvailable ??
+                                      "-",
+                                  style: typographyServices.bodyLargeBold.value,
+                                  textAlign: TextAlign.center,
+                                ),
+                                if (versioningServer.value.content != null &&
+                                    versioningServer.value.content != '') ...[
+                                  SizedBox(height: 8),
+                                  Text(
+                                    versioningServer.value.content ?? "-",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(color: Color(0XFFB3B3B3)),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                                SizedBox(height: 16),
+                                LoaderElevatedButton(
+                                  onPressed: () async {
+                                    await onTapUpdateVersion();
+                                  },
+                                  child: Text(
+                                    languageServices.language.value.updateNow ??
+                                        "-",
+                                    style: typographyServices
+                                        .bodyLargeBold
+                                        .value
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
+                                if (versioningServer.value.mandatory == 0) ...[
+                                  SizedBox(height: 10),
+                                  SizedBox(
+                                    height: 46,
+                                    width: Get.width,
+                                    child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: BorderSide(
+                                          color: Color(0XFFDBDBDB),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        Get.close(1);
+
+                                        var prefs =
+                                            await SharedPreferences.getInstance();
+                                        await prefs.setString(
+                                          "last_update_later_click_at",
+                                          DateTime.now().millisecondsSinceEpoch
+                                              .toString(),
+                                        );
+                                      },
+                                      child: Text(
+                                        languageServices
+                                                .language
+                                                .value
+                                                .updateLater ??
+                                            "-",
+                                        style: typographyServices
+                                            .bodyLargeBold
+                                            .value
+                                            .copyWith(color: Color(0XFFAFAFAF)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                SizedBox(height: 16),
                               ],
-                              SizedBox(height: 16),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            barrierDismissible: false,
-          );
+              barrierDismissible: false,
+            );
+          }
         } else {
           if (isShowVersionNewestConfirmationDialog == true) {
             Get.dialog(
@@ -672,7 +808,9 @@ class HomeController extends GetxController {
           }
         }
       }
-    } catch (e) {}
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
   }
 
   Future<bool> checkSoftUpdate() async {
@@ -915,7 +1053,9 @@ class HomeController extends GetxController {
                 )) ??
                 GeocodingAddress();
             currentAddress.value = currentGeocodingAddress.value.address;
-          } catch (e) {}
+          } on DioException catch (e) {
+            SnackbarHelper.showSnackbarError(text: e.error.toString());
+          }
           currentAddressIsLoading.value = false;
         }
       }
@@ -1091,7 +1231,9 @@ class HomeController extends GetxController {
 
         advertisementList.sort((a, b) => a.sortNum!.compareTo(b.sortNum!));
       }
-    } catch (e) {}
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
   }
 
   Future<void> getActiveOrderStatus() async {

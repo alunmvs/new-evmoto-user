@@ -10,7 +10,7 @@ class RideOrderWaitingDriverAcceptancePanelSubView
   @override
   Widget build(BuildContext context) {
     return SlidingUpPanel(
-      minHeight: 170,
+      minHeight: 100,
       maxHeight: 170,
       padding: EdgeInsets.all(0),
       borderRadius: BorderRadius.only(

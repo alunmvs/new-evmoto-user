@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,6 +12,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class LoginRegisterVerificationOtpController extends GetxController {
@@ -86,18 +88,8 @@ class LoginRegisterVerificationOtpController extends GetxController {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-    } catch (e) {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
   }
 
@@ -119,18 +111,8 @@ class LoginRegisterVerificationOtpController extends GetxController {
 
         Get.offAllNamed(Routes.HOME);
       }
-    } catch (e) {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
   }
 }

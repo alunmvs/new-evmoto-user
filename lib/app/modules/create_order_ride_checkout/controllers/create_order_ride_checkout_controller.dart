@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,6 +18,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
 
@@ -96,6 +98,10 @@ class CreateOrderRideCheckoutController extends GetxController {
       pageNum: 1,
       size: 1,
     );
+
+    if (availableCouponList.isNotEmpty) {
+      selectedCoupon.value = availableCouponList.first;
+    }
   }
 
   void fillForm() {
@@ -178,7 +184,7 @@ class CreateOrderRideCheckoutController extends GetxController {
 
     if (movementDirection == MovementDirection.vertical) {
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.1),
       );
     } else {
       await googleMapController.animateCamera(
@@ -214,7 +220,7 @@ class CreateOrderRideCheckoutController extends GetxController {
           couponId: selectedCoupon.value.id,
         ));
 
-    // selectedOrderRidePricing.value = orderRidePricingList.first;
+    selectedOrderRidePricing.value = orderRidePricingList.first;
   }
 
   Future<void> setLatitudeLongitudeMarker() async {
@@ -298,23 +304,14 @@ class CreateOrderRideCheckoutController extends GetxController {
         Get.close(1);
 
         Get.back();
+        Get.back();
         Get.toNamed(
           Routes.RIDE_ORDER_DETAIL,
           arguments: {"order_id": result.id.toString(), "order_type": 1},
         );
-      } catch (e) {
+      } on DioException catch (e) {
         Get.close(1);
-        final SnackBar snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          content: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
-          ),
-        );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
       }
     }
   }

@@ -3,6 +3,7 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 
@@ -36,7 +37,13 @@ class SendbirdChatListController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    await getGroupChannelList();
+    try {
+      await getGroupChannelList();
+    } on RequestFailedException catch (e) {
+      SnackbarHelper.showSnackbarError(
+        text: "Terjadi kesalahan dari server (${e.code})",
+      );
+    }
     isFetch.value = false;
   }
 

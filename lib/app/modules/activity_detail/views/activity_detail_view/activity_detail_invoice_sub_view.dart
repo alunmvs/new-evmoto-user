@@ -22,42 +22,12 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                controller.languageServices.language.value.travelExpense ?? "-",
-                style: controller.typographyServices.bodySmallRegular.value
-                    .copyWith(
-                      color: controller
-                          .themeColorServices
-                          .neutralsColorGrey700
-                          .value,
-                    ),
-              ),
-              Text(
-                NumberFormat.currency(
-                  locale: 'id_ID',
-                  symbol: 'Rp',
-                  decimalDigits: 0,
-                ).format(controller.getTravelFare()),
-                style: controller.typographyServices.bodySmallBold.value
-                    .copyWith(
-                      color: controller
-                          .themeColorServices
-                          .neutralsColorGrey700
-                          .value,
-                    ),
-              ),
-            ],
-          ),
-          if (controller.orderRideDetail.value.additionalCharge != 0) ...[
-            SizedBox(height: 12),
+          if (controller.orderRideDetail.value.state != 10) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  controller.languageServices.language.value.additionalCost ??
+                  controller.languageServices.language.value.travelExpense ??
                       "-",
                   style: controller.typographyServices.bodySmallRegular.value
                       .copyWith(
@@ -72,7 +42,7 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
                     locale: 'id_ID',
                     symbol: 'Rp',
                     decimalDigits: 0,
-                  ).format(controller.orderRideDetail.value.additionalCharge),
+                  ).format(controller.getTravelFare()),
                   style: controller.typographyServices.bodySmallBold.value
                       .copyWith(
                         color: controller
@@ -83,40 +53,73 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
                 ),
               ],
             ),
-          ],
-          if (controller.getPromoMoney() != 0) ...[
+            if (controller.orderRideDetail.value.additionalCharge != 0) ...[
+              SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    controller.languageServices.language.value.additionalCost ??
+                        "-",
+                    style: controller.typographyServices.bodySmallRegular.value
+                        .copyWith(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey700
+                              .value,
+                        ),
+                  ),
+                  Text(
+                    NumberFormat.currency(
+                      locale: 'id_ID',
+                      symbol: 'Rp',
+                      decimalDigits: 0,
+                    ).format(controller.orderRideDetail.value.additionalCharge),
+                    style: controller.typographyServices.bodySmallBold.value
+                        .copyWith(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey700
+                              .value,
+                        ),
+                  ),
+                ],
+              ),
+            ],
+            if (controller.getPromoMoney() != 0) ...[
+              SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    controller.languageServices.language.value.promotion ?? "-",
+                    style: controller.typographyServices.bodySmallRegular.value
+                        .copyWith(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey700
+                              .value,
+                        ),
+                  ),
+                  Text(
+                    NumberFormat.currency(
+                      locale: 'id_ID',
+                      symbol: '-Rp',
+                      decimalDigits: 0,
+                    ).format(controller.getPromoMoney()),
+                    style: controller.typographyServices.bodySmallBold.value
+                        .copyWith(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey700
+                              .value,
+                        ),
+                  ),
+                ],
+              ),
+            ],
             SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  controller.languageServices.language.value.promotion ?? "-",
-                  style: controller.typographyServices.bodySmallRegular.value
-                      .copyWith(
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey700
-                            .value,
-                      ),
-                ),
-                Text(
-                  NumberFormat.currency(
-                    locale: 'id_ID',
-                    symbol: '-Rp',
-                    decimalDigits: 0,
-                  ).format(controller.getPromoMoney()),
-                  style: controller.typographyServices.bodySmallBold.value
-                      .copyWith(
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey700
-                            .value,
-                      ),
-                ),
-              ],
-            ),
           ],
-          SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -206,7 +209,11 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
                   locale: 'id_ID',
                   symbol: 'Rp',
                   decimalDigits: 0,
-                ).format(controller.orderRideDetail.value.payMoney),
+                ).format(
+                  controller.orderRideDetail.value.state == 10
+                      ? 0
+                      : controller.orderRideDetail.value.payMoney,
+                ),
                 style: controller.typographyServices.bodySmallBold.value
                     .copyWith(
                       color: controller

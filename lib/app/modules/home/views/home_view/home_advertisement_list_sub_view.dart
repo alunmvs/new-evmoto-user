@@ -21,13 +21,7 @@ class HomeAdvertisementListSubView extends GetView<HomeController> {
               items: [
                 for (var advertisement in controller.advertisementList) ...[
                   Padding(
-                    padding:
-                        controller.advertisementList.indexOf(advertisement) == 0
-                        ? EdgeInsets.only(left: 16)
-                        : controller.advertisementList.indexOf(advertisement) ==
-                              controller.advertisementList.length
-                        ? EdgeInsets.only(left: 12)
-                        : EdgeInsets.only(left: 12, right: 16),
+                    padding: EdgeInsets.only(left: 16),
                     child: GestureDetector(
                       onTap: advertisement.isJump == 0
                           ? null
@@ -42,6 +36,7 @@ class HomeAdvertisementListSubView extends GetView<HomeController> {
                         borderRadius: BorderRadius.circular(12),
                         child: CachedNetworkImage(
                           imageUrl: advertisement.imgUrl!,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -60,6 +55,7 @@ class HomeAdvertisementListSubView extends GetView<HomeController> {
                 aspectRatio: 311 / 155,
                 padEnds: false,
                 autoPlayAnimationDuration: Duration(seconds: 3),
+                pauseAutoPlayOnTouch: true,
               ),
             ),
             if (controller.advertisementList.length > 1) ...[

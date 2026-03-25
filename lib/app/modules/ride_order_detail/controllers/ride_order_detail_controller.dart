@@ -16,7 +16,7 @@ import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
-import 'package:new_evmoto_user/app/utils/error_helper.dart';
+
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
@@ -87,20 +87,14 @@ class RideOrderDetailController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
+    isCriticalError.value = false;
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
 
     try {
       await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
     } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageDioException(dioException: e),
-      );
-      isCriticalError.value = true;
-    } on Exception catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageException(exception: e),
-      );
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;
     }
 

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
@@ -51,29 +52,39 @@ class SendbirdChatDetailController extends GetxController {
   final isSeeMoreMessageList = true.obs;
   final uniqueHandlerUuid = "".obs;
 
+  final isCriticalError = false.obs;
   final isFetch = false.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    groupChannelUrl.value = Get.arguments['group_channel_url'];
-    await getGroupChannel();
-    await getMessageList();
-    await groupChannel.value!.markAsRead();
-    getMemberReadStatus();
+    isCriticalError.value = false;
 
-    getDriverProfileUrl();
-    getDriverName();
-    getDriverId();
+    try {
+      groupChannelUrl.value = Get.arguments['group_channel_url'];
+      await getGroupChannel();
+      await getMessageList();
+      await groupChannel.value!.markAsRead();
+      getMemberReadStatus();
 
-    var uuid = Uuid();
-    uniqueHandlerUuid.value = uuid.v4();
+      getDriverProfileUrl();
+      getDriverName();
+      getDriverId();
 
-    SendbirdChat.addChannelHandler(
-      uniqueHandlerUuid.value,
-      MyGroupChannelHandler(),
-    );
+      var uuid = Uuid();
+      uniqueHandlerUuid.value = uuid.v4();
+
+      SendbirdChat.addChannelHandler(
+        uniqueHandlerUuid.value,
+        MyGroupChannelHandler(),
+      );
+    } on RequestFailedException catch (e) {
+      SnackbarHelper.showSnackbarError(
+        text: "Terjadi kesalahan dari server (${e.code})",
+      );
+      isCriticalError.value = true;
+    }
 
     isFetch.value = false;
   }

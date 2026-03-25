@@ -41,8 +41,10 @@ class VoucherListView extends GetView<VoucherListController> {
                     SizedBox(width: 16),
                     GestureDetector(
                       onTap: () async {
+                        controller.isFetch.value = true;
                         controller.selectedIndex.value = 1;
                         await controller.getVoucherList();
+                        controller.isFetch.value = false;
                       },
                       child: Container(
                         height: 33,
@@ -96,8 +98,10 @@ class VoucherListView extends GetView<VoucherListController> {
                     SizedBox(width: 8),
                     GestureDetector(
                       onTap: () async {
+                        controller.isFetch.value = true;
                         controller.selectedIndex.value = 2;
                         await controller.getVoucherList();
+                        controller.isFetch.value = false;
                       },
                       child: Container(
                         height: 33,

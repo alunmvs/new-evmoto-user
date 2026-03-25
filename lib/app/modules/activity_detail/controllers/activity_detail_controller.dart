@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,6 +19,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -57,32 +59,40 @@ class ActivityDetailController extends GetxController {
   final orderId = "".obs;
   final orderType = 0.obs;
 
-  final rating = 5.0.obs;
+  final rating = 0.0.obs;
   final ratingLabelList = <RatingLabel>[].obs;
 
   final estimatedTimeInMinutes = 0.0.obs;
   final estimatedDistanceInKm = 0.0.obs;
   final estimatedSpeedInKmh = 40.obs;
 
+  final isCriticalError = false.obs;
   final isFetch = false.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
+    isCriticalError.value = false;
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
-    await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
-    await getRatingLabelList(
-      rating:
-          orderRideDetail.value.orderScore == 0 ||
-              orderRideDetail.value.orderScore == null
-          ? 5
-          : orderRideDetail.value.orderScore!,
-    );
-    isFetch.value = false;
-    await setupGoogleMapOriginToDestination();
-    generateEstimatedDistanceAndTimeInMinutes();
+    try {
+      await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
+      await getRatingLabelList(
+        rating:
+            orderRideDetail.value.orderScore == 0 ||
+                orderRideDetail.value.orderScore == null
+            ? 0
+            : orderRideDetail.value.orderScore!,
+      );
+      isFetch.value = false;
+      await setupGoogleMapOriginToDestination();
+      generateEstimatedDistanceAndTimeInMinutes();
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+      isCriticalError.value = true;
+      isFetch.value = false;
+    }
   }
 
   @override
@@ -114,15 +124,17 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.state != 10) {
       for (var ratingLabel
           in ratingLabelConfiguration[languageServices
-              .languageCode
-              .value]!['rate_${rating.toInt()}']!) {
+                  .languageCode
+                  .value]?['rate_${rating.toInt()}'] ??
+              []) {
         ratingLabelList.add(RatingLabel.fromJson(ratingLabel));
       }
     } else {
       for (var ratingLabel
           in ratingLabelConfiguration[languageServices
-              .languageCode
-              .value]!['rate_${rating.toInt()}']!) {
+                  .languageCode
+                  .value]?['rate_${rating.toInt()}'] ??
+              []) {
         for (var ratingLabelId in orderRideDetail.value.ratingLabels ?? []) {
           if (ratingLabelId == ratingLabel['id']) {
             var selectedRatingLabel = RatingLabel.fromJson(ratingLabel);
@@ -339,6 +351,8 @@ class ActivityDetailController extends GetxController {
       );
 
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } else {
+      SnackbarHelper.showSnackbarError(text: "Please tap star to rate");
     }
   }
 

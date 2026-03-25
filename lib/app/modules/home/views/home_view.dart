@@ -248,21 +248,14 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                   Center(
                                     child: SizedBox(
-                                      width: 64 + 84 + 64,
-                                      height: 38 + 84 + 38,
+                                      width: 64 + 70 + 64,
+                                      height: 38 + 55 + 38,
                                       child: Stack(
                                         children: [
                                           Center(
-                                            child: Container(
-                                              width: 84,
-                                              height: 84,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(9999),
-                                                color: Color(
-                                                  0XFF10ff34,
-                                                ).withValues(alpha: 0.15),
-                                              ),
+                                            child: SizedBox(
+                                              width: 33,
+                                              height: 39,
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -271,8 +264,8 @@ class HomeView extends GetView<HomeController> {
                                                 children: [
                                                   SvgPicture.asset(
                                                     "assets/icons/icon_pinpoint_map_green.svg",
-                                                    width: 22.67,
-                                                    height: 22.67,
+                                                    width: 23,
+                                                    height: 29,
                                                   ),
                                                 ],
                                               ),
@@ -284,10 +277,7 @@ class HomeView extends GetView<HomeController> {
                                             child: GestureDetector(
                                               onTap: () async {
                                                 await controller
-                                                    .onTapRideService(
-                                                      isFillCurrentLocation:
-                                                          true,
-                                                    );
+                                                    .onTapPickUpLocation();
                                               },
                                               child: Column(
                                                 crossAxisAlignment:
@@ -805,10 +795,7 @@ class HomeView extends GetView<HomeController> {
                                                     child: GestureDetector(
                                                       onTap: () async {
                                                         await controller
-                                                            .onTapRideService(
-                                                              isFillCurrentLocation:
-                                                                  true,
-                                                            );
+                                                            .onTapWhereAreYouGoingToday();
                                                       },
                                                       child: Container(
                                                         padding:

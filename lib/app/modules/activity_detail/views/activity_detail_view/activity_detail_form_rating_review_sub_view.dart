@@ -50,7 +50,7 @@ class ActivityDetailFormRatingReviewSubView
                   ),
                   SizedBox(height: 8),
                   RatingBar.builder(
-                    initialRating: 5,
+                    initialRating: 0,
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: false,

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 
 class SearchAddressController extends GetxController {
   final GeocodingRepository geocodingRepository;
@@ -94,42 +96,48 @@ class SearchAddressController extends GetxController {
         geocodingPlaceList.value = [];
       }
       if (this.keyword.value == keyword && this.keyword.value != '') {
-        geocodingPlaceList.value = await geocodingRepository
-            .getGeocodingPlaceByQuery(limit: 5, query: this.keyword.value);
+        try {
+          geocodingPlaceList.value = await geocodingRepository
+              .getGeocodingPlaceByQuery(limit: 5, query: this.keyword.value);
 
-        if (locationServices.currentLatitude.value != null) {
-          for (var location in geocodingPlaceList) {
-            var distanceMeter = Geolocator.distanceBetween(
-              locationServices.currentLatitude.value!,
-              locationServices.currentLongitude.value!,
-              location.lat!,
-              location.lng!,
-            );
-            var distanceKm = (distanceMeter / 1000);
+          if (locationServices.currentLatitude.value != null) {
+            for (var location in geocodingPlaceList) {
+              var distanceMeter = Geolocator.distanceBetween(
+                locationServices.currentLatitude.value!,
+                locationServices.currentLongitude.value!,
+                location.lat!,
+                location.lng!,
+              );
+              var distanceKm = (distanceMeter / 1000);
 
-            location.customDistanceKm = distanceKm;
-            location.customDistanceM = distanceMeter;
+              location.customDistanceKm = distanceKm;
+              location.customDistanceM = distanceMeter;
 
-            if (distanceKm < 1) {
-              highlightedWordAddress["${distanceMeter.round()} m ⬩"] =
-                  HighlightedWord(
-                    onTap: () {},
-                    textStyle: typographyServices.captionLargeBold.value
-                        .copyWith(
-                          color: themeColorServices.neutralsColorGrey500.value,
-                        ),
-                  );
-            } else {
-              highlightedWordAddress["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
-                  HighlightedWord(
-                    onTap: () {},
-                    textStyle: typographyServices.captionLargeBold.value
-                        .copyWith(
-                          color: themeColorServices.neutralsColorGrey500.value,
-                        ),
-                  );
+              if (distanceKm < 1) {
+                highlightedWordAddress["${distanceMeter.round()} m ⬩"] =
+                    HighlightedWord(
+                      onTap: () {},
+                      textStyle: typographyServices.captionLargeBold.value
+                          .copyWith(
+                            color:
+                                themeColorServices.neutralsColorGrey500.value,
+                          ),
+                    );
+              } else {
+                highlightedWordAddress["${distanceKm.toStringAsFixed(2)} ${languageServices.language.value.km} ⬩ "] =
+                    HighlightedWord(
+                      onTap: () {},
+                      textStyle: typographyServices.captionLargeBold.value
+                          .copyWith(
+                            color:
+                                themeColorServices.neutralsColorGrey500.value,
+                          ),
+                    );
+              }
             }
           }
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
         }
         isFetchAddressSearch.value = false;
       }

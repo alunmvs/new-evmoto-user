@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/agreement_model.dart';
 import 'package:new_evmoto_user/app/repositories/agreement_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 
 class TermsAndConditionsController extends GetxController {
   final AgreementRepository agreementRepository;
@@ -22,7 +24,11 @@ class TermsAndConditionsController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    await getTermsAndConditionsAgreement();
+    try {
+      await getTermsAndConditionsAgreement();
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
     isFetch.value = false;
   }
 

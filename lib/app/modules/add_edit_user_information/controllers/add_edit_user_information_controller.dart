@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -288,45 +290,49 @@ class AddEditUserInformationController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
-    formGroup.markAllAsTouched();
+    try {
+      formGroup.markAllAsTouched();
 
-    if (formGroup.valid == false) {
+      if (formGroup.valid == false) {
+        var snackBar = SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          content: Text(
+            languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        );
+        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        return;
+      }
+
+      await userRepository.updateUserInformation(
+        name: formGroup.control("full_name").value,
+        genderType: formGroup.control("gender_type").value,
+        avatarUrl: avatarImgUrl.value == "" ? null : avatarImgUrl.value,
+        id: homeController.userInfo.value.id!,
+      );
+
+      await homeController.getUserInfo();
+
+      Get.back();
+
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
+        backgroundColor: themeColorServices.sematicColorGreen400.value,
         content: Text(
-          languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
+          languageServices.language.value.successfullySavedUserInformation ??
+              "-",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-      return;
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
-
-    await userRepository.updateUserInformation(
-      name: formGroup.control("full_name").value,
-      genderType: formGroup.control("gender_type").value,
-      avatarUrl: avatarImgUrl.value == "" ? null : avatarImgUrl.value,
-      id: homeController.userInfo.value.id!,
-    );
-
-    await homeController.getUserInfo();
-
-    Get.back();
-
-    var snackBar = SnackBar(
-      behavior: SnackBarBehavior.fixed,
-      backgroundColor: themeColorServices.sematicColorGreen400.value,
-      content: Text(
-        languageServices.language.value.successfullySavedUserInformation ?? "-",
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
-      ),
-    );
-    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-    return;
   }
 }

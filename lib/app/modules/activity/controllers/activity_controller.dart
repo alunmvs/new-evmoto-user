@@ -8,7 +8,7 @@ import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/app/utils/error_helper.dart';
+
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -59,13 +59,7 @@ class ActivityController extends GetxController
     try {
       await Future.wait([getHistoryOrderList()]);
     } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageDioException(dioException: e),
-      );
-    } on Exception catch (e) {
-      SnackbarHelper.showSnackbarError(
-        text: generateErrorMessageException(exception: e),
-      );
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
     isFetch.value = false;
   }
@@ -81,7 +75,11 @@ class ActivityController extends GetxController
   }
 
   Future<void> refreshAll() async {
-    await Future.wait([getHistoryOrderList()]);
+    try {
+      await Future.wait([getHistoryOrderList()]);
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
   }
 
   Future<void> getActiveOrderList() async {

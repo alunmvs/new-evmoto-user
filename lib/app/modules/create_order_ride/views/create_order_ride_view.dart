@@ -113,7 +113,10 @@ class CreateOrderRideView extends GetView<CreateOrderRideController> {
                         children: [
                           if (controller.isOriginHasPrimaryFocus.value ==
                               true) ...[
-                            if (controller.keywordOrigin.value == '') ...[
+                            if (controller.keywordOrigin.value == '' &&
+                                controller
+                                    .recommendationCurrentLocationList
+                                    .isNotEmpty) ...[
                               CreateOrderRideCurrentLocationSubView(),
                             ] else ...[
                               CreateOrderRideSearchedLocationSubView(),
@@ -121,7 +124,10 @@ class CreateOrderRideView extends GetView<CreateOrderRideController> {
                           ],
                           if (controller.isDestinationHasPrimaryFocus.value ==
                               true) ...[
-                            if (controller.keywordDestination.value == '') ...[
+                            if (controller.keywordDestination.value == '' &&
+                                controller
+                                    .recommendationCurrentLocationList
+                                    .isNotEmpty) ...[
                               CreateOrderRideCurrentLocationSubView(),
                             ] else ...[
                               CreateOrderRideSearchedLocationSubView(),

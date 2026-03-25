@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,6 +15,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import '../../../routes/app_pages.dart';
 
@@ -74,8 +76,22 @@ class CreateOrderRideController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    await requestLocation();
-    await Future.wait([getSavedAddressList(), getHistoryOrderList()]);
+
+    try {
+      await requestLocation();
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
+
+    try {
+      await Future.wait(
+        [getSavedAddressList(), getHistoryOrderList()],
+        eagerError: true,
+        cleanUp: (successValue) {},
+      );
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+    }
 
     focusNodeOrigin.addListener(() {
       isOriginHasPrimaryFocus.value = focusNodeOrigin.hasPrimaryFocus;
@@ -437,24 +453,32 @@ class CreateOrderRideController extends GetxController {
     //   return;
     // }
 
-    var result = await Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
-      arguments: {
-        "type": "origin",
-        "address_name": selectedCurrentLocation.name ?? "-",
-        "address": selectedCurrentLocation.addressDetail ?? "-",
-        "latitude": selectedCurrentLocation.latitude!.toString(),
-        "longitude": selectedCurrentLocation.longitude!.toString(),
-      },
-    );
+    // var result = await Get.toNamed(
+    //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+    //   arguments: {
+    //     "type": "origin",
+    //     "address_name": selectedCurrentLocation.name ?? "-",
+    //     "address": selectedCurrentLocation.addressDetail ?? "-",
+    //     "latitude": selectedCurrentLocation.latitude!.toString(),
+    //     "longitude": selectedCurrentLocation.longitude!.toString(),
+    //   },
+    // );
+
+    var result = {
+      "type": "origin",
+      "address_name": selectedCurrentLocation.name ?? "-",
+      "address": selectedCurrentLocation.addressDetail ?? "-",
+      "latitude": selectedCurrentLocation.latitude!.toString(),
+      "longitude": selectedCurrentLocation.longitude!.toString(),
+    };
 
     if (result != null) {
-      originLatitude.value = result['latitude'];
-      originLongitude.value = result['longitude'];
-      originAddressName.value = result['address_name'];
-      originAddress.value = result['address'];
-      keywordOrigin.value = result['address_name'];
-      originTextEditingController.text = result['address_name'];
+      originLatitude.value = result['latitude']!;
+      originLongitude.value = result['longitude']!;
+      originAddressName.value = result['address_name']!;
+      originAddress.value = result['address']!;
+      keywordOrigin.value = result['address_name']!;
+      originTextEditingController.text = result['address_name']!;
 
       await Future.delayed(Duration(milliseconds: 100));
       focusNodeDestination.requestFocus();
@@ -479,24 +503,32 @@ class CreateOrderRideController extends GetxController {
     //   return;
     // }
 
-    var result = await Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
-      arguments: {
-        "type": "origin",
-        "address_name": selectedCurrentLocation.name ?? "-",
-        "address": selectedCurrentLocation.address ?? "-",
-        "latitude": selectedCurrentLocation.lat.toString(),
-        "longitude": selectedCurrentLocation.lng.toString(),
-      },
-    );
+    // var result = await Get.toNamed(
+    //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+    //   arguments: {
+    //     "type": "origin",
+    //     "address_name": selectedCurrentLocation.name ?? "-",
+    //     "address": selectedCurrentLocation.address ?? "-",
+    //     "latitude": selectedCurrentLocation.lat.toString(),
+    //     "longitude": selectedCurrentLocation.lng.toString(),
+    //   },
+    // );
+
+    var result = {
+      "type": "origin",
+      "address_name": selectedCurrentLocation.name ?? "-",
+      "address": selectedCurrentLocation.address ?? "-",
+      "latitude": selectedCurrentLocation.lat.toString(),
+      "longitude": selectedCurrentLocation.lng.toString(),
+    };
 
     if (result != null) {
       originLatitude.value = result['latitude'].toString();
       originLongitude.value = result['longitude'].toString();
-      originAddressName.value = result['address_name'];
-      originAddress.value = result['address'];
-      keywordOrigin.value = result['address_name'];
-      originTextEditingController.text = result['address_name'];
+      originAddressName.value = result['address_name']!;
+      originAddress.value = result['address']!;
+      keywordOrigin.value = result['address_name']!;
+      originTextEditingController.text = result['address_name']!;
 
       await Future.delayed(Duration(milliseconds: 100));
       focusNodeDestination.requestFocus();
@@ -520,24 +552,31 @@ class CreateOrderRideController extends GetxController {
     //   return;
     // }
 
-    var result = await Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
-      arguments: {
-        "type": "origin",
-        "address_name": selectedCurrentLocation.name ?? "-",
-        "address": selectedCurrentLocation.addressDetail ?? "-",
-        "latitude": selectedCurrentLocation.latitude.toString(),
-        "longitude": selectedCurrentLocation.longitude.toString(),
-      },
-    );
+    // var result = await Get.toNamed(
+    //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+    //   arguments: {
+    //     "type": "origin",
+    //     "address_name": selectedCurrentLocation.name ?? "-",
+    //     "address": selectedCurrentLocation.addressDetail ?? "-",
+    //     "latitude": selectedCurrentLocation.latitude.toString(),
+    //     "longitude": selectedCurrentLocation.longitude.toString(),
+    //   },
+    // );
+    var result = {
+      "type": "origin",
+      "address_name": selectedCurrentLocation.name ?? "-",
+      "address": selectedCurrentLocation.addressDetail ?? "-",
+      "latitude": selectedCurrentLocation.latitude.toString(),
+      "longitude": selectedCurrentLocation.longitude.toString(),
+    };
 
     if (result != null) {
-      originLatitude.value = result['latitude'];
-      originLongitude.value = result['longitude'];
-      originAddressName.value = result['address_name'];
-      originAddress.value = result['address'];
-      keywordOrigin.value = result['address_name'];
-      originTextEditingController.text = result['address_name'];
+      originLatitude.value = result['latitude']!;
+      originLongitude.value = result['longitude']!;
+      originAddressName.value = result['address_name']!;
+      originAddress.value = result['address']!;
+      keywordOrigin.value = result['address_name']!;
+      originTextEditingController.text = result['address_name']!;
 
       await Future.delayed(Duration(milliseconds: 100));
       focusNodeDestination.requestFocus();
@@ -562,24 +601,32 @@ class CreateOrderRideController extends GetxController {
     //   return;
     // }
 
-    var result = await Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
-      arguments: {
-        "type": "destination",
-        "address_name": selectedCurrentLocation.name ?? "-",
-        "address": selectedCurrentLocation.addressDetail ?? "-",
-        "latitude": selectedCurrentLocation.latitude!.toString(),
-        "longitude": selectedCurrentLocation.longitude!.toString(),
-      },
-    );
+    // var result = await Get.toNamed(
+    //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+    //   arguments: {
+    //     "type": "destination",
+    //     "address_name": selectedCurrentLocation.name ?? "-",
+    //     "address": selectedCurrentLocation.addressDetail ?? "-",
+    //     "latitude": selectedCurrentLocation.latitude!.toString(),
+    //     "longitude": selectedCurrentLocation.longitude!.toString(),
+    //   },
+    // );
+
+    var result = {
+      "type": "destination",
+      "address_name": selectedCurrentLocation.name ?? "-",
+      "address": selectedCurrentLocation.addressDetail ?? "-",
+      "latitude": selectedCurrentLocation.latitude!.toString(),
+      "longitude": selectedCurrentLocation.longitude!.toString(),
+    };
 
     if (result != null) {
-      destinationLatitude.value = result['latitude'];
-      destinationLongitude.value = result['longitude'];
-      destinationAddressName.value = result['address_name'];
-      destinationAddress.value = result['address'];
-      keywordDestination.value = result['address_name'];
-      destinationTextEditingController.text = result['address_name'];
+      destinationLatitude.value = result['latitude']!;
+      destinationLongitude.value = result['longitude']!;
+      destinationAddressName.value = result['address_name']!;
+      destinationAddress.value = result['address']!;
+      keywordDestination.value = result['address_name']!;
+      destinationTextEditingController.text = result['address_name']!;
       await getDestinationPlaceLocationList(
         keyword: destinationAddressName.value,
       );
@@ -602,24 +649,32 @@ class CreateOrderRideController extends GetxController {
     //   return;
     // }
 
-    var result = await Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
-      arguments: {
-        "type": "destination",
-        "address_name": selectedCurrentLocation.name ?? "-",
-        "address": selectedCurrentLocation.address ?? "-",
-        "latitude": selectedCurrentLocation.lat!.toString(),
-        "longitude": selectedCurrentLocation.lng!.toString(),
-      },
-    );
+    // var result = await Get.toNamed(
+    //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+    //   arguments: {
+    //     "type": "destination",
+    //     "address_name": selectedCurrentLocation.name ?? "-",
+    //     "address": selectedCurrentLocation.address ?? "-",
+    //     "latitude": selectedCurrentLocation.lat!.toString(),
+    //     "longitude": selectedCurrentLocation.lng!.toString(),
+    //   },
+    // );
+
+    var result = {
+      "type": "destination",
+      "address_name": selectedCurrentLocation.name ?? "-",
+      "address": selectedCurrentLocation.address ?? "-",
+      "latitude": selectedCurrentLocation.lat!.toString(),
+      "longitude": selectedCurrentLocation.lng!.toString(),
+    };
 
     if (result != null) {
       destinationLatitude.value = result['latitude'].toString();
       destinationLongitude.value = result['longitude'].toString();
-      destinationAddressName.value = result['address_name'];
-      destinationAddress.value = result['address'];
-      keywordDestination.value = result['address_name'];
-      destinationTextEditingController.text = result['address_name'];
+      destinationAddressName.value = result['address_name']!;
+      destinationAddress.value = result['address']!;
+      keywordDestination.value = result['address_name']!;
+      destinationTextEditingController.text = result['address_name']!;
       await getDestinationPlaceLocationList(
         keyword: destinationAddressName.value,
       );
@@ -641,24 +696,31 @@ class CreateOrderRideController extends GetxController {
     //   );
     //   return;
     // }
-    var result = await Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
-      arguments: {
-        "type": "destination",
-        "address_name": selectedCurrentLocation.name ?? "-",
-        "address": selectedCurrentLocation.addressDetail ?? "-",
-        "latitude": selectedCurrentLocation.latitude!.toString(),
-        "longitude": selectedCurrentLocation.longitude!.toString(),
-      },
-    );
+    // var result = await Get.toNamed(
+    //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+    //   arguments: {
+    //     "type": "destination",
+    //     "address_name": selectedCurrentLocation.name ?? "-",
+    //     "address": selectedCurrentLocation.addressDetail ?? "-",
+    //     "latitude": selectedCurrentLocation.latitude!.toString(),
+    //     "longitude": selectedCurrentLocation.longitude!.toString(),
+    //   },
+    // );
+    var result = {
+      "type": "destination",
+      "address_name": selectedCurrentLocation.name ?? "-",
+      "address": selectedCurrentLocation.addressDetail ?? "-",
+      "latitude": selectedCurrentLocation.latitude!.toString(),
+      "longitude": selectedCurrentLocation.longitude!.toString(),
+    };
 
     if (result != null) {
-      destinationLatitude.value = result['latitude'];
-      destinationLongitude.value = result['longitude'];
-      destinationAddressName.value = result['address_name'];
-      destinationAddress.value = result['address'];
-      keywordDestination.value = result['address_name'];
-      destinationTextEditingController.text = result['address_name'];
+      destinationLatitude.value = result['latitude']!;
+      destinationLongitude.value = result['longitude']!;
+      destinationAddressName.value = result['address_name']!;
+      destinationAddress.value = result['address']!;
+      keywordDestination.value = result['address_name']!;
+      destinationTextEditingController.text = result['address_name']!;
       await getDestinationPlaceLocationList(
         keyword: destinationAddressName.value,
       );

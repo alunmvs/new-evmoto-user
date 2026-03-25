@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ class LanguageServices extends GetxService {
     if (languageCode != null) {
       await switchLanguage(languageCode: languageCode, isSave: false);
     } else {
-      var currentLocale = Intl.getCurrentLocale();
+      var currentLocale = PlatformDispatcher.instance.locale.toString();
 
       var languageCode = "ID";
 
@@ -37,7 +38,8 @@ class LanguageServices extends GetxService {
 
       if (currentLocale == "zh" ||
           currentLocale == "zh_CN" ||
-          currentLocale == "zh_TW") {
+          currentLocale == "zh_TW" ||
+          currentLocale == "zh_Hant_TW") {
         languageCode = "ZH_CN";
       }
 

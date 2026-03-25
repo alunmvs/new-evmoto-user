@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class VoucherListController extends GetxController {
@@ -45,29 +47,38 @@ class VoucherListController extends GetxController {
   }
 
   Future<void> getVoucherList() async {
-    pageNum.value = 1;
-    isSeeMoreVoucherList.value = true;
+    try {
+      pageNum.value = 1;
+      isSeeMoreVoucherList.value = true;
 
-    voucherList.value = await couponRepository.getCouponList(
-      pageNum: pageNum.value,
-      size: size.value,
-      language: languageServices.languageCodeSystem.value,
-      state: selectedIndex.value,
-    );
+      voucherList.value = await couponRepository.getCouponList(
+        pageNum: pageNum.value,
+        size: size.value,
+        language: languageServices.languageCodeSystem.value,
+        state: selectedIndex.value,
+      );
 
-    isSeeMoreVoucherList.value = voucherList.isNotEmpty;
+      isSeeMoreVoucherList.value = voucherList.isNotEmpty;
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
   }
 
   Future<void> seeMoreVoucherList() async {
-    pageNum.value += 1;
+    try {
+      pageNum.value += 1;
 
-    var voucherList = await couponRepository.getCouponList(
-      pageNum: pageNum.value,
-      size: size.value,
-      language: languageServices.languageCodeSystem.value,
-      state: selectedIndex.value,
-    );
+      var voucherList = await couponRepository.getCouponList(
+        pageNum: pageNum.value,
+        size: size.value,
+        language: languageServices.languageCodeSystem.value,
+        state: selectedIndex.value,
+      );
 
-    isSeeMoreVoucherList.value = voucherList.isNotEmpty;
+      isSeeMoreVoucherList.value = voucherList.isNotEmpty;
+    } on DioException catch (e) {
+      pageNum.value -= 1;
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
   }
 }

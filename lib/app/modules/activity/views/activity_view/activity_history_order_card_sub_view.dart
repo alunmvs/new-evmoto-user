@@ -78,124 +78,51 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                [
-                                  1,
-                                  2,
-                                  3,
-                                  4,
-                                  5,
-                                  6,
-                                  7,
-                                ].contains(historyOrder.state)
-                                ? controller
-                                      .themeColorServices
-                                      .sematicColorBlue100
-                                      .value
-                                : historyOrder.state == 10
-                                ? controller
-                                      .themeColorServices
-                                      .sematicColorRed100
-                                      .value
-                                : !([
-                                        1,
-                                        2,
-                                        3,
-                                        4,
-                                        5,
-                                        6,
-                                        7,
-                                      ].contains(historyOrder.state)) &&
-                                      !(historyOrder.state == 10) &&
-                                      (historyOrder.orderScore ?? 0) == 0
-                                ? Color(0XFFFFFAE8)
-                                : controller
-                                      .themeColorServices
-                                      .sematicColorGreen100
-                                      .value,
-                            border: Border.all(
-                              color:
-                                  [
-                                    1,
-                                    2,
-                                    3,
-                                    4,
-                                    5,
-                                    6,
-                                    7,
-                                  ].contains(historyOrder.state)
-                                  ? controller
-                                        .themeColorServices
-                                        .sematicColorBlue300
-                                        .value
-                                  : historyOrder.state == 10
-                                  ? controller
-                                        .themeColorServices
-                                        .sematicColorRed400
-                                        .value
-                                  : !([
-                                          1,
-                                          2,
-                                          3,
-                                          4,
-                                          5,
-                                          6,
-                                          7,
-                                        ].contains(historyOrder.state)) &&
-                                        !(historyOrder.state == 10) &&
-                                        (historyOrder.orderScore ?? 0) == 0
-                                  ? Color(0XFFF7E9BC)
-                                  : controller
-                                        .themeColorServices
-                                        .sematicColorGreen200
-                                        .value,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            [1, 2, 3, 4, 5, 6, 7].contains(historyOrder.state)
-                                ? controller
-                                          .languageServices
-                                          .language
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color:
+                                    [
+                                      1,
+                                      2,
+                                      3,
+                                      4,
+                                      5,
+                                      6,
+                                      7,
+                                    ].contains(historyOrder.state)
+                                    ? controller
+                                          .themeColorServices
+                                          .sematicColorBlue100
                                           .value
-                                          .inProcess ??
-                                      "-"
-                                : historyOrder.state == 10
-                                ? controller
-                                          .languageServices
-                                          .language
+                                    : historyOrder.state == 10
+                                    ? controller
+                                          .themeColorServices
+                                          .sematicColorRed100
                                           .value
-                                          .canceled ??
-                                      "-"
-                                : !([
-                                        1,
-                                        2,
-                                        3,
-                                        4,
-                                        5,
-                                        6,
-                                        7,
-                                      ].contains(historyOrder.state)) &&
-                                      !(historyOrder.state == 10) &&
-                                      (historyOrder.orderScore ?? 0) == 0
-                                ? "Penilaian"
-                                : controller
-                                          .languageServices
-                                          .language
-                                          .value
-                                          .orderCompleted ??
-                                      "-",
-                            style: controller
-                                .typographyServices
-                                .captionLargeRegular
-                                .value
-                                .copyWith(
+                                    : !([
+                                            1,
+                                            2,
+                                            3,
+                                            4,
+                                            5,
+                                            6,
+                                            7,
+                                          ].contains(historyOrder.state)) &&
+                                          !(historyOrder.state == 10) &&
+                                          (historyOrder.orderScore ?? 0) == 0
+                                    ? Color(0XFFFFFAE8)
+                                    : controller
+                                          .themeColorServices
+                                          .sematicColorGreen100
+                                          .value,
+                                border: Border.all(
                                   color:
                                       [
                                         1,
@@ -208,12 +135,12 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                       ].contains(historyOrder.state)
                                       ? controller
                                             .themeColorServices
-                                            .sematicColorBlue500
+                                            .sematicColorBlue300
                                             .value
                                       : historyOrder.state == 10
                                       ? controller
                                             .themeColorServices
-                                            .sematicColorRed500
+                                            .sematicColorRed400
                                             .value
                                       : !([
                                               1,
@@ -226,13 +153,119 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                             ].contains(historyOrder.state)) &&
                                             !(historyOrder.state == 10) &&
                                             (historyOrder.orderScore ?? 0) == 0
-                                      ? Color(0XFFEAA82D)
+                                      ? Color(0XFFF7E9BC)
                                       : controller
                                             .themeColorServices
-                                            .sematicColorGreen500
+                                            .sematicColorGreen200
                                             .value,
                                 ),
-                          ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                [
+                                      1,
+                                      2,
+                                      3,
+                                      4,
+                                      5,
+                                      6,
+                                      7,
+                                    ].contains(historyOrder.state)
+                                    ? controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .inProcess ??
+                                          "-"
+                                    : historyOrder.state == 10
+                                    ? controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .canceled ??
+                                          "-"
+                                    : !([
+                                            1,
+                                            2,
+                                            3,
+                                            4,
+                                            5,
+                                            6,
+                                            7,
+                                          ].contains(historyOrder.state)) &&
+                                          !(historyOrder.state == 10) &&
+                                          (historyOrder.orderScore ?? 0) == 0
+                                    ? "Penilaian"
+                                    : controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .orderCompleted ??
+                                          "-",
+                                style: controller
+                                    .typographyServices
+                                    .captionLargeRegular
+                                    .value
+                                    .copyWith(
+                                      color:
+                                          [
+                                            1,
+                                            2,
+                                            3,
+                                            4,
+                                            5,
+                                            6,
+                                            7,
+                                          ].contains(historyOrder.state)
+                                          ? controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value
+                                          : historyOrder.state == 10
+                                          ? controller
+                                                .themeColorServices
+                                                .sematicColorRed500
+                                                .value
+                                          : !([1, 2, 3, 4, 5, 6, 7].contains(
+                                                  historyOrder.state,
+                                                )) &&
+                                                !(historyOrder.state == 10) &&
+                                                (historyOrder.orderScore ??
+                                                        0) ==
+                                                    0
+                                          ? Color(0XFFEAA82D)
+                                          : controller
+                                                .themeColorServices
+                                                .sematicColorGreen500
+                                                .value,
+                                    ),
+                              ),
+                            ),
+                            if ([
+                                  1,
+                                  2,
+                                  3,
+                                  4,
+                                  5,
+                                  6,
+                                  7,
+                                ].contains(historyOrder.state) ||
+                                historyOrder.state == 10)
+                              ...[]
+                            else ...[
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'id_ID',
+                                  symbol: 'Rp ',
+                                  decimalDigits: 0,
+                                ).format(historyOrder.payMoney),
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallBold
+                                    .value,
+                              ),
+                            ],
+                          ],
                         ),
                         SizedBox(height: 8),
                         SizedBox(

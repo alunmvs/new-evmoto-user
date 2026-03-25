@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -26,6 +27,7 @@ class CreateOrderRideMapSelectView
                     children: [
                       GoogleMap(
                         mapType: MapType.normal,
+                        zoomControlsEnabled: false,
                         onCameraMove: controller.isFetch.value
                             ? null
                             : (position) async {
@@ -124,6 +126,13 @@ class CreateOrderRideMapSelectView
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  if (controller.type.value == "origin") {
+                                    if (Get.previousRoute == Routes.HOME) {
+                                      Get.back();
+                                      Get.toNamed(Routes.CREATE_ORDER_RIDE);
+                                      return;
+                                    }
+                                  }
                                   Get.back();
                                 },
                                 child: Container(

@@ -20,7 +20,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Color(0XFFFFFFFF), Color(0XFFCDE2F8)],
+                        colors: [Color(0XFF0272EC), Color(0XFF56DEF3)],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         stops: [0.0, 1.0],
@@ -29,9 +29,9 @@ class SplashScreenView extends GetView<SplashScreenController> {
                   ),
                   Center(
                     child: Image.asset(
-                      "assets/logos/logo_evmoto.png",
-                      height: 49,
-                      width: 160,
+                      "assets/icons/icon_splash_screen_evmoto.png",
+                      height: 103,
+                      width: 110,
                     ),
                   ),
                 ],

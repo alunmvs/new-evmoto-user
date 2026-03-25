@@ -30,7 +30,7 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   final isPermissionLocationAllow = false.obs;
   final isFetchAddress = false.obs;
-  final isFetch = false.obs;
+  final isFetch = true.obs;
 
   @override
   Future<void> onInit() async {
