@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,29 +13,22 @@ class SplashScreenView extends GetView<SplashScreenController> {
     return Obx(
       () => Scaffold(
         body: controller.isFetch.value
-            ? Container()
-            : Stack(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0XFF0272EC), Color(0XFF56DEF3)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
-                      ),
-                    ),
+            ? Center(
+                child: SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    color: controller.themeColorServices.primaryBlue.value,
                   ),
-                  Center(
-                    child: Image.asset(
-                      "assets/icons/icon_splash_screen_evmoto.png",
-                      height: 103,
-                      width: 110,
-                    ),
-                  ),
-                ],
+                ),
+              )
+            : Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: CachedNetworkImage(
+                  imageUrl: controller.splashScreenQueryImage.value.url!,
+                  fit: BoxFit.cover,
+                ),
               ),
       ),
     );

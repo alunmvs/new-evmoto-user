@@ -32,24 +32,6 @@ class HomeView extends GetView<HomeController> {
             if (now.difference(controller.lastPressedBackDateTime.value) >
                 Duration(seconds: 2)) {
               controller.lastPressedBackDateTime.value = now;
-
-              var snackBar = SnackBar(
-                behavior: SnackBarBehavior.fixed,
-                backgroundColor:
-                    controller.themeColorServices.primaryBlue.value,
-                content: Text(
-                  controller.languageServices.language.value.pressAgainExit ??
-                      "-",
-                  style: controller.typographyServices.bodySmallRegular.value
-                      .copyWith(
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey0
-                            .value,
-                      ),
-                ),
-              );
-              rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
             } else {
               SystemNavigator.pop();
             }

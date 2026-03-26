@@ -89,16 +89,25 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
           child: Column(
             children: [
               LoaderElevatedButton(
-                onPressed: () async {
-                  await controller.onTapDone();
-                },
+                onPressed: controller.orderRideDetail.value.state == 6
+                    ? null
+                    : () async {
+                        await controller.onTapDone();
+                      },
                 child: Text(
-                  controller
-                          .languageServices
-                          .language
-                          .value
-                          .paymentConfirmation ??
-                      "-",
+                  controller.orderRideDetail.value.state == 6
+                      ? (controller
+                                .languageServices
+                                .language
+                                .value
+                                .waitingDriverConfirmation ??
+                            "-")
+                      : (controller
+                                .languageServices
+                                .language
+                                .value
+                                .paymentConfirmation ??
+                            "-"),
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(color: Colors.white),
                 ),

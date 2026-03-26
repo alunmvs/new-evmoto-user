@@ -144,7 +144,6 @@ class ActivityDetailMapOriginDestinationInformationSubView
                                       .value,
                                 ),
                           ),
-
                           Text(
                             " ⬩ ",
                             style: controller

@@ -271,7 +271,6 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
-    await locationServices.requestLocation();
     if (locationServices.isPermissionLocationAllow.value == true) {
       Get.dialog(LoadingDialog(), barrierDismissible: false);
       try {

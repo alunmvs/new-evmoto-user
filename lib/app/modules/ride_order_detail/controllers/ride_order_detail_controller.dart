@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
@@ -143,7 +144,8 @@ class RideOrderDetailController extends GetxController {
 
       generateEstimatedDistanceAndTimeInMinutes();
 
-      if (orderRideDetail.value.state == 7) {
+      if (orderRideDetail.value.state == 6 ||
+          orderRideDetail.value.state == 7) {
         // Driver Give Price
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
@@ -266,7 +268,7 @@ class RideOrderDetailController extends GetxController {
 
     generateEstimatedDistanceAndTimeInMinutes();
 
-    if (orderRideDetail.value.state == 9) {
+    if (orderRideDetail.value.state == 6 || orderRideDetail.value.state == 7) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
@@ -345,8 +347,8 @@ class RideOrderDetailController extends GetxController {
           orderRideDetail.value.startLon!,
         ),
         icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_pinpoint.svg',
-          Size(32, 34),
+          'assets/icons/icon_pinpoint_map_green.svg',
+          Size(28, 35),
         ),
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -367,6 +369,7 @@ class RideOrderDetailController extends GetxController {
           .toList();
 
       polylinesCoordinate.value = polylineCoordinates;
+      generateEstimatedDistanceAndTimeInMinutes();
 
       polylines.add(
         Polyline(
@@ -478,6 +481,7 @@ class RideOrderDetailController extends GetxController {
         .toList();
 
     polylinesCoordinate.value = polylineCoordinates;
+    generateEstimatedDistanceAndTimeInMinutes();
 
     polylines.clear();
 
@@ -611,9 +615,9 @@ class RideOrderDetailController extends GetxController {
             orderRideDetail.value.startLat!,
             orderRideDetail.value.startLon!,
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-            'assets/icons/icon_order_appointment_point.png',
-            Size(46, 46),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
+            'assets/icons/icon_pinpoint_map_green.svg',
+            Size(28, 35),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -634,6 +638,7 @@ class RideOrderDetailController extends GetxController {
             .toList();
 
         polylinesCoordinate.value = polylineCoordinates;
+        generateEstimatedDistanceAndTimeInMinutes();
 
         polylines.add(
           Polyline(
@@ -643,8 +648,6 @@ class RideOrderDetailController extends GetxController {
             width: 6,
           ),
         );
-
-        generateEstimatedDistanceAndTimeInMinutes();
 
         LatLngBounds bounds;
 
@@ -730,6 +733,7 @@ class RideOrderDetailController extends GetxController {
             .toList();
 
         polylinesCoordinate.value = polylineCoordinates;
+        generateEstimatedDistanceAndTimeInMinutes();
 
         polylines.add(
           Polyline(
@@ -786,6 +790,7 @@ class RideOrderDetailController extends GetxController {
 
     if (minDistance < threshold && closestIndex > 0) {
       polylinesCoordinate.value = polylinesCoordinate.sublist(closestIndex);
+      generateEstimatedDistanceAndTimeInMinutes();
 
       polylines.clear();
       polylines.add(
@@ -796,8 +801,6 @@ class RideOrderDetailController extends GetxController {
           points: polylinesCoordinate,
         ),
       );
-
-      generateEstimatedDistanceAndTimeInMinutes();
     }
   }
 
@@ -995,40 +998,51 @@ class RideOrderDetailController extends GetxController {
                           Expanded(
                             child: LoaderElevatedButton(
                               onPressed: () async {
-                                await orderRideRepository.cancelOrderRide(
-                                  orderId: orderId.value,
-                                  orderType: orderType.value,
-                                  language:
-                                      languageServices.languageCodeSystem.value,
-                                  reason: null,
-                                  remark: null,
-                                );
-                                Get.close(1);
-                                Get.back();
+                                try {
+                                  await orderRideRepository.cancelOrderRide(
+                                    orderId: orderId.value,
+                                    orderType: orderType.value,
+                                    language: languageServices
+                                        .languageCodeSystem
+                                        .value,
+                                    reason: null,
+                                    remark: null,
+                                  );
+                                  Get.close(1);
+                                  Get.back();
 
-                                var snackBar = SnackBar(
-                                  behavior: SnackBarBehavior.fixed,
-                                  backgroundColor: themeColorServices
-                                      .sematicColorGreen400
-                                      .value,
-                                  content: Text(
-                                    languageServices
-                                            .language
-                                            .value
-                                            .snackbarCancelTransactionSuccess ??
-                                        "-",
-                                    style: typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
-                                );
-                                rootScaffoldMessengerKey.currentState
-                                    ?.showSnackBar(snackBar);
+                                  var snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorGreen400
+                                        .value,
+                                    content: Text(
+                                      languageServices
+                                              .language
+                                              .value
+                                              .snackbarCancelTransactionSuccess ??
+                                          "-",
+                                      style: typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
+                                } on DioException catch (e) {
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.error.toString(),
+                                  );
+                                } on Exception catch (e) {
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.toString(),
+                                  );
+                                }
                               },
                               buttonColor:
                                   themeColorServices.sematicColorRed400.value,
@@ -1065,6 +1079,23 @@ class RideOrderDetailController extends GetxController {
     } else {
       return '$menit ${languageServices.language.value.minute}';
     }
+  }
+
+  String getEstimatedHourMinuteArrive() {
+    var now = DateTime.now();
+    int menit = (estimatedTimeInMinutes.value % 60).round();
+    var estimatedArrived = now.add(Duration(minutes: menit));
+    var formattedTime = DateFormat('HH:mm').format(estimatedArrived);
+    return formattedTime;
+  }
+
+  String getEstimatedHourMinuteWaitingTime() {
+    var now = DateTime.now();
+    var estimatedWaitingTime = now.add(
+      Duration(minutes: orderRideDetail.value.freeWaitMinutes ?? 0),
+    );
+    var formattedTime = DateFormat('HH:mm').format(estimatedWaitingTime);
+    return formattedTime;
   }
 }
 

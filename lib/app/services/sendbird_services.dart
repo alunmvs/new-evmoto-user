@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:get/get.dart';
@@ -19,19 +21,47 @@ class SendbirdServices extends GetxService {
     final homeController = Get.find<HomeController>();
 
     try {
+      print("oke-1");
       methodChannel.setMethodCallHandler(handleNativeListener);
+      print("oke-2");
       if (homeController.userInfo.value.id != null) {
-        await methodChannel.invokeMethod("init", {
-          "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
+        print("oke-3");
+        print(
+          firebaseRemoteConfigServices.remoteConfig.getString(
             'sendbird_app_id',
           ),
-          "user_id": "user_${homeController.userInfo.value.id}",
-          "access_token": '',
-          "push_token": firebasePushNotificationServices.fcmToken.value,
-        });
+        );
+        if (Platform.isAndroid) {
+          await methodChannel.invokeMethod("init", {
+            "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
+              'sendbird_app_id',
+            ),
+            "user_id": "user_${homeController.userInfo.value.id}",
+            "access_token": '',
+            "push_token": firebasePushNotificationServices.fcmToken.value,
+          });
+        }
+        if (Platform.isIOS) {
+          print(firebasePushNotificationServices.fcmToken.value);
+          print(firebasePushNotificationServices.apnsToken.value);
+          print("user_${homeController.userInfo.value.id}");
+          await methodChannel.invokeMethod("init", {
+            "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
+              'sendbird_app_id',
+            ),
+            "user_id": "user_${homeController.userInfo.value.id}",
+            "user_access_token": '',
+            "push_token": firebasePushNotificationServices.fcmToken.value,
+            "apns_token": firebasePushNotificationServices.fcmToken.value,
+          });
+        }
         isSuccessInitialize.value = true;
+        print("oke-4");
       }
-    } catch (e) {}
+    } catch (e) {
+      print("oke-5");
+      print(e);
+    }
   }
 
   Future<void> handleNativeListener(MethodCall call) async {

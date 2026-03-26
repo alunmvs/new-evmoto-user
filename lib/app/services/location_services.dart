@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
+import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
@@ -11,6 +13,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+
+  final geocodingAddress = GeocodingAddress().obs;
 
   final currentLatitude = Rx<double?>(null);
   final currentLongitude = Rx<double?>(null);
@@ -79,7 +83,21 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
 
       currentLatitude.value = position.latitude;
       currentLongitude.value = position.longitude;
+      await getGeocodingAddress();
       isRequestingPermission.value = false;
+    }
+  }
+
+  Future<void> getGeocodingAddress() async {
+    if (currentLatitude.value != null) {
+      var geocodingRepository = GeocodingRepository();
+      var geocodingAddress =
+          (await geocodingRepository.getAddressByLatitudeLongitude(
+            latitude: currentLatitude.value,
+            longitude: currentLongitude.value,
+          )) ??
+          GeocodingAddress();
+      this.geocodingAddress.value = geocodingAddress;
     }
   }
 

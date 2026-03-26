@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../controllers/create_order_ride_map_select_controller.dart';
@@ -28,22 +29,16 @@ class CreateOrderRideMapSelectView
                       GoogleMap(
                         mapType: MapType.normal,
                         zoomControlsEnabled: false,
-                        onCameraMove: controller.isFetch.value
-                            ? null
-                            : (position) async {
-                                controller.latitude.value = position
-                                    .target
-                                    .latitude
-                                    .toString();
-                                controller.longitude.value = position
-                                    .target
-                                    .longitude
-                                    .toString();
-                                controller.updateLocationLatLng(
-                                  latitude: position.target.latitude,
-                                  longitude: position.target.longitude,
-                                );
-                              },
+                        onCameraMove: (position) async {
+                          controller.latitude.value = position.target.latitude
+                              .toString();
+                          controller.longitude.value = position.target.longitude
+                              .toString();
+                          controller.updateLocationLatLng(
+                            latitude: position.target.latitude,
+                            longitude: position.target.longitude,
+                          );
+                        },
                         initialCameraPosition:
                             controller.initialCameraPosition.value,
                         onMapCreated:

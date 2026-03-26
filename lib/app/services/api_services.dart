@@ -7,6 +7,7 @@ import 'package:dio/io.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,6 +19,8 @@ class ApiServices extends GetxService {
       receiveTimeout: Duration(seconds: 15),
     ),
   );
+
+  final languageServices = Get.find<LanguageServices>();
 
   final deviceId = "".obs;
   final packageVersion = "".obs;
@@ -79,28 +82,38 @@ class ApiServices extends GetxService {
           switch (error.type) {
             case DioExceptionType.connectionError:
               customMessage =
-                  "Tidak dapat terhubung ke server. Periksa koneksi internet kamu.";
+                  languageServices.language.value.dioExceptionConnectionError ??
+                  "-";
               break;
 
             case DioExceptionType.connectionTimeout:
-              customMessage = "Koneksi timeout. Coba lagi nanti.";
+              customMessage =
+                  languageServices
+                      .language
+                      .value
+                      .dioExceptionConnectionTimeout ??
+                  "-";
               break;
 
             case DioExceptionType.receiveTimeout:
-              customMessage = "Server terlalu lama merespons.";
+              customMessage =
+                  languageServices.language.value.dioExceptionReceiveTimeout ??
+                  "-";
               break;
 
             case DioExceptionType.badResponse:
               customMessage =
-                  "Terjadi kesalahan dari server (${error.response?.statusCode}).";
+                  "${languageServices.language.value.dioExceptionBadResponse ?? "-"} (${error.response?.statusCode}).";
               break;
 
             case DioExceptionType.cancel:
-              customMessage = "Request dibatalkan.";
+              customMessage =
+                  languageServices.language.value.dioExceptionCancel ?? "-";
               break;
 
             default:
-              customMessage = "Terjadi kesalahan yang tidak diketahui.";
+              customMessage =
+                  languageServices.language.value.dioExceptionDefault ?? "-";
           }
 
           // Override error message

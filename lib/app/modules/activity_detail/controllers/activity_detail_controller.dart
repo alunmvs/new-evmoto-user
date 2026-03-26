@@ -78,6 +78,7 @@ class ActivityDetailController extends GetxController {
     orderType.value = Get.arguments['order_type'] ?? 1;
     try {
       await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
+      print("ini order id ${orderRideDetail.value.orderId}");
       await getRatingLabelList(
         rating:
             orderRideDetail.value.orderScore == 0 ||

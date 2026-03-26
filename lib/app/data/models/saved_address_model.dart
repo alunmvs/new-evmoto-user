@@ -9,8 +9,8 @@ class SavedAddress {
   String? longitude;
   int? addressType;
   int? isDelete;
-  int? createTime;
-  int? updateTime;
+  String? createTime;
+  String? updateTime;
 
   SavedAddress({
     this.id,

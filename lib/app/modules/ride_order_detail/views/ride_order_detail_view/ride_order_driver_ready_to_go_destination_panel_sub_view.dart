@@ -7,6 +7,8 @@ import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_d
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_id_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_origin_and_destination_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_payment_method_sub_view.dart';
+import 'package:new_evmoto_user/app/utils/general_helper.dart';
+import 'package:new_evmoto_user/app/utils/maps_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -79,10 +81,37 @@ class RideOrderDriverReadyToGoDestinationPanelSubView
                           ),
                         ),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Berangkat menuju lokasi",
+                              (controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .arrived ??
+                                      "-")
+                                  .replaceFirst(
+                                    "x",
+                                    formatDoubleToString(
+                                      controller.estimatedDistanceInKm.value,
+                                    ).replaceFirst(
+                                      "x",
+                                      getEstimatedTimeInMinutesInText(
+                                        estimatedTimeInMinutes: controller
+                                            .estimatedTimeInMinutes
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallBold
+                                  .value,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              controller.getEstimatedHourMinuteArrive(),
                               style: controller
                                   .typographyServices
                                   .bodySmallBold

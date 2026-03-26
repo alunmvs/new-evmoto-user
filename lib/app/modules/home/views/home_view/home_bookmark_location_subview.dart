@@ -164,17 +164,6 @@ class HomeBookmarkLocationSubview extends GetView<HomeController> {
               for (var savedAddress in controller.savedAddressList) ...[
                 GestureDetector(
                   onTap: () async {
-                    var prefs = await SharedPreferences.getInstance();
-                    var isIntroductionDeliveryServiceShown =
-                        prefs.getBool(
-                          'is_introduction_delivery_service_shown',
-                        ) ??
-                        false;
-                    if (isIntroductionDeliveryServiceShown == false) {
-                      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
-                      return;
-                    }
-
                     await controller.refreshAll(firstInit: true);
                     if (controller.isActiveOrderListNotEmpty.value) {
                       await Get.toNamed(

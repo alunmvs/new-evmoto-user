@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_d
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_origin_and_destination_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_payment_method_sub_view.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/utils/general_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -80,7 +81,7 @@ class RideOrderWaitingDriverPickUpPanelSubView
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${controller.languageServices.language.value.driverWillArriveSoon ?? "-"} ${controller.getEstimatedTimeInMinutesInText().toLowerCase()}",
+                              "${(controller.languageServices.language.value.driverPickUp ?? "-")} · ${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km} · ${controller.getEstimatedTimeInMinutesInText().toLowerCase()}",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold

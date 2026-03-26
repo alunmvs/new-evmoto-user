@@ -23,6 +23,9 @@ class AgreementRepository {
         "type": type,
       });
 
+      print(url);
+      print({"userType": userType, "language": language, "type": type});
+
       var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 

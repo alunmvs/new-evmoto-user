@@ -1,13 +1,31 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/models/query_image_model.dart';
+import 'package:new_evmoto_user/app/repositories/query_image_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/theme_color_services.dart';
+import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 class SplashScreenController extends GetxController {
+  final QueryImageRepository queryImageRepository;
+
+  SplashScreenController({required this.queryImageRepository});
+
+  final themeColorServices = Get.find<ThemeColorServices>();
+  final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
+
+  final splashScreenQueryImage = QueryImage().obs;
+
   final isFetch = false.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    isFetch.value = true;
+    await getSplashScreenQueryImage();
+    isFetch.value = false;
 
     Future.delayed(Duration(seconds: 3)).whenComplete(() async {
       var storage = FlutterSecureStorage();
@@ -29,5 +47,13 @@ class SplashScreenController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> getSplashScreenQueryImage() async {
+    splashScreenQueryImage.value =
+        (await queryImageRepository.getQueryImageList(
+          type: 1,
+          usePort: 1,
+        )).first;
   }
 }

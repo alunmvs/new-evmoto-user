@@ -81,6 +81,7 @@ class OrderRide {
   List? ratingLabels;
   String? startAddressName;
   String? endAddressName;
+  int? freeWaitMinutes;
 
   OrderRide({
     this.orderId,
@@ -165,6 +166,7 @@ class OrderRide {
     this.ratingLabels,
     this.startAddressName,
     this.endAddressName,
+    this.freeWaitMinutes,
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
@@ -250,12 +252,14 @@ class OrderRide {
     ratingLabels = json['ratingLabels'];
     startAddressName = json['startAddressName'];
     endAddressName = json['endAddressName'];
+    freeWaitMinutes = json['freeWaitMinutes'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['orderId'] = this.orderId;
     data['orderType'] = this.orderType;
+    data['freeWaitMinutes'] = this.freeWaitMinutes;
     data['type'] = this.type;
     data['state'] = this.state;
     data['insertTime'] = this.insertTime;

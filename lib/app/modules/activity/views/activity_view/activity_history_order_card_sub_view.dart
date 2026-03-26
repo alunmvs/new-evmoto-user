@@ -383,14 +383,22 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          DateFormat(
-                            'dd MMMM yyyy ⬩ HH:mm',
-                            controller.languageServices.languageCode.value,
-                          ).format(
-                            DateTime.parse(
-                              historyOrder.orderTime!.replaceFirst(' ', 'T'),
-                            ),
-                          ),
+                          historyOrder.orderTime == null
+                              ? "-"
+                              : DateFormat(
+                                  'dd MMMM yyyy ⬩ HH:mm',
+                                  controller
+                                      .languageServices
+                                      .languageCode
+                                      .value,
+                                ).format(
+                                  DateTime.parse(
+                                    historyOrder.orderTime!.replaceFirst(
+                                      ' ',
+                                      'T',
+                                    ),
+                                  ),
+                                ),
                           style: controller
                               .typographyServices
                               .captionLargeRegular
@@ -415,21 +423,6 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  var prefs =
-                                      await SharedPreferences.getInstance();
-                                  var isIntroductionDeliveryServiceShown =
-                                      prefs.getBool(
-                                        'is_introduction_delivery_service_shown',
-                                      ) ??
-                                      false;
-                                  if (isIntroductionDeliveryServiceShown ==
-                                      false) {
-                                    await Get.toNamed(
-                                      Routes.INTRODUCTION_DELIVERY_SERVICE,
-                                    );
-                                    return;
-                                  }
-
                                   await controller.homeController.refreshAll(
                                     firstInit: true,
                                   );

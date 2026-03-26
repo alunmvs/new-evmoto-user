@@ -81,12 +81,7 @@ class RideOrderDriverArrivedOriginPanelSubView
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .driverArriveThePickupPoint ??
-                                  "-",
+                              "${(controller.languageServices.language.value.driverArrivedWaitingTime ?? "-")}: ${controller.getEstimatedHourMinuteWaitingTime()}",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold

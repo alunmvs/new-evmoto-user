@@ -308,107 +308,90 @@ class HomeController extends GetxController {
   }
 
   Future<void> onTapPickUpLocation() async {
-    var prefs = await SharedPreferences.getInstance();
-
-    var isIntroductionDeliveryServiceShown =
-        prefs.getBool('is_introduction_delivery_service_shown') ?? false;
-
-    if (isIntroductionDeliveryServiceShown == false) {
-      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
+    await refreshAll(firstInit: true);
+    if (isActiveOrderListNotEmpty.value) {
+      await Get.toNamed(
+        Routes.RIDE_ORDER_DETAIL,
+        arguments: {
+          "order_id": activeOrderList.first.orderId.toString(),
+          "order_type": activeOrderList.first.orderType,
+        },
+      );
     } else {
-      await refreshAll(firstInit: true);
-      if (isActiveOrderListNotEmpty.value) {
-        await Get.toNamed(
-          Routes.RIDE_ORDER_DETAIL,
+      try {
+        Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
+        var geocodingAddress = await geocodingRepository
+            .getAddressByLatitudeLongitude(
+              latitude: currentLatitude.value,
+              longitude: currentLongitude.value,
+            );
+        Get.close(1);
+
+        var result = await Get.toNamed(
+          Routes.CREATE_ORDER_RIDE_MAP_SELECT,
           arguments: {
-            "order_id": activeOrderList.first.orderId.toString(),
-            "order_type": activeOrderList.first.orderType,
+            "type": "origin",
+            "address": geocodingAddress!.name,
+            "address_name": geocodingAddress.address,
+            "latitude": currentLatitude.value.toString(),
+            "longitude": currentLongitude.value.toString(),
           },
         );
-      } else {
-        try {
-          Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
-          var geocodingAddress = await geocodingRepository
-              .getAddressByLatitudeLongitude(
-                latitude: currentLatitude.value,
-                longitude: currentLongitude.value,
-              );
-          Get.close(1);
 
-          var result = await Get.toNamed(
-            Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+        if (result != null) {
+          await Get.toNamed(
+            Routes.CREATE_ORDER_RIDE,
             arguments: {
-              "type": "origin",
-              "address": geocodingAddress!.name,
-              "address_name": geocodingAddress.address,
-              "latitude": currentLatitude.value.toString(),
-              "longitude": currentLongitude.value.toString(),
+              "origin_address_name": result['address_name'],
+              "origin_address": result['address'],
+              "origin_latitude": result['latitude'],
+              "origin_longitude": result['longitude'],
             },
           );
-
-          if (result != null) {
-            await Get.toNamed(
-              Routes.CREATE_ORDER_RIDE,
-              arguments: {
-                "origin_address_name": result['address_name'],
-                "origin_address": result['address'],
-                "origin_latitude": result['latitude'],
-                "origin_longitude": result['longitude'],
-              },
-            );
-          }
-        } on DioException catch (e) {
-          SnackbarHelper.showSnackbarError(text: e.error.toString());
-          Get.close(1);
         }
+      } on DioException catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
+        Get.close(1);
       }
     }
+
     await refreshAll();
   }
 
   Future<void> onTapWhereAreYouGoingToday() async {
-    var prefs = await SharedPreferences.getInstance();
-
-    var isIntroductionDeliveryServiceShown =
-        prefs.getBool('is_introduction_delivery_service_shown') ?? false;
-
-    if (isIntroductionDeliveryServiceShown == false) {
-      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
+    await refreshAll(firstInit: true);
+    if (isActiveOrderListNotEmpty.value) {
+      await Get.toNamed(
+        Routes.RIDE_ORDER_DETAIL,
+        arguments: {
+          "order_id": activeOrderList.first.orderId.toString(),
+          "order_type": activeOrderList.first.orderType,
+        },
+      );
     } else {
-      await refreshAll(firstInit: true);
-      if (isActiveOrderListNotEmpty.value) {
+      try {
+        Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
+        var geocodingAddress = await geocodingRepository
+            .getAddressByLatitudeLongitude(
+              latitude: locationServices.currentLatitude.value,
+              longitude: locationServices.currentLongitude.value,
+            );
+        Get.close(1);
+
         await Get.toNamed(
-          Routes.RIDE_ORDER_DETAIL,
+          Routes.CREATE_ORDER_RIDE,
           arguments: {
-            "order_id": activeOrderList.first.orderId.toString(),
-            "order_type": activeOrderList.first.orderType,
+            "origin_address_name": geocodingAddress!.name,
+            "origin_address": geocodingAddress.address,
+            "origin_latitude": locationServices.currentLatitude.value
+                .toString(),
+            "origin_longitude": locationServices.currentLongitude.value
+                .toString(),
           },
         );
-      } else {
-        try {
-          Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
-          var geocodingAddress = await geocodingRepository
-              .getAddressByLatitudeLongitude(
-                latitude: locationServices.currentLatitude.value,
-                longitude: locationServices.currentLongitude.value,
-              );
-          Get.close(1);
-
-          await Get.toNamed(
-            Routes.CREATE_ORDER_RIDE,
-            arguments: {
-              "origin_address_name": geocodingAddress!.name,
-              "origin_address": geocodingAddress.address,
-              "origin_latitude": locationServices.currentLatitude.value
-                  .toString(),
-              "origin_longitude": locationServices.currentLongitude.value
-                  .toString(),
-            },
-          );
-        } on DioException catch (e) {
-          SnackbarHelper.showSnackbarError(text: e.error.toString());
-          Get.close(1);
-        }
+      } on DioException catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
+        Get.close(1);
       }
     }
     await refreshAll();
@@ -418,37 +401,28 @@ class HomeController extends GetxController {
     required bool isFillCurrentLocation,
     dynamic arguments,
   }) async {
-    var prefs = await SharedPreferences.getInstance();
-
-    var isIntroductionDeliveryServiceShown =
-        prefs.getBool('is_introduction_delivery_service_shown') ?? false;
-
-    if (isIntroductionDeliveryServiceShown == false) {
-      await Get.toNamed(Routes.INTRODUCTION_DELIVERY_SERVICE);
+    await refreshAll(firstInit: true);
+    if (isActiveOrderListNotEmpty.value) {
+      await Get.toNamed(
+        Routes.RIDE_ORDER_DETAIL,
+        arguments: {
+          "order_id": activeOrderList.first.orderId.toString(),
+          "order_type": activeOrderList.first.orderType,
+        },
+      );
     } else {
-      await refreshAll(firstInit: true);
-      if (isActiveOrderListNotEmpty.value) {
+      if (isFillCurrentLocation == true) {
         await Get.toNamed(
-          Routes.RIDE_ORDER_DETAIL,
+          Routes.CREATE_ORDER_RIDE,
           arguments: {
-            "order_id": activeOrderList.first.orderId.toString(),
-            "order_type": activeOrderList.first.orderType,
+            "origin_address_name": currentGeocodingAddress.value.name,
+            "origin_address": currentGeocodingAddress.value.address,
+            "origin_latitude": currentLatitude.value.toString(),
+            "origin_longitude": currentLongitude.value.toString(),
           },
         );
       } else {
-        if (isFillCurrentLocation == true) {
-          await Get.toNamed(
-            Routes.CREATE_ORDER_RIDE,
-            arguments: {
-              "origin_address_name": currentGeocodingAddress.value.name,
-              "origin_address": currentGeocodingAddress.value.address,
-              "origin_latitude": currentLatitude.value.toString(),
-              "origin_longitude": currentLongitude.value.toString(),
-            },
-          );
-        } else {
-          await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);
-        }
+        await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);
       }
     }
     await refreshAll();
@@ -1240,7 +1214,7 @@ class HomeController extends GetxController {
     var activeOrderStatus = '-';
 
     if (activeOrderList.isNotEmpty) {
-      activeOrderStatus = "Sedang Berjalan";
+      activeOrderStatus = languageServices.language.value.inProcess ?? "-";
       // var activeOrder = activeOrderList.first;
       // var estimatedSpeedInKmh = 40.0;
       // var orderRideServer = await orderRideRepository.getOrderRideServerDetail(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,6 +39,8 @@ class RideOrderDoneController extends GetxController {
 
   final rating = 5.0.obs;
 
+  Timer? refreshOrderStateTimer;
+
   final isFetch = false.obs;
 
   @override
@@ -47,6 +51,12 @@ class RideOrderDoneController extends GetxController {
     orderType.value = Get.arguments['order_type'] ?? 1;
 
     await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+    refreshOrderStateTimer = Timer.periodic(Duration(seconds: 3), (
+      timer,
+    ) async {
+      print("setiap 3 detik?");
+      await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+    });
     isFetch.value = false;
   }
 
@@ -58,6 +68,7 @@ class RideOrderDoneController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    refreshOrderStateTimer?.cancel();
   }
 
   Future<void> getOrderRideDetail() async {

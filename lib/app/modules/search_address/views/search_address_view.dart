@@ -27,7 +27,8 @@ class SearchAddressView extends StatelessWidget {
             controller.isFetch.value
                 ? ""
                 : controller.addressType.value == 1
-                ? controller.languageServices.language.value.addHome ?? "-"
+                ? controller.languageServices.language.value.addLocationHome ??
+                      "-"
                 : controller.addressType.value == 2
                 ? controller
                           .languageServices
@@ -35,7 +36,7 @@ class SearchAddressView extends StatelessWidget {
                           .value
                           .addLocationOffice ??
                       "-"
-                : controller.languageServices.language.value.addOtherAddress ??
+                : controller.languageServices.language.value.addLocationOther ??
                       "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),

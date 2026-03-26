@@ -78,11 +78,37 @@ class RideOrderDriverOnGoingToDestinationPanelSubView
                           ),
                         ),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: controller.estimatedTimeInMinutes.value)} sampai ke lokasi'
-                                  .toLowerCase(),
+                              (controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .arrived ??
+                                      "-")
+                                  .replaceFirst(
+                                    "x",
+                                    formatDoubleToString(
+                                      controller.estimatedDistanceInKm.value,
+                                    ).replaceFirst(
+                                      "x",
+                                      getEstimatedTimeInMinutesInText(
+                                        estimatedTimeInMinutes: controller
+                                            .estimatedTimeInMinutes
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallBold
+                                  .value,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              controller.getEstimatedHourMinuteArrive(),
                               style: controller
                                   .typographyServices
                                   .bodySmallBold

@@ -16,6 +16,7 @@ import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import '../../../routes/app_pages.dart';
 
@@ -78,16 +79,19 @@ class CreateOrderRideController extends GetxController {
     isFetch.value = true;
 
     try {
-      await requestLocation();
+      await measureTime("Request Location", () => requestLocation());
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
 
     try {
-      await Future.wait(
-        [getSavedAddressList(), getHistoryOrderList()],
-        eagerError: true,
-        cleanUp: (successValue) {},
+      await measureTime(
+        "Multiprocessing [Saved Address, History Order]",
+        () => Future.wait(
+          [getSavedAddressList(), getHistoryOrderList()],
+          eagerError: true,
+          cleanUp: (successValue) {},
+        ),
       );
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.toString());
@@ -213,44 +217,38 @@ class CreateOrderRideController extends GetxController {
     ));
 
     for (var historyOrigin in historyOrderList) {
-      var orderDetail = await orderRideRepository.getOrderRideDetailbyOrderId(
-        orderId: historyOrigin.orderId.toString(),
-        orderType: historyOrigin.orderType!,
-        language: languageServices.languageCodeSystem.value,
-      );
-
       var recommendationOriginLocation = RecommendationLocation(
         id: "${historyOrigin.startAddress}",
-        name: orderDetail.startAddressName,
+        name: historyOrigin.startAddressName,
         addressDetail: historyOrigin.startAddress,
-        latitude: orderDetail.startLat.toString(),
-        longitude: orderDetail.startLon.toString(),
+        latitude: historyOrigin.startLat.toString(),
+        longitude: historyOrigin.startLon.toString(),
       );
       var recommendationDestinationLocation = RecommendationLocation(
         id: "${historyOrigin.endAddress}",
-        name: orderDetail.endAddressName,
+        name: historyOrigin.endAddressName,
         addressDetail: historyOrigin.endAddress,
-        latitude: orderDetail.endLat.toString(),
-        longitude: orderDetail.endLon.toString(),
+        latitude: historyOrigin.endLat.toString(),
+        longitude: historyOrigin.endLon.toString(),
       );
 
       if (recommendationOriginLocation.name == "" ||
           recommendationOriginLocation.name == null) {
-        recommendationOriginLocation.name =
-            (await geocodingRepository.getAddressByLatitudeLongitude(
-              latitude: orderDetail.startLat,
-              longitude: orderDetail.startLon,
-            ))?.name ??
-            "-";
+        // recommendationOriginLocation.name =
+        //     (await geocodingRepository.getAddressByLatitudeLongitude(
+        //       latitude: double.parse(historyOrigin.startLat!),
+        //       longitude: double.parse(historyOrigin.startLon!),
+        //     ))?.name ??
+        //     "-";
       }
       if (recommendationDestinationLocation.name == "" ||
           recommendationDestinationLocation.name == null) {
-        recommendationDestinationLocation.name =
-            (await geocodingRepository.getAddressByLatitudeLongitude(
-              latitude: orderDetail.endLat,
-              longitude: orderDetail.endLon,
-            ))?.name ??
-            "-";
+        // recommendationDestinationLocation.name =
+        //     (await geocodingRepository.getAddressByLatitudeLongitude(
+        //       latitude: double.parse(historyOrigin.endLat!),
+        //       longitude: double.parse(historyOrigin.endLat!),
+        //     ))?.name ??
+        //     "-";
       }
 
       var isRecommendationOriginExists = recommendationOriginLocationList.any(
@@ -298,7 +296,7 @@ class CreateOrderRideController extends GetxController {
   }
 
   Future<void> requestLocation() async {
-    await locationServices.requestLocation();
+    // await locationServices.requestLocation();
     if (locationServices.currentLatitude.value != null) {
       currentLatitude.value = locationServices.currentLatitude.value.toString();
       currentLongitude.value = locationServices.currentLongitude.value
@@ -307,12 +305,7 @@ class CreateOrderRideController extends GetxController {
       focusNodeOrigin.requestFocus();
 
       if (currentLatitude.value != null) {
-        var geocodingAddress =
-            (await geocodingRepository.getAddressByLatitudeLongitude(
-              latitude: double.parse(currentLatitude.value!),
-              longitude: double.parse(currentLongitude.value!),
-            )) ??
-            GeocodingAddress();
+        var geocodingAddress = locationServices.geocodingAddress.value;
         var currentLocationDetail = geocodingAddress.address;
 
         recommendationCurrentLocationList.value = [];
