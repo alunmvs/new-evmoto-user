@@ -756,6 +756,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                                   .typographyServices
                                                   .bodySmallRegular
                                                   .value,
+                                              textAlign: TextAlign.center,
                                             ),
                                           ],
                                         ),
@@ -829,6 +830,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                                   .typographyServices
                                                   .bodySmallRegular
                                                   .value,
+                                              textAlign: TextAlign.center,
                                             ),
                                           ],
                                         ),

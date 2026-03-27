@@ -860,6 +860,7 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                               .typographyServices
                                               .bodySmallRegular
                                               .value,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ],
                                     ),
@@ -931,6 +932,7 @@ class SendbirdChatDetailView extends GetView<SendbirdChatDetailController> {
                                               .typographyServices
                                               .bodySmallRegular
                                               .value,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ],
                                     ),

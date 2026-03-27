@@ -13,6 +13,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String formatDouble(double value) {
   if (value == value.toInt()) {
@@ -90,12 +91,15 @@ Future<void> logout() async {
   final firebasePushNotificationServices =
       Get.find<FirebasePushNotificationServices>();
   var storage = FlutterSecureStorage();
+  var prefs = await SharedPreferences.getInstance();
 
   try {
     await Future.wait([
       firebasePushNotificationServices.onUnsubscribe(),
       storage.delete(key: 'token'),
       socketServices.closeWebsocket(),
+      prefs.setBool("home_controller_registered", false),
+      prefs.setBool("activity_controller_registered", false),
     ], eagerError: false);
   } on DioException catch (e) {
     SnackbarHelper.showSnackbarError(text: e.error.toString());

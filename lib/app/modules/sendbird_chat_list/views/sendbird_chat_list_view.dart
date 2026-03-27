@@ -246,15 +246,18 @@ class SendbirdChatListView extends GetView<SendbirdChatListController> {
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    DateFormat(
-                                                      'hh:mm a',
-                                                    ).format(
-                                                      DateTime.fromMillisecondsSinceEpoch(
-                                                        groupChannel
-                                                            .lastMessage!
-                                                            .createdAt,
-                                                      ).toLocal(),
-                                                    ),
+                                                    groupChannel.lastMessage ==
+                                                            null
+                                                        ? "-"
+                                                        : DateFormat(
+                                                            'hh:mm a',
+                                                          ).format(
+                                                            DateTime.fromMillisecondsSinceEpoch(
+                                                              groupChannel
+                                                                  .lastMessage!
+                                                                  .createdAt,
+                                                            ).toLocal(),
+                                                          ),
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeRegular

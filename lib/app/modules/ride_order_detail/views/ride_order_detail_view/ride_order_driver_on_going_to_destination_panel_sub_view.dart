@@ -91,13 +91,14 @@ class RideOrderDriverOnGoingToDestinationPanelSubView
                                     "x",
                                     formatDoubleToString(
                                       controller.estimatedDistanceInKm.value,
-                                    ).replaceFirst(
-                                      "x",
-                                      getEstimatedTimeInMinutesInText(
-                                        estimatedTimeInMinutes: controller
-                                            .estimatedTimeInMinutes
-                                            .value,
-                                      ),
+                                    ),
+                                  )
+                                  .replaceFirst(
+                                    "x",
+                                    getEstimatedTimeInMinutesInText(
+                                      estimatedTimeInMinutes: controller
+                                          .estimatedTimeInMinutes
+                                          .value,
                                     ),
                                   ),
                               style: controller

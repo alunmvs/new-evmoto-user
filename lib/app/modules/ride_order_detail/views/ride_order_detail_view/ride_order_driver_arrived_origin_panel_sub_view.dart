@@ -77,19 +77,12 @@ class RideOrderDriverArrivedOriginPanelSubView
                             topRight: Radius.circular(16),
                           ),
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${(controller.languageServices.language.value.driverArrivedWaitingTime ?? "-")}: ${controller.getEstimatedHourMinuteWaitingTime()}",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallBold
-                                  .value,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        child: Text(
+                          "${(controller.languageServices.language.value.driverArrivedWaitingTime ?? "-")} ${controller.getEstimatedHourMinuteWaitingTime()}",
+                          style:
+                              controller.typographyServices.bodySmallBold.value,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Expanded(

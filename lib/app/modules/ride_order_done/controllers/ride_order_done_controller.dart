@@ -117,16 +117,6 @@ class RideOrderDoneController extends GetxController {
 
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 
-      Get.dialog(LoadingDialog(), barrierDismissible: false);
-      var processList = <Future>[];
-      processList.add(homeController.refreshAll());
-      if (Get.isRegistered<ActivityController>()) {
-        var activityController = Get.find<ActivityController>();
-        processList.add(activityController.refreshAll());
-      }
-      await Future.wait(processList);
-      Get.close(1);
-
       await Get.toNamed(
         Routes.ACTIVITY_DETAIL,
         arguments: {"order_id": orderId.value, "order_type": orderType.value},

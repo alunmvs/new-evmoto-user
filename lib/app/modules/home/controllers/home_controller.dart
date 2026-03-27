@@ -32,6 +32,8 @@ import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/general_helper.dart';
+import 'package:new_evmoto_user/app/utils/maps_helper.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
@@ -174,6 +176,8 @@ class HomeController extends GetxController {
         await checkInitialCall();
       }
     });
+
+    await setHomeControllerRegistered();
   }
 
   Future<void> checkInitialCall() async {
@@ -242,6 +246,11 @@ class HomeController extends GetxController {
     FlutterCallkitIncoming.endAllCalls();
   }
 
+  Future<void> setHomeControllerRegistered() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('home_controller_registered', true);
+  }
+
   Future<void> moveGoogleMapCameraToCurrentLocation() async {
     await locationServices.requestLocation();
     currentLatitude.value = locationServices.currentLatitude.value;
@@ -253,6 +262,11 @@ class HomeController extends GetxController {
           CameraUpdate.newLatLng(
             LatLng(currentLatitude.value!, currentLongitude.value!),
           ),
+        );
+
+        initialCameraPosition.value = CameraPosition(
+          target: LatLng(currentLatitude.value!, currentLongitude.value!),
+          zoom: 14,
         );
       } catch (e) {}
     }
@@ -327,39 +341,39 @@ class HomeController extends GetxController {
             );
         Get.close(1);
 
-        var result = await Get.toNamed(
-          Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+        // var result = await Get.toNamed(
+        //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+        //   arguments: {
+        //     "type": "origin",
+        //     "address": geocodingAddress!.name,
+        //     "address_name": geocodingAddress.address,
+        //     "latitude": currentLatitude.value.toString(),
+        //     "longitude": currentLongitude.value.toString(),
+        //   },
+        // );
+
+        // if (result != null) {
+        await Get.toNamed(
+          Routes.CREATE_ORDER_RIDE,
           arguments: {
-            "type": "origin",
-            "address": geocodingAddress!.name,
-            "address_name": geocodingAddress.address,
-            "latitude": currentLatitude.value.toString(),
-            "longitude": currentLongitude.value.toString(),
+            "origin_address_name": geocodingAddress!.name,
+            "origin_address": geocodingAddress.address,
+            "origin_latitude": currentLatitude.value.toString(),
+            "origin_longitude": currentLongitude.value.toString(),
           },
         );
-
-        if (result != null) {
-          await Get.toNamed(
-            Routes.CREATE_ORDER_RIDE,
-            arguments: {
-              "origin_address_name": result['address_name'],
-              "origin_address": result['address'],
-              "origin_latitude": result['latitude'],
-              "origin_longitude": result['longitude'],
-            },
-          );
-        }
+        // }
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
         Get.close(1);
       }
     }
-
-    await refreshAll();
   }
 
   Future<void> onTapWhereAreYouGoingToday() async {
+    print("oke-1");
     await refreshAll(firstInit: true);
+    print("oke-2");
     if (isActiveOrderListNotEmpty.value) {
       await Get.toNamed(
         Routes.RIDE_ORDER_DETAIL,
@@ -369,6 +383,7 @@ class HomeController extends GetxController {
         },
       );
     } else {
+      print("oke-3");
       try {
         Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
         var geocodingAddress = await geocodingRepository
@@ -377,6 +392,7 @@ class HomeController extends GetxController {
               longitude: locationServices.currentLongitude.value,
             );
         Get.close(1);
+        print("oke-4");
 
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
@@ -389,12 +405,13 @@ class HomeController extends GetxController {
                 .toString(),
           },
         );
+        print("oke-5");
       } on DioException catch (e) {
+        print("oke-6");
         SnackbarHelper.showSnackbarError(text: e.error.toString());
         Get.close(1);
       }
     }
-    await refreshAll();
   }
 
   Future<void> onTapRideService({
@@ -425,7 +442,6 @@ class HomeController extends GetxController {
         await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);
       }
     }
-    await refreshAll();
   }
 
   Future<void> onTapShortcutSavedLocation({
@@ -446,8 +462,6 @@ class HomeController extends GetxController {
         arguments: {"destination_saved_address": savedAddress},
       );
     }
-
-    await refreshAll();
   }
 
   Future<void> displayCoachmark() async {
@@ -1223,61 +1237,61 @@ class HomeController extends GetxController {
       //   language: languageServices.languageCodeSystem.value,
       // );
 
-      //   switch (activeOrder.state) {
-      //     case 1:
-      //       activeOrderStatus = 'Pencarian Driver EVMoto...';
-      //       break;
-      //     case 2:
-      //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
-      //         originLat: double.parse(orderRideServer.lat!),
-      //         originLon: double.parse(orderRideServer.lon!),
-      //         destinationLat: activeOrder.startLat!,
-      //         destinationLon: activeOrder.startLon!,
-      //         estimatedSpeedInKmh: estimatedSpeedInKmh,
-      //       );
-      //       activeOrderStatus =
-      //           'Driver segera tiba, menunggu: ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)}';
-      //       break;
-      //     case 3:
-      //       activeOrderStatus = 'Driver tiba di titik penjemputan';
-      //       break;
-      //     case 4:
-      //       activeOrderStatus = 'Berangkat menuju lokasi';
-      //       break;
-      //     case 5:
-      //       var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
-      //         originLat: double.parse(orderRideServer.lat!),
-      //         originLon: double.parse(orderRideServer.lon!),
-      //         destinationLat: activeOrder.endLat!,
-      //         destinationLon: activeOrder.endLon!,
-      //         estimatedSpeedInKmh: estimatedSpeedInKmh,
-      //       );
-      //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
-      //         originLat: double.parse(orderRideServer.lat!),
-      //         originLon: double.parse(orderRideServer.lon!),
-      //         destinationLat: activeOrder.endLat!,
-      //         destinationLon: activeOrder.endLon!,
-      //       );
-      //       activeOrderStatus =
-      //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)} sampai ke lokasi';
-      //       break;
-      //     case 6:
-      //       var estimatedDistanceInKm = await getEstimatedDistanceInKm(
-      //         originLat: double.parse(orderRideServer.lat!),
-      //         originLon: double.parse(orderRideServer.lon!),
-      //         destinationLat: activeOrder.endLat!,
-      //         destinationLon: activeOrder.endLon!,
-      //       );
-      //       activeOrderStatus =
-      //           '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 Sampai di lokasi';
-      //       break;
-      //     case 7:
-      //       activeOrderStatus = 'Konfirmasi pembayaran';
-      //       break;
-      //     default:
-      //       activeOrderStatus = '-';
-      //       break;
-      //   }
+      // switch (activeOrder.state) {
+      //   case 1:
+      //     activeOrderStatus = 'Pencarian Driver EVMoto...';
+      //     break;
+      //   case 2:
+      //     var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+      //       originLat: double.parse(orderRideServer.lat!),
+      //       originLon: double.parse(orderRideServer.lon!),
+      //       destinationLat: activeOrder.startLat!,
+      //       destinationLon: activeOrder.startLon!,
+      //       estimatedSpeedInKmh: estimatedSpeedInKmh,
+      //     );
+      //     activeOrderStatus =
+      //         'Driver segera tiba, menunggu: ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)}';
+      //     break;
+      //   case 3:
+      //     activeOrderStatus = 'Driver tiba di titik penjemputan';
+      //     break;
+      //   case 4:
+      //     activeOrderStatus = 'Berangkat menuju lokasi';
+      //     break;
+      //   case 5:
+      //     var estimatedTimeInMinutes = await getEstimatedTimeInMinutes(
+      //       originLat: double.parse(orderRideServer.lat!),
+      //       originLon: double.parse(orderRideServer.lon!),
+      //       destinationLat: activeOrder.endLat!,
+      //       destinationLon: activeOrder.endLon!,
+      //       estimatedSpeedInKmh: estimatedSpeedInKmh,
+      //     );
+      //     var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+      //       originLat: double.parse(orderRideServer.lat!),
+      //       originLon: double.parse(orderRideServer.lon!),
+      //       destinationLat: activeOrder.endLat!,
+      //       destinationLon: activeOrder.endLon!,
+      //     );
+      //     activeOrderStatus =
+      //         '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: estimatedTimeInMinutes)} sampai ke lokasi';
+      //     break;
+      //   case 6:
+      //     var estimatedDistanceInKm = await getEstimatedDistanceInKm(
+      //       originLat: double.parse(orderRideServer.lat!),
+      //       originLon: double.parse(orderRideServer.lon!),
+      //       destinationLat: activeOrder.endLat!,
+      //       destinationLon: activeOrder.endLon!,
+      //     );
+      //     activeOrderStatus =
+      //         '${formatDoubleToString(estimatedDistanceInKm)} ${languageServices.language.value.km} ·󠁏󠁏 Sampai di lokasi';
+      //     break;
+      //   case 7:
+      //     activeOrderStatus = 'Konfirmasi pembayaran';
+      //     break;
+      //   default:
+      //     activeOrderStatus = '-';
+      //     break;
+      // }
     }
 
     this.activeOrderStatus.value = activeOrderStatus;

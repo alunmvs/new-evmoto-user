@@ -691,6 +691,7 @@ class RideChatView extends GetView<RideChatController> {
                                               .typographyServices
                                               .bodySmallRegular
                                               .value,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ],
                                     ),
@@ -763,6 +764,7 @@ class RideChatView extends GetView<RideChatController> {
                                               .typographyServices
                                               .bodySmallRegular
                                               .value,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ],
                                     ),

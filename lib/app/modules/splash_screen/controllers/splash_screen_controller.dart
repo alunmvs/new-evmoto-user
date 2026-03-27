@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/query_image_model.dart';
@@ -6,6 +7,8 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreenController extends GetxController {
   final QueryImageRepository queryImageRepository;
@@ -18,25 +21,39 @@ class SplashScreenController extends GetxController {
 
   final splashScreenQueryImage = QueryImage().obs;
 
+  final isCriticalError = false.obs;
   final isFetch = false.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    await getSplashScreenQueryImage();
-    isFetch.value = false;
+    try {
+      await getSplashScreenQueryImage();
 
-    Future.delayed(Duration(seconds: 3)).whenComplete(() async {
-      var storage = FlutterSecureStorage();
-      var token = await storage.read(key: 'token');
+      isFetch.value = false;
 
-      if (token == null || token == "") {
-        Get.offAndToNamed(Routes.LOGIN_REGISTER);
-      } else {
-        Get.offAndToNamed(Routes.HOME);
-      }
-    });
+      var prefs = await SharedPreferences.getInstance();
+      await Future.wait([
+        prefs.setBool("home_controller_registered", false),
+        prefs.setBool("activity_controller_registered", false),
+      ]);
+
+      Future.delayed(Duration(seconds: 3)).whenComplete(() async {
+        var storage = FlutterSecureStorage();
+        var token = await storage.read(key: 'token');
+
+        if (token == null || token == "") {
+          Get.offAndToNamed(Routes.LOGIN_REGISTER);
+        } else {
+          Get.offAndToNamed(Routes.HOME);
+        }
+      });
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+      isCriticalError.value = true;
+      isFetch.value = false;
+    }
   }
 
   @override

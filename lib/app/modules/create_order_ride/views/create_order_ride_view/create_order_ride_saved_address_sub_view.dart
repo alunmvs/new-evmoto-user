@@ -77,129 +77,142 @@ class CreateOrderRideSavedAddressSubView
             ),
             SizedBox(width: 8),
           ],
-          GestureDetector(
-            onTap: () async {
-              await Get.toNamed(
-                Routes.SEARCH_ADDRESS,
-                arguments: {
-                  "address_type": 1,
-                  "tag": DateTime.now().millisecondsSinceEpoch.toString(),
-                },
-              );
-              await controller.getSavedAddressList();
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(
-                  color:
-                      controller.themeColorServices.neutralsColorGrey200.value,
+          if (controller.isBookmarkHomeIsSet() == false) ...[
+            GestureDetector(
+              onTap: () async {
+                await Get.toNamed(
+                  Routes.SEARCH_ADDRESS,
+                  arguments: {
+                    "address_type": 1,
+                    "tag": DateTime.now().millisecondsSinceEpoch.toString(),
+                  },
+                );
+                await controller.getSavedAddressList();
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(
+                    color: controller
+                        .themeColorServices
+                        .neutralsColorGrey200
+                        .value,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/icon_home.svg",
-                          height: 12,
-                          width: 12,
-                          color:
-                              controller.themeColorServices.primaryBlue.value,
-                        ),
-                      ],
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_home.svg",
+                            height: 12,
+                            width: 12,
+                            color:
+                                controller.themeColorServices.primaryBlue.value,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 6),
-                  Text(
-                    controller.languageServices.language.value.addHome ?? "-",
-                    style: controller
-                        .typographyServices
-                        .captionLargeRegular
-                        .value
-                        .copyWith(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey500
-                              .value,
-                        ),
-                  ),
-                ],
+                    SizedBox(width: 6),
+                    Text(
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .addLocationHome ??
+                          "-",
+                      style: controller
+                          .typographyServices
+                          .captionLargeRegular
+                          .value
+                          .copyWith(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey500
+                                .value,
+                          ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(width: 8),
-          GestureDetector(
-            onTap: () async {
-              await Get.toNamed(
-                Routes.SEARCH_ADDRESS,
-                arguments: {
-                  "address_type": 2,
-                  "tag": DateTime.now().millisecondsSinceEpoch.toString(),
-                },
-              );
-              await controller.getSavedAddressList();
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(
-                  color:
-                      controller.themeColorServices.neutralsColorGrey200.value,
+            SizedBox(width: 8),
+          ],
+          if (controller.isBookmarkCompanyIsSet() == false) ...[
+            GestureDetector(
+              onTap: () async {
+                await Get.toNamed(
+                  Routes.SEARCH_ADDRESS,
+                  arguments: {
+                    "address_type": 2,
+                    "tag": DateTime.now().millisecondsSinceEpoch.toString(),
+                  },
+                );
+                await controller.getSavedAddressList();
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(
+                    color: controller
+                        .themeColorServices
+                        .neutralsColorGrey200
+                        .value,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/icon_office.svg",
-                          height: 14,
-                          width: 10,
-                          color:
-                              controller.themeColorServices.primaryBlue.value,
-                        ),
-                      ],
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_office.svg",
+                            height: 14,
+                            width: 10,
+                            color:
+                                controller.themeColorServices.primaryBlue.value,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 6),
-                  Text(
-                    controller
-                            .languageServices
-                            .language
-                            .value
-                            .addLocationOffice ??
-                        "-",
-                    style: controller
-                        .typographyServices
-                        .captionLargeRegular
-                        .value
-                        .copyWith(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey500
-                              .value,
-                        ),
-                  ),
-                ],
+                    SizedBox(width: 6),
+                    Text(
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .addLocationOffice ??
+                          "-",
+                      style: controller
+                          .typographyServices
+                          .captionLargeRegular
+                          .value
+                          .copyWith(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey500
+                                .value,
+                          ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(width: 8),
+            SizedBox(width: 8),
+          ],
           GestureDetector(
             onTap: () async {
               await Get.toNamed(

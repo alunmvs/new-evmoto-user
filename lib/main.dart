@@ -8,6 +8,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
+import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/deep_link_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
@@ -20,6 +22,7 @@ import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -44,14 +47,18 @@ Future<void> main() async {
 
   await Firebase.initializeApp();
   FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordError(
-      errorDetails.exception,
-      errorDetails.stack,
-      fatal: true,
-    );
+    try {
+      FirebaseCrashlytics.instance.recordError(
+        errorDetails.exception,
+        errorDetails.stack,
+        fatal: true,
+      );
+    } catch (e) {}
   };
   PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    try {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    } catch (e) {}
     return true;
   };
 
@@ -61,6 +68,7 @@ Future<void> main() async {
   Get.put(ApiServices(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
+  await Get.find<LanguageServices>().manualOnInit();
   Get.put(FirebasePushNotificationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
   Get.put(SendbirdServices(), permanent: true);
@@ -93,6 +101,24 @@ Future<void> main() async {
               Get.find<ThemeColorServices>().primaryBlue.value,
         ),
       ),
+      routingCallback: (routing) async {
+        if (routing?.current == Routes.HOME) {
+          var prefs = await SharedPreferences.getInstance();
+
+          var processList = <Future>[];
+          if (prefs.getBool('home_controller_registered') == true) {
+            var homeController = Get.find<HomeController>();
+            processList.add(homeController.refreshAll());
+          }
+
+          if (prefs.getBool('activity_controller_registered') == true) {
+            var activityController = Get.find<ActivityController>();
+            processList.add(activityController.refreshAll());
+          }
+
+          await Future.wait(processList);
+        }
+      },
       builder: (context, child) {
         return SafeArea(
           top: false,

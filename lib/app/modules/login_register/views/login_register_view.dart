@@ -184,17 +184,6 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                           );
                                                         },
                                                 ),
-                                                TextSpan(
-                                                  text:
-                                                      " ${controller.languageServices.language.value.tncPrivacyConfirmation3 ?? "-"}",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .captionLargeRegular
-                                                      .value
-                                                      .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
                                               ],
                                             ),
                                           ),

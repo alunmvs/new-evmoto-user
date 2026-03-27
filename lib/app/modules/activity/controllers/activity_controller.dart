@@ -11,6 +11,7 @@ import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivityController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -62,6 +63,8 @@ class ActivityController extends GetxController
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
     isFetch.value = false;
+
+    await setActivityControllerRegistered();
   }
 
   @override
@@ -72,6 +75,11 @@ class ActivityController extends GetxController
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> setActivityControllerRegistered() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('activity_controller_registered', true);
   }
 
   Future<void> refreshAll() async {

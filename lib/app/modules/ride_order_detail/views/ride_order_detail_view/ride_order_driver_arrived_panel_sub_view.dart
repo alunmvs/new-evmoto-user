@@ -93,13 +93,14 @@ class RideOrderDriverArrivedPanelSubView
                                     "x",
                                     formatDoubleToString(
                                       controller.estimatedDistanceInKm.value,
-                                    ).replaceFirst(
-                                      "x",
-                                      getEstimatedTimeInMinutesInText(
-                                        estimatedTimeInMinutes: controller
-                                            .estimatedTimeInMinutes
-                                            .value,
-                                      ),
+                                    ),
+                                  )
+                                  .replaceFirst(
+                                    "x",
+                                    getEstimatedTimeInMinutesInText(
+                                      estimatedTimeInMinutes: controller
+                                          .estimatedTimeInMinutes
+                                          .value,
                                     ),
                                   ),
                               // '${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: controller.estimatedTimeInMinutes.value)} ${(controller.languageServices.language.value.arrived ?? "-")}'

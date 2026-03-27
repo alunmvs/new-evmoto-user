@@ -20,7 +20,9 @@ class RideOrderCancelController extends GetxController {
 
   final formGroup = FormGroup({
     "reason": FormControl<String>(validators: <Validator>[Validators.required]),
-    "remark": FormControl<String>(validators: <Validator>[]),
+    "remark": FormControl<String>(
+      validators: <Validator>[Validators.maxLength(150)],
+    ),
   });
 
   final orderId = "".obs;

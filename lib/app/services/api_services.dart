@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
@@ -62,9 +63,10 @@ class ApiServices extends GetxService {
         onError: (error, handler) {
           // Debug Error
           print("request API base URL ${error.requestOptions.uri.path}");
+
+          final Map<String, dynamic> dataMap = {};
           if (error.requestOptions.data is FormData) {
             final formData = error.requestOptions.data as FormData;
-            final Map<String, dynamic> dataMap = {};
             for (var field in formData.fields) {
               dataMap[field.key] = field.value;
             }
@@ -114,7 +116,11 @@ class ApiServices extends GetxService {
             default:
               customMessage =
                   languageServices.language.value.dioExceptionDefault ?? "-";
+              print("ini custom message (default) $customMessage");
+              break;
           }
+
+          print("ini custom message $customMessage");
 
           // Override error message
           final customError = DioException(
@@ -123,6 +129,21 @@ class ApiServices extends GetxService {
             type: error.type,
             error: customMessage,
           );
+
+          try {
+            FirebaseCrashlytics.instance.recordError(
+              error,
+              error.stackTrace,
+              information: [
+                error.type,
+                error.requestOptions.uri.toString(),
+                jsonEncode(error.response?.headers.map),
+                dataMap,
+                error.response?.data ?? "",
+              ],
+              fatal: true,
+            );
+          } catch (e) {}
 
           handler.next(customError);
         },

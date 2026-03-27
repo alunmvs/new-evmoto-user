@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/language_model.dart';
+import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageServices extends GetxService {
@@ -15,7 +16,9 @@ class LanguageServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
+  }
 
+  Future<void> manualOnInit() async {
     var prefs = await SharedPreferences.getInstance();
     var languageCode = prefs.getString('language_code');
 
@@ -61,6 +64,7 @@ class LanguageServices extends GetxService {
     required String languageCode,
     required bool isSave,
   }) async {
+    var firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
     this.languageCode.value = languageCode;
 
     if (isSave == true) {
@@ -71,22 +75,22 @@ class LanguageServices extends GetxService {
     switch (languageCode) {
       case "ZH_CN":
         languageCodeSystem.value = 1;
-        var jsonData = await rootBundle.loadString(
-          'assets/jsons/user_lang_zh_cn.json',
+        var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
+          "user_lang_zh_cn",
         );
         language.value = Language.fromJson(jsonDecode(jsonData));
         break;
       case "EN":
         languageCodeSystem.value = 2;
-        var jsonData = await rootBundle.loadString(
-          'assets/jsons/user_lang_en.json',
+        var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
+          "user_lang_en",
         );
         language.value = Language.fromJson(jsonDecode(jsonData));
         break;
       case "ID":
         languageCodeSystem.value = 3;
-        var jsonData = await rootBundle.loadString(
-          'assets/jsons/user_lang_id.json',
+        var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
+          "user_lang_id",
         );
         language.value = Language.fromJson(jsonDecode(jsonData));
         break;

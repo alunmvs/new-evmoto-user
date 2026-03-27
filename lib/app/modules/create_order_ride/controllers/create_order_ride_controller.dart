@@ -1090,4 +1090,24 @@ class CreateOrderRideController extends GetxController {
       },
     );
   }
+
+  bool isBookmarkHomeIsSet() {
+    var result = false;
+    for (var savedAddressList in savedAddressList) {
+      if (savedAddressList.addressType == 1) {
+        result = true;
+      }
+    }
+    return result;
+  }
+
+  bool isBookmarkCompanyIsSet() {
+    var result = false;
+    for (var savedAddressList in savedAddressList) {
+      if (savedAddressList.addressType == 2) {
+        result = true;
+      }
+    }
+    return result;
+  }
 }

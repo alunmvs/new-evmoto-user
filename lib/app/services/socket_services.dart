@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 import 'package:new_evmoto_user/app/widgets/end_push_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SocketServices extends GetxService {
   late Socket? socket;
@@ -45,6 +46,7 @@ class SocketServices extends GetxService {
     socket?.listen(
       (data) async {
         var dataJson = convertBytesToJson(bytes: data);
+        print(dataJson);
         if (dataJson != null) {
           var method = dataJson['method'] ?? "";
 
@@ -139,7 +141,10 @@ class SocketServices extends GetxService {
   }
 
   Future<void> sendHeartBeat() async {
-    if (isSocketClose.value == false && Get.isRegistered<HomeController>()) {
+    var prefs = await SharedPreferences.getInstance();
+
+    if (isSocketClose.value == false &&
+        (prefs.getBool('home_controller_registered') ?? false)) {
       // print("send heart beat ${DateFormat('HH:mm:ss').format(DateTime.now())}");
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

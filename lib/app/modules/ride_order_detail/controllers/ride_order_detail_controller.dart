@@ -956,7 +956,11 @@ class RideOrderDetailController extends GetxController {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Apakah Anda yakin ingin membatalkan pesanan?",
+                        languageServices
+                                .language
+                                .value
+                                .cancelOrderTitleDialog ??
+                            "-",
                         style: typographyServices.bodyLargeBold.value,
                         textAlign: TextAlign.center,
                       ),

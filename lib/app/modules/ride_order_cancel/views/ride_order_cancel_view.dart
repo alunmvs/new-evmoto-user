@@ -340,6 +340,15 @@ class RideOrderCancelView extends GetView<RideOrderCancelController> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    validationMessages: {
+                      ValidationMessage.maxLength: (error) =>
+                          controller
+                              .languageServices
+                              .language
+                              .value
+                              .maxCharacter150 ??
+                          "-",
+                    },
                   ),
                   SizedBox(height: 16 * 2),
                 ],

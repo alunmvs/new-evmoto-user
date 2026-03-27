@@ -331,6 +331,8 @@ class Language {
   String? mustStartWith8;
   String? min8DigitMobilePhone;
   String? max15DigitMobilePhone;
+  String? cancelOrderTitleDialog;
+  String? maxCharacter150;
 
   Language({
     this.onboardingIntroTitle1,
@@ -561,6 +563,7 @@ class Language {
     this.locationName,
     this.enterLocation,
     this.requiredFields,
+    this.maxCharacter150,
     this.maxCharacter50,
     this.successfullySavedAddress,
     this.maxCharacter20,
@@ -655,6 +658,7 @@ class Language {
     this.mustStartWith8,
     this.min8DigitMobilePhone,
     this.max15DigitMobilePhone,
+    this.cancelOrderTitleDialog,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -666,6 +670,7 @@ class Language {
         json['onboarding_intro_title_2'] ?? "(Translate Not Found)";
     onboardingIntroDescription2 =
         json['onboarding_intro_description_2'] ?? "(Translate Not Found)";
+    maxCharacter150 = json['max_character_150'] ?? "(Translate Not Found)";
     buttonNext = json['button_next'] ?? "(Translate Not Found)";
     loginTitle = json['login_title'] ?? "(Translate Not Found)";
     loginDescription = json['login_description'] ?? "(Translate Not Found)";
@@ -1112,6 +1117,26 @@ class Language {
         json['min_8_digit_mobile_phone'] ?? "(Translate Not Found)";
     max15DigitMobilePhone =
         json['max_15_digit_mobile_phone'] ?? "(Translate Not Found)";
+    driverPickUp = json['driver_pick_up'] ?? "(Translate Not Found)";
+    driverArrivedWaitingTime =
+        json['driver_arrived_waiting_time'] ?? "(Translate Not Found)";
+    arrived = json['arrived'] ?? "(Translate Not Found)";
+    dioExceptionConnectionError =
+        json['dio_exception_connection_error'] ?? "(Translate Not Found)";
+    dioExceptionConnectionTimeout =
+        json['dio_exception_connection_timeout'] ?? "(Translate Not Found)";
+    dioExceptionReceiveTimeout =
+        json['dio_exception_receive_timeout'] ?? "(Translate Not Found)";
+    dioExceptionBadResponse =
+        json['dio_exception_bad_response'] ?? "(Translate Not Found)";
+    dioExceptionCancel =
+        json['dio_exception_cancel'] ?? "(Translate Not Found)";
+    dioExceptionDefault =
+        json['dio_exception_default'] ?? "(Translate Not Found)";
+    cancelOrderTitleDialog =
+        json['cancel_order_title_dialog'] ?? "(Translate Not Found)";
+    waitingDriverConfirmation =
+        json['waiting_driver_confirmation'] ?? "(Translate Not Found)";
   }
 
   Map<String, dynamic> toJson() {

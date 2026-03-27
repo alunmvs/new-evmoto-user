@@ -20,13 +20,7 @@ class QueryImageRepository {
 
       var data = {"type": type, "usePort": usePort};
 
-      var storage = FlutterSecureStorage();
-      var token = await storage.read(key: 'token');
-
-      var headers = {
-        "Content-Type": "application/json",
-        'Authorization': "Bearer $token",
-      };
+      var headers = {"Content-Type": "application/json"};
 
       var dio = apiServices.dio;
       var response = await dio.post(
