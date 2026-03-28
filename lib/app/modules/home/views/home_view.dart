@@ -534,330 +534,306 @@ class HomeView extends GetView<HomeController> {
                                       topRight: Radius.circular(16),
                                       topLeft: Radius.circular(16),
                                     ),
-                                    child: SmartRefresher(
-                                      controller:
-                                          controller.homeRefreshController,
-                                      onRefresh: () async {
-                                        await controller.refreshAll();
-                                        controller.homeRefreshController
-                                            .refreshCompleted();
-                                      },
-                                      header: MaterialClassicHeader(
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
                                         color: controller
                                             .themeColorServices
-                                            .primaryBlue
+                                            .neutralsColorGrey0
                                             .value,
-                                      ),
-                                      footer: ClassicFooter(
-                                        loadStyle: LoadStyle.HideAlways,
-                                        textStyle: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .primaryBlue
-                                                  .value,
-                                            ),
-                                        canLoadingIcon: null,
-                                        loadingIcon: null,
-                                        idleIcon: null,
-                                        noMoreIcon: null,
-                                        failedIcon: null,
-                                      ),
-                                      enablePullDown: true,
-                                      child: Container(
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        decoration: BoxDecoration(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(16),
-                                            topLeft: Radius.circular(16),
-                                          ),
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(16),
+                                          topLeft: Radius.circular(16),
                                         ),
-                                        child: SingleChildScrollView(
-                                          controller: sc,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey0
-                                                      .value,
-                                                  borderRadius:
-                                                      BorderRadius.circular(16),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .overlayDark200
-                                                          .value
-                                                          .withValues(
-                                                            alpha: 0.05,
+                                      ),
+                                      child: SingleChildScrollView(
+                                        controller: sc,
+                                        physics: ClampingScrollPhysics(),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey0
+                                                    .value,
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .overlayDark200
+                                                        .value
+                                                        .withValues(
+                                                          alpha: 0.05,
+                                                        ),
+                                                    blurRadius: 4,
+                                                    spreadRadius: 0,
+                                                    offset: Offset(0, 4),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(height: 16),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
+                                                    child: Showcase.withWidget(
+                                                      targetPadding:
+                                                          EdgeInsets.all(16),
+                                                      disableBarrierInteraction:
+                                                          true,
+                                                      key: controller
+                                                          .destinationGlobalKey,
+                                                      onTargetClick: () {},
+                                                      disposeOnTap: false,
+                                                      targetBorderRadius:
+                                                          BorderRadius.circular(
+                                                            16,
                                                           ),
-                                                      blurRadius: 4,
-                                                      spreadRadius: 0,
-                                                      offset: Offset(0, 4),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(height: 16),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            horizontal: 16,
+                                                      targetShapeBorder:
+                                                          RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  16,
+                                                                ),
                                                           ),
-                                                      child: Showcase.withWidget(
-                                                        targetPadding:
-                                                            EdgeInsets.all(16),
-                                                        disableBarrierInteraction:
-                                                            true,
-                                                        key: controller
-                                                            .destinationGlobalKey,
-                                                        onTargetClick: () {},
-                                                        disposeOnTap: false,
-                                                        targetBorderRadius:
-                                                            BorderRadius.circular(
-                                                              16,
-                                                            ),
-                                                        targetShapeBorder:
-                                                            RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    16,
-                                                                  ),
-                                                            ),
-                                                        container: Stack(
-                                                          children: [
-                                                            Positioned(
-                                                              left: 0,
-                                                              right: 0,
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Transform.rotate(
-                                                                    angle:
-                                                                        45 *
-                                                                        3.1415926535 /
-                                                                        180,
-                                                                    child: Container(
-                                                                      width: 16,
-                                                                      height:
-                                                                          16,
-                                                                      decoration: BoxDecoration(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .neutralsColorGrey0
-                                                                            .value,
-                                                                        borderRadius: BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(
-                                                                                4,
-                                                                              ),
-                                                                        ),
+                                                      container: Stack(
+                                                        children: [
+                                                          Positioned(
+                                                            left: 0,
+                                                            right: 0,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Transform.rotate(
+                                                                  angle:
+                                                                      45 *
+                                                                      3.1415926535 /
+                                                                      180,
+                                                                  child: Container(
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    decoration: BoxDecoration(
+                                                                      color: controller
+                                                                          .themeColorServices
+                                                                          .neutralsColorGrey0
+                                                                          .value,
+                                                                      borderRadius: BorderRadius.only(
+                                                                        topLeft:
+                                                                            Radius.circular(
+                                                                              4,
+                                                                            ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 8,
                                                                 ),
-                                                                Container(
-                                                                  padding:
-                                                                      EdgeInsets.all(
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 8,
+                                                              ),
+                                                              Container(
+                                                                padding:
+                                                                    EdgeInsets.all(
+                                                                      16,
+                                                                    ),
+                                                                width:
+                                                                    MediaQuery.of(
+                                                                      context,
+                                                                    ).size.width,
+                                                                decoration: BoxDecoration(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .neutralsColorGrey0
+                                                                      .value,
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
                                                                         16,
                                                                       ),
-                                                                  width: MediaQuery.of(
-                                                                    context,
-                                                                  ).size.width,
-                                                                  decoration: BoxDecoration(
-                                                                    color: controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
+                                                                ),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      controller
+                                                                              .languageServices
+                                                                              .language
+                                                                              .value
+                                                                              .coachmarkTitle1 ??
+                                                                          "-",
+                                                                      style: controller
+                                                                          .typographyServices
+                                                                          .bodyLargeBold
+                                                                          .value
+                                                                          .copyWith(),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 4,
+                                                                    ),
+                                                                    Text(
+                                                                      controller
+                                                                              .languageServices
+                                                                              .language
+                                                                              .value
+                                                                              .coachmarkDescription1 ??
+                                                                          "-",
+                                                                      style: controller
+                                                                          .typographyServices
+                                                                          .bodySmallRegular
+                                                                          .value
+                                                                          .copyWith(),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
                                                                           16,
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          "1/5",
+                                                                          style: controller
+                                                                              .typographyServices
+                                                                              .captionLargeBold
+                                                                              .value
+                                                                              .copyWith(
+                                                                                color: controller.themeColorServices.neutralsColorGrey500.value,
+                                                                              ),
                                                                         ),
-                                                                  ),
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: <Widget>[
-                                                                      Text(
-                                                                        controller.languageServices.language.value.coachmarkTitle1 ??
-                                                                            "-",
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .bodyLargeBold
-                                                                            .value
-                                                                            .copyWith(),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            4,
-                                                                      ),
-                                                                      Text(
-                                                                        controller.languageServices.language.value.coachmarkDescription1 ??
-                                                                            "-",
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .bodySmallRegular
-                                                                            .value
-                                                                            .copyWith(),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            16,
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                            "1/5",
-                                                                            style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                              color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                30,
-                                                                            child: ElevatedButton(
-                                                                              onPressed: () {
-                                                                                ShowcaseView.get().next();
-                                                                              },
-                                                                              style: ElevatedButton.styleFrom(
-                                                                                backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                shape: RoundedRectangleBorder(
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    8,
-                                                                                  ),
-                                                                                ),
-                                                                                padding: EdgeInsets.symmetric(
-                                                                                  horizontal: 16,
-                                                                                  vertical: 0,
+                                                                        SizedBox(
+                                                                          height:
+                                                                              30,
+                                                                          child: ElevatedButton(
+                                                                            onPressed: () {
+                                                                              ShowcaseView.get().next();
+                                                                            },
+                                                                            style: ElevatedButton.styleFrom(
+                                                                              backgroundColor: controller.themeColorServices.primaryBlue.value,
+                                                                              shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  8,
                                                                                 ),
                                                                               ),
-                                                                              child: Center(
-                                                                                child: Text(
-                                                                                  controller.languageServices.language.value.buttonNext1 ??
-                                                                                      "-",
-                                                                                  style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                    color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                  ),
+                                                                              padding: EdgeInsets.symmetric(
+                                                                                horizontal: 16,
+                                                                                vertical: 0,
+                                                                              ),
+                                                                            ),
+                                                                            child: Center(
+                                                                              child: Text(
+                                                                                controller.languageServices.language.value.buttonNext1 ??
+                                                                                    "-",
+                                                                                style: controller.typographyServices.bodySmallBold.value.copyWith(
+                                                                                  color: controller.themeColorServices.neutralsColorGrey0.value,
                                                                                 ),
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: GestureDetector(
-                                                          onTap: () async {
-                                                            await controller
-                                                                .onTapWhereAreYouGoingToday();
-                                                          },
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      12,
-                                                                  vertical: 8,
-                                                                ),
-                                                            decoration: BoxDecoration(
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          await controller
+                                                              .onTapWhereAreYouGoingToday();
+                                                        },
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 12,
+                                                                vertical: 8,
+                                                              ),
+                                                          decoration: BoxDecoration(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .neutralsColorGrey100
+                                                                .value,
+                                                            border: Border.all(
                                                               color: controller
                                                                   .themeColorServices
-                                                                  .neutralsColorGrey100
+                                                                  .neutralsColorGrey300
                                                                   .value,
-                                                              border: Border.all(
-                                                                color: controller
-                                                                    .themeColorServices
-                                                                    .neutralsColorGrey300
-                                                                    .value,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  12,
+                                                                ),
+                                                          ),
+                                                          child: Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_pinpoint_red.svg",
+                                                                width: 18,
+                                                                height: 21,
                                                               ),
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    12,
-                                                                  ),
-                                                            ),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                  "assets/icons/icon_pinpoint_red.svg",
-                                                                  width: 18,
-                                                                  height: 21,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 11,
-                                                                ),
-                                                                Expanded(
-                                                                  child: Text(
-                                                                    controller
-                                                                            .languageServices
-                                                                            .language
-                                                                            .value
-                                                                            .homeRideReadyToGoHint ??
-                                                                        "-",
-                                                                    style: controller
-                                                                        .typographyServices
-                                                                        .bodyLargeBold
-                                                                        .value
-                                                                        .copyWith(
-                                                                          color: Color(
-                                                                            0XFF9D9D9D,
-                                                                          ),
+                                                              SizedBox(
+                                                                width: 11,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  controller
+                                                                          .languageServices
+                                                                          .language
+                                                                          .value
+                                                                          .homeRideReadyToGoHint ??
+                                                                      "-",
+                                                                  style: controller
+                                                                      .typographyServices
+                                                                      .bodyLargeBold
+                                                                      .value
+                                                                      .copyWith(
+                                                                        color: Color(
+                                                                          0XFF9D9D9D,
                                                                         ),
-                                                                    maxLines: 1,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                  ),
+                                                                      ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
                                                                 ),
-                                                              ],
-                                                            ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(height: 12),
-                                                    HomeBookmarkLocationSubview(),
-                                                    SizedBox(height: 16),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  SizedBox(height: 12),
+                                                  HomeBookmarkLocationSubview(),
+                                                  SizedBox(height: 16),
+                                                ],
                                               ),
-                                              SizedBox(height: 16),
-                                              HomeAdvertisementListSubView(),
-                                              SizedBox(height: 16),
-                                            ],
-                                          ),
+                                            ),
+                                            SizedBox(height: 16),
+                                            HomeAdvertisementListSubView(),
+                                            SizedBox(height: 16),
+                                          ],
                                         ),
                                       ),
                                     ),

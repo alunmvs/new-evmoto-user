@@ -166,9 +166,12 @@ class CreateOrderRideController extends GetxController {
     }
 
     if (isOriginFilled == true && isDestinationFilled == false) {
-      isOriginHasPrimaryFocus.value = false;
-      isDestinationHasPrimaryFocus.value = true;
-      focusNodeDestination.requestFocus();
+      originLatitude.value = "";
+      originLongitude.value = "";
+
+      isOriginHasPrimaryFocus.value = true;
+      isDestinationHasPrimaryFocus.value = false;
+      focusNodeOrigin.requestFocus();
 
       await Future.wait([
         getOriginPlaceLocationList(keyword: originTextEditingController.text),
@@ -190,7 +193,7 @@ class CreateOrderRideController extends GetxController {
     if (isOriginFilled == true && isDestinationFilled == true) {
       isOriginHasPrimaryFocus.value = false;
       isDestinationHasPrimaryFocus.value = true;
-      focusNodeDestination.requestFocus();
+      // focusNodeDestination.requestFocus();
 
       await Future.wait([
         getOriginPlaceLocationList(keyword: originTextEditingController.text),

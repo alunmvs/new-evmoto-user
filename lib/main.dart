@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -128,6 +129,32 @@ Future<void> main() async {
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: child!,
+            // child: Stack(
+            //   children: [
+            //     child!,
+            //     Obx(
+            //       () => Align(
+            //         alignment: Alignment.topCenter,
+            //         child: Material(
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(top: 16 * 3),
+            //             child: Text(
+            //               Get.find<SocketServices>().isSocketClose.value ==
+            //                       false
+            //                   ? "${Get.find<SocketServices>().pingMs.value} ms"
+            //                   : Get.find<SocketServices>()
+            //                             .isProcessConnect
+            //                             .value ==
+            //                         true
+            //                   ? "Reconnecting"
+            //                   : "Disconnected",
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ),
         );
       },

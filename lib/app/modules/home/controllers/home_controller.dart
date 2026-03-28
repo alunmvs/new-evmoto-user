@@ -137,13 +137,6 @@ class HomeController extends GetxController {
     isFetch.value = true;
     isCriticalError.value = false;
     await refreshAll(firstInit: true);
-    try {
-      await socketServices.setupWebsocket();
-    } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(text: e.error.toString());
-      isCriticalError.value = true;
-    } on Exception catch (e) {}
-
     isFetch.value = false;
 
     ShowcaseView.register();

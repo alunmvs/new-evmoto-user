@@ -22,108 +22,144 @@ class SocketServices extends GetxService {
   final typographyServices = Get.find<TypographyServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
+  final pingDateTime = DateTime.now().obs;
+  final pongDateTime = DateTime.now().obs;
+
+  final pingMs = 0.obs;
+
   final isSocketClose = true.obs;
+  final isProcessConnect = false.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
+
+    Timer.periodic(Duration(seconds: 3), (value) async {
+      if (isSocketClose.value == true) {
+        var storage = FlutterSecureStorage();
+        var token = await storage.read(key: 'token');
+        var isUserLogin = token != null && token != "";
+
+        if (isUserLogin) {
+          await setupWebsocket();
+        }
+      }
+    });
   }
 
   Future<void> setupWebsocket() async {
-    try {
-      if (socket != null) {
-        await socket?.close();
-      }
-    } catch (e) {}
-    socket = null;
+    if (isProcessConnect.value == false) {
+      isProcessConnect.value = true;
+      try {
+        if (socket != null) {
+          await socket?.close();
+        }
+      } catch (e) {}
+      socket = null;
 
-    socket = await Socket.connect(
-      firebaseRemoteConfigServices.remoteConfig.getString('user_websocket_url'),
-      8888,
-    );
-    isSocketClose.value = false;
+      try {
+        socket = await Socket.connect(
+          firebaseRemoteConfigServices.remoteConfig.getString(
+            'user_websocket_url',
+          ),
+          8888,
+        );
+        isSocketClose.value = false;
 
-    socket?.listen(
-      (data) async {
-        var dataJson = convertBytesToJson(bytes: data);
-        print(dataJson);
-        if (dataJson != null) {
-          var method = dataJson['method'] ?? "";
+        socket?.listen(
+          (data) async {
+            var dataJson = convertBytesToJson(bytes: data);
+            if (dataJson != null) {
+              var method = dataJson['method'] ?? "";
 
-          switch (method) {
-            case 'DRIVER_POSITION':
-              if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                var socketDriverPositionDataModel =
-                    SocketDriverPositionData.fromJson(dataJson['data']);
+              switch (method) {
+                case 'DRIVER_POSITION':
+                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                    var socketDriverPositionDataModel =
+                        SocketDriverPositionData.fromJson(dataJson['data']);
 
-                var rideOrderDetailController =
-                    Get.find<RideOrderDetailController>();
-                if (rideOrderDetailController.driverLatitude.value == "0" &&
-                    rideOrderDetailController.driverLongitude.value == "0") {
-                  rideOrderDetailController.driverLatitude.value =
-                      socketDriverPositionDataModel.lat.toString();
-                  rideOrderDetailController.driverLongitude.value =
-                      socketDriverPositionDataModel.lon.toString();
-                  await Get.find<RideOrderDetailController>().refreshAll();
-                } else {
-                  rideOrderDetailController.driverLatitude.value =
-                      socketDriverPositionDataModel.lat.toString();
-                  rideOrderDetailController.driverLongitude.value =
-                      socketDriverPositionDataModel.lon.toString();
+                    var rideOrderDetailController =
+                        Get.find<RideOrderDetailController>();
+                    if (rideOrderDetailController.driverLatitude.value == "0" &&
+                        rideOrderDetailController.driverLongitude.value ==
+                            "0") {
+                      rideOrderDetailController.driverLatitude.value =
+                          socketDriverPositionDataModel.lat.toString();
+                      rideOrderDetailController.driverLongitude.value =
+                          socketDriverPositionDataModel.lon.toString();
+                      await Get.find<RideOrderDetailController>().refreshAll();
+                    } else {
+                      rideOrderDetailController.driverLatitude.value =
+                          socketDriverPositionDataModel.lat.toString();
+                      rideOrderDetailController.driverLongitude.value =
+                          socketDriverPositionDataModel.lon.toString();
 
-                  if (rideOrderDetailController.orderRideDetail.value.state ==
-                      1) {
+                      if (rideOrderDetailController
+                              .orderRideDetail
+                              .value
+                              .state ==
+                          1) {
+                        await Get.find<RideOrderDetailController>()
+                            .refreshAll();
+                      }
+                    }
+                  }
+
+                  break;
+                case 'ORDER_STATUS':
+                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
                     await Get.find<RideOrderDetailController>().refreshAll();
                   }
-                }
-              }
+                  break;
+                case 'OFFLINE':
+                  var storage = FlutterSecureStorage();
+                  await storage.delete(key: 'token');
+                  await closeWebsocket();
 
-              break;
-            case 'ORDER_STATUS':
-              if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                await Get.find<RideOrderDetailController>().refreshAll();
-              }
-              break;
-            case 'OFFLINE':
-              var storage = FlutterSecureStorage();
-              await storage.delete(key: 'token');
-              await closeWebsocket();
+                  Get.offAllNamed(Routes.LOGIN_REGISTER);
+                  break;
+                case 'END_PUSH':
+                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                    Get.dialog(
+                      EndPushDialog(
+                        orderId: dataJson['data']['orderId'],
+                        orderType: dataJson['data']['orderType'],
+                      ),
+                    );
+                  }
+                  break;
+                case 'PONG':
+                  pongDateTime.value = DateTime.now();
+                  pingMs.value = pongDateTime.value
+                      .difference(pingDateTime.value)
+                      .inMilliseconds;
 
-              Get.offAllNamed(Routes.LOGIN_REGISTER);
-              break;
-            case 'END_PUSH':
-              if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                Get.dialog(
-                  EndPushDialog(
-                    orderId: dataJson['data']['orderId'],
-                    orderType: dataJson['data']['orderType'],
-                  ),
-                );
+                  break;
+                default:
+                  break;
               }
-              break;
-            default:
-              break;
-          }
-          // print(dataJson);
-        }
-      },
-      onError: (error) {
-        print('Error: $error');
-        isSocketClose.value = true;
-        socket?.destroy();
-      },
-      onDone: () {
-        print('Server closed connection');
-        isSocketClose.value = true;
-        socket?.destroy();
-      },
-    );
+              // print(dataJson);
+            }
+          },
+          onError: (error) {
+            isSocketClose.value = true;
+            socket?.destroy();
+          },
+          onDone: () {
+            isSocketClose.value = true;
+            socket?.destroy();
+          },
+        );
 
-    await schedulerDataSocket();
+        await schedulerDataSocket();
+      } catch (e) {}
+      isProcessConnect.value = false;
+    }
   }
 
   Future<void> closeWebsocket() async {
     await socket?.close();
+    isSocketClose.value = true;
   }
 
   Future<void> schedulerDataSocket() async {
@@ -170,10 +206,11 @@ class SocketServices extends GetxService {
         "code": 200,
         "msg": "SUCCESS",
       };
-
-      socket?.add(convertJsonToPacket(dataUser));
-
-      await socket?.flush();
+      try {
+        socket?.add(convertJsonToPacket(dataUser));
+        pingDateTime.value = DateTime.now();
+        await socket?.flush();
+      } catch (e) {}
     }
   }
 }

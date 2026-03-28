@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
@@ -14,6 +15,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
+import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
@@ -44,6 +46,7 @@ class RideOrderDetailController extends GetxController {
 
   final sendbirdChatServices = Get.find<SendbirdChatServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+  final socketServices = Get.find<SocketServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -80,6 +83,8 @@ class RideOrderDetailController extends GetxController {
   final payType = 3.obs;
 
   final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
+
+  Timer? manualRefreshStatusTimer;
 
   final isCriticalError = false.obs;
   final isFetch = false.obs;
@@ -161,6 +166,20 @@ class RideOrderDetailController extends GetxController {
         });
       }
     }
+
+    manualRefreshStatusTimer = Timer.periodic(Duration(seconds: 5), (
+      value,
+    ) async {
+      if (socketServices.isSocketClose.value == true) {
+        var isHasConnection =
+            await InternetConnectionChecker.instance.hasConnection;
+        if (isHasConnection == true) {
+          try {
+            await refreshAll();
+          } catch (e) {}
+        }
+      }
+    });
   }
 
   @override
@@ -182,6 +201,9 @@ class RideOrderDetailController extends GetxController {
     } catch (e) {}
     try {
       refreshStatusDriverGivePriceTimer?.cancel();
+    } catch (e) {}
+    try {
+      manualRefreshStatusTimer?.cancel();
     } catch (e) {}
   }
 

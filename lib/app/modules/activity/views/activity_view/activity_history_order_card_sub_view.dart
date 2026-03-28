@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
@@ -430,19 +430,14 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                       .homeController
                                       .isActiveOrderListNotEmpty
                                       .value) {
-                                    await Get.toNamed(
-                                      Routes.RIDE_ORDER_DETAIL,
-                                      arguments: {
-                                        "order_id": controller
-                                            .activeOrderList
-                                            .first
-                                            .orderId
-                                            .toString(),
-                                        "order_type": controller
-                                            .activeOrderList
-                                            .first
-                                            .orderType,
-                                      },
+                                    SnackbarHelper.showSnackbarError(
+                                      text:
+                                          controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .snackbarOrderNotSuccess ??
+                                          "-",
                                     );
                                     return;
                                   }

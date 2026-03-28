@@ -73,51 +73,53 @@ class CreateOrderRideMapSelectView
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            await controller
-                                .moveGoogleMapCameraToCurrentLocation();
-                          },
-                          child: Container(
-                            width: 41,
-                            height: 41,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(99999999),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: controller
-                                      .themeColorServices
-                                      .overlayDark200
-                                      .value
-                                      .withValues(alpha: 0.12),
-                                  blurRadius: 16,
-                                  spreadRadius: 2,
-                                  offset: Offset(0, -1),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/icon_current_location.svg",
-                                ),
-                              ],
+                  if (controller.type.value == "origin") ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              await controller
+                                  .moveGoogleMapCameraToCurrentLocation();
+                            },
+                            child: Container(
+                              width: 41,
+                              height: 41,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(99999999),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: controller
+                                        .themeColorServices
+                                        .overlayDark200
+                                        .value
+                                        .withValues(alpha: 0.12),
+                                    blurRadius: 16,
+                                    spreadRadius: 2,
+                                    offset: Offset(0, -1),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_current_location.svg",
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16),
+                    SizedBox(height: 16),
+                  ],
                   Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(

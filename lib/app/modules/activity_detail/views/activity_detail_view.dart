@@ -9,8 +9,8 @@ import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detai
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_invoice_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_map_origin_destination_information_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_rating_review_sub_view.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/global_body_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/activity_detail_controller.dart';
@@ -186,25 +186,19 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                           await controller.homeController.refreshAll(
                             firstInit: true,
                           );
+
                           if (controller
                               .homeController
                               .isActiveOrderListNotEmpty
                               .value) {
-                            await Get.toNamed(
-                              Routes.RIDE_ORDER_DETAIL,
-                              arguments: {
-                                "order_id": controller
-                                    .homeController
-                                    .activeOrderList
-                                    .first
-                                    .orderId
-                                    .toString(),
-                                "order_type": controller
-                                    .homeController
-                                    .activeOrderList
-                                    .first
-                                    .orderType,
-                              },
+                            SnackbarHelper.showSnackbarError(
+                              text:
+                                  controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .snackbarOrderNotSuccess ??
+                                  "-",
                             );
                             return;
                           }
