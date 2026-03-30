@@ -329,6 +329,7 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> setupMapWaitingForDriver() async {
+    if (isClosed) return;
     await googleMapController.animateCamera(
       CameraUpdate.newLatLngZoom(
         LatLng(
@@ -342,6 +343,7 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> setupGoogleMapsPickUpCustomer() async {
+    if (isClosed) return;
     isPinLocationWaitingForDriverHide.value = true;
 
     if (driverLatitude.value != "" && driverLongitude.value != "") {
@@ -439,6 +441,7 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> setupGoogleMapOriginToDestination() async {
+    if (isClosed) return;
     polylines.clear();
 
     markers.value = markers
@@ -602,6 +605,7 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> checkDriverOffRoute() async {
+    if (isClosed) return;
     var driverPosition = LatLng(
       double.parse(driverLatitude.value),
       double.parse(driverLongitude.value),
@@ -835,6 +839,7 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> onTapRefocus() async {
+    if (isClosed) return;
     if (orderRideDetail.value.state == 1) {
       await googleMapController.animateCamera(
         CameraUpdate.newLatLngZoom(

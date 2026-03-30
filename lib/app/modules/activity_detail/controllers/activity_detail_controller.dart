@@ -164,6 +164,7 @@ class ActivityDetailController extends GetxController {
   }
 
   Future<void> setupGoogleMapOriginToDestination() async {
+    if (isClosed) return;
     polylines.clear();
 
     markers.value = markers
