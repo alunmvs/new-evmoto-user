@@ -47,7 +47,9 @@ class SplashScreenController extends GetxController {
       var token = await storage.read(key: 'token');
 
       if (token == null || token == "") {
-        Get.offAndToNamed(Routes.LOGIN_REGISTER);
+        Future.delayed(Duration(seconds: 3)).whenComplete(() async {
+          Get.offAndToNamed(Routes.LOGIN_REGISTER);
+        });
       } else {
         await Future.wait([
           userServices.manualOnInit(),

@@ -159,20 +159,21 @@ class RideOrderDetailController extends GetxController {
       generateEstimatedDistanceAndTimeInMinutes();
 
       if (orderRideDetail.value.state == 6 ||
-          orderRideDetail.value.state == 7) {
+          orderRideDetail.value.state == 7 ||
+          orderRideDetail.value.state == 8) {
         // Driver Give Price
-        // WidgetsBinding.instance.addPostFrameCallback((_) {
-        //   if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
-        //       Get.currentRoute != Routes.HOME) {
-        //     Get.offAndToNamed(
-        //       Routes.RIDE_ORDER_DONE,
-        //       arguments: {
-        //         "order_id": orderId.value,
-        //         "order_type": orderType.value,
-        //       },
-        //     );
-        //   }
-        // });
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+              Get.currentRoute != Routes.HOME) {
+            Get.offAndToNamed(
+              Routes.RIDE_ORDER_DONE,
+              arguments: {
+                "order_id": orderId.value,
+                "order_type": orderType.value,
+              },
+            );
+          }
+        });
       }
     }
 
