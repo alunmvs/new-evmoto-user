@@ -214,7 +214,8 @@ class SearchAddressView extends StatelessWidget {
                           .neutralsColorGrey0
                           .value,
                       onRefresh: () async {
-                        await controller.locationServices.requestLocation();
+                        await controller.locationServices
+                            .requestLocationSplashScreen();
                         await controller.getPlaceLocationList(
                           keyword: controller.keyword.value,
                         );

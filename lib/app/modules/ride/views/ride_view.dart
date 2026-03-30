@@ -3748,6 +3748,7 @@ class RideView extends GetView<RideController> {
                                                   2) {
                                                 if (controller
                                                         .homeController
+                                                        .userServices
                                                         .userInfo
                                                         .value
                                                         .balance! <

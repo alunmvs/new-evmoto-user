@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationServices extends GetxService with WidgetsBindingObserver {
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -19,6 +20,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   final currentLatitude = Rx<double?>(null);
   final currentLongitude = Rx<double?>(null);
   final isPermissionLocationAllow = Rx<bool?>(null);
+
+  final requestPermissionCount = 0.obs;
 
   final wasInBackground = false.obs;
   final isRequestingPermission = false.obs;
@@ -47,7 +50,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
     }
 
     if (state == AppLifecycleState.resumed && wasInBackground.value == true) {
-      await requestLocation();
+      await requestLocationSplashScreen();
       wasInBackground.value = false;
     }
   }
@@ -56,19 +59,67 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
     if (isRequestingPermission.value == false) {
       isRequestingPermission.value = true;
       isPermissionLocationAllow.value = true;
+      var checkPermission = await Geolocator.checkPermission();
       var isLocationServiceEnabled =
           await Geolocator.isLocationServiceEnabled();
-      var permission = await Geolocator.requestPermission();
 
       if (isLocationServiceEnabled == false ||
-          (permission == LocationPermission.denied ||
-              permission == LocationPermission.deniedForever)) {
+          checkPermission == LocationPermission.denied ||
+          checkPermission == LocationPermission.deniedForever) {
+        var isLocationServiceEnabled =
+            await Geolocator.isLocationServiceEnabled();
+        var permission = await Geolocator.requestPermission();
+        requestPermissionCount.value += 1;
+
+        if (isLocationServiceEnabled == false ||
+            (permission == LocationPermission.denied ||
+                permission == LocationPermission.deniedForever)) {
+          isPermissionLocationAllow.value = false;
+          isRequestingPermission.value = false;
+
+          currentLatitude.value = null;
+          currentLongitude.value = null;
+
+          if (requestPermissionCount.value > 1) {
+            await showRequiredAccessPermission();
+          }
+          return;
+        }
+      }
+
+      var locationSettings = LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 100,
+      );
+
+      var position = await Geolocator.getCurrentPosition(
+        locationSettings: locationSettings,
+      );
+
+      currentLatitude.value = position.latitude;
+      currentLongitude.value = position.longitude;
+
+      await getGeocodingAddress();
+
+      isRequestingPermission.value = false;
+    }
+  }
+
+  Future<void> requestLocationSplashScreen() async {
+    if (isRequestingPermission.value == false) {
+      isRequestingPermission.value = true;
+      isPermissionLocationAllow.value = true;
+      var checkPermission = await Geolocator.checkPermission();
+      var isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      if (isLocationServiceEnabled == false ||
+          checkPermission == LocationPermission.denied ||
+          checkPermission == LocationPermission.deniedForever) {
         isPermissionLocationAllow.value = false;
         isRequestingPermission.value = false;
 
         currentLatitude.value = null;
         currentLongitude.value = null;
-        await showRequiredAccessPermission();
         return;
       }
 
@@ -83,7 +134,9 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
 
       currentLatitude.value = position.latitude;
       currentLongitude.value = position.longitude;
+
       await getGeocodingAddress();
+
       isRequestingPermission.value = false;
     }
   }

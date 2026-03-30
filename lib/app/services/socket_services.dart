@@ -72,6 +72,8 @@ class SocketServices extends GetxService {
             if (dataJson != null) {
               var method = dataJson['method'] ?? "";
 
+              print("debug socket ${dataJson}");
+
               switch (method) {
                 case 'DRIVER_POSITION':
                   if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
@@ -198,7 +200,7 @@ class SocketServices extends GetxService {
 
       var dataUser = {
         "data": {
-          "userId": Get.find<HomeController>().userInfo.value.id,
+          "userId": Get.find<HomeController>().userServices.userInfo.value.id,
           "token": "$token",
           "type": 1,
         },

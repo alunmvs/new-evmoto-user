@@ -23,6 +23,7 @@ import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/routes/app_pages.dart';
@@ -76,6 +77,7 @@ Future<void> main() async {
   Get.put(SendbirdChatServices(), permanent: true);
   Get.put(LocationServices(), permanent: true);
   Get.put(DeepLinkServices(), permanent: true);
+  Get.put(UserServices(), permanent: true);
 
   runApp(
     GetMaterialApp(
@@ -103,6 +105,7 @@ Future<void> main() async {
         ),
       ),
       routingCallback: (routing) async {
+        print("routing_active");
         if (routing?.current == Routes.HOME) {
           var prefs = await SharedPreferences.getInstance();
 

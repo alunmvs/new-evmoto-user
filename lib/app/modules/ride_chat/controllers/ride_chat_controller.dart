@@ -34,8 +34,12 @@ class RideChatController extends GetxController with WidgetsBindingObserver {
         .doc(rideOrderDetailController.orderRideDetail.value.orderId.toString())
         .set({
           "userId": rideOrderDetailController.orderRideDetail.value.driverId,
-          "userName":
-              rideOrderDetailController.homeController.userInfo.value.name,
+          "userName": rideOrderDetailController
+              .homeController
+              .userServices
+              .userInfo
+              .value
+              .name,
           "userIsOnChatScreen": true,
           "userChatScreenLastSeen": FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
@@ -57,8 +61,12 @@ class RideChatController extends GetxController with WidgetsBindingObserver {
         .doc(rideOrderDetailController.orderRideDetail.value.orderId.toString())
         .set({
           "userId": rideOrderDetailController.orderRideDetail.value.driverId,
-          "userName":
-              rideOrderDetailController.homeController.userInfo.value.name,
+          "userName": rideOrderDetailController
+              .homeController
+              .userServices
+              .userInfo
+              .value
+              .name,
           "userIsOnChatScreen": false,
           "userChatScreenLastSeen": FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
@@ -74,8 +82,12 @@ class RideChatController extends GetxController with WidgetsBindingObserver {
           )
           .set({
             "userId": rideOrderDetailController.orderRideDetail.value.driverId,
-            "userName":
-                rideOrderDetailController.homeController.userInfo.value.name,
+            "userName": rideOrderDetailController
+                .homeController
+                .userServices
+                .userInfo
+                .value
+                .name,
             "userIsOnChatScreen": true,
             "userChatScreenLastSeen": FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
@@ -87,8 +99,12 @@ class RideChatController extends GetxController with WidgetsBindingObserver {
           )
           .set({
             "userId": rideOrderDetailController.orderRideDetail.value.driverId,
-            "userName":
-                rideOrderDetailController.homeController.userInfo.value.name,
+            "userName": rideOrderDetailController
+                .homeController
+                .userServices
+                .userInfo
+                .value
+                .name,
             "userIsOnChatScreen": false,
             "userChatScreenLastSeen": FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));

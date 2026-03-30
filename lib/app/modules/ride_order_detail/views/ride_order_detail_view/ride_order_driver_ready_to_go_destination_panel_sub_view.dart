@@ -81,36 +81,48 @@ class RideOrderDriverReadyToGoDestinationPanelSubView
                           ),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              (controller
-                                          .languageServices
-                                          .language
-                                          .value
-                                          .arrived ??
-                                      "-")
-                                  .replaceFirst(
-                                    "x",
-                                    formatDoubleToString(
-                                      controller.estimatedDistanceInKm.value,
+                            Expanded(
+                              child: Text(
+                                (controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .arrived ??
+                                        "-")
+                                    .replaceFirst(
+                                      "x",
+                                      formatDoubleToString(
+                                        double.parse(
+                                          controller
+                                                  .orderRideServerDetail
+                                                  .value
+                                                  .laveMileage ??
+                                              "0.0",
+                                        ),
+                                      ),
+                                    )
+                                    .replaceFirst(
+                                      "x",
+                                      getEstimatedTimeInMinutesInText(
+                                        estimatedTimeInMinutes: double.parse(
+                                          controller
+                                                  .orderRideServerDetail
+                                                  .value
+                                                  .laveTime ??
+                                              "0.0",
+                                        ),
+                                      ),
                                     ),
-                                  )
-                                  .replaceFirst(
-                                    "x",
-                                    getEstimatedTimeInMinutesInText(
-                                      estimatedTimeInMinutes: controller
-                                          .estimatedTimeInMinutes
-                                          .value,
-                                    ),
-                                  ),
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallBold
-                                  .value,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallBold
+                                    .value,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
+                            SizedBox(width: 8),
                             Text(
                               controller.getEstimatedHourMinuteArrive(),
                               style: controller

@@ -7,6 +7,8 @@ import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class RideCallSendbirdController extends GetxController {
+  final sendbirdServices = Get.find<SendbirdServices>();
+
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
@@ -35,6 +37,12 @@ class RideCallSendbirdController extends GetxController {
     isCaller.value = Get.arguments['is_caller'];
     driverName.value = Get.arguments['driver_name'];
     driverAvatarUrl.value = Get.arguments['driver_avatar_url'];
+
+    if (sendbirdServices.isSuccessInitialize.value == false) {
+      await sendbirdServices.isSuccessInitialize.stream.firstWhere(
+        (value) => value == true,
+      );
+    }
 
     try {
       if (isCaller.value == true) {

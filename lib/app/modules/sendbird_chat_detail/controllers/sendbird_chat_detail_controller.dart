@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
@@ -31,6 +32,8 @@ class MyGroupChannelHandler extends GroupChannelHandler {
 }
 
 class SendbirdChatDetailController extends GetxController {
+  final sendbirdChatServices = Get.find<SendbirdChatServices>();
+
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
@@ -60,6 +63,12 @@ class SendbirdChatDetailController extends GetxController {
     super.onInit();
     isFetch.value = true;
     isCriticalError.value = false;
+
+    if (sendbirdChatServices.isSuccessInitialize.value == false) {
+      await sendbirdChatServices.isSuccessInitialize.stream.firstWhere(
+        (value) => value == true,
+      );
+    }
 
     try {
       groupChannelUrl.value = Get.arguments['group_channel_url'];

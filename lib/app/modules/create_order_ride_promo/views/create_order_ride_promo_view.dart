@@ -80,8 +80,9 @@ class CreateOrderRidePromoView extends GetView<CreateOrderRidePromoController> {
                         if (coupon.couponStatus == "used") ...[
                           PromoUsedCardSubView(coupon: coupon),
                         ],
-                        if (coupon.couponStatus == "expired")
+                        if (coupon.couponStatus == "expired") ...[
                           PromoExpiredCardSubView(coupon: coupon),
+                        ],
                       ],
                       SizedBox(height: 12),
                     ],

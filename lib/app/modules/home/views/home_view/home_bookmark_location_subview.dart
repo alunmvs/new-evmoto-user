@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/utils/order_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -165,7 +168,28 @@ class HomeBookmarkLocationSubview extends GetView<HomeController> {
                 GestureDetector(
                   onTap: () async {
                     await controller.refreshAll(firstInit: true);
+
                     if (controller.isActiveOrderListNotEmpty.value) {
+                      var isCancelled = await isOrderHasBeenCancelled(
+                        orderId: controller.activeOrderList.first.orderId
+                            .toString(),
+                        orderType: controller.activeOrderList.first.orderType!,
+                      );
+
+                      if (isCancelled == true) {
+                        SnackbarHelper.showSnackbarError(
+                          text:
+                              controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .orderHasBeenCancelled ??
+                              "-",
+                        );
+                        await controller.refreshAll(firstInit: false);
+                        return;
+                      }
+
                       await Get.toNamed(
                         Routes.RIDE_ORDER_DETAIL,
                         arguments: {
@@ -178,13 +202,28 @@ class HomeBookmarkLocationSubview extends GetView<HomeController> {
                       return;
                     }
 
+                    await Future.doWhile(() async {
+                      await Future.delayed(Duration(milliseconds: 100));
+                      return controller.currentAddressIsLoading.value;
+                    });
+
                     await Get.toNamed(
                       Routes.CREATE_ORDER_RIDE,
                       arguments: {
-                        "origin_address_name": savedAddress.addressName,
-                        "origin_address": savedAddress.addressDetail,
-                        "origin_latitude": savedAddress.latitude.toString(),
-                        "origin_longitude": savedAddress.longitude.toString(),
+                        "origin_address_name":
+                            controller.currentGeocodingAddress.value.name,
+                        "origin_address":
+                            controller.currentGeocodingAddress.value.address,
+                        "origin_latitude": controller.currentLatitude.value
+                            .toString(),
+                        "origin_longitude": controller.currentLongitude.value
+                            .toString(),
+                        "destination_address_name": savedAddress.addressName,
+                        "destination_address": savedAddress.addressDetail,
+                        "destination_latitude": savedAddress.latitude
+                            .toString(),
+                        "destination_longitude": savedAddress.longitude
+                            .toString(),
                       },
                     );
                   },

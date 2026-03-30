@@ -13,10 +13,12 @@ import 'package:new_evmoto_user/app/data/models/requested_order_ride_model.dart'
 import 'package:new_evmoto_user/app/data/models/validate_location_response_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 
 class OrderRideRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   Future<OrderRideServer> getOrderRideServerDetail({
     required String orderId,
@@ -154,7 +156,6 @@ class OrderRideRepository {
 
   Future<OrderRide> getOrderRideDetailbyOrderId({
     String? orderId,
-    int? language,
     int? orderType,
   }) async {
     try {
@@ -164,7 +165,7 @@ class OrderRideRepository {
       var formData = FormData.fromMap({
         "orderId": orderId,
         "orderType": orderType,
-        "language": language,
+        "language": languageServices.languageCodeSystem.value,
       });
 
       var storage = FlutterSecureStorage();
@@ -174,10 +175,6 @@ class OrderRideRepository {
         "Content-Type": "multipart/form-data",
         'Authorization': "Bearer $token",
       };
-
-      print(url);
-      print(headers);
-      print({"orderId": orderId, "orderType": orderType, "language": language});
 
       var dio = apiServices.dio;
       var response = await dio.post(
@@ -509,6 +506,13 @@ class OrderRideRepository {
         "endLon": endLon,
       });
 
+      print({
+        "startLat": startLat,
+        "startLon": startLon,
+        "endLat": endLat,
+        "endLon": endLon,
+      });
+
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
@@ -523,6 +527,8 @@ class OrderRideRepository {
         data: formData,
         options: Options(headers: headers),
       );
+
+      print(response.data);
 
       return ValidateLocationResponse.fromJson(response.data);
     } on DioException catch (e) {

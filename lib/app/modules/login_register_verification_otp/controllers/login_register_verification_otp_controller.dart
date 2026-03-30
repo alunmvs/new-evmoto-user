@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 
@@ -28,6 +29,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
   final locationServices = Get.find<LocationServices>();
+  final userServices = Get.find<UserServices>();
 
   final isOTPInvalid = false.obs;
 
@@ -108,6 +110,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
 
         var storage = FlutterSecureStorage();
         await storage.write(key: "token", value: loginData.token);
+        await userServices.getUserInfo();
 
         Get.offAllNamed(Routes.HOME);
       }

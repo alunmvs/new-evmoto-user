@@ -37,6 +37,8 @@ class OrderRideServer {
     laveMileage = json['laveMileage'];
     laveTime = json['laveTime'];
     state = json['state'];
+
+    print("ini order ride server $json");
   }
 
   Map<String, dynamic> toJson() {

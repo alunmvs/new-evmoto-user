@@ -124,6 +124,7 @@ class CreateOrderRideController extends GetxController {
   Future<void> fillForm() async {
     // fill origin
     var isOriginFilled = false;
+    var isOriginAutoSelect = Get.arguments?['is_origin_auto_select'] ?? false;
     originAddressName.value = Get.arguments?['origin_address_name'] ?? "";
     originAddress.value = Get.arguments?['origin_address'] ?? "";
     originLatitude.value = Get.arguments?['origin_latitude'] ?? "";
@@ -166,12 +167,20 @@ class CreateOrderRideController extends GetxController {
     }
 
     if (isOriginFilled == true && isDestinationFilled == false) {
-      originLatitude.value = "";
-      originLongitude.value = "";
+      if (isOriginAutoSelect == true) {
+        isOriginHasPrimaryFocus.value = false;
+        isDestinationHasPrimaryFocus.value = true;
+        focusNodeDestination.requestFocus();
+      }
 
-      isOriginHasPrimaryFocus.value = true;
-      isDestinationHasPrimaryFocus.value = false;
-      focusNodeOrigin.requestFocus();
+      if (isOriginAutoSelect == false) {
+        originLatitude.value = "";
+        originLongitude.value = "";
+
+        isOriginHasPrimaryFocus.value = true;
+        isDestinationHasPrimaryFocus.value = false;
+        focusNodeOrigin.requestFocus();
+      }
 
       await Future.wait([
         getOriginPlaceLocationList(keyword: originTextEditingController.text),
@@ -193,7 +202,6 @@ class CreateOrderRideController extends GetxController {
     if (isOriginFilled == true && isDestinationFilled == true) {
       isOriginHasPrimaryFocus.value = false;
       isDestinationHasPrimaryFocus.value = true;
-      // focusNodeDestination.requestFocus();
 
       await Future.wait([
         getOriginPlaceLocationList(keyword: originTextEditingController.text),
@@ -299,14 +307,10 @@ class CreateOrderRideController extends GetxController {
   }
 
   Future<void> requestLocation() async {
-    // await locationServices.requestLocation();
     if (locationServices.currentLatitude.value != null) {
       currentLatitude.value = locationServices.currentLatitude.value.toString();
       currentLongitude.value = locationServices.currentLongitude.value
           .toString();
-
-      focusNodeOrigin.requestFocus();
-
       if (currentLatitude.value != null) {
         var geocodingAddress = locationServices.geocodingAddress.value;
         var currentLocationDetail = geocodingAddress.address;

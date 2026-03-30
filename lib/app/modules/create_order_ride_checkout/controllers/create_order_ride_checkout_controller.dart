@@ -260,17 +260,25 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   String getEstimatedTimeInMinutesInText() {
-    int jam = estimatedTimeInMinutes.value ~/ 60;
-    int menit = (estimatedTimeInMinutes.value % 60).round();
+    if (selectedOrderRidePricing.value.duration == null) {
+      return '';
+    }
+    int hours = selectedOrderRidePricing.value.duration! ~/ 60;
+    int mins = (selectedOrderRidePricing.value.duration! % 60).round();
 
-    if (jam > 0) {
-      return '$jam ${languageServices.language.value.hour} $menit ${languageServices.language.value.minute}';
+    if (hours > 0) {
+      if (mins > 0) {
+        return '$hours ${languageServices.language.value.hour} $mins ${languageServices.language.value.minute}';
+      } else {
+        return '$hours ${languageServices.language.value.hour}';
+      }
     } else {
-      return '$menit ${languageServices.language.value.minute}';
+      return '$mins ${languageServices.language.value.minute}';
     }
   }
 
   Future<void> onTapSubmit() async {
+    await locationServices.requestLocation();
     if (locationServices.isPermissionLocationAllow.value == true) {
       Get.dialog(LoadingDialog(), barrierDismissible: false);
       try {
@@ -284,8 +292,8 @@ class CreateOrderRideCheckoutController extends GetxController {
           startLon: originLongitude.value,
           orderSource: "1", // statis 1
           orderType: 1, // 1 = normal, 2 = appointment
-          passengers: homeController.userInfo.value.name,
-          passengersPhone: homeController.userInfo.value.phone,
+          passengers: homeController.userServices.userInfo.value.name,
+          passengersPhone: homeController.userServices.userInfo.value.phone,
           placementLat: locationServices.currentLatitude.value.toString(),
           placementLon: locationServices.currentLongitude.value.toString(),
           tipMoney: "0",

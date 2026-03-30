@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/utils/order_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
@@ -21,6 +22,24 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
       () => GestureDetector(
         onTap: () async {
           if ([1, 2, 3, 4, 5, 6, 7].contains(historyOrder.state)) {
+            var isCancelled = await isOrderHasBeenCancelled(
+              orderId: historyOrder.orderId.toString(),
+              orderType: historyOrder.orderType!,
+            );
+
+            if (isCancelled == true) {
+              SnackbarHelper.showSnackbarError(
+                text:
+                    controller
+                        .languageServices
+                        .language
+                        .value
+                        .orderHasBeenCancelled ??
+                    "-",
+              );
+              await controller.refreshAll();
+              return;
+            }
             await Get.toNamed(
               Routes.RIDE_ORDER_DETAIL,
               arguments: {
@@ -242,15 +261,14 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                               ),
                             ),
                             if ([
-                                  1,
-                                  2,
-                                  3,
-                                  4,
-                                  5,
-                                  6,
-                                  7,
-                                ].contains(historyOrder.state) ||
-                                historyOrder.state == 10)
+                              1,
+                              2,
+                              3,
+                              4,
+                              5,
+                              6,
+                              7,
+                            ].contains(historyOrder.state))
                               ...[]
                             else ...[
                               Text(
@@ -258,7 +276,11 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                   locale: 'id_ID',
                                   symbol: 'Rp ',
                                   decimalDigits: 0,
-                                ).format(historyOrder.payMoney),
+                                ).format(
+                                  historyOrder.state == 10
+                                      ? 0
+                                      : historyOrder.payMoney,
+                                ),
                                 style: controller
                                     .typographyServices
                                     .bodySmallBold

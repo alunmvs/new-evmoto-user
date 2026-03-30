@@ -77,19 +77,12 @@ class RideOrderWaitingDriverPickUpPanelSubView
                             topRight: Radius.circular(16),
                           ),
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${(controller.languageServices.language.value.driverPickUp ?? "-")} · ${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km} · ${controller.getEstimatedTimeInMinutesInText().toLowerCase()}",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallBold
-                                  .value,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        child: Text(
+                          "${(controller.languageServices.language.value.driverPickUp ?? "-")} · ${formatDoubleToString(double.parse(controller.orderRideServerDetail.value.reservationMileage ?? "0.0"))} ${controller.languageServices.language.value.km} · ${controller.getEstimatedTimeInMinutesWaitingDriverPickUpInText().toLowerCase()}",
+                          style:
+                              controller.typographyServices.bodySmallBold.value,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Expanded(

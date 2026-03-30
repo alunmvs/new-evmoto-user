@@ -99,6 +99,15 @@ class RideOrderDetailController extends GetxController {
 
     try {
       await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (orderRideDetail.value.state == 10) {
+          Get.back();
+          SnackbarHelper.showSnackbarError(
+            text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+          );
+        }
+      });
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;
@@ -152,18 +161,18 @@ class RideOrderDetailController extends GetxController {
       if (orderRideDetail.value.state == 6 ||
           orderRideDetail.value.state == 7) {
         // Driver Give Price
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
-              Get.currentRoute != Routes.HOME) {
-            Get.offAndToNamed(
-              Routes.RIDE_ORDER_DONE,
-              arguments: {
-                "order_id": orderId.value,
-                "order_type": orderType.value,
-              },
-            );
-          }
-        });
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
+        //   if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
+        //       Get.currentRoute != Routes.HOME) {
+        //     Get.offAndToNamed(
+        //       Routes.RIDE_ORDER_DONE,
+        //       arguments: {
+        //         "order_id": orderId.value,
+        //         "order_type": orderType.value,
+        //       },
+        //     );
+        //   }
+        // });
       }
     }
 
@@ -290,7 +299,9 @@ class RideOrderDetailController extends GetxController {
 
     generateEstimatedDistanceAndTimeInMinutes();
 
-    if (orderRideDetail.value.state == 6 || orderRideDetail.value.state == 7) {
+    if (orderRideDetail.value.state == 6 ||
+        orderRideDetail.value.state == 7 ||
+        orderRideDetail.value.state == 8) {
       // Driver Give Price
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
@@ -310,7 +321,6 @@ class RideOrderDetailController extends GetxController {
   Future<void> getOrderRideDetail() async {
     orderRideDetail.value = (await orderRideRepository
         .getOrderRideDetailbyOrderId(
-          language: languageServices.languageCodeSystem.value,
           orderId: orderId.value,
           orderType: orderType.value,
         ));
@@ -1101,6 +1111,19 @@ class RideOrderDetailController extends GetxController {
     );
   }
 
+  String getEstimatedTimeInMinutesWaitingDriverPickUpInText() {
+    int jam = double.parse(orderRideServerDetail.value.reservationTime!) ~/ 60;
+    int menit =
+        (double.parse(orderRideServerDetail.value.reservationTime!) % 60)
+            .round();
+
+    if (jam > 0) {
+      return '$jam ${languageServices.language.value.hour} $menit ${languageServices.language.value.minute}';
+    } else {
+      return '$menit ${languageServices.language.value.minute}';
+    }
+  }
+
   String getEstimatedTimeInMinutesInText() {
     int jam = estimatedTimeInMinutes.value ~/ 60;
     int menit = (estimatedTimeInMinutes.value % 60).round();
@@ -1114,7 +1137,9 @@ class RideOrderDetailController extends GetxController {
 
   String getEstimatedHourMinuteArrive() {
     var now = DateTime.now();
-    int menit = (estimatedTimeInMinutes.value % 60).round();
+    int menit =
+        (double.parse(orderRideServerDetail.value.laveTime ?? "0.0") % 60)
+            .round();
     var estimatedArrived = now.add(Duration(minutes: menit));
     var formattedTime = DateFormat('HH:mm').format(estimatedArrived);
     return formattedTime;

@@ -66,10 +66,13 @@ class AddEditUserInformationController extends GetxController {
 
   Future<void> prefillForm() async {
     formGroup.control("mobile_number").value =
-        homeController.userInfo.value.phone;
-    formGroup.control("full_name").value = homeController.userInfo.value.name;
-    formGroup.control("gender_type").value = homeController.userInfo.value.sex;
-    avatarImgUrl.value = homeController.userInfo.value.avatar ?? "";
+        homeController.userServices.userInfo.value.phone;
+    formGroup.control("full_name").value =
+        homeController.userServices.userInfo.value.name;
+    formGroup.control("gender_type").value =
+        homeController.userServices.userInfo.value.sex;
+    avatarImgUrl.value =
+        homeController.userServices.userInfo.value.avatar ?? "";
   }
 
   Future<void> onTapUpdateAvatar() async {
@@ -312,10 +315,10 @@ class AddEditUserInformationController extends GetxController {
         name: formGroup.control("full_name").value,
         genderType: formGroup.control("gender_type").value,
         avatarUrl: avatarImgUrl.value == "" ? null : avatarImgUrl.value,
-        id: homeController.userInfo.value.id!,
+        id: homeController.userServices.userInfo.value.id!,
       );
 
-      await homeController.getUserInfo();
+      homeController.userServices.getUserInfo();
 
       Get.back();
 

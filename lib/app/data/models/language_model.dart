@@ -333,6 +333,8 @@ class Language {
   String? max15DigitMobilePhone;
   String? cancelOrderTitleDialog;
   String? maxCharacter150;
+  String? orderHasBeenCancelled;
+  String? distance;
 
   Language({
     this.onboardingIntroTitle1,
@@ -659,9 +661,12 @@ class Language {
     this.min8DigitMobilePhone,
     this.max15DigitMobilePhone,
     this.cancelOrderTitleDialog,
+    this.orderHasBeenCancelled,
+    this.distance,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    distance = json['distance'] ?? "(Translate Not Found)";
     onboardingIntroTitle1 =
         json['onboarding_intro_title_1'] ?? "(Translate Not Found)";
     onboardingIntroDescription1 =
@@ -1137,10 +1142,14 @@ class Language {
         json['cancel_order_title_dialog'] ?? "(Translate Not Found)";
     waitingDriverConfirmation =
         json['waiting_driver_confirmation'] ?? "(Translate Not Found)";
+    orderHasBeenCancelled =
+        json['order_has_been_cancelled'] ?? "(Translate Not Found)";
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['distance'] = this.distance;
+    data['order_has_been_cancelled'] = this.orderHasBeenCancelled;
     data['onboarding_intro_title_1'] = this.onboardingIntroTitle1;
     data['onboarding_intro_description_1'] = this.onboardingIntroDescription1;
     data['onboarding_intro_title_2'] = this.onboardingIntroTitle2;

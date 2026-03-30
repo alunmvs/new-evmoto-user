@@ -70,6 +70,13 @@ class RideChatSendbirdController extends GetxController {
     orderId.value = Get.arguments['order_id'];
     orderType.value = Get.arguments['order_type'];
     state.value = Get.arguments['state'];
+
+    if (sendbirdChatServices.isSuccessInitialize.value == false) {
+      await sendbirdChatServices.isSuccessInitialize.stream.firstWhere(
+        (value) => value == true,
+      );
+    }
+
     try {
       await getChannelUrl();
       await updateMetaData();

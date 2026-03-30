@@ -11,6 +11,7 @@ import 'package:new_evmoto_user/app/services/socket_services.dart';
 
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,6 +91,7 @@ Future<void> logout() async {
   final socketServices = Get.find<SocketServices>();
   final firebasePushNotificationServices =
       Get.find<FirebasePushNotificationServices>();
+  final userServices = Get.find<UserServices>();
   var storage = FlutterSecureStorage();
   var prefs = await SharedPreferences.getInstance();
 
@@ -101,6 +103,7 @@ Future<void> logout() async {
       prefs.setBool("home_controller_registered", false),
       prefs.setBool("activity_controller_registered", false),
     ], eagerError: false);
+    userServices.clearUserInfo();
   } on DioException catch (e) {
     SnackbarHelper.showSnackbarError(text: e.error.toString());
   } catch (e) {}

@@ -23,10 +23,10 @@ class SendbirdChatServices extends GetxService {
         ),
       );
 
-      if (homeController.userInfo.value.id != null) {
+      if (homeController.userServices.userInfo.value.id != null) {
         await SendbirdChat.connect(
-          "user_${homeController.userInfo.value.id}",
-          nickname: homeController.userInfo.value.name,
+          "user_${homeController.userServices.userInfo.value.id}",
+          nickname: homeController.userServices.userInfo.value.name,
         );
         isSuccessInitialize.value = true;
       }

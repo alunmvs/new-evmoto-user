@@ -119,7 +119,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                               for (var message in controller.messageList) ...[
                                 if (message is FileMessage) ...[
                                   if (message.sender!.userId ==
-                                      "user_${controller.homeController.userInfo.value.id!}") ...[
+                                      "user_${controller.homeController.userServices.userInfo.value.id!}") ...[
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: Padding(
@@ -291,7 +291,7 @@ class RideChatSendbirdView extends GetView<RideChatSendbirdController> {
                                 ],
                                 if (message is UserMessage) ...[
                                   if (message.sender!.userId ==
-                                      "user_${controller.homeController.userInfo.value.id!}") ...[
+                                      "user_${controller.homeController.userServices.userInfo.value.id!}") ...[
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: Padding(

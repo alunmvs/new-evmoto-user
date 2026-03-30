@@ -30,7 +30,7 @@ class CheckoutEstimatedDistanceAndTimeSubView
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              "Jarak ${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${controller.getEstimatedTimeInMinutesInText()}",
+              "${controller.languageServices.language.value.distance} ${formatDoubleToString(controller.selectedOrderRidePricing.value.mileage ?? 0.0)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${controller.getEstimatedTimeInMinutesInText()}",
               style: controller.typographyServices.bodySmallBold.value
                   .copyWith(),
             ),

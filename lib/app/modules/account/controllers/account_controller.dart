@@ -619,7 +619,7 @@ class AccountController extends GetxController {
     final isButtonResendEnable = false.obs;
 
     await otpRepository.requestOTP(
-      phone: homeController.userInfo.value.phone,
+      phone: homeController.userServices.userInfo.value.phone,
       language: languageServices.languageCodeSystem.value,
       type: 6,
     );
@@ -671,7 +671,8 @@ class AccountController extends GetxController {
                               ),
                           children: <TextSpan>[
                             TextSpan(
-                              text: "+${homeController.userInfo.value.phone}",
+                              text:
+                                  "+${homeController.userServices.userInfo.value.phone}",
                               style: typographyServices.bodySmallBold.value,
                             ),
                           ],
@@ -739,8 +740,11 @@ class AccountController extends GetxController {
                               onPressed: isButtonResendEnable.value
                                   ? () async {
                                       await otpRepository.requestOTP(
-                                        phone:
-                                            homeController.userInfo.value.phone,
+                                        phone: homeController
+                                            .userServices
+                                            .userInfo
+                                            .value
+                                            .phone,
                                         language: languageServices
                                             .languageCodeSystem
                                             .value,

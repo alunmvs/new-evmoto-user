@@ -32,10 +32,13 @@ import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/general_helper.dart';
 import 'package:new_evmoto_user/app/utils/maps_helper.dart';
+import 'package:new_evmoto_user/app/utils/order_helper.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -78,6 +81,7 @@ class HomeController extends GetxController {
   final sendBirdServices = Get.find<SendbirdServices>();
   final sendbirdChatServices = Get.find<SendbirdChatServices>();
   final locationServices = Get.find<LocationServices>();
+  final userServices = Get.find<UserServices>();
 
   final bannerUrlList = [
     "assets/images/img_promo_1.png",
@@ -86,7 +90,6 @@ class HomeController extends GetxController {
   final indexBanner = 0.0.obs;
   final indexNavigationBar = 0.obs;
 
-  final userInfo = UserInfo().obs;
   final activeOrderList = <ActiveOrder>[].obs;
   final availableCouponList = <Coupon>[].obs;
 
@@ -111,17 +114,23 @@ class HomeController extends GetxController {
   late GoogleMapController googleMapController;
 
   // location permission
-  final currentLatitude = Rx<double?>(null);
-  final currentLongitude = Rx<double?>(null);
+  final currentLatitude = Rx<double?>(-6.1744651);
+  final currentLongitude = Rx<double?>(106.822745);
   final currentAddress = Rx<String?>(null);
   final currentGeocodingAddress = GeocodingAddress().obs;
   final currentAddressIsLoading = false.obs;
+  final isCurrentAddressIsInit = false.obs;
 
   // notification
   final totalUnreadMessageCount = 0.obs;
+  final isFetchTotalUnreadMessageCount = false.obs;
+
+  // sendbird SDK
+  final isSendbirdInit = false.obs;
 
   // advertisement
   final advertisementList = <Advertisement>[].obs;
+  final isFetchAdvertisementList = true.obs;
 
   // app versioning
   final versioningServer = VersioningServer().obs;
@@ -134,43 +143,53 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    ShowcaseView.register();
+
     isFetch.value = true;
     isCriticalError.value = false;
-    await refreshAll(firstInit: true);
-    isFetch.value = false;
+    if (locationServices.currentLatitude.value == null) {
+      await locationServices.requestLocation();
+    }
+    await measureTime(
+      "Refresh All",
+      () => Future.wait([
+        refreshAll(firstInit: true),
+        getAdvertisementList(),
+        getCurrentAddressInitialize(
+          latitude: currentLatitude.value ?? -6.1744651,
+          longitude: currentLongitude.value ?? 106.822745,
+        ),
+      ]),
+    );
 
-    ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await firebasePushNotificationServices.requestPermission();
-      Get.dialog(
-        LoadingDialog(),
-        barrierDismissible: false,
-        barrierColor: Colors.transparent,
+      await measureTime(
+        "Move Google Map Camera to Current Location",
+        () => Future.wait([moveGoogleMapCameraToCurrentLocation()]),
       );
-      await sendBirdServices.initialize();
-      await sendbirdChatServices.initialize();
+
+      await firebasePushNotificationServices.requestPermission();
+      await measureTime(
+        "Sendbird Chat & Call Initialize",
+        () => Future.wait([
+          sendBirdServices.initialize(),
+          sendbirdChatServices.initialize(),
+        ]),
+      );
       await getTotalUnreadSendbirdChat();
-      Get.close(1);
+      isSendbirdInit.value = true;
       await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);
 
-      if ((userInfo.value.name == "" || userInfo.value.name == null) &&
-          userInfo.value.id != null) {
+      if ((userServices.userInfo.value.name == "" ||
+              userServices.userInfo.value.name == null) &&
+          userServices.userInfo.value.id != null) {
         await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
       } else {
-        await moveGoogleMapCameraToCurrentLocation();
-        await Future.wait([
-          getAdvertisementList(),
-          getCurrentAddress(
-            latitude: currentLatitude.value ?? -6.1744651,
-            longitude: currentLongitude.value ?? 106.822745,
-          ),
-        ]);
-
         await checkInitialCall();
       }
+      await setHomeControllerRegistered();
+      isFetch.value = false;
     });
-
-    await setHomeControllerRegistered();
   }
 
   Future<void> checkInitialCall() async {
@@ -245,37 +264,38 @@ class HomeController extends GetxController {
   }
 
   Future<void> moveGoogleMapCameraToCurrentLocation() async {
-    await locationServices.requestLocation();
-    currentLatitude.value = locationServices.currentLatitude.value;
-    currentLongitude.value = locationServices.currentLongitude.value;
+    if (locationServices.currentLatitude.value != null) {
+      currentLatitude.value = locationServices.currentLatitude.value;
+      currentLongitude.value = locationServices.currentLongitude.value;
 
-    if (currentLatitude.value != null) {
-      try {
-        googleMapController.moveCamera(
-          CameraUpdate.newLatLng(
-            LatLng(currentLatitude.value!, currentLongitude.value!),
-          ),
-        );
+      if (currentLatitude.value != null) {
+        try {
+          googleMapController.moveCamera(
+            CameraUpdate.newLatLng(
+              LatLng(currentLatitude.value!, currentLongitude.value!),
+            ),
+          );
 
-        initialCameraPosition.value = CameraPosition(
-          target: LatLng(currentLatitude.value!, currentLongitude.value!),
-          zoom: 14,
-        );
-      } catch (e) {}
-    }
+          initialCameraPosition.value = CameraPosition(
+            target: LatLng(currentLatitude.value!, currentLongitude.value!),
+            zoom: 14,
+          );
+        } catch (e) {}
+      }
+    } else {}
   }
 
   Future<void> refreshAll({bool firstInit = false}) async {
     try {
       await Future.wait([
-        getUserInfo(),
         getActiveOrderList(),
         getSavedAddressList(),
       ], eagerError: false);
 
       if (firstInit == false) {
-        await locationServices.requestLocation();
+        await locationServices.requestLocationSplashScreen();
         await Future.wait([
+          userServices.getUserInfo(),
           getTotalUnreadSendbirdChat(),
           getAdvertisementList(),
         ], eagerError: false);
@@ -283,12 +303,6 @@ class HomeController extends GetxController {
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
-  }
-
-  Future<void> getUserInfo() async {
-    userInfo.value = (await userRepository.getUserInfo(
-      language: languageServices.languageCodeSystem.value,
-    ));
   }
 
   Future<void> getActiveOrderList() async {
@@ -317,6 +331,19 @@ class HomeController extends GetxController {
   Future<void> onTapPickUpLocation() async {
     await refreshAll(firstInit: true);
     if (isActiveOrderListNotEmpty.value) {
+      var isCancelled = await isOrderHasBeenCancelled(
+        orderId: activeOrderList.first.orderId.toString(),
+        orderType: activeOrderList.first.orderType!,
+      );
+
+      if (isCancelled == true) {
+        SnackbarHelper.showSnackbarError(
+          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+        );
+        await refreshAll(firstInit: false);
+        return;
+      }
+
       await Get.toNamed(
         Routes.RIDE_ORDER_DETAIL,
         arguments: {
@@ -326,14 +353,6 @@ class HomeController extends GetxController {
       );
     } else {
       try {
-        Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
-        var geocodingAddress = await geocodingRepository
-            .getAddressByLatitudeLongitude(
-              latitude: currentLatitude.value,
-              longitude: currentLongitude.value,
-            );
-        Get.close(1);
-
         // var result = await Get.toNamed(
         //   Routes.CREATE_ORDER_RIDE_MAP_SELECT,
         //   arguments: {
@@ -346,11 +365,17 @@ class HomeController extends GetxController {
         // );
 
         // if (result != null) {
+
+        await Future.doWhile(() async {
+          await Future.delayed(Duration(milliseconds: 100));
+          return currentAddressIsLoading.value;
+        });
+
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
           arguments: {
-            "origin_address_name": geocodingAddress!.name,
-            "origin_address": geocodingAddress.address,
+            "origin_address_name": currentGeocodingAddress.value.name,
+            "origin_address": currentGeocodingAddress.value.address,
             "origin_latitude": currentLatitude.value.toString(),
             "origin_longitude": currentLongitude.value.toString(),
           },
@@ -364,10 +389,21 @@ class HomeController extends GetxController {
   }
 
   Future<void> onTapWhereAreYouGoingToday() async {
-    print("oke-1");
     await refreshAll(firstInit: true);
-    print("oke-2");
     if (isActiveOrderListNotEmpty.value) {
+      var isCancelled = await isOrderHasBeenCancelled(
+        orderId: activeOrderList.first.orderId.toString(),
+        orderType: activeOrderList.first.orderType!,
+      );
+
+      if (isCancelled == false) {
+        SnackbarHelper.showSnackbarError(
+          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+        );
+        await refreshAll(firstInit: false);
+        return;
+      }
+
       await Get.toNamed(
         Routes.RIDE_ORDER_DETAIL,
         arguments: {
@@ -376,31 +412,23 @@ class HomeController extends GetxController {
         },
       );
     } else {
-      print("oke-3");
       try {
-        Get.dialog(LoadingDialog(), barrierColor: Colors.transparent);
-        var geocodingAddress = await geocodingRepository
-            .getAddressByLatitudeLongitude(
-              latitude: locationServices.currentLatitude.value,
-              longitude: locationServices.currentLongitude.value,
-            );
-        Get.close(1);
-        print("oke-4");
+        await Future.doWhile(() async {
+          await Future.delayed(Duration(milliseconds: 100));
+          return currentAddressIsLoading.value;
+        });
 
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
           arguments: {
-            "origin_address_name": geocodingAddress!.name,
-            "origin_address": geocodingAddress.address,
-            "origin_latitude": locationServices.currentLatitude.value
-                .toString(),
-            "origin_longitude": locationServices.currentLongitude.value
-                .toString(),
+            "is_origin_auto_select": true,
+            "origin_address_name": currentGeocodingAddress.value.name,
+            "origin_address": currentGeocodingAddress.value.address,
+            "origin_latitude": currentLatitude.value.toString(),
+            "origin_longitude": currentLongitude.value.toString(),
           },
         );
-        print("oke-5");
       } on DioException catch (e) {
-        print("oke-6");
         SnackbarHelper.showSnackbarError(text: e.error.toString());
         Get.close(1);
       }
@@ -413,6 +441,18 @@ class HomeController extends GetxController {
   }) async {
     await refreshAll(firstInit: true);
     if (isActiveOrderListNotEmpty.value) {
+      var isCancelled = await isOrderHasBeenCancelled(
+        orderId: activeOrderList.first.orderId.toString(),
+        orderType: activeOrderList.first.orderType!,
+      );
+
+      if (isCancelled == true) {
+        SnackbarHelper.showSnackbarError(
+          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+        );
+        await refreshAll(firstInit: false);
+        return;
+      }
       await Get.toNamed(
         Routes.RIDE_ORDER_DETAIL,
         arguments: {
@@ -1019,28 +1059,49 @@ class HomeController extends GetxController {
     required double latitude,
     required double longitude,
   }) async {
+    currentAddressIsLoading.value = true;
     currentLatitude.value = latitude;
     currentLongitude.value = longitude;
     Future.delayed(Duration(seconds: 1), () async {
       if (currentLatitude.value == latitude &&
           currentLongitude.value == longitude) {
-        if (currentAddressIsLoading.value == false) {
-          currentAddressIsLoading.value = true;
-          try {
-            currentGeocodingAddress.value =
-                (await geocodingRepository.getAddressByLatitudeLongitude(
-                  latitude: latitude,
-                  longitude: longitude,
-                )) ??
-                GeocodingAddress();
-            currentAddress.value = currentGeocodingAddress.value.address;
-          } on DioException catch (e) {
-            SnackbarHelper.showSnackbarError(text: e.error.toString());
-          }
-          currentAddressIsLoading.value = false;
+        try {
+          currentGeocodingAddress.value =
+              (await geocodingRepository.getAddressByLatitudeLongitude(
+                latitude: latitude,
+                longitude: longitude,
+              )) ??
+              GeocodingAddress();
+          currentAddress.value = currentGeocodingAddress.value.address;
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
         }
+        currentAddressIsLoading.value = false;
       }
     });
+  }
+
+  Future<void> getCurrentAddressInitialize({
+    required double latitude,
+    required double longitude,
+  }) async {
+    try {
+      if (locationServices.currentLatitude.value != null) {
+        currentGeocodingAddress.value = locationServices.geocodingAddress.value;
+        currentAddress.value = currentGeocodingAddress.value.address;
+      } else {
+        currentGeocodingAddress.value =
+            (await geocodingRepository.getAddressByLatitudeLongitude(
+              latitude: latitude,
+              longitude: longitude,
+            )) ??
+            GeocodingAddress();
+        currentAddress.value = currentGeocodingAddress.value.address;
+      }
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    }
+    isCurrentAddressIsInit.value = true;
   }
 
   Future<void> checkAndEnableLocation() async {
@@ -1164,15 +1225,19 @@ class HomeController extends GetxController {
   Future<void> getTotalUnreadSendbirdChat() async {
     totalUnreadMessageCount.value = 0;
     if (sendbirdChatServices.isSuccessInitialize.value == true) {
-      var query = GroupChannelListQuery();
-      var channelList = await query.next();
+      if (isFetchTotalUnreadMessageCount.value == false) {
+        isFetchTotalUnreadMessageCount.value = true;
+        var query = GroupChannelListQuery();
+        var channelList = await query.next();
 
-      for (var channel in channelList) {
-        for (var member in channel.members) {
-          if (member.userId == "user_${userInfo.value.id}") {
-            totalUnreadMessageCount.value += channel.unreadMessageCount;
+        for (var channel in channelList) {
+          for (var member in channel.members) {
+            if (member.userId == "user_${userServices.userInfo.value.id}") {
+              totalUnreadMessageCount.value += channel.unreadMessageCount;
+            }
           }
         }
+        isFetchTotalUnreadMessageCount.value = false;
       }
     }
   }
@@ -1198,7 +1263,6 @@ class HomeController extends GetxController {
   }
 
   Future<void> getAdvertisementList() async {
-    advertisementList.value = [];
     try {
       if (locationServices.currentLatitude.value != null &&
           locationServices.currentLongitude.value != null) {
@@ -1211,10 +1275,13 @@ class HomeController extends GetxController {
             );
 
         advertisementList.sort((a, b) => a.sortNum!.compareTo(b.sortNum!));
+      } else {
+        advertisementList.value = [];
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     }
+    isFetchAdvertisementList.value = false;
   }
 
   Future<void> getActiveOrderStatus() async {

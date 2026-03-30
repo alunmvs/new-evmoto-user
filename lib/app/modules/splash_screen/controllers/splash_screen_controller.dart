@@ -5,8 +5,10 @@ import 'package:new_evmoto_user/app/data/models/query_image_model.dart';
 import 'package:new_evmoto_user/app/repositories/query_image_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +20,8 @@ class SplashScreenController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final userServices = Get.find<UserServices>();
+  final locationServices = Get.find<LocationServices>();
 
   final splashScreenQueryImage = QueryImage().obs;
 
@@ -39,16 +43,18 @@ class SplashScreenController extends GetxController {
         prefs.setBool("activity_controller_registered", false),
       ]);
 
-      Future.delayed(Duration(seconds: 3)).whenComplete(() async {
-        var storage = FlutterSecureStorage();
-        var token = await storage.read(key: 'token');
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
 
-        if (token == null || token == "") {
-          Get.offAndToNamed(Routes.LOGIN_REGISTER);
-        } else {
-          Get.offAndToNamed(Routes.HOME);
-        }
-      });
+      if (token == null || token == "") {
+        Get.offAndToNamed(Routes.LOGIN_REGISTER);
+      } else {
+        await Future.wait([
+          userServices.manualOnInit(),
+          locationServices.requestLocationSplashScreen(),
+        ]);
+        Get.offAndToNamed(Routes.HOME);
+      }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;

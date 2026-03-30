@@ -66,9 +66,19 @@ class AccountView extends GetView<AccountController> {
                       ),
                       child: Row(
                         children: [
-                          if (controller.homeController.userInfo.value.avatar ==
+                          if (controller
+                                      .homeController
+                                      .userServices
+                                      .userInfo
+                                      .value
+                                      .avatar ==
                                   "" ||
-                              controller.homeController.userInfo.value.avatar ==
+                              controller
+                                      .homeController
+                                      .userServices
+                                      .userInfo
+                                      .value
+                                      .avatar ==
                                   null) ...[
                             SvgPicture.asset(
                               "assets/icons/icon_profile_filled.svg",
@@ -76,9 +86,19 @@ class AccountView extends GetView<AccountController> {
                               height: 48,
                             ),
                           ],
-                          if (controller.homeController.userInfo.value.avatar !=
+                          if (controller
+                                      .homeController
+                                      .userServices
+                                      .userInfo
+                                      .value
+                                      .avatar !=
                                   "" &&
-                              controller.homeController.userInfo.value.avatar !=
+                              controller
+                                      .homeController
+                                      .userServices
+                                      .userInfo
+                                      .value
+                                      .avatar !=
                                   null) ...[
                             CircleAvatar(
                               backgroundColor: controller
@@ -89,6 +109,7 @@ class AccountView extends GetView<AccountController> {
                               backgroundImage: CachedNetworkImageProvider(
                                 controller
                                     .homeController
+                                    .userServices
                                     .userInfo
                                     .value
                                     .avatar!,
@@ -100,7 +121,12 @@ class AccountView extends GetView<AccountController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                controller.homeController.userInfo.value.name ??
+                                controller
+                                        .homeController
+                                        .userServices
+                                        .userInfo
+                                        .value
+                                        .name ??
                                     "-",
                                 style: controller
                                     .typographyServices
@@ -114,7 +140,7 @@ class AccountView extends GetView<AccountController> {
                                     ),
                               ),
                               Text(
-                                "+${controller.homeController.userInfo.value.phone ?? "-"}",
+                                "+${controller.homeController.userServices.userInfo.value.phone ?? "-"}",
                                 style: controller
                                     .typographyServices
                                     .captionLargeRegular

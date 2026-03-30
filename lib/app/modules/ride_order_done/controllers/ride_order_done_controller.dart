@@ -74,7 +74,6 @@ class RideOrderDoneController extends GetxController {
   Future<void> getOrderRideDetail() async {
     orderRideDetail.value = (await orderRideRepository
         .getOrderRideDetailbyOrderId(
-          language: languageServices.languageCodeSystem.value,
           orderId: orderId.value,
           orderType: orderType.value,
         ));

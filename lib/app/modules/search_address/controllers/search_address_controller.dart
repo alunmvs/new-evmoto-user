@@ -76,7 +76,7 @@ class SearchAddressController extends GetxController {
       getPlaceLocationList(keyword: keyword.value);
     });
     isFetch.value = false;
-    await locationServices.requestLocation();
+    await locationServices.requestLocationSplashScreen();
   }
 
   @override

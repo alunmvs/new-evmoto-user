@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/widgets/global_body_handler.dart';
-
 import '../controllers/splash_screen_controller.dart';
 
 class SplashScreenView extends GetView<SplashScreenController> {
@@ -13,6 +10,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
         body: GlobalBodyHandler(
           isFetch: controller.isFetch.value,
           isCriticalError: controller.isCriticalError.value,
@@ -29,7 +27,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                     ),
                   ),
                 )
-              : Container(
+              : SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: CachedNetworkImage(

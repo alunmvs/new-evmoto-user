@@ -150,7 +150,7 @@ class RideController extends GetxController {
     super.onInit();
     isFetch.value = true;
 
-    await homeController.getUserInfo();
+    homeController.userServices.getUserInfo();
     await Future.wait([getHistoryOrderList(), getSavedAddressList()]);
     await requestLocation();
     if (isPermissionLocationAllow.value == false) {
@@ -306,7 +306,6 @@ class RideController extends GetxController {
       var orderDetail = await orderRideRepository.getOrderRideDetailbyOrderId(
         orderId: historyOrigin.orderId.toString(),
         orderType: historyOrigin.orderType!,
-        language: languageServices.languageCodeSystem.value,
       );
 
       var recommendationOriginLocation = RecommendationLocation(
@@ -703,6 +702,7 @@ class RideController extends GetxController {
                                               ),
                                               SizedBox(height: 2),
                                               if (homeController
+                                                      .userServices
                                                       .userInfo
                                                       .value
                                                       .balance! <
@@ -735,6 +735,7 @@ class RideController extends GetxController {
                                                         decimalDigits: 0,
                                                       ).format(
                                                         homeController
+                                                                .userServices
                                                                 .userInfo
                                                                 .value
                                                                 .balance ??
@@ -753,6 +754,7 @@ class RideController extends GetxController {
                                                 ),
                                               ],
                                               if (homeController
+                                                      .userServices
                                                       .userInfo
                                                       .value
                                                       .balance! >=
@@ -766,6 +768,7 @@ class RideController extends GetxController {
                                                     decimalDigits: 0,
                                                   ).format(
                                                     homeController
+                                                            .userServices
                                                             .userInfo
                                                             .value
                                                             .balance ??
@@ -816,7 +819,7 @@ class RideController extends GetxController {
                                 GestureDetector(
                                   onTap: () async {
                                     await Get.toNamed(Routes.DEPOSIT_BALANCE);
-                                    await homeController.getUserInfo();
+                                    homeController.userServices.getUserInfo();
                                   },
                                   child: Container(
                                     width: Get.width,
@@ -1333,8 +1336,8 @@ class RideController extends GetxController {
       startLon: originLongitude.value,
       orderSource: "1", // statis 1
       orderType: 1, // 1 = normal, 2 = appointment
-      passengers: homeController.userInfo.value.name,
-      passengersPhone: homeController.userInfo.value.phone,
+      passengers: homeController.userServices.userInfo.value.name,
+      passengersPhone: homeController.userServices.userInfo.value.phone,
       placementLat: currentLatitude.value,
       placementLon: currentLongitude.value,
       tipMoney: "0",

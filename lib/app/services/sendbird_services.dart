@@ -21,53 +21,39 @@ class SendbirdServices extends GetxService {
     final homeController = Get.find<HomeController>();
 
     try {
-      print("oke-1");
       methodChannel.setMethodCallHandler(handleNativeListener);
-      print("oke-2");
-      if (homeController.userInfo.value.id != null) {
-        print("oke-3");
-        print(
-          firebaseRemoteConfigServices.remoteConfig.getString(
-            'sendbird_app_id',
-          ),
-        );
+      if (homeController.userServices.userInfo.value.id != null) {
         if (Platform.isAndroid) {
           await methodChannel.invokeMethod("init", {
             "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
               'sendbird_app_id',
             ),
-            "user_id": "user_${homeController.userInfo.value.id}",
+            "user_id": "user_${homeController.userServices.userInfo.value.id}",
             "access_token": '',
             "push_token": firebasePushNotificationServices.fcmToken.value,
           });
         }
         if (Platform.isIOS) {
-          print(firebasePushNotificationServices.fcmToken.value);
-          print(firebasePushNotificationServices.apnsToken.value);
-          print("user_${homeController.userInfo.value.id}");
           await methodChannel.invokeMethod("init", {
             "app_id": firebaseRemoteConfigServices.remoteConfig.getString(
               'sendbird_app_id',
             ),
-            "user_id": "user_${homeController.userInfo.value.id}",
+            "user_id": "user_${homeController.userServices.userInfo.value.id}",
             "user_access_token": '',
             "push_token": firebasePushNotificationServices.fcmToken.value,
             "apns_token": firebasePushNotificationServices.fcmToken.value,
           });
         }
         isSuccessInitialize.value = true;
-        print("oke-4");
       }
     } catch (e) {
-      print("oke-5");
-      print(e);
+      print("ini error $e");
     }
   }
 
   Future<void> handleNativeListener(MethodCall call) async {
     switch (call.method) {
       case "testing_debug":
-        print("testing debug : ${call.arguments['note']}");
         break;
       case "direct_call_ended":
         if (Get.currentRoute == Routes.RIDE_CALL_SENDBIRD) {

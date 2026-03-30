@@ -335,7 +335,8 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                   RideOrderDriverOnGoingToDestinationPanelSubView(),
                 ],
                 if (controller.orderRideDetail.value.state == 6 ||
-                    controller.orderRideDetail.value.state == 7) ...[
+                    controller.orderRideDetail.value.state == 7 ||
+                    controller.orderRideDetail.value.state == 8) ...[
                   RideOrderDriverArrivedPanelSubView(),
                 ],
               ],

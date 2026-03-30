@@ -112,10 +112,11 @@ class ActivityView extends GetView<ActivityController> {
                                 LoaderElevatedButton(
                                   isWidthFitToContent: true,
                                   onPressed: () async {
-                                    await controller.homeController
-                                        .onTapRideService(
-                                          isFillCurrentLocation: false,
-                                        );
+                                    controller
+                                            .homeController
+                                            .indexNavigationBar
+                                            .value =
+                                        0;
                                     await controller.refreshAll();
                                   },
                                   padding: EdgeInsets.symmetric(horizontal: 16),
