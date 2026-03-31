@@ -230,6 +230,8 @@ class HomeView extends GetView<HomeController> {
                                         ) async {
                                           controller.googleMapController =
                                               googleMapController;
+                                          await controller
+                                              .moveGoogleMapCameraToCurrentLocation();
                                         },
                                   ),
                                 ),

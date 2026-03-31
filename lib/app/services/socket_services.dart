@@ -82,35 +82,41 @@ class SocketServices extends GetxService {
 
                     var rideOrderDetailController =
                         Get.find<RideOrderDetailController>();
-                    if (rideOrderDetailController.driverLatitude.value == "0" &&
-                        rideOrderDetailController.driverLongitude.value ==
-                            "0") {
-                      rideOrderDetailController.driverLatitude.value =
-                          socketDriverPositionDataModel.lat.toString();
-                      rideOrderDetailController.driverLongitude.value =
-                          socketDriverPositionDataModel.lon.toString();
-                      await Get.find<RideOrderDetailController>().refreshAll();
-                    } else {
-                      rideOrderDetailController.driverLatitude.value =
-                          socketDriverPositionDataModel.lat.toString();
-                      rideOrderDetailController.driverLongitude.value =
-                          socketDriverPositionDataModel.lon.toString();
+                    await rideOrderDetailController.handleSocketDriverPosition(
+                      socketDriverPositionData: socketDriverPositionDataModel,
+                    );
+                    // if (rideOrderDetailController.driverLatitude.value == "0" &&
+                    //     rideOrderDetailController.driverLongitude.value ==
+                    //         "0") {
+                    //   rideOrderDetailController.driverLatitude.value =
+                    //       socketDriverPositionDataModel.lat.toString();
+                    //   rideOrderDetailController.driverLongitude.value =
+                    //       socketDriverPositionDataModel.lon.toString();
+                    //   await Get.find<RideOrderDetailController>().refreshAll();
+                    // } else {
+                    //   rideOrderDetailController.driverLatitude.value =
+                    //       socketDriverPositionDataModel.lat.toString();
+                    //   rideOrderDetailController.driverLongitude.value =
+                    //       socketDriverPositionDataModel.lon.toString();
 
-                      if (rideOrderDetailController
-                              .orderRideDetail
-                              .value
-                              .state ==
-                          1) {
-                        await Get.find<RideOrderDetailController>()
-                            .refreshAll();
-                      }
-                    }
+                    //   if (rideOrderDetailController
+                    //           .orderRideDetail
+                    //           .value
+                    //           .state ==
+                    //       1) {
+                    //     await Get.find<RideOrderDetailController>()
+                    //         .refreshAll();
+                    //   }
+                    // }
                   }
 
                   break;
                 case 'ORDER_STATUS':
                   if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                    await Get.find<RideOrderDetailController>().refreshAll();
+                    // await Get.find<RideOrderDetailController>().refreshAll();
+
+                    await Get.find<RideOrderDetailController>()
+                        .handleSocketOrderStatus();
                   }
                   break;
                 case 'OFFLINE':

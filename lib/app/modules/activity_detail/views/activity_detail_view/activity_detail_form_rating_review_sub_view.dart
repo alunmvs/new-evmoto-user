@@ -38,6 +38,7 @@ class ActivityDetailFormRatingReviewSubView
                             .howTravelExperience ??
                         "-",
                     style: controller.typographyServices.bodyLargeBold.value,
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     controller
@@ -47,6 +48,7 @@ class ActivityDetailFormRatingReviewSubView
                             .scoreTravelExperience ??
                         "-",
                     style: controller.typographyServices.bodyLargeBold.value,
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 8),
                   RatingBar.builder(

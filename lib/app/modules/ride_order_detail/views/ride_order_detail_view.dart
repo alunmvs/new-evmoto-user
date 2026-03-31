@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_driver_arrived_origin_panel_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_driver_arrived_panel_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_driver_on_going_to_destination_panel_sub_view.dart';
-import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_driver_ready_to_go_destination_panel_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_waiting_driver_acceptance_panel_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_waiting_driver_pick_up_panel_sub_view.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
@@ -54,6 +53,10 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                 (GoogleMapController googleMapController) {
                                   controller.googleMapController =
                                       googleMapController;
+                                  controller
+                                          .isGoogleMapControllerCreated
+                                          .value =
+                                      true;
                                 },
                             markers: controller.markers,
                             polylines: controller.polylines,
@@ -326,10 +329,12 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                   RideOrderWaitingDriverPickUpPanelSubView(),
                 ],
                 if (controller.orderRideDetail.value.state == 3) ...[
-                  RideOrderDriverArrivedOriginPanelSubView(),
+                  // RideOrderDriverArrivedOriginPanelSubView(),
+                  RideOrderWaitingDriverPickUpPanelSubView(),
                 ],
                 if (controller.orderRideDetail.value.state == 4) ...[
-                  RideOrderDriverReadyToGoDestinationPanelSubView(),
+                  // RideOrderDriverReadyToGoDestinationPanelSubView(),
+                  RideOrderDriverArrivedOriginPanelSubView(),
                 ],
                 if (controller.orderRideDetail.value.state == 5) ...[
                   RideOrderDriverOnGoingToDestinationPanelSubView(),
@@ -339,6 +344,97 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                     controller.orderRideDetail.value.state == 8) ...[
                   RideOrderDriverArrivedPanelSubView(),
                 ],
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "State : ${controller.state.value}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Total Refresh Status Exceeded (every 5 sec) : ${controller.totalRefreshStatus.value}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Driver Location : ${double.parse(controller.driverLatitude.value).toStringAsFixed(4)}, ${double.parse(controller.driverLongitude.value).toStringAsFixed(4)}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Distance Route (Reduce < 30 m) : ${controller.distanceFromRoute.value.toStringAsFixed(2)}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Distance Route (Reroute > 300 m) : ${controller.distanceFromRoute.value.toStringAsFixed(2)}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Total Hit API Rerouting to Origin : ${controller.totalHitAPIGetDirectionDriverToOrigin}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Total Hit API Rerouting to Destination : ${controller.totalHitAPIGetDirectionDriverToDestination}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Socket Status : ${controller.socketServices.isSocketClose.value == false}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "Socket Ping : ${controller.socketServices.pingMs.value} ms",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

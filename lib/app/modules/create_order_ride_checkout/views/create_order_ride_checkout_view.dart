@@ -35,6 +35,7 @@ class CreateOrderRideCheckoutView
                         (GoogleMapController googleMapController) async {
                           controller.googleMapController = googleMapController;
 
+                          controller.isFetch.value = true;
                           try {
                             await controller.getAvailableCouponList();
 
@@ -54,6 +55,7 @@ class CreateOrderRideCheckoutView
                               text: e.error.toString(),
                             );
                           }
+                          controller.isFetch.value = false;
                         },
                   ),
                 ),
@@ -62,24 +64,24 @@ class CreateOrderRideCheckoutView
                 ),
               ],
             ),
-            if (controller.isFetch.value == true) ...[
-              Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                ),
-                child: Center(
-                  child: SizedBox(
-                    width: 25,
-                    height: 25,
-                    child: CircularProgressIndicator(
-                      color: controller.themeColorServices.primaryBlue.value,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            // if (controller.isFetch.value == true) ...[
+            //   Container(
+            //     height: MediaQuery.of(context).size.height,
+            //     width: MediaQuery.of(context).size.width,
+            //     decoration: BoxDecoration(
+            //       color: controller.themeColorServices.neutralsColorGrey0.value,
+            //     ),
+            //     child: Center(
+            //       child: SizedBox(
+            //         width: 25,
+            //         height: 25,
+            //         child: CircularProgressIndicator(
+            //           color: controller.themeColorServices.primaryBlue.value,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ],
             Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(

@@ -10,8 +10,8 @@ class RideOrderWaitingDriverAcceptancePanelSubView
   @override
   Widget build(BuildContext context) {
     return SlidingUpPanel(
-      minHeight: 100,
-      maxHeight: 170,
+      minHeight: 120,
+      maxHeight: 190,
       padding: EdgeInsets.all(0),
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(16),
@@ -31,7 +31,34 @@ class RideOrderWaitingDriverAcceptancePanelSubView
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: controller.themeColorServices.neutralsColorGrey0.value,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                Container(
+                  width: 33,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: controller
+                        .themeColorServices
+                        .neutralsColorGrey300
+                        .value,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                ),
+                SizedBox(height: 12),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 16, bottom: 16, right: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

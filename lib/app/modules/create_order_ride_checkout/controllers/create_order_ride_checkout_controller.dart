@@ -319,6 +319,9 @@ class CreateOrderRideCheckoutController extends GetxController {
       } on DioException catch (e) {
         Get.close(1);
         SnackbarHelper.showSnackbarError(text: e.error.toString());
+      } on Exception catch (e) {
+        Get.close(1);
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
     }
   }

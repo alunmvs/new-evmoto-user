@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/controllers/create_order_ride_checkout_controller.dart';
 import 'package:new_evmoto_user/app/utils/general_helper.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CheckoutEstimatedDistanceAndTimeSubView
     extends GetView<CreateOrderRideCheckoutController> {
@@ -29,11 +30,33 @@ class CheckoutEstimatedDistanceAndTimeSubView
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              "${controller.languageServices.language.value.distance} ${formatDoubleToString(controller.selectedOrderRidePricing.value.mileage ?? 0.0)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${controller.getEstimatedTimeInMinutesInText()}",
-              style: controller.typographyServices.bodySmallBold.value
-                  .copyWith(),
-            ),
+            if (controller.isFetch.value == true) ...[
+              Expanded(
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.white,
+                  child: Container(
+                    height: 18 * 1.5,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            if (controller.isFetch.value == false) ...[
+              Expanded(
+                child: Text(
+                  "${controller.languageServices.language.value.distance} ${formatDoubleToString(controller.selectedOrderRidePricing.value.mileage ?? 0.0)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${controller.getEstimatedTimeInMinutesInText()}",
+                  style: controller.typographyServices.bodySmallBold.value
+                      .copyWith(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ],
         ),
       ),

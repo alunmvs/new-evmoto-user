@@ -192,6 +192,75 @@ class RideOrderDriverArrivedOriginPanelSubView
                                         child: RideOrderIdSubView(),
                                       ),
                                       SizedBox(height: 16),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16,
+                                        ),
+                                        child: SizedBox(
+                                          height: 54,
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              Get.toNamed(
+                                                Routes.RIDE_ORDER_CANCEL,
+                                                arguments: {
+                                                  "order_id": controller
+                                                      .orderRideDetail
+                                                      .value
+                                                      .orderId
+                                                      .toString(),
+                                                  "order_type": controller
+                                                      .orderRideDetail
+                                                      .value
+                                                      .type,
+                                                },
+                                              );
+                                            },
+                                            style: ButtonStyle(
+                                              overlayColor:
+                                                  WidgetStateProperty.all(
+                                                    controller
+                                                        .themeColorServices
+                                                        .sematicColorRed400
+                                                        .value
+                                                        .withValues(alpha: 0.1),
+                                                  ),
+                                              shape: WidgetStateProperty.all(
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                ),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .cancel ??
+                                                  "-",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .sematicColorRed500
+                                                        .value,
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

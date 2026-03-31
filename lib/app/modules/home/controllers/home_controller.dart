@@ -163,10 +163,10 @@ class HomeController extends GetxController {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await measureTime(
-        "Move Google Map Camera to Current Location",
-        () => Future.wait([moveGoogleMapCameraToCurrentLocation()]),
-      );
+      // await measureTime(
+      //   "Move Google Map Camera to Current Location",
+      //   () => Future.wait([moveGoogleMapCameraToCurrentLocation()]),
+      // );
 
       await firebasePushNotificationServices.requestPermission();
       await measureTime(

@@ -54,8 +54,29 @@ class RideOrderDoneController extends GetxController {
     refreshOrderStateTimer = Timer.periodic(Duration(seconds: 3), (
       timer,
     ) async {
-      print("setiap 3 detik?");
       await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+
+      if (orderRideDetail.value.state == 8) {
+        Get.back();
+
+        var snackBar = SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: themeColorServices.sematicColorGreen400.value,
+          content: Text(
+            languageServices.language.value.snackbarCompleteOrderSuccess ?? "-",
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        );
+
+        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+        await Get.toNamed(
+          Routes.ACTIVITY_DETAIL,
+          arguments: {"order_id": orderId.value, "order_type": orderType.value},
+        );
+      }
     });
     isFetch.value = false;
   }
@@ -90,16 +111,14 @@ class RideOrderDoneController extends GetxController {
 
   Future<void> onTapDone() async {
     try {
-      await Future.wait([
-        orderRideRepository.paidOrder(
-          orderId: orderId.value,
-          payType: orderRideDetail.value.payType!,
-          type: 1,
-          orderType: orderType.value,
-          language: languageServices.languageCodeSystem.value,
-          couponId: orderRideDetail.value.couponId!,
-        ),
-      ]);
+      await orderRideRepository.paidOrder(
+        orderId: orderId.value,
+        payType: orderRideDetail.value.payType!,
+        type: 1,
+        orderType: orderType.value,
+        language: languageServices.languageCodeSystem.value,
+        couponId: orderRideDetail.value.couponId!,
+      );
 
       Get.back();
 
@@ -122,6 +141,8 @@ class RideOrderDoneController extends GetxController {
       );
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } on Exception catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
