@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -52,8 +53,37 @@ class SendbirdServices extends GetxService {
   }
 
   Future<void> handleNativeListener(MethodCall call) async {
+    final firebasePushNotificationServices =
+        Get.find<FirebasePushNotificationServices>();
+
     switch (call.method) {
+      case "info":
+        print("[Debug Sendbird] Success Receive Info Authenticate");
+        break;
       case "testing_debug":
+        break;
+      case "direct_call_received":
+        print(
+          "[Debug Sendbird] Direct Call Receive ${call.arguments['call_id']} ${call.arguments['caller_nickname']} ${call.arguments['profile_url']}",
+        );
+        firebasePushNotificationServices.showIncomingCall(
+          extra: {
+            "sendbird_call": jsonEncode({
+              "command": {
+                "payload": {
+                  "call_id": call.arguments['call_id'],
+                  "caller": {
+                    "nickname": call.arguments['caller_nickname'],
+                    "profile_url": call.arguments['profile_url'],
+                  },
+                },
+              },
+            }),
+          },
+          driverName: call.arguments['caller_nickname'],
+          driverAvatarUrl: call.arguments['profile_url'],
+        );
+
         break;
       case "direct_call_ended":
         if (Get.currentRoute == Routes.RIDE_CALL_SENDBIRD) {
@@ -66,7 +96,7 @@ class SendbirdServices extends GetxService {
             Get.find<RideCallSendbirdController>();
         rideCallSendbirdController.isFetch.value = true;
         rideCallSendbirdController.callStopWatchTimer.onStartTimer();
-        rideCallSendbirdController.callId.value = call.arguments['call_id'];
+        // rideCallSendbirdController.callId.value = call.arguments['call_id'];
         rideCallSendbirdController.isFetch.value = false;
         break;
       case "start_direct_call_ended":
@@ -74,6 +104,9 @@ class SendbirdServices extends GetxService {
         if (Get.currentRoute == Routes.RIDE_CALL_SENDBIRD) {
           Get.back();
         }
+        break;
+      default:
+        print("[Debug Sendbird] call.method ${call.method}");
         break;
     }
   }
@@ -122,5 +155,11 @@ class SendbirdServices extends GetxService {
 
   Future<void> microphoneOff() async {
     await methodChannel.invokeMethod("microphone_off", {});
+  }
+
+  Future<void> clearLogout() async {
+    if (Platform.isIOS) {
+      await methodChannel.invokeMethod("clear_logout", {});
+    }
   }
 }

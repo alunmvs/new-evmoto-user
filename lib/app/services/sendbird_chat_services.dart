@@ -91,4 +91,8 @@ class SendbirdChatServices extends GetxService {
       'state': state.toString(),
     });
   }
+
+  Future<void> clearLogout() async {
+    await SendbirdChat.disconnect();
+  }
 }

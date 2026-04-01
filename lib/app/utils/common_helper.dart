@@ -7,6 +7,8 @@ import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
+import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -95,8 +97,13 @@ Future<void> logout() async {
   var storage = FlutterSecureStorage();
   var prefs = await SharedPreferences.getInstance();
 
+  final sendBirdServices = Get.find<SendbirdServices>();
+  final sendbirdChatServices = Get.find<SendbirdChatServices>();
+
   try {
     await Future.wait([
+      sendBirdServices.clearLogout(),
+      sendbirdChatServices.clearLogout(),
       firebasePushNotificationServices.onUnsubscribe(),
       storage.delete(key: 'token'),
       socketServices.closeWebsocket(),

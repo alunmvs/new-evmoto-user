@@ -34,6 +34,11 @@ extension AppDelegate: SendBirdCallDelegate, DirectCallDelegate {
                     initSendbird(call: call) { (connected) -> () in
                         result(connected)
                         SendBirdCall.addDelegate(self, identifier: "flutter")
+                        if let token = remoteNotificationToken {
+                            let tokenString = token.map { String(format: "%02.2hhx", $0) }.joined()
+                            print("[Debug Sendbird] Token String: \(tokenString)")
+                        }
+                        print("[Debug Sendbird] Register Remote Notification Token : \(remoteNotificationToken)")
                         SendBirdCall.registerRemotePush(token: remoteNotificationToken) { (error) in
                             guard error == nil else {
                                 // TODO: Handle error.
@@ -46,9 +51,29 @@ extension AppDelegate: SendBirdCallDelegate, DirectCallDelegate {
                                 return
                             }
 
+                            print("[Debug Sendbird] Register Remote Notification Success")
+
                             // Handle registering the device token.
                             result(true)
                         }
+                        
+                        print("[Debug Sendbird] Register VOIP Push Start")
+                        SendBirdCall.registerVoIPPush(token: pushCredentialsToken, unique: true) { error in
+                            guard error == nil else {
+                                print("[Debug Sendbird] Register VOIP Push Error")
+                                
+                                print("AppDelegate + SendbirdVoIP: enableSendbirdVoIP: didUpdate w/ credentials Sendbird registerVoIPush ERROR: \(String(describing: error))")
+
+                                DispatchQueue.main.async {
+                                    let payload = [ "message": "registerVoIPPush Error: \(String(describing: error))"]
+                                    callsChannel?.invokeMethod("error", arguments: payload)
+                                }
+                                return
+                            }
+
+                            print("[Debug Sendbird] Register VOIP Push Success")
+                        }
+                        print("[Debug Sendbird] Register VOIP Push Completed")
                     }
 
                     return
@@ -69,12 +94,118 @@ extension AppDelegate: SendBirdCallDelegate, DirectCallDelegate {
                         result(true)
                     }
                     return
-                case "answer_direct_call":
+                case "reject_direct_call":
+                    guard let args = call.arguments as? [String: Any] else {
+                        result(FlutterError(code: ERROR_CODE, message: "FlutterMethodCall argument invalid", details: "Not expected [String:Any] type found: \(type(of:call.arguments))"))
+                        return
+                    }
+                    guard let callId = args["call_id"] as? String else {
+                        result(FlutterError(code: ERROR_CODE, message: "Required FlutterMethodCall argument missing", details: "callee_id key-value missing"))
+                        return
+                    }
+                    directCall = SendBirdCall.getCall(forCallId: callId)
+                    directCall?.end()
+                    result(true)
+                    return
+                case "handle_firebase_push_notification_data":
+                    result(true)
+                    return
+                 case "answer_direct_call":
+                    guard let args = call.arguments as? [String: String] else {
+                        result(FlutterError(code: ERROR_CODE, message: "FlutterMethodCall argument invalid", details: "Not expected [String:Any] type found: \(type(of:call.arguments))"))
+                        return
+                    }
+                    let callId = args["call_id"] as? String ?? ""
+                    directCall = SendBirdCall.getCall(forCallId: callId)
                     directCall?.accept(with: AcceptParams())
                     result(true)
                     return
                 case "end_direct_call":
                     directCall?.end()
+                    result(true)
+                    return
+                case "microphone_on":
+                    directCall?.unmuteMicrophone()
+                    result(true)
+                    return
+                case "microphone_off":
+                    directCall?.muteMicrophone()
+                    result(true)
+                    return
+                case "loadspeaker_on":
+                    directCall?.muteMicrophone()
+                    result(true)
+                    return
+                case "loadspeaker_off":
+                    directCall?.muteMicrophone()
+                    result(true)
+                    return
+                "microphone_on" -> {
+                    directCall?.unmuteMicrophone();
+                    result(true)
+                }
+                "microphone_off" -> {
+                    directCall?.muteMicrophone();
+                    result(true)
+                }
+                "loadspeaker_on" -> {
+                    do {
+                        try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
+                    } catch {
+                        print("Failed to switch to speaker: \(error)")
+                        result(false)
+                    }
+                    result(true)
+                }
+                "loadspeaker_off" -> {
+                    do {
+                        try AVAudioSession.sharedInstance().overrideOutputAudioPort(.none)
+                    } catch {
+                        print("Failed to switch to earpiece: \(error)")
+                        result(false)
+                    }
+                    result(true)
+                }
+                case "clear_logout":
+                    SendBirdCall.unregisterRemotePush(token: remoteNotificationToken) { (error) in
+                        guard error == nil else {
+                            // TODO: Handle error.
+                            print("AppDelegate+SendbirdDirectCalls: SendBirdCall.unregisterRemotePush: ERROR: \(String(describing: error))")
+                            DispatchQueue.main.async {
+                                let payload = [ "message": "\(String(describing: error))"]
+                                callsChannel?.invokeMethod("error", arguments: payload)
+                            }
+                            result(false)
+                            return
+                        }
+
+                        SendBirdCall.unregisterVoIPPush(token: pushCredentialsToken) { (error) in
+                            guard error == nil else {
+                                // TODO: Handle error.
+                                print("AppDelegate+SendbirdDirectCalls: SendBirdCall.unregisterVoIPPush: ERROR: \(String(describing: error))")
+                                DispatchQueue.main.async {
+                                    let payload = [ "message": "\(String(describing: error))"]
+                                    callsChannel?.invokeMethod("error", arguments: payload)
+                                }
+                                result(false)
+                                return
+                            }
+
+                            SendBirdCall.deauthenticate { (error) in
+                                guard error == nil else {
+                                    // TODO: Handle error.
+                                    print("AppDelegate+SendbirdDirectCalls: SendBirdCall.deauthenticate: ERROR: \(String(describing: error))")
+                                    DispatchQueue.main.async {
+                                        let payload = [ "message": "\(String(describing: error))"]
+                                        callsChannel?.invokeMethod("error", arguments: payload)
+                                    }
+                                    result(false)
+                                    return
+                                }
+                            }
+                        }
+                    }
+
                     result(true)
                     return
                 default:
@@ -97,14 +228,17 @@ extension AppDelegate: SendBirdCallDelegate, DirectCallDelegate {
 
         // Use CXProvider to report the incoming call to the system
         // Construct a CXCallUpdate describing the incoming call, including the caller.
-        let name = call.caller?.userId ?? "Unknown"
-        let nickname = call.caller?.nickname ?? "Unknown"
-
+        let name = call.caller?.userId 
+        let nickname = call.caller?.nickname
+        let profileUrl = call.caller?.profileURL
+        let callId = call.callId 
         
         // Inform Flutter layer
         DispatchQueue.main.async {
             let payload = [ "caller_id": name,
-                            "caller_nickname":nickname]
+                            "caller_nickname":nickname, 
+                            "profile_url": profileUrl, 
+                            "call_id": callId]
             callsChannel?.invokeMethod("direct_call_received", arguments: payload)
         }
     }
@@ -168,10 +302,15 @@ func initSendbird(call: FlutterMethodCall, completion: @escaping (Bool) -> ()) {
     
     // Optional access token
     let accessToken = args["user_access_token"] as? String
-    
+
+
+    print("[Debug Sendbird] SendbirdCall Configure APP_ID \(APP_ID)")
     SendBirdCall.configure(appId: APP_ID)
     SBCLogger.setLoggerLevel(.info)
     let params = AuthenticateParams(userId: userId, accessToken: accessToken)
+
+
+    print("[Debug Sendbird] Authenticate \(userId) with access token \(accessToken)")
     
     SendBirdCall.authenticate(with: params) { (user, error) in
         
@@ -184,6 +323,10 @@ func initSendbird(call: FlutterMethodCall, completion: @escaping (Bool) -> ()) {
             }
             completion(false)
             return
+        }
+
+        if let currentUser = SendBirdCall.currentUser {
+            print("[Debug Sendbird] Authenticate Success \(currentUser.userId)")
         }
         
         DispatchQueue.main.async {

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
@@ -23,6 +26,10 @@ class RideCallSendbirdController extends GetxController {
 
   final callId = "".obs;
 
+  final startDialingAt = DateTime.now().obs;
+
+  Timer? globalTimer;
+
   final isMicrophoneOn = true.obs;
   final isSpeakerOn = false.obs;
   final isCriticalError = false.obs;
@@ -36,7 +43,7 @@ class RideCallSendbirdController extends GetxController {
     callId.value = Get.arguments?['call_id'] ?? '';
     isCaller.value = Get.arguments['is_caller'];
     driverName.value = Get.arguments['driver_name'];
-    driverAvatarUrl.value = Get.arguments['driver_avatar_url'];
+    driverAvatarUrl.value = Get.arguments['driver_avatar_url'] ?? '';
 
     if (sendbirdServices.isSuccessInitialize.value == false) {
       await sendbirdServices.isSuccessInitialize.stream.firstWhere(
@@ -46,23 +53,36 @@ class RideCallSendbirdController extends GetxController {
 
     try {
       if (isCaller.value == true) {
+        startDialingAt.value = DateTime.now();
         driverId.value = Get.arguments['driver_id'].toString();
         final sendBirdServices = Get.find<SendbirdServices>();
 
         sendBirdServices.startCall(
-          calleeId: driverId.value == "999999"
+          calleeId:
+              driverId.value == "999999" ||
+                  driverId.value == "dashboard_testing"
               ? driverId.value
               : "driver_${driverId.value}",
         );
+
+        globalTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
+          if (DateTime.now().difference(startDialingAt.value).inSeconds == 45) {
+            final sendbirdServices = Get.find<SendbirdServices>();
+            await FlutterCallkitIncoming.endAllCalls();
+            await sendbirdServices.endCall();
+            Get.back();
+          }
+        });
       }
 
       if (isCaller.value == false) {
-        callStopWatchTimer.onStartTimer();
+        // callStopWatchTimer.onStartTimer();
       }
     } catch (e) {
       SnackbarHelper.showSnackbarError(text: "Terjadi kesalahan dari server");
       isCriticalError.value = true;
     }
+
     isFetch.value = false;
   }
 
@@ -75,5 +95,6 @@ class RideCallSendbirdController extends GetxController {
   Future<void> onClose() async {
     super.onClose();
     await callStopWatchTimer.dispose();
+    globalTimer?.cancel();
   }
 }

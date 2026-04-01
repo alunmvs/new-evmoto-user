@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -22,23 +23,27 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
       () => GestureDetector(
         onTap: () async {
           if ([1, 2, 3, 4, 5, 6, 7].contains(historyOrder.state)) {
-            var isCancelled = await isOrderHasBeenCancelled(
-              orderId: historyOrder.orderId.toString(),
-              orderType: historyOrder.orderType!,
-            );
-
-            if (isCancelled == true) {
-              SnackbarHelper.showSnackbarError(
-                text:
-                    controller
-                        .languageServices
-                        .language
-                        .value
-                        .orderHasBeenCancelled ??
-                    "-",
+            try {
+              var isCancelled = await isOrderHasBeenCancelled(
+                orderId: historyOrder.orderId.toString(),
+                orderType: historyOrder.orderType!,
               );
-              await controller.refreshAll();
-              return;
+
+              if (isCancelled == true) {
+                SnackbarHelper.showSnackbarError(
+                  text:
+                      controller
+                          .languageServices
+                          .language
+                          .value
+                          .orderHasBeenCancelled ??
+                      "-",
+                );
+                await controller.refreshAll();
+                return;
+              }
+            } on DioException catch (e) {
+              SnackbarHelper.showSnackbarError(text: e.error.toString());
             }
             await Get.toNamed(
               Routes.RIDE_ORDER_DETAIL,

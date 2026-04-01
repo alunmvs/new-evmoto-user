@@ -363,13 +363,42 @@ class OrderRideRepository {
     }
   }
 
+  Future<void> confirmPayment({required String? orderId}) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/pay/confirm";
+
+      var formData = FormData.fromMap({"orderId": orderId});
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> paidOrder({
     required String orderId,
     required int payType,
     required int type,
     required int orderType,
     required int language,
-    required int couponId,
   }) async {
     try {
       var url =
@@ -381,7 +410,6 @@ class OrderRideRepository {
         "type": type,
         "orderType": orderType,
         "language": language,
-        "couponId": couponId,
       });
 
       var storage = FlutterSecureStorage();

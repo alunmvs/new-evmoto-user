@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -170,24 +171,31 @@ class HomeBookmarkLocationSubview extends GetView<HomeController> {
                     await controller.refreshAll(firstInit: true);
 
                     if (controller.isActiveOrderListNotEmpty.value) {
-                      var isCancelled = await isOrderHasBeenCancelled(
-                        orderId: controller.activeOrderList.first.orderId
-                            .toString(),
-                        orderType: controller.activeOrderList.first.orderType!,
-                      );
-
-                      if (isCancelled == true) {
-                        SnackbarHelper.showSnackbarError(
-                          text:
-                              controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .orderHasBeenCancelled ??
-                              "-",
+                      try {
+                        var isCancelled = await isOrderHasBeenCancelled(
+                          orderId: controller.activeOrderList.first.orderId
+                              .toString(),
+                          orderType:
+                              controller.activeOrderList.first.orderType!,
                         );
-                        await controller.refreshAll(firstInit: false);
-                        return;
+
+                        if (isCancelled == true) {
+                          SnackbarHelper.showSnackbarError(
+                            text:
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .orderHasBeenCancelled ??
+                                "-",
+                          );
+                          await controller.refreshAll(firstInit: false);
+                          return;
+                        }
+                      } on DioException catch (e) {
+                        SnackbarHelper.showSnackbarError(
+                          text: e.error.toString(),
+                        );
                       }
 
                       await Get.toNamed(

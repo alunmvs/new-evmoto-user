@@ -89,13 +89,13 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
           child: Column(
             children: [
               LoaderElevatedButton(
-                onPressed: controller.orderRideDetail.value.state == 6
+                onPressed: controller.showIHavePaidButton.value == false
                     ? null
                     : () async {
                         await controller.onTapDone();
                       },
                 child: Text(
-                  controller.orderRideDetail.value.state == 6
+                  controller.showIHavePaidButton.value == false
                       ? (controller
                                 .languageServices
                                 .language

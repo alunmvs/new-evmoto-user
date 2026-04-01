@@ -331,17 +331,21 @@ class HomeController extends GetxController {
   Future<void> onTapPickUpLocation() async {
     await refreshAll(firstInit: true);
     if (isActiveOrderListNotEmpty.value) {
-      var isCancelled = await isOrderHasBeenCancelled(
-        orderId: activeOrderList.first.orderId.toString(),
-        orderType: activeOrderList.first.orderType!,
-      );
-
-      if (isCancelled == true) {
-        SnackbarHelper.showSnackbarError(
-          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+      try {
+        var isCancelled = await isOrderHasBeenCancelled(
+          orderId: activeOrderList.first.orderId.toString(),
+          orderType: activeOrderList.first.orderType!,
         );
-        await refreshAll(firstInit: false);
-        return;
+
+        if (isCancelled == true) {
+          SnackbarHelper.showSnackbarError(
+            text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+          );
+          await refreshAll(firstInit: false);
+          return;
+        }
+      } on DioException catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
       }
 
       await Get.toNamed(
@@ -391,17 +395,21 @@ class HomeController extends GetxController {
   Future<void> onTapWhereAreYouGoingToday() async {
     await refreshAll(firstInit: true);
     if (isActiveOrderListNotEmpty.value) {
-      var isCancelled = await isOrderHasBeenCancelled(
-        orderId: activeOrderList.first.orderId.toString(),
-        orderType: activeOrderList.first.orderType!,
-      );
-
-      if (isCancelled == false) {
-        SnackbarHelper.showSnackbarError(
-          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+      try {
+        var isCancelled = await isOrderHasBeenCancelled(
+          orderId: activeOrderList.first.orderId.toString(),
+          orderType: activeOrderList.first.orderType!,
         );
-        await refreshAll(firstInit: false);
-        return;
+
+        if (isCancelled == false) {
+          SnackbarHelper.showSnackbarError(
+            text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+          );
+          await refreshAll(firstInit: false);
+          return;
+        }
+      } on DioException catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
       }
 
       await Get.toNamed(
@@ -441,17 +449,21 @@ class HomeController extends GetxController {
   }) async {
     await refreshAll(firstInit: true);
     if (isActiveOrderListNotEmpty.value) {
-      var isCancelled = await isOrderHasBeenCancelled(
-        orderId: activeOrderList.first.orderId.toString(),
-        orderType: activeOrderList.first.orderType!,
-      );
-
-      if (isCancelled == true) {
-        SnackbarHelper.showSnackbarError(
-          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+      try {
+        var isCancelled = await isOrderHasBeenCancelled(
+          orderId: activeOrderList.first.orderId.toString(),
+          orderType: activeOrderList.first.orderType!,
         );
-        await refreshAll(firstInit: false);
-        return;
+
+        if (isCancelled == true) {
+          SnackbarHelper.showSnackbarError(
+            text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+          );
+          await refreshAll(firstInit: false);
+          return;
+        }
+      } on DioException catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
       }
       await Get.toNamed(
         Routes.RIDE_ORDER_DETAIL,

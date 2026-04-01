@@ -335,6 +335,7 @@ class Language {
   String? maxCharacter150;
   String? orderHasBeenCancelled;
   String? distance;
+  String? callUnanswered;
 
   Language({
     this.onboardingIntroTitle1,
@@ -663,9 +664,11 @@ class Language {
     this.cancelOrderTitleDialog,
     this.orderHasBeenCancelled,
     this.distance,
+    this.callUnanswered,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    callUnanswered = json['call_unanswered'] ?? "(Translate Not Found)";
     distance = json['distance'] ?? "(Translate Not Found)";
     onboardingIntroTitle1 =
         json['onboarding_intro_title_1'] ?? "(Translate Not Found)";
@@ -1149,6 +1152,7 @@ class Language {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['distance'] = this.distance;
+    data['call_unanswered'] = this.callUnanswered;
     data['order_has_been_cancelled'] = this.orderHasBeenCancelled;
     data['onboarding_intro_title_1'] = this.onboardingIntroTitle1;
     data['onboarding_intro_description_1'] = this.onboardingIntroDescription1;

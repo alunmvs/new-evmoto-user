@@ -12,6 +12,8 @@ import SendBirdCalls
 
 let voipRegistry = PKPushRegistry(queue: DispatchQueue.main)
 
+var pushCredentialsToken: Data?
+
 extension AppDelegate: PKPushRegistryDelegate {
     
     func enableSendbirdVoIP(){
@@ -28,21 +30,34 @@ extension AppDelegate: PKPushRegistryDelegate {
 
         print("AppDelegate + SendbirdVoIP: pushRegistry: didUpdate w/ credentials: \(pushCredentials.token)")
 
-        SendBirdCall.registerVoIPPush(token: pushCredentials.token, unique: true) { error in
-            guard error != nil else {
-                
-                print("AppDelegate + SendbirdVoIP: enableSendbirdVoIP: didUpdate w/ credentials Sendbird registerVoIPush ERROR: \(String(describing: error))")
 
-                DispatchQueue.main.async {
-                    let payload = [ "message": "registerVoIPPush Error: \(String(describing: error))"]
-                    callsChannel?.invokeMethod("error", arguments: payload)
-                }
-                return
-            }
-        }
+        print("[Debug Sendbird] Register VOIP Push Start \(pushCredentials.token)")
+
+
+        pushCredentialsToken = pushCredentials.token;
+
+        // SendBirdCall.registerVoIPPush(token: pushCredentials.token, unique: true) { error in
+        //     guard error != nil else {
+        //         print("[Debug Sendbird] Register VOIP Push Error")
+                
+        //         print("AppDelegate + SendbirdVoIP: enableSendbirdVoIP: didUpdate w/ credentials Sendbird registerVoIPush ERROR: \(String(describing: error))")
+
+        //         DispatchQueue.main.async {
+        //             let payload = [ "message": "registerVoIPPush Error: \(String(describing: error))"]
+        //             callsChannel?.invokeMethod("error", arguments: payload)
+        //         }
+        //         return
+        //     }
+
+        //     print("[Debug Sendbird] Register VOIP Push Success")
+        // }
+
+        print("[Debug Sendbird] Register VOIP Push Completed")
     }
 
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) {
+
+        print("[Debug Sendbird] Receive Call")  
         
         print("AppDelegate + SendbirdVoIP: pushRegistry: didReceiveIncomingPushWith payload: \(payload as AnyObject) - no completion")
 

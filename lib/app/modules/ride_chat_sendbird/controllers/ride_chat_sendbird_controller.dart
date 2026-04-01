@@ -13,10 +13,16 @@ import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 
+import '../../../routes/app_pages.dart';
+
 class MyGroupChannelHandler extends GroupChannelHandler {
   @override
   void onMessageReceived(BaseChannel channel, BaseMessage message) {
     Get.find<RideChatSendbirdController>().messageList.add(message);
+
+    if (Get.currentRoute == Routes.RIDE_CHAT_SENDBIRD) {
+      Get.find<RideChatSendbirdController>().groupChannel.value!.markAsRead();
+    }
   }
 
   @override
