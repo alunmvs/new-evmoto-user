@@ -48,6 +48,7 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp();
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = (errorDetails) {
     try {
       FirebaseCrashlytics.instance.recordError(
@@ -63,7 +64,6 @@ Future<void> main() async {
     } catch (e) {}
     return true;
   };
-
   Get.put(ThemeColorServices(), permanent: true);
   Get.put(TypographyServices(), permanent: true);
   Get.put(LanguageServices(), permanent: true);

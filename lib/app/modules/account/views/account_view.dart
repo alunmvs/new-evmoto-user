@@ -157,17 +157,16 @@ class AccountView extends GetView<AccountController> {
                           Spacer(),
                           GestureDetector(
                             onTap: () {
-                              // Get.toNamed(Routes.ADD_EDIT_USER_INFORMATION);
-
-                              Get.toNamed(
-                                Routes.RIDE_CALL_SENDBIRD,
-                                arguments: {
-                                  'is_caller': true,
-                                  'driver_id': "dashboard_testing",
-                                  'driver_name': "Testing dashboard",
-                                  'driver_avatar_url': "",
-                                },
-                              );
+                              Get.toNamed(Routes.ADD_EDIT_USER_INFORMATION);
+                              // Get.toNamed(
+                              //   Routes.RIDE_CALL_SENDBIRD,
+                              //   arguments: {
+                              //     'is_caller': true,
+                              //     'driver_id': "dashboard_testing",
+                              //     'driver_name': "Testing dashboard",
+                              //     'driver_avatar_url': "",
+                              //   },
+                              // );
                             },
                             child: Container(
                               padding: EdgeInsets.all(8),

@@ -62,7 +62,7 @@ class ApiServices extends GetxService {
         },
         onError: (error, handler) {
           // Debug Error
-          print("request API base URL ${error.requestOptions.uri.path}");
+          // print("request API base URL ${error.requestOptions.uri.path}");
 
           final Map<String, dynamic> dataMap = {};
           if (error.requestOptions.data is FormData) {
@@ -73,10 +73,10 @@ class ApiServices extends GetxService {
             for (var file in formData.files) {
               dataMap[file.key] = file.value.filename;
             }
-            print("request API data $dataMap");
+            // print("request API data $dataMap");
           }
 
-          print("response API ${error.response?.data}");
+          // print("response API ${error.response?.data}");
 
           // Override Error
           String customMessage;
@@ -116,11 +116,11 @@ class ApiServices extends GetxService {
             default:
               customMessage =
                   languageServices.language.value.dioExceptionDefault ?? "-";
-              print("ini custom message (default) $customMessage");
+              // print("ini custom message (default) $customMessage");
               break;
           }
 
-          print("ini custom message $customMessage");
+          // print("ini custom message $customMessage");
 
           // Override error message
           final customError = DioException(
@@ -129,7 +129,6 @@ class ApiServices extends GetxService {
             type: error.type,
             error: customMessage,
           );
-
           try {
             FirebaseCrashlytics.instance.recordError(
               error,
@@ -141,6 +140,7 @@ class ApiServices extends GetxService {
                 dataMap,
                 error.response?.data ?? "",
               ],
+              printDetails: true,
               fatal: true,
             );
           } catch (e) {}
