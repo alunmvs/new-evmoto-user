@@ -107,8 +107,7 @@ Future<void> logout() async {
       firebasePushNotificationServices.onUnsubscribe(),
       storage.delete(key: 'token'),
       socketServices.closeWebsocket(),
-      prefs.setBool("home_controller_registered", false),
-      prefs.setBool("activity_controller_registered", false),
+      prefs.clear(),
     ], eagerError: false);
     userServices.clearUserInfo();
   } on DioException catch (e) {

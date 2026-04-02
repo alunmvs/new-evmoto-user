@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/rating_label_model.dart';
@@ -12,7 +13,6 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -22,6 +22,7 @@ import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivityDetailController extends GetxController {
   final GoogleMapsRepository googleMapsRepository;
@@ -53,6 +54,7 @@ class ActivityDetailController extends GetxController {
   final markers = <Marker>{}.obs;
   final polylines = <Polyline>{}.obs;
   final polylinesCoordinate = <LatLng>[].obs;
+  final direction = OpenMapDirection().obs;
 
   final orderRideDetail = OrderRide().obs;
   final orderReviewDetail = OrderReview().obs;
@@ -78,7 +80,6 @@ class ActivityDetailController extends GetxController {
     orderType.value = Get.arguments['order_type'] ?? 1;
     try {
       await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
-      print("ini order id ${orderRideDetail.value.orderId}");
       await getRatingLabelList(
         rating:
             orderRideDetail.value.orderScore == 0 ||
@@ -198,14 +199,31 @@ class ActivityDetailController extends GetxController {
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
-    var openMapDirection = await openMapsRepository.getDirection(
-      originLatitude: orderRideDetail.value.startLat.toString(),
-      originLongitude: orderRideDetail.value.startLon.toString(),
-      destinationLatitude: orderRideDetail.value.endLat.toString(),
-      destinationLongitude: orderRideDetail.value.endLon.toString(),
+    var prefs = await SharedPreferences.getInstance();
+
+    var originToDestinationCache = prefs.getString(
+      'order_${orderRideDetail.value.orderId}_origin_to_destination_direction_cache',
     );
 
-    var polylineCoordinates = openMapDirection
+    if (originToDestinationCache == null) {
+      direction.value = await openMapsRepository.getDirection(
+        originLatitude: orderRideDetail.value.startLat.toString(),
+        originLongitude: orderRideDetail.value.startLon.toString(),
+        destinationLatitude: orderRideDetail.value.endLat.toString(),
+        destinationLongitude: orderRideDetail.value.endLon.toString(),
+      );
+      await prefs.setString(
+        'order_${orderRideDetail.value.orderId}_origin_to_destination_direction_cache',
+        jsonEncode(direction.value.toJson()),
+      );
+    } else {
+      direction.value = OpenMapDirection.fromJson(
+        jsonDecode(originToDestinationCache),
+      );
+    }
+
+    var polylineCoordinates = direction
+        .value
         .routes!
         .first
         .geometry!
