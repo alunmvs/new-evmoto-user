@@ -50,9 +50,15 @@ class RideOrderDoneController extends GetxController {
     isFetch.value = true;
     orderId.value = Get.arguments['order_id'] ?? "";
     orderType.value = Get.arguments['order_type'] ?? 1;
-    waitingDriverConfirmStartAt.value = DateTime.now();
 
     await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
+
+    if (orderRideDetail.value.driverConfirmFeesAt != null) {
+      waitingDriverConfirmStartAt.value = DateTime.parse(
+        orderRideDetail.value.driverConfirmFeesAt!.replaceFirst(' ', 'T'),
+      );
+    }
+
     refreshOrderStateTimer = Timer.periodic(Duration(seconds: 3), (
       timer,
     ) async {

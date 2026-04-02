@@ -78,7 +78,7 @@ class RideOrderDriverArrivedOriginPanelSubView
                           ),
                         ),
                         child: Text(
-                          "${(controller.languageServices.language.value.driverArrivedWaitingTime ?? "-")} ${controller.getEstimatedHourMinuteWaitingTime()}",
+                          "${(controller.languageServices.language.value.driverArrivedWaitingTime ?? "-")} ${controller.driverWaitingTimeDuration()}",
                           style:
                               controller.typographyServices.bodySmallBold.value,
                           maxLines: 1,

@@ -119,6 +119,11 @@ class RideOrderDetailController extends GetxController {
   final totalHitAPIGetDirectionDriverToDestination = 0.obs;
   final totalRefreshStatus = 0.obs;
 
+  // Driver's Waiting Time
+  final driverArrivedOriginAt = DateTime.now().obs;
+  final driverArrivedOriginWaitingTimeSeconds = 0.obs;
+  Timer? driverWaitingTimer;
+
   final isCriticalError = false.obs;
   final isFetch = false.obs;
 
@@ -328,6 +333,14 @@ class RideOrderDetailController extends GetxController {
         totalRefreshStatus.value += 1;
       }
     });
+
+    driverWaitingTimer = Timer.periodic(Duration(seconds: 1), (value) async {
+      if (orderRideDetail.value.state == 4) {
+        driverArrivedOriginWaitingTimeSeconds.value = DateTime.now()
+            .difference(driverArrivedOriginAt.value)
+            .inSeconds;
+      }
+    });
   }
 
   @override
@@ -355,6 +368,9 @@ class RideOrderDetailController extends GetxController {
     } catch (e) {}
     try {
       allSchedulerTimer?.cancel();
+    } catch (e) {}
+    try {
+      driverWaitingTimer?.cancel();
     } catch (e) {}
   }
 
@@ -1289,6 +1305,11 @@ class RideOrderDetailController extends GetxController {
           orderType: orderType.value,
         ));
     state.value = orderRideDetail.value.state ?? 0;
+    if (orderRideDetail.value.driverArrivedOriginAt != null) {
+      driverArrivedOriginAt.value = DateTime.parse(
+        orderRideDetail.value.driverArrivedOriginAt!.replaceFirst(' ', 'T'),
+      );
+    }
   }
 
   // orderRideServerDetail
@@ -1749,6 +1770,24 @@ class RideOrderDetailController extends GetxController {
         await getAllRoutingCache(forceUpdateDriverToDestination: true);
         await setupAllRouting();
       }
+    }
+  }
+
+  String driverWaitingTimeDuration() {
+    final duration = Duration(
+      seconds: driverArrivedOriginWaitingTimeSeconds.value,
+    );
+
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes.remainder(60);
+    int secs = duration.inSeconds.remainder(60);
+
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+
+    if (hours > 0) {
+      return "${twoDigits(hours)}:${twoDigits(minutes)}:${twoDigits(secs)}";
+    } else {
+      return "${twoDigits(minutes)}:${twoDigits(secs)}";
     }
   }
 }

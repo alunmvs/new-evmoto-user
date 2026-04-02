@@ -82,6 +82,8 @@ class OrderRide {
   String? startAddressName;
   String? endAddressName;
   int? freeWaitMinutes;
+  String? driverArrivedOriginAt;
+  String? driverConfirmFeesAt;
 
   OrderRide({
     this.orderId,
@@ -167,6 +169,8 @@ class OrderRide {
     this.startAddressName,
     this.endAddressName,
     this.freeWaitMinutes,
+    this.driverArrivedOriginAt,
+    this.driverConfirmFeesAt,
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
@@ -253,6 +257,8 @@ class OrderRide {
     startAddressName = json['startAddressName'];
     endAddressName = json['endAddressName'];
     freeWaitMinutes = json['freeWaitMinutes'];
+    driverArrivedOriginAt = json['driverArrivedOriginAt'];
+    driverConfirmFeesAt = json['driverConfirmFeesAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -340,6 +346,8 @@ class OrderRide {
     data['ratingLabels'] = this.ratingLabels;
     data['startAddressName'] = this.startAddressName;
     data['endAddressName'] = this.endAddressName;
+    data['driverArrivedOriginAt'] = this.driverArrivedOriginAt;
+    data['driverConfirmFeesAt'] = this.driverConfirmFeesAt;
     return data;
   }
 }
