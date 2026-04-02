@@ -60,6 +60,8 @@ class RideChatSendbirdController extends GetxController {
 
   final membersReadStatus = {}.obs;
 
+  final isTripHasEnded = true.obs;
+
   final isCriticalError = false.obs;
   final isFetch = false.obs;
 
@@ -97,6 +99,8 @@ class RideChatSendbirdController extends GetxController {
 
       await getMemberReadStatus();
       await groupChannel.value!.markAsRead();
+
+      await checkIfTripHasEnded();
     } on RequestFailedException catch (e) {
       SnackbarHelper.showSnackbarError(
         text: "Terjadi kesalahan dari server (${e.code})",
@@ -271,5 +275,17 @@ class RideChatSendbirdController extends GetxController {
   }) {
     return driverLastSeenAt.isAfter(messageCreatedAt) ||
         driverLastSeenAt.isAtSameMomentAs(messageCreatedAt);
+  }
+
+  Future<void> checkIfTripHasEnded() async {
+    await homeController.getActiveOrderList();
+
+    if (driverId.value != null) {
+      for (var activeOrder in homeController.activeOrderList) {
+        if (driverId.value == activeOrder.driverId) {
+          isTripHasEnded.value = false;
+        }
+      }
+    }
   }
 }

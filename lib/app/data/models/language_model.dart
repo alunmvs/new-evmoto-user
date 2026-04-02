@@ -336,6 +336,7 @@ class Language {
   String? orderHasBeenCancelled;
   String? distance;
   String? callUnanswered;
+  String? tripHasEnded;
 
   Language({
     this.onboardingIntroTitle1,
@@ -665,9 +666,11 @@ class Language {
     this.orderHasBeenCancelled,
     this.distance,
     this.callUnanswered,
+    this.tripHasEnded,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    tripHasEnded = json['trip_has_ended'] ?? "(Translate Not Found)";
     callUnanswered = json['call_unanswered'] ?? "(Translate Not Found)";
     distance = json['distance'] ?? "(Translate Not Found)";
     onboardingIntroTitle1 =
@@ -1151,6 +1154,7 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['trip_has_ended'] = this.tripHasEnded;
     data['distance'] = this.distance;
     data['call_unanswered'] = this.callUnanswered;
     data['order_has_been_cancelled'] = this.orderHasBeenCancelled;

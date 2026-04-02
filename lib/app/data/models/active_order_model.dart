@@ -11,6 +11,7 @@ class ActiveOrder {
   double? startLon;
   double? endLat;
   double? endLon;
+  int? driverId;
 
   ActiveOrder({
     this.orderId,
@@ -25,6 +26,7 @@ class ActiveOrder {
     this.startLon,
     this.endLat,
     this.endLon,
+    this.driverId,
   });
 
   ActiveOrder.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class ActiveOrder {
     startLon = json['startLon'];
     endLat = json['endLat'];
     endLon = json['endLon'];
+    driverId = json['driverId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +50,7 @@ class ActiveOrder {
     data['orderId'] = this.orderId;
     data['orderType'] = this.orderType;
     data['state'] = this.state;
+    data['driverId'] = this.driverId;
     return data;
   }
 }

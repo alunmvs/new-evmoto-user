@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -32,6 +33,7 @@ class MyGroupChannelHandler extends GroupChannelHandler {
 }
 
 class SendbirdChatDetailController extends GetxController {
+  final homeController = Get.find<HomeController>();
   final sendbirdChatServices = Get.find<SendbirdChatServices>();
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -54,6 +56,8 @@ class SendbirdChatDetailController extends GetxController {
   final messageList = <RootMessage>[].obs;
   final isSeeMoreMessageList = true.obs;
   final uniqueHandlerUuid = "".obs;
+
+  final isTripHasEnded = true.obs;
 
   final isCriticalError = false.obs;
   final isFetch = false.obs;
@@ -88,6 +92,8 @@ class SendbirdChatDetailController extends GetxController {
         uniqueHandlerUuid.value,
         MyGroupChannelHandler(),
       );
+
+      await checkIfTripHasEnded();
     } on RequestFailedException catch (e) {
       SnackbarHelper.showSnackbarError(
         text: "Terjadi kesalahan dari server (${e.code})",
@@ -267,5 +273,18 @@ class SendbirdChatDetailController extends GetxController {
   }) {
     return driverLastSeenAt.isAfter(messageCreatedAt) ||
         driverLastSeenAt.isAtSameMomentAs(messageCreatedAt);
+  }
+
+  Future<void> checkIfTripHasEnded() async {
+    await homeController.getActiveOrderList();
+
+    if (driverId.value != null) {
+      for (var activeOrder in homeController.activeOrderList) {
+        if (int.parse(driverId.value!.replaceAll("driver_", "replace")) ==
+            activeOrder.driverId) {
+          isTripHasEnded.value = false;
+        }
+      }
+    }
   }
 }
