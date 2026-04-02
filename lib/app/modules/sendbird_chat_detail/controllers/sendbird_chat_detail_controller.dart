@@ -280,7 +280,7 @@ class SendbirdChatDetailController extends GetxController {
 
     if (driverId.value != null) {
       for (var activeOrder in homeController.activeOrderList) {
-        if (int.parse(driverId.value!.replaceAll("driver_", "replace")) ==
+        if (int.parse(driverId.value!.replaceAll("driver_", "")) ==
             activeOrder.driverId) {
           isTripHasEnded.value = false;
         }

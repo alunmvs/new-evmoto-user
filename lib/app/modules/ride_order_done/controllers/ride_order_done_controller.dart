@@ -59,6 +59,8 @@ class RideOrderDoneController extends GetxController {
       );
     }
 
+    checkShowIHavePaidButton();
+
     refreshOrderStateTimer = Timer.periodic(Duration(seconds: 3), (
       timer,
     ) async {
@@ -86,12 +88,7 @@ class RideOrderDoneController extends GetxController {
         );
       }
 
-      if (DateTime.now()
-              .difference(waitingDriverConfirmStartAt.value)
-              .inMinutes >=
-          5) {
-        showIHavePaidButton.value = true;
-      }
+      checkShowIHavePaidButton();
     });
     isFetch.value = false;
   }
@@ -177,5 +174,14 @@ class RideOrderDoneController extends GetxController {
     }
     promoMoney += orderRideDetail.value.discountMoney ?? 0.0;
     return promoMoney;
+  }
+
+  void checkShowIHavePaidButton() {
+    if (DateTime.now()
+            .difference(waitingDriverConfirmStartAt.value)
+            .inMinutes >=
+        5) {
+      showIHavePaidButton.value = true;
+    }
   }
 }

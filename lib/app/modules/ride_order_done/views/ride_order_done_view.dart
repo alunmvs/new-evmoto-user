@@ -81,40 +81,42 @@ class RideOrderDoneView extends GetView<RideOrderDoneController> {
                   ),
                 ),
               ),
-        bottomNavigationBar: BottomAppBar(
-          height: 78,
-          color: controller.themeColorServices.neutralsColorGrey0.value,
-          shadowColor: controller.themeColorServices.overlayDark100.value
-              .withValues(alpha: 0.1),
-          child: Column(
-            children: [
-              LoaderElevatedButton(
-                onPressed: controller.showIHavePaidButton.value == false
-                    ? null
-                    : () async {
-                        await controller.onTapDone();
-                      },
-                child: Text(
-                  controller.showIHavePaidButton.value == false
-                      ? (controller
-                                .languageServices
-                                .language
-                                .value
-                                .waitingDriverConfirmation ??
-                            "-")
-                      : (controller
-                                .languageServices
-                                .language
-                                .value
-                                .paymentConfirmation ??
-                            "-"),
-                  style: controller.typographyServices.bodyLargeBold.value
-                      .copyWith(color: Colors.white),
+        bottomNavigationBar: controller.isFetch.value
+            ? null
+            : BottomAppBar(
+                height: 78,
+                color: controller.themeColorServices.neutralsColorGrey0.value,
+                shadowColor: controller.themeColorServices.overlayDark100.value
+                    .withValues(alpha: 0.1),
+                child: Column(
+                  children: [
+                    LoaderElevatedButton(
+                      onPressed: controller.showIHavePaidButton.value == false
+                          ? null
+                          : () async {
+                              await controller.onTapDone();
+                            },
+                      child: Text(
+                        controller.showIHavePaidButton.value == false
+                            ? (controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .waitingDriverConfirmation ??
+                                  "-")
+                            : (controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .paymentConfirmation ??
+                                  "-"),
+                        style: controller.typographyServices.bodyLargeBold.value
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
