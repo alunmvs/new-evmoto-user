@@ -8,6 +8,7 @@
 
 import Flutter
 import SendBirdCalls
+import AVFoundation
 
 let ERROR_CODE: String = "Sendbird Calls"
 let VOIP_TOKEN_KEY : String = "SendbirdVOIP_token"
@@ -115,7 +116,7 @@ extension AppDelegate: SendBirdCallDelegate, DirectCallDelegate {
                         result(FlutterError(code: ERROR_CODE, message: "FlutterMethodCall argument invalid", details: "Not expected [String:Any] type found: \(type(of:call.arguments))"))
                         return
                     }
-                    let callId = args["call_id"] as? String ?? ""
+                    let callId = args["call_id"] ?? ""
                     directCall = SendBirdCall.getCall(forCallId: callId)
                     directCall?.accept(with: AcceptParams())
                     result(true)
@@ -133,39 +134,25 @@ extension AppDelegate: SendBirdCallDelegate, DirectCallDelegate {
                     result(true)
                     return
                 case "loadspeaker_on":
-                    directCall?.muteMicrophone()
-                    result(true)
-                    return
-                case "loadspeaker_off":
-                    directCall?.muteMicrophone()
-                    result(true)
-                    return
-                "microphone_on" -> {
-                    directCall?.unmuteMicrophone();
-                    result(true)
-                }
-                "microphone_off" -> {
-                    directCall?.muteMicrophone();
-                    result(true)
-                }
-                "loadspeaker_on" -> {
                     do {
                         try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
                     } catch {
                         print("Failed to switch to speaker: \(error)")
                         result(false)
+                        return
                     }
                     result(true)
-                }
-                "loadspeaker_off" -> {
+                    return
+                case "loadspeaker_off":
                     do {
                         try AVAudioSession.sharedInstance().overrideOutputAudioPort(.none)
                     } catch {
                         print("Failed to switch to earpiece: \(error)")
                         result(false)
+                        return
                     }
                     result(true)
-                }
+                    return
                 case "clear_logout":
                     SendBirdCall.unregisterRemotePush(token: remoteNotificationToken) { (error) in
                         guard error == nil else {

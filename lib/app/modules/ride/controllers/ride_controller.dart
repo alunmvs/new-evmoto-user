@@ -1351,6 +1351,8 @@ class RideController extends GetxController {
       payType: payType.value,
       couponId: selectedCoupon.value.id,
       priceNo: selectedOrderRidePricing.value.priceNo,
+      endAddressName: null,
+      startAddressName: null,
     ));
   }
 

@@ -212,6 +212,8 @@ class OrderRideRepository {
     String? startLon,
     String? endAddress,
     String? placementLon,
+    required String? startAddressName,
+    required String? endAddressName,
     required double? amount,
     required int? payType,
     required int? couponId,
@@ -244,6 +246,8 @@ class OrderRideRepository {
         "payType": payType,
         "couponId": couponId,
         "priceNo": priceNo,
+        "startAddressName": startAddressName,
+        "endAddressName": endAddressName,
       });
 
       var storage = FlutterSecureStorage();

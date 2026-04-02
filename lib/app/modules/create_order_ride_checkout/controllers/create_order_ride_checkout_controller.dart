@@ -282,7 +282,7 @@ class CreateOrderRideCheckoutController extends GetxController {
     if (locationServices.isPermissionLocationAllow.value == true) {
       Get.dialog(LoadingDialog(), barrierDismissible: false);
       try {
-        var result = (await orderRideRepository.requestOrderRide(
+        var result = await orderRideRepository.requestOrderRide(
           language: languageServices.languageCodeSystem.value,
           endAddress: destinationAddress.value,
           endLat: destinationLatitude.value,
@@ -307,7 +307,9 @@ class CreateOrderRideCheckoutController extends GetxController {
           payType: payType.value,
           couponId: selectedCoupon.value.id,
           priceNo: selectedOrderRidePricing.value.priceNo,
-        ));
+          startAddressName: originAddressName.value,
+          endAddressName: destinationAddressName.value,
+        );
         Get.close(1);
 
         Get.back();
