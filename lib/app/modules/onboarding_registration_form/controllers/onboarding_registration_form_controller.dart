@@ -7,6 +7,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -19,6 +20,7 @@ class OnboardingRegistrationFormController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final userServices = Get.find<UserServices>();
 
   final formGroup = FormGroup({
     "full_name": FormControl<String>(
@@ -177,6 +179,8 @@ class OnboardingRegistrationFormController extends GetxController {
         name: formGroup.control("full_name").value,
         id: userInfo.value.id!,
       );
+
+      await userServices.getUserInfo();
 
       Get.offAllNamed(Routes.HOME);
     } else {

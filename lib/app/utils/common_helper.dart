@@ -18,17 +18,6 @@ import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String formatDouble(double value) {
-  if (value == value.toInt()) {
-    return value.toInt().toString();
-  } else {
-    return value
-        .toStringAsFixed(2)
-        .replaceFirst(RegExp(r'0+$'), '')
-        .replaceFirst(RegExp(r'\.$'), '');
-  }
-}
-
 void showLoadingDialog() {
   var themeColorServices = Get.find<ThemeColorServices>();
 

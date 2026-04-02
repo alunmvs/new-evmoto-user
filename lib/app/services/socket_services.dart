@@ -11,7 +11,6 @@ import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dar
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
-import 'package:new_evmoto_user/app/widgets/end_push_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SocketServices extends GetxService {
@@ -127,14 +126,14 @@ class SocketServices extends GetxService {
                   Get.offAllNamed(Routes.LOGIN_REGISTER);
                   break;
                 case 'END_PUSH':
-                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                    Get.dialog(
-                      EndPushDialog(
-                        orderId: dataJson['data']['orderId'],
-                        orderType: dataJson['data']['orderType'],
-                      ),
-                    );
-                  }
+                  // if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                  //   Get.dialog(
+                  //     EndPushDialog(
+                  //       orderId: dataJson['data']['orderId'],
+                  //       orderType: dataJson['data']['orderType'],
+                  //     ),
+                  //   );
+                  // }
                   break;
                 case 'PONG':
                   pongDateTime.value = DateTime.now();
