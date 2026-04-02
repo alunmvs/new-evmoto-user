@@ -401,7 +401,7 @@ class HomeController extends GetxController {
           orderType: activeOrderList.first.orderType!,
         );
 
-        if (isCancelled == false) {
+        if (isCancelled == true) {
           SnackbarHelper.showSnackbarError(
             text: languageServices.language.value.orderHasBeenCancelled ?? "-",
           );
