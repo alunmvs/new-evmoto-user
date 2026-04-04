@@ -5,10 +5,14 @@ import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/location_services.dart';
 
 class GeocodingRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+  final languageServices = Get.find<LanguageServices>();
+  final locationServices = Get.find<LocationServices>();
 
   Future<GeocodingAddress?> getAddressByLatitudeLongitude({
     required double? latitude,
@@ -59,7 +63,13 @@ class GeocodingRepository {
 
       var response = await dio.get(
         url,
-        queryParameters: {"query": query, "limit": limit},
+        queryParameters: {
+          "query": query,
+          "limit": limit,
+          "lat": locationServices.currentLatitude.value,
+          "lng": locationServices.currentLongitude.value,
+          "language": languageServices.languageGeocoding.value,
+        },
         options: Options(headers: headers),
       );
 

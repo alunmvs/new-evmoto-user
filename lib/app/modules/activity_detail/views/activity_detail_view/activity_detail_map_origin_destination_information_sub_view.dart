@@ -301,7 +301,7 @@ class ActivityDetailMapOriginDestinationInformationSubView
                                 ),
                           ),
                           Text(
-                            "${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km!.toLowerCase()}",
+                            "${formatDoubleToString(controller.orderRideDetail.value.mileage ?? 0.0)} ${controller.languageServices.language.value.km!.toLowerCase()}",
                             style: controller
                                 .typographyServices
                                 .captionLargeRegular

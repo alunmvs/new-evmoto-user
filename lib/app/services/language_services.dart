@@ -9,6 +9,7 @@ import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dar
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageServices extends GetxService {
+  final languageGeocoding = "id".obs;
   final languageCode = "ID".obs;
   final languageCodeSystem = 2.obs;
   final language = Language().obs;
@@ -75,6 +76,7 @@ class LanguageServices extends GetxService {
     switch (languageCode) {
       case "ZH_CN":
         languageCodeSystem.value = 1;
+        languageGeocoding.value = "id";
         var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
           "user_lang_zh_cn",
         );
@@ -82,6 +84,7 @@ class LanguageServices extends GetxService {
         break;
       case "EN":
         languageCodeSystem.value = 2;
+        languageGeocoding.value = "en";
         var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
           "user_lang_en",
         );
@@ -89,6 +92,7 @@ class LanguageServices extends GetxService {
         break;
       case "ID":
         languageCodeSystem.value = 3;
+        languageGeocoding.value = "zh-CN";
         var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
           "user_lang_id",
         );

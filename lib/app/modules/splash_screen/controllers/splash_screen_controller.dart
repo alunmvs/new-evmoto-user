@@ -33,6 +33,7 @@ class SplashScreenController extends GetxController {
     super.onInit();
     isFetch.value = true;
     try {
+      await checkIfAppFirstRun();
       await getSplashScreenQueryImage();
 
       isFetch.value = false;
@@ -47,13 +48,14 @@ class SplashScreenController extends GetxController {
       var token = await storage.read(key: 'token');
 
       if (token == null || token == "") {
-        Future.delayed(Duration(seconds: 3)).whenComplete(() async {
+        Future.delayed(Duration(seconds: 2)).whenComplete(() async {
           Get.offAndToNamed(Routes.LOGIN_REGISTER);
         });
       } else {
         await Future.wait([
           userServices.manualOnInit(),
           locationServices.requestLocationSplashScreen(),
+          Future.delayed(Duration(seconds: 2)),
         ]);
         Get.offAndToNamed(Routes.HOME);
       }
@@ -80,5 +82,16 @@ class SplashScreenController extends GetxController {
           type: 1,
           usePort: 1,
         )).first;
+  }
+
+  Future<void> checkIfAppFirstRun() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isFirstRun = prefs.getBool('first_run') ?? true;
+
+    if (isFirstRun) {
+      var storage = FlutterSecureStorage();
+      await storage.deleteAll();
+      await prefs.setBool('first_run', false);
+    }
   }
 }

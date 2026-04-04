@@ -44,27 +44,37 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
               child: Column(
                 children: [
                   SizedBox(height: 24),
-                  Center(
-                    child: Text(
-                      controller.languageServices.language.value.loginTitle ??
-                          "-",
-                      style:
-                          controller.typographyServices.headingSmallBold.value,
-                      textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Center(
+                      child: Text(
+                        controller.languageServices.language.value.loginTitle ??
+                            "-",
+                        style: controller
+                            .typographyServices
+                            .headingSmallBold
+                            .value,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   SizedBox(height: 8),
-                  Center(
-                    child: Text(
-                      controller
-                              .languageServices
-                              .language
-                              .value
-                              .loginDescription ??
-                          "-",
-                      style:
-                          controller.typographyServices.bodySmallRegular.value,
-                      textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Center(
+                      child: Text(
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .loginDescription ??
+                            "-",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   SizedBox(height: 22),
