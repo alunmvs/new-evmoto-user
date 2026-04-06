@@ -164,6 +164,12 @@ class HomeController extends GetxController {
       // );
 
       await firebasePushNotificationServices.requestPermission();
+
+      if (Platform.isAndroid) {
+        await Permission.bluetoothConnect.request();
+        await Permission.bluetoothScan.request();
+      }
+
       await measureTime(
         "Sendbird Chat & Call Initialize",
         () => Future.wait([
