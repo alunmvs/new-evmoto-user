@@ -13,6 +13,7 @@ import 'package:flutter_callkit_incoming/entities/notification_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/notification_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
@@ -402,6 +403,10 @@ class FirebasePushNotificationServices extends GetxService {
             ),
           ),
         );
+
+        if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+          Get.find<RideOrderDetailController>().getOrderRideDetail();
+        }
         return;
       }
 

@@ -34,6 +34,7 @@ class SendbirdChatServices extends GetxService {
         await SendbirdChat.registerPushToken(
           type: PushTokenType.fcm,
           token: firebasePushNotificationServices.fcmToken.value,
+          alwaysPush: true,
         );
       }
 
@@ -42,6 +43,7 @@ class SendbirdChatServices extends GetxService {
           await SendbirdChat.registerPushToken(
             type: PushTokenType.apns,
             token: firebasePushNotificationServices.apnsToken.value,
+            alwaysPush: true,
           );
         }
       }

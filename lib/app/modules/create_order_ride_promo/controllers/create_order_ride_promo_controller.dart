@@ -53,6 +53,7 @@ class CreateOrderRidePromoController extends GetxController {
       language: languageServices.languageCodeSystem.value,
       pageNum: pageNum.value,
       size: size.value,
+      state: 1,
     );
 
     isSeeMoreCouponList.value = couponList.isNotEmpty;
@@ -66,6 +67,7 @@ class CreateOrderRidePromoController extends GetxController {
         language: languageServices.languageCodeSystem.value,
         pageNum: pageNum.value,
         size: size.value,
+        state: 1,
       );
 
       this.couponList.addAll(couponList);

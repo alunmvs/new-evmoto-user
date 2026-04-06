@@ -256,6 +256,8 @@ class Language {
   String? voucherNotAvailable;
   String? promoVoucherNotAvailable;
   String? noHaveAnyPromo;
+  String? unavailablePromoVoucherNotAvailable;
+  String? unavailableNoHaveAnyPromo;
   String? minOrder;
   String? use;
   String? validUntil;
@@ -339,6 +341,8 @@ class Language {
   String? tripHasEnded;
 
   Language({
+    this.unavailablePromoVoucherNotAvailable,
+    this.unavailableNoHaveAnyPromo,
     this.onboardingIntroTitle1,
     this.onboardingIntroDescription1,
     this.onboardingIntroTitle2,
@@ -670,6 +674,11 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    unavailablePromoVoucherNotAvailable =
+        json['unavailable_promo_voucher_not_available'] ??
+        "(Translate Not Found)";
+    unavailableNoHaveAnyPromo =
+        json['unavailable_no_have_any_promo'] ?? "(Translate Not Found)";
     tripHasEnded = json['trip_has_ended'] ?? "(Translate Not Found)";
     callUnanswered = json['call_unanswered'] ?? "(Translate Not Found)";
     distance = json['distance'] ?? "(Translate Not Found)";
@@ -1154,6 +1163,9 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['unavailable_promo_voucher_not_available'] =
+        this.unavailablePromoVoucherNotAvailable;
+    data['unavailable_no_have_any_promo'] = this.unavailableNoHaveAnyPromo;
     data['trip_has_ended'] = this.tripHasEnded;
     data['distance'] = this.distance;
     data['call_unanswered'] = this.callUnanswered;

@@ -30,6 +30,7 @@ import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'dart:async';
 import 'dart:ui';
 
@@ -105,6 +106,9 @@ class RideOrderDetailController extends GetxController {
   final previousState = 0.obs;
 
   final isGoogleMapControllerCreated = false.obs;
+
+  final totalUnreadMessageCount = 0.obs;
+  final isFetchTotalUnreadMessageCount = false.obs;
 
   Timer? allSchedulerTimer;
 
@@ -1282,6 +1286,8 @@ class RideOrderDetailController extends GetxController {
         orderRideDetail.value.driverArrivedOriginAt!.replaceFirst(' ', 'T'),
       );
     }
+
+    await getTotalUnreadSendbirdChat();
   }
 
   // orderRideServerDetail
@@ -1827,6 +1833,35 @@ class RideOrderDetailController extends GetxController {
       return "${twoDigits(hours)}:${twoDigits(minutes)}:${twoDigits(secs)}";
     } else {
       return "${twoDigits(minutes)}:${twoDigits(secs)}";
+    }
+  }
+
+  Future<void> getTotalUnreadSendbirdChat() async {
+    totalUnreadMessageCount.value = 0;
+    if (sendbirdChatServices.isSuccessInitialize.value == true) {
+      if (isFetchTotalUnreadMessageCount.value == false) {
+        isFetchTotalUnreadMessageCount.value = true;
+        var query = GroupChannelListQuery();
+        var channelList = await query.next();
+
+        for (var channel in channelList) {
+          var isUser = false;
+          var isDriver = false;
+          for (var member in channel.members) {
+            if (member.userId == "user_${orderRideDetail.value.userId}") {
+              isUser = true;
+            }
+
+            if (member.userId == "driver_${orderRideDetail.value.driverId}") {
+              isDriver = true;
+            }
+          }
+          if (isUser == true && isDriver == true) {
+            totalUnreadMessageCount.value += channel.unreadMessageCount;
+          }
+        }
+        isFetchTotalUnreadMessageCount.value = false;
+      }
     }
   }
 }

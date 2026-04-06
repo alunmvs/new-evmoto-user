@@ -20,32 +20,33 @@ class LanguageServices extends GetxService {
     var prefs = await SharedPreferences.getInstance();
     var languageCode = prefs.getString('language_code');
 
-    if (languageCode != null) {
-      await switchLanguage(languageCode: languageCode, isSave: false);
-    } else {
-      var currentLocale = PlatformDispatcher.instance.locale.toString();
+    // if (languageCode != null) {
+    //   await switchLanguage(languageCode: languageCode, isSave: false);
+    // } else {
+    var currentLocale = PlatformDispatcher.instance.locale.toString();
+    print("ini current locale ${currentLocale}");
 
-      var languageCode = "ID";
+    var languageCode = "ID";
 
-      if (currentLocale == "id" || currentLocale == "id_ID") {
-        languageCode = "ID";
-      }
-
-      if (currentLocale == "en" ||
-          currentLocale == "en_US" ||
-          currentLocale == "en_GB") {
-        languageCode = "EN";
-      }
-
-      if (currentLocale == "zh" ||
-          currentLocale == "zh_CN" ||
-          currentLocale == "zh_TW" ||
-          currentLocale == "zh_Hant_TW") {
-        languageCode = "ZH_CN";
-      }
-
-      await switchLanguage(languageCode: languageCode, isSave: false);
+    if (currentLocale == "id" || currentLocale == "id_ID") {
+      languageCode = "ID";
     }
+
+    if (currentLocale == "en" ||
+        currentLocale == "en_US" ||
+        currentLocale == "en_GB") {
+      languageCode = "EN";
+    }
+
+    if (currentLocale == "zh" ||
+        currentLocale == "zh_CN" ||
+        currentLocale == "zh_TW" ||
+        currentLocale == "zh_Hant_TW") {
+      languageCode = "ZH_CN";
+    }
+
+    await switchLanguage(languageCode: languageCode, isSave: false);
+    // }
   }
 
   @override

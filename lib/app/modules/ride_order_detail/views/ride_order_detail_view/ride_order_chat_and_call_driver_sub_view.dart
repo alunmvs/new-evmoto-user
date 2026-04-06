@@ -84,6 +84,8 @@ class RideOrderChatAndCallDriverSubView
                       controller.orderRideDetail.value.licensePlate,
                 },
               );
+
+              await controller.getTotalUnreadSendbirdChat();
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -93,11 +95,13 @@ class RideOrderChatAndCallDriverSubView
                   style: controller.typographyServices.bodyLargeBold.value
                       .copyWith(color: Colors.white),
                 ),
-                SizedBox(width: 8),
-                CircleAvatar(
-                  backgroundColor: Color(0XFF16CB8C),
-                  radius: 10 / 2,
-                ),
+                if (controller.totalUnreadMessageCount.value > 0) ...[
+                  SizedBox(width: 8),
+                  CircleAvatar(
+                    backgroundColor: Color(0XFF16CB8C),
+                    radius: 10 / 2,
+                  ),
+                ],
               ],
             ),
           ),

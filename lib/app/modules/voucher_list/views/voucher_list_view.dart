@@ -268,12 +268,19 @@ class VoucherListView extends GetView<VoucherListController> {
                                             horizontal: 16,
                                           ),
                                           child: Text(
-                                            controller
-                                                    .languageServices
-                                                    .language
-                                                    .value
-                                                    .promoVoucherNotAvailable ??
-                                                "-",
+                                            controller.selectedIndex.value == 1
+                                                ? (controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .promoVoucherNotAvailable ??
+                                                      "-")
+                                                : (controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .unavailablePromoVoucherNotAvailable ??
+                                                      "-"),
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeBold
@@ -293,12 +300,19 @@ class VoucherListView extends GetView<VoucherListController> {
                                             horizontal: 16,
                                           ),
                                           child: Text(
-                                            controller
-                                                    .languageServices
-                                                    .language
-                                                    .value
-                                                    .noHaveAnyPromo ??
-                                                "-",
+                                            controller.selectedIndex.value == 1
+                                                ? (controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .noHaveAnyPromo ??
+                                                      "-")
+                                                : (controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .unavailableNoHaveAnyPromo ??
+                                                      "-"),
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular

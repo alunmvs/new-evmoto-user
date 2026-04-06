@@ -852,7 +852,7 @@ class AccountView extends GetView<AccountController> {
                                           ),
                                         ),
                                         child: Text(
-                                          "${controller.languageServices.language.value.appVersion ?? "-"} v${controller.packageVersion.value}+${controller.buildNumber.value}",
+                                          "${controller.languageServices.language.value.appVersion ?? "-"} v${controller.packageVersion.value}",
                                           style: controller
                                               .typographyServices
                                               .captionSmallBold
