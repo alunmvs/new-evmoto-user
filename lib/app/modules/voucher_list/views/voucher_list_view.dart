@@ -48,10 +48,7 @@ class VoucherListView extends GetView<VoucherListController> {
                       },
                       child: Container(
                         height: 33,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
@@ -105,10 +102,7 @@ class VoucherListView extends GetView<VoucherListController> {
                       },
                       child: Container(
                         height: 33,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(

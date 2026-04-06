@@ -24,7 +24,7 @@ class LanguageServices extends GetxService {
       await switchLanguage(languageCode: languageCode, isSave: false);
     } else {
       var currentLocale = PlatformDispatcher.instance.locale.toString();
-      print("ini current locale ${currentLocale}");
+      // print("ini current locale ${currentLocale}");
 
       var languageCode = "ID";
 
