@@ -17,10 +17,8 @@ import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
-import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
-import 'package:new_evmoto_user/main.dart';
 
 class CreateOrderRideCheckoutController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -67,10 +65,6 @@ class CreateOrderRideCheckoutController extends GetxController {
   final destinationAddress = Rx<String?>(null);
   final destinationLatitude = Rx<String?>(null);
   final destinationLongitude = Rx<String?>(null);
-
-  final estimatedTimeInMinutes = 0.0.obs;
-  final estimatedDistanceInKm = 0.0.obs;
-  final estimatedSpeedInKmh = 40.obs;
 
   final isPermissionLocationAllow = false.obs;
   final isFetch = false.obs;
@@ -184,7 +178,7 @@ class CreateOrderRideCheckoutController extends GetxController {
 
     if (movementDirection == MovementDirection.vertical) {
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.1),
+        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
       );
     } else {
       await googleMapController.animateCamera(
@@ -251,12 +245,6 @@ class CreateOrderRideCheckoutController extends GetxController {
         ),
       ),
     );
-  }
-
-  void generateEstimatedDistanceAndTimeInMinutes() {
-    estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
-    estimatedTimeInMinutes.value =
-        (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
   }
 
   String getEstimatedTimeInMinutesInText() {

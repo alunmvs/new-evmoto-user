@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +16,6 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
-import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -64,10 +61,6 @@ class ActivityDetailController extends GetxController {
   final rating = 0.0.obs;
   final ratingLabelList = <RatingLabel>[].obs;
 
-  final estimatedTimeInMinutes = 0.0.obs;
-  final estimatedDistanceInKm = 0.0.obs;
-  final estimatedSpeedInKmh = 40.obs;
-
   final isCriticalError = false.obs;
   final isFetch = false.obs;
 
@@ -89,7 +82,6 @@ class ActivityDetailController extends GetxController {
       );
       isFetch.value = false;
       await setupGoogleMapOriginToDestination();
-      generateEstimatedDistanceAndTimeInMinutes();
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;
@@ -105,12 +97,6 @@ class ActivityDetailController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-  }
-
-  void generateEstimatedDistanceAndTimeInMinutes() {
-    estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
-    estimatedTimeInMinutes.value =
-        (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
   }
 
   Future<void> getRatingLabelList({required int rating}) async {
@@ -248,10 +234,10 @@ class ActivityDetailController extends GetxController {
 
     LatLngBounds bounds;
 
-    var originLatitude = this.orderRideDetail.value.startLat!;
-    var originLongitude = this.orderRideDetail.value.startLon!;
-    var destinationLatitude = this.orderRideDetail.value.endLat!;
-    var destinationLongitude = this.orderRideDetail.value.endLon!;
+    var originLatitude = orderRideDetail.value.startLat!;
+    var originLongitude = orderRideDetail.value.startLon!;
+    var destinationLatitude = orderRideDetail.value.endLat!;
+    var destinationLongitude = orderRideDetail.value.endLon!;
 
     if (originLatitude > destinationLatitude &&
         originLongitude > destinationLongitude) {

@@ -45,9 +45,6 @@ class CreateOrderRideCheckoutView
                               controller.getOrderRidePricingList(),
                               controller.setLatitudeLongitudeMarker(),
                             ]);
-
-                            controller
-                                .generateEstimatedDistanceAndTimeInMinutes();
                           } on DioException catch (e) {
                             Get.back();
 

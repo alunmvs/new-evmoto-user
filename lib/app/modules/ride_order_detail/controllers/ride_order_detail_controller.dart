@@ -84,10 +84,6 @@ class RideOrderDetailController extends GetxController {
   final isPinLocationWaitingForDriverHide = true.obs;
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
 
-  final estimatedTimeInMinutes = 0.0.obs;
-  final estimatedDistanceInKm = 0.0.obs;
-  final estimatedSpeedInKmh = 40.obs;
-
   final payType = 3.obs;
 
   final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
@@ -273,7 +269,7 @@ class RideOrderDetailController extends GetxController {
     //     setupRefreshStatusDriverGivePrice(),
     //   ]);
 
-    //   generateEstimatedDistanceAndTimeInMinutes();
+    //
 
     //   if (orderRideDetail.value.state == 6 ||
     //       orderRideDetail.value.state == 7 ||
@@ -374,12 +370,6 @@ class RideOrderDetailController extends GetxController {
     } catch (e) {}
   }
 
-  void generateEstimatedDistanceAndTimeInMinutes() {
-    estimatedDistanceInKm.value = calculateTotalDistance(polylinesCoordinate);
-    estimatedTimeInMinutes.value =
-        (estimatedDistanceInKm.value / estimatedSpeedInKmh.value) * 60;
-  }
-
   Future<void> setupRefreshStatusDriverGivePrice() async {
     refreshStatusDriverGivePriceTimer ??= Timer.periodic(Duration(seconds: 5), (
       timer,
@@ -454,8 +444,6 @@ class RideOrderDetailController extends GetxController {
       setupSchedulerDriverCurrentLocation(),
       setupSchedulerDriverRefocusMapBound(),
     ]);
-
-    generateEstimatedDistanceAndTimeInMinutes();
 
     if (orderRideDetail.value.state == 6 ||
         orderRideDetail.value.state == 7 ||
@@ -541,7 +529,6 @@ class RideOrderDetailController extends GetxController {
           .toList();
 
       polylinesCoordinate.value = polylineCoordinates;
-      generateEstimatedDistanceAndTimeInMinutes();
 
       polylines.add(
         Polyline(
@@ -654,7 +641,6 @@ class RideOrderDetailController extends GetxController {
         .toList();
 
     polylinesCoordinate.value = polylineCoordinates;
-    generateEstimatedDistanceAndTimeInMinutes();
 
     polylines.clear();
 
@@ -812,7 +798,6 @@ class RideOrderDetailController extends GetxController {
             .toList();
 
         polylinesCoordinate.value = polylineCoordinates;
-        generateEstimatedDistanceAndTimeInMinutes();
 
         polylines.add(
           Polyline(
@@ -907,7 +892,6 @@ class RideOrderDetailController extends GetxController {
             .toList();
 
         polylinesCoordinate.value = polylineCoordinates;
-        generateEstimatedDistanceAndTimeInMinutes();
 
         polylines.add(
           Polyline(
@@ -964,7 +948,6 @@ class RideOrderDetailController extends GetxController {
 
     if (minDistance < threshold && closestIndex > 0) {
       polylinesCoordinate.value = polylinesCoordinate.sublist(closestIndex);
-      generateEstimatedDistanceAndTimeInMinutes();
 
       polylines.clear();
       polylines.add(
@@ -1267,17 +1250,6 @@ class RideOrderDetailController extends GetxController {
     return '';
   }
 
-  String getEstimatedTimeInMinutesInText() {
-    int jam = estimatedTimeInMinutes.value ~/ 60;
-    int menit = (estimatedTimeInMinutes.value % 60).round();
-
-    if (jam > 0) {
-      return '$jam ${languageServices.language.value.hour} $menit ${languageServices.language.value.minute}';
-    } else {
-      return '$menit ${languageServices.language.value.minute}';
-    }
-  }
-
   String getEstimatedHourMinuteArrive() {
     var now = DateTime.now();
     int menit =
@@ -1540,35 +1512,102 @@ class RideOrderDetailController extends GetxController {
 
     // driver to origin
     if ([2, 3, 4].contains(state.value)) {
-      var padding = 150.0;
-      var latLngBounds = getBoundsFromLatLngList([
-        LatLng(
-          double.parse(driverLatitude.value),
-          double.parse(driverLongitude.value),
-        ),
-        LatLng(
-          orderRideDetail.value.startLat!,
-          orderRideDetail.value.startLon!,
-        ),
-      ]);
-      await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(latLngBounds, padding),
+      LatLngBounds bounds;
+
+      var originLatitude = double.parse(driverLatitude.value);
+      var originLongitude = double.parse(driverLongitude.value);
+      var destinationLatitude = orderRideDetail.value.startLat!;
+      var destinationLongitude = orderRideDetail.value.startLon!;
+
+      if (originLatitude > destinationLatitude &&
+          originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, destinationLongitude),
+          northeast: LatLng(originLatitude, originLongitude),
+        );
+      } else if (originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, destinationLongitude),
+          northeast: LatLng(destinationLatitude, originLongitude),
+        );
+      } else if (originLatitude > destinationLatitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, originLongitude),
+          northeast: LatLng(originLatitude, destinationLongitude),
+        );
+      } else {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, originLongitude),
+          northeast: LatLng(destinationLatitude, destinationLongitude),
+        );
+      }
+
+      var movementDirection = compareLatLng(
+        originLat: originLatitude,
+        originLng: originLongitude,
+        destLat: destinationLatitude,
+        destLng: destinationLongitude,
       );
+
+      if (movementDirection == MovementDirection.vertical) {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+        );
+      } else {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        );
+      }
     }
 
     // driver to destination
     if ([5, 6, 7, 8].contains(state.value)) {
-      var padding = 150.0;
-      var latLngBounds = getBoundsFromLatLngList([
-        LatLng(
-          double.parse(driverLatitude.value),
-          double.parse(driverLongitude.value),
-        ),
-        LatLng(orderRideDetail.value.endLat!, orderRideDetail.value.endLon!),
-      ]);
-      await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(latLngBounds, padding),
+      LatLngBounds bounds;
+
+      var originLatitude = double.parse(driverLatitude.value);
+      var originLongitude = double.parse(driverLongitude.value);
+      var destinationLatitude = orderRideDetail.value.endLat!;
+      var destinationLongitude = orderRideDetail.value.endLon!;
+
+      if (originLatitude > destinationLatitude &&
+          originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, destinationLongitude),
+          northeast: LatLng(originLatitude, originLongitude),
+        );
+      } else if (originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, destinationLongitude),
+          northeast: LatLng(destinationLatitude, originLongitude),
+        );
+      } else if (originLatitude > destinationLatitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, originLongitude),
+          northeast: LatLng(originLatitude, destinationLongitude),
+        );
+      } else {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, originLongitude),
+          northeast: LatLng(destinationLatitude, destinationLongitude),
+        );
+      }
+
+      var movementDirection = compareLatLng(
+        originLat: originLatitude,
+        originLng: originLongitude,
+        destLat: destinationLatitude,
+        destLng: destinationLongitude,
       );
+
+      if (movementDirection == MovementDirection.vertical) {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+        );
+      } else {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        );
+      }
     }
   }
 

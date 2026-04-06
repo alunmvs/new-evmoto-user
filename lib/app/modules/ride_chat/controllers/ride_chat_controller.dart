@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 
 class RideChatController extends GetxController with WidgetsBindingObserver {
   final UploadImageRepository uploadImageRepository;
@@ -150,7 +151,7 @@ class RideChatController extends GetxController with WidgetsBindingObserver {
     );
 
     if (image != null) {
-      showLoadingDialog();
+      Get.dialog(LoadingDialog(), barrierDismissible: false);
       attachmentUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
@@ -168,7 +169,7 @@ class RideChatController extends GetxController with WidgetsBindingObserver {
     );
 
     if (image != null) {
-      showLoadingDialog();
+      Get.dialog(LoadingDialog(), barrierDismissible: false);
       attachmentUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );

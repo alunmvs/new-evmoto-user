@@ -23,7 +23,6 @@ abstract class Routes {
   static const SEARCH_ADDRESS = _Paths.SEARCH_ADDRESS;
   static const SETTING_LANGUAGE = _Paths.SETTING_LANGUAGE;
   static const SETTING_SAVED_LOCATION = _Paths.SETTING_SAVED_LOCATION;
-  static const RIDE = _Paths.RIDE;
   static const RIDE_CHAT = _Paths.RIDE_CHAT;
   static const RIDE_CALL = _Paths.RIDE_CALL;
   static const PRIVACY_POLICY = _Paths.PRIVACY_POLICY;

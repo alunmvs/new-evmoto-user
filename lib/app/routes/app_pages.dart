@@ -46,8 +46,6 @@ import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
-import '../modules/ride/bindings/ride_binding.dart';
-import '../modules/ride/views/ride_view.dart';
 import '../modules/ride_call/bindings/ride_call_binding.dart';
 import '../modules/ride_call/views/ride_call_view.dart';
 import '../modules/ride_call_sendbird/bindings/ride_call_sendbird_binding.dart';
@@ -174,11 +172,6 @@ class AppPages {
       name: _Paths.SETTING_SAVED_LOCATION,
       page: () => const SettingSavedLocationView(),
       binding: SettingSavedLocationBinding(),
-    ),
-    GetPage(
-      name: _Paths.RIDE,
-      page: () => const RideView(),
-      binding: RideBinding(),
     ),
     GetPage(
       name: _Paths.RIDE_CHAT,

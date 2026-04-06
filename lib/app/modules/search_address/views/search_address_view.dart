@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
-import 'package:new_evmoto_user/app/utils/service_area_helper.dart';
-import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-
 import '../controllers/search_address_controller.dart';
 
 class SearchAddressView extends StatelessWidget {

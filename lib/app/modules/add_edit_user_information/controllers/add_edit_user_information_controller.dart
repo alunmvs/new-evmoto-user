@@ -13,6 +13,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -261,7 +262,7 @@ class AddEditUserInformationController extends GetxController {
     );
 
     if (image != null) {
-      showLoadingDialog();
+      Get.dialog(LoadingDialog(), barrierDismissible: false);
 
       avatarImgUrl.value = (await uploadImageRepository.uploadUserAvatar(
         file: File(image.path),
@@ -281,7 +282,7 @@ class AddEditUserInformationController extends GetxController {
     );
 
     if (image != null) {
-      showLoadingDialog();
+      Get.dialog(LoadingDialog(), barrierDismissible: false);
 
       avatarImgUrl.value = (await uploadImageRepository.uploadUserAvatar(
         file: File(image.path),

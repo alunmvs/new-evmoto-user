@@ -13,7 +13,6 @@ import 'package:new_evmoto_user/app/data/models/advertisement_model.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
-import 'package:new_evmoto_user/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_user/app/data/models/versioning_server_model.dart';
 import 'package:new_evmoto_user/app/repositories/advertisement_repository.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
@@ -33,14 +32,10 @@ import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/services/user_services.dart';
-import 'package:new_evmoto_user/app/utils/general_helper.dart';
-import 'package:new_evmoto_user/app/utils/maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/order_helper.dart';
-
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -486,26 +481,6 @@ class HomeController extends GetxController {
       } else {
         await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);
       }
-    }
-  }
-
-  Future<void> onTapShortcutSavedLocation({
-    required SavedAddress savedAddress,
-  }) async {
-    await refreshAll(firstInit: true);
-    if (activeOrderList.isNotEmpty) {
-      await Get.toNamed(
-        Routes.RIDE_ORDER_DETAIL,
-        arguments: {
-          "order_id": activeOrderList.first.orderId.toString(),
-          "order_type": activeOrderList.first.orderType,
-        },
-      );
-    } else {
-      await Get.toNamed(
-        Routes.RIDE,
-        arguments: {"destination_saved_address": savedAddress},
-      );
     }
   }
 
