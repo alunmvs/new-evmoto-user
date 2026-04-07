@@ -347,97 +347,97 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                     controller.orderRideDetail.value.state == 8) ...[
                   RideOrderDriverArrivedPanelSubView(),
                 ],
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "State : ${controller.state.value}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Total Refresh Status Exceeded (every 5 sec) : ${controller.totalRefreshStatus.value}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Driver Location : ${double.parse(controller.driverLatitude.value).toStringAsFixed(4)}, ${double.parse(controller.driverLongitude.value).toStringAsFixed(4)}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Distance Route (Reduce < 30 m) : ${controller.distanceFromRoute.value.toStringAsFixed(2)}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Distance Route (Reroute > 300 m) : ${controller.distanceFromRoute.value.toStringAsFixed(2)}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Total Hit API Rerouting to Origin : ${controller.totalHitAPIGetDirectionDriverToOrigin}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Total Hit API Rerouting to Destination : ${controller.totalHitAPIGetDirectionDriverToDestination}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Socket Status : ${controller.socketServices.isSocketClose.value == false}",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            "Socket Ping : ${controller.socketServices.pingMs.value} ms",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: Padding(
+                //     padding: const EdgeInsets.only(right: 16),
+                //     child: Container(
+                //       padding: EdgeInsets.all(16),
+                //       decoration: BoxDecoration(
+                //         color: Colors.black.withValues(alpha: 0.3),
+                //         borderRadius: BorderRadius.circular(16),
+                //       ),
+                //       child: Column(
+                //         mainAxisSize: MainAxisSize.min,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(
+                //             "State : ${controller.state.value}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Total Refresh Status Exceeded (every 5 sec) : ${controller.totalRefreshStatus.value}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Driver Location : ${double.parse(controller.driverLatitude.value).toStringAsFixed(4)}, ${double.parse(controller.driverLongitude.value).toStringAsFixed(4)}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Distance Route (Reduce < 30 m) : ${controller.distanceFromRoute.value.toStringAsFixed(2)}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Distance Route (Reroute > 300 m) : ${controller.distanceFromRoute.value.toStringAsFixed(2)}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Total Hit API Rerouting to Origin : ${controller.totalHitAPIGetDirectionDriverToOrigin}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Total Hit API Rerouting to Destination : ${controller.totalHitAPIGetDirectionDriverToDestination}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Socket Status : ${controller.socketServices.isSocketClose.value == false}",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //           Text(
+                //             "Socket Ping : ${controller.socketServices.pingMs.value} ms",
+                //             style: controller
+                //                 .typographyServices
+                //                 .bodySmallRegular
+                //                 .value
+                //                 .copyWith(color: Colors.white),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

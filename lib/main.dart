@@ -105,20 +105,20 @@ Future<void> main() async {
       ),
       routingCallback: (routing) async {
         if (routing?.current == Routes.HOME) {
+          var userServices = Get.find<UserServices>();
+          userServices.isLoadingRefreshHome.value = true;
           var prefs = await SharedPreferences.getInstance();
-
           var processList = <Future>[];
           if (prefs.getBool('home_controller_registered') == true) {
             var homeController = Get.find<HomeController>();
             processList.add(homeController.refreshAll());
           }
-
           if (prefs.getBool('activity_controller_registered') == true) {
             var activityController = Get.find<ActivityController>();
             processList.add(activityController.refreshAll());
           }
-
           await Future.wait(processList);
+          userServices.isLoadingRefreshHome.value = false;
         }
       },
       builder: (context, child) {

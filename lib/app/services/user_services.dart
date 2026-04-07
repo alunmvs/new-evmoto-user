@@ -9,6 +9,8 @@ class UserServices extends GetxService {
 
   final userInfo = UserInfo().obs;
 
+  final isLoadingRefreshHome = false.obs;
+
   Future<void> manualOnInit() async {
     await getUserInfo();
   }
