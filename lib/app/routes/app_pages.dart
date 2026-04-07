@@ -18,40 +18,20 @@ import '../modules/create_order_ride_map_select/bindings/create_order_ride_map_s
 import '../modules/create_order_ride_map_select/views/create_order_ride_map_select_view.dart';
 import '../modules/create_order_ride_promo/bindings/create_order_ride_promo_binding.dart';
 import '../modules/create_order_ride_promo/views/create_order_ride_promo_view.dart';
-import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
-import '../modules/deposit_balance/views/deposit_balance_view.dart';
-import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
-import '../modules/deposit_balance_payment_webview/views/deposit_balance_payment_webview_view.dart';
-import '../modules/history_balance/bindings/history_balance_binding.dart';
-import '../modules/history_balance/views/history_balance_view.dart';
-import '../modules/history_balance_detail/bindings/history_balance_detail_binding.dart';
-import '../modules/history_balance_detail/views/history_balance_detail_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/introduction_delivery_service/bindings/introduction_delivery_service_binding.dart';
-import '../modules/introduction_delivery_service/views/introduction_delivery_service_view.dart';
-import '../modules/introduction_food_service/bindings/introduction_food_service_binding.dart';
-import '../modules/introduction_food_service/views/introduction_food_service_view.dart';
-import '../modules/introduction_package_service/bindings/introduction_package_service_binding.dart';
-import '../modules/introduction_package_service/views/introduction_package_service_view.dart';
 import '../modules/login_register/bindings/login_register_binding.dart';
 import '../modules/login_register/views/login_register_view.dart';
 import '../modules/login_register_verification_otp/bindings/login_register_verification_otp_binding.dart';
 import '../modules/login_register_verification_otp/views/login_register_verification_otp_view.dart';
-import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
-import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
 import '../modules/onboarding_registration_form/bindings/onboarding_registration_form_binding.dart';
 import '../modules/onboarding_registration_form/views/onboarding_registration_form_view.dart';
 import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
-import '../modules/ride_call/bindings/ride_call_binding.dart';
-import '../modules/ride_call/views/ride_call_view.dart';
 import '../modules/ride_call_sendbird/bindings/ride_call_sendbird_binding.dart';
 import '../modules/ride_call_sendbird/views/ride_call_sendbird_view.dart';
-import '../modules/ride_chat/bindings/ride_chat_binding.dart';
-import '../modules/ride_chat/views/ride_chat_view.dart';
 import '../modules/ride_chat_sendbird/bindings/ride_chat_sendbird_binding.dart';
 import '../modules/ride_chat_sendbird/views/ride_chat_sendbird_view.dart';
 import '../modules/ride_order_cancel/bindings/ride_order_cancel_binding.dart';
@@ -97,12 +77,6 @@ class AppPages {
       transition: Transition.noTransition,
     ),
     GetPage(
-      name: _Paths.ONBOARDING_INTRODUCTION,
-      page: () => const OnboardingIntroductionView(),
-      binding: OnboardingIntroductionBinding(),
-      transition: Transition.noTransition,
-    ),
-    GetPage(
       name: _Paths.LOGIN_REGISTER,
       page: () => const LoginRegisterView(),
       binding: LoginRegisterBinding(),
@@ -112,21 +86,6 @@ class AppPages {
       name: _Paths.LOGIN_REGISTER_VERIFICATION_OTP,
       page: () => const LoginRegisterVerificationOtpView(),
       binding: LoginRegisterVerificationOtpBinding(),
-    ),
-    GetPage(
-      name: _Paths.INTRODUCTION_DELIVERY_SERVICE,
-      page: () => const IntroductionDeliveryServiceView(),
-      binding: IntroductionDeliveryServiceBinding(),
-    ),
-    GetPage(
-      name: _Paths.INTRODUCTION_PACKAGE_SERVICE,
-      page: () => const IntroductionPackageServiceView(),
-      binding: IntroductionPackageServiceBinding(),
-    ),
-    GetPage(
-      name: _Paths.INTRODUCTION_FOOD_SERVICE,
-      page: () => const IntroductionFoodServiceView(),
-      binding: IntroductionFoodServiceBinding(),
     ),
     GetPage(
       name: _Paths.ACCOUNT,
@@ -142,16 +101,6 @@ class AppPages {
       name: _Paths.ACTIVITY_DETAIL,
       page: () => const ActivityDetailView(),
       binding: ActivityDetailBinding(),
-    ),
-    GetPage(
-      name: _Paths.HISTORY_BALANCE,
-      page: () => const HistoryBalanceView(),
-      binding: HistoryBalanceBinding(),
-    ),
-    GetPage(
-      name: _Paths.HISTORY_BALANCE_DETAIL,
-      page: () => const HistoryBalanceDetailView(),
-      binding: HistoryBalanceDetailBinding(),
     ),
     GetPage(
       name: _Paths.ADD_EDIT_ADDRESS,
@@ -172,16 +121,6 @@ class AppPages {
       name: _Paths.SETTING_SAVED_LOCATION,
       page: () => const SettingSavedLocationView(),
       binding: SettingSavedLocationBinding(),
-    ),
-    GetPage(
-      name: _Paths.RIDE_CHAT,
-      page: () => const RideChatView(),
-      binding: RideChatBinding(),
-    ),
-    GetPage(
-      name: _Paths.RIDE_CALL,
-      page: () => const RideCallView(),
-      binding: RideCallBinding(),
     ),
     GetPage(
       name: _Paths.PRIVACY_POLICY,
@@ -207,16 +146,6 @@ class AppPages {
       name: _Paths.RIDE_ORDER_CANCEL,
       page: () => const RideOrderCancelView(),
       binding: RideOrderCancelBinding(),
-    ),
-    GetPage(
-      name: _Paths.DEPOSIT_BALANCE,
-      page: () => const DepositBalanceView(),
-      binding: DepositBalanceBinding(),
-    ),
-    GetPage(
-      name: _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW,
-      page: () => const DepositBalancePaymentWebviewView(),
-      binding: DepositBalancePaymentWebviewBinding(),
     ),
     GetPage(
       name: _Paths.PHOTO_VIEWER,

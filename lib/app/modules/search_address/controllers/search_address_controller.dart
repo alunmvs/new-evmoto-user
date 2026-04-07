@@ -138,6 +138,8 @@ class SearchAddressController extends GetxController {
           }
         } on DioException catch (e) {
           SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } on Exception catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.toString());
         }
         isFetchAddressSearch.value = false;
       }

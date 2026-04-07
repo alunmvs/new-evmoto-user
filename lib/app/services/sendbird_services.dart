@@ -47,9 +47,7 @@ class SendbirdServices extends GetxService {
         }
         isSuccessInitialize.value = true;
       }
-    } catch (e) {
-      print("ini error $e");
-    }
+    } catch (e) {}
   }
 
   Future<void> handleNativeListener(MethodCall call) async {
@@ -58,14 +56,10 @@ class SendbirdServices extends GetxService {
 
     switch (call.method) {
       case "info":
-        print("[Debug Sendbird] Success Receive Info Authenticate");
         break;
       case "testing_debug":
         break;
       case "direct_call_received":
-        print(
-          "[Debug Sendbird] Direct Call Receive ${call.arguments['call_id']} ${call.arguments['caller_nickname']} ${call.arguments['profile_url']}",
-        );
         firebasePushNotificationServices.showIncomingCall(
           extra: {
             "sendbird_call": jsonEncode({
@@ -106,7 +100,6 @@ class SendbirdServices extends GetxService {
         }
         break;
       default:
-        print("[Debug Sendbird] call.method ${call.method}");
         break;
     }
   }

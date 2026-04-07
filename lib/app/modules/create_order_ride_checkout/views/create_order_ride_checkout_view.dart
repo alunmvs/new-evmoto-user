@@ -51,6 +51,10 @@ class CreateOrderRideCheckoutView
                             SnackbarHelper.showSnackbarError(
                               text: e.error.toString(),
                             );
+                          } catch (e) {
+                            SnackbarHelper.showSnackbarError(
+                              text: e.toString(),
+                            );
                           }
                           controller.isFetch.value = false;
                         },
@@ -245,7 +249,10 @@ class CreateOrderRideCheckoutView
                                                 "assets/icons/icon_arrow_right.svg",
                                                 width: 6.44,
                                                 height: 11.14,
-                                                color: Color(0XFF072841),
+                                                colorFilter: ColorFilter.mode(
+                                                  Color(0XFF072841),
+                                                  BlendMode.srcIn,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -310,7 +317,10 @@ class CreateOrderRideCheckoutView
                                                 "assets/icons/icon_arrow_right.svg",
                                                 width: 6.44,
                                                 height: 11.14,
-                                                color: Color(0XFF072841),
+                                                colorFilter: ColorFilter.mode(
+                                                  Color(0XFF072841),
+                                                  BlendMode.srcIn,
+                                                ),
                                               ),
                                             ],
                                           ),

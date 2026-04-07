@@ -271,6 +271,7 @@ class HomeController extends GetxController {
 
       if (currentLatitude.value != null) {
         try {
+          if (isClosed) return;
           googleMapController.moveCamera(
             CameraUpdate.newLatLng(
               LatLng(currentLatitude.value!, currentLongitude.value!),
@@ -303,6 +304,8 @@ class HomeController extends GetxController {
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
@@ -347,6 +350,8 @@ class HomeController extends GetxController {
         }
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
 
       await Get.toNamed(
@@ -389,6 +394,8 @@ class HomeController extends GetxController {
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
         Get.close(1);
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
     }
   }
@@ -411,6 +418,8 @@ class HomeController extends GetxController {
         }
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
 
       await Get.toNamed(
@@ -440,6 +449,8 @@ class HomeController extends GetxController {
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
         Get.close(1);
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
     }
   }
@@ -465,6 +476,8 @@ class HomeController extends GetxController {
         }
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
       await Get.toNamed(
         Routes.RIDE_ORDER_DETAIL,
@@ -824,6 +837,8 @@ class HomeController extends GetxController {
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
@@ -1068,6 +1083,8 @@ class HomeController extends GetxController {
           currentAddress.value = currentGeocodingAddress.value.address;
         } on DioException catch (e) {
           SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.toString());
         }
         currentAddressIsLoading.value = false;
       }
@@ -1093,6 +1110,8 @@ class HomeController extends GetxController {
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
     isCurrentAddressIsInit.value = true;
   }
@@ -1273,6 +1292,8 @@ class HomeController extends GetxController {
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
     isFetchAdvertisementList.value = false;
   }

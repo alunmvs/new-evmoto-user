@@ -270,10 +270,13 @@ class SearchAddressView extends StatelessWidget {
                                                 : "assets/icons/icon_pinpoint.svg",
                                             width: 18,
                                             height: 18,
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -528,10 +531,14 @@ class SearchAddressView extends StatelessWidget {
                                                         "assets/icons/icon_pinpoint.svg",
                                                         width: 13.5,
                                                         height: 15.75,
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .primaryBlue
-                                                            .value,
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                              controller
+                                                                  .themeColorServices
+                                                                  .primaryBlue
+                                                                  .value,
+                                                              BlendMode.srcIn,
+                                                            ),
                                                       ),
                                                     ],
                                                   ),

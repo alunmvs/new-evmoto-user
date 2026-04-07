@@ -24,7 +24,6 @@ class LanguageServices extends GetxService {
       await switchLanguage(languageCode: languageCode, isSave: false);
     } else {
       var currentLocale = PlatformDispatcher.instance.locale.toString();
-      // print("ini current locale ${currentLocale}");
 
       var languageCode = "ID";
 
@@ -46,7 +45,7 @@ class LanguageServices extends GetxService {
         languageCode = "ZH_CN";
       }
 
-      await switchLanguage(languageCode: languageCode!, isSave: false);
+      await switchLanguage(languageCode: languageCode, isSave: false);
     }
   }
 
@@ -75,7 +74,7 @@ class LanguageServices extends GetxService {
     switch (languageCode) {
       case "ZH_CN":
         languageCodeSystem.value = 1;
-        languageGeocoding.value = "id";
+        languageGeocoding.value = "zh-CN";
         var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
           "user_lang_zh_cn",
         );
@@ -91,7 +90,7 @@ class LanguageServices extends GetxService {
         break;
       case "ID":
         languageCodeSystem.value = 3;
-        languageGeocoding.value = "zh-CN";
+        languageGeocoding.value = "id";
         var jsonData = firebaseRemoteConfigServices.remoteConfig.getString(
           "user_lang_id",
         );

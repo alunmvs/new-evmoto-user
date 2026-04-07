@@ -49,113 +49,147 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
         ),
         backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
         body: GlobalBodyHandler(
-          isFetch: controller.isFetch.value,
+          isFetch: false,
           isCriticalError: controller.isCriticalError.value,
           onInit: () async {
             await controller.onInit();
           },
-          body: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 8),
-                  if (controller.orderRideDetail.value.state == 10 ||
-                      controller.orderRideDetail.value.state == 12) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ActivityDetailCancelDriverInformationSubView(),
-                    ),
-                  ] else ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ActivityDetailDriverInformationSubView(),
-                    ),
-                  ],
-                  SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Container(
-                      height: 33,
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorSlate100
-                            .value,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(
-                          controller.orderRideDetail.value.orderNum.toString(),
-                          style: controller
-                              .typographyServices
-                              .bodySmallRegular
-                              .value
-                              .copyWith(
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey700
-                                    .value,
+          body: Stack(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 8),
+                        if (controller.orderRideDetail.value.state == 10 ||
+                            controller.orderRideDetail.value.state == 12) ...[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child:
+                                ActivityDetailCancelDriverInformationSubView(),
+                          ),
+                        ] else ...[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: ActivityDetailDriverInformationSubView(),
+                          ),
+                        ],
+                        SizedBox(height: 12),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Container(
+                            height: 33,
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorSlate100
+                                  .value,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                controller.orderRideDetail.value.orderNum
+                                    .toString(),
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey700
+                                          .value,
+                                    ),
                               ),
+                            ),
+                          ),
                         ),
+                        SizedBox(height: 16),
+                        Container(
+                          height: 5.5,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey100
+                                .value,
+                          ),
+                        ),
+                        if ((controller.orderRideDetail.value.orderScore ==
+                                    null ||
+                                controller.orderRideDetail.value.orderScore ==
+                                    0) &&
+                            controller.orderRideDetail.value.state != 10) ...[
+                          SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: ActivityDetailFormRatingReviewSubView(),
+                          ),
+                        ],
+                        SizedBox(height: 12),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child:
+                              ActivityDetailMapOriginDestinationInformationSubView(),
+                        ),
+                        SizedBox(height: 12),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ActivityDetailInvoiceSubView(),
+                        ),
+                        if (controller.orderRideDetail.value.remark != "" &&
+                            controller.orderRideDetail.value.remark !=
+                                null) ...[
+                          SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: ActivityDetailCancelReasonSubView(),
+                          ),
+                        ],
+                        if (controller.orderRideDetail.value.orderScore !=
+                                null &&
+                            controller.orderRideDetail.value.orderScore !=
+                                0) ...[
+                          SizedBox(height: 12),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: ActivityDetailRatingReviewSubView(),
+                          ),
+                        ],
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (controller.isFetch.value == true) ...[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: controller.themeColorServices.neutralsColorGrey0.value,
+                  child: Center(
+                    child: SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: CircularProgressIndicator(
+                        color: controller.themeColorServices.primaryBlue.value,
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Container(
-                    height: 5.5,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: controller
-                          .themeColorServices
-                          .neutralsColorGrey100
-                          .value,
-                    ),
-                  ),
-                  if ((controller.orderRideDetail.value.orderScore == null ||
-                          controller.orderRideDetail.value.orderScore == 0) &&
-                      controller.orderRideDetail.value.state != 10) ...[
-                    SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ActivityDetailFormRatingReviewSubView(),
-                    ),
-                  ],
-                  SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child:
-                        ActivityDetailMapOriginDestinationInformationSubView(),
-                  ),
-                  SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ActivityDetailInvoiceSubView(),
-                  ),
-                  if (controller.orderRideDetail.value.remark != "" &&
-                      controller.orderRideDetail.value.remark != null) ...[
-                    SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ActivityDetailCancelReasonSubView(),
-                    ),
-                  ],
-                  if (controller.orderRideDetail.value.orderScore != null &&
-                      controller.orderRideDetail.value.orderScore != 0) ...[
-                    SizedBox(height: 12),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: ActivityDetailRatingReviewSubView(),
-                    ),
-                  ],
-                  SizedBox(height: 16),
-                ],
-              ),
-            ),
+                ),
+              ],
+            ],
           ),
         ),
         bottomNavigationBar:

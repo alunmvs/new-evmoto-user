@@ -1,11 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
-import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-
 import '../controllers/account_controller.dart';
 
 class AccountView extends GetView<AccountController> {
@@ -181,10 +178,13 @@ class AccountView extends GetView<AccountController> {
                                 "assets/icons/icon_edit.svg",
                                 width: 16,
                                 height: 16,
-                                color: controller
-                                    .themeColorServices
-                                    .sematicColorBlue500
-                                    .value,
+                                colorFilter: ColorFilter.mode(
+                                  controller
+                                      .themeColorServices
+                                      .sematicColorBlue500
+                                      .value,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
                           ),
@@ -241,10 +241,13 @@ class AccountView extends GetView<AccountController> {
                                           "assets/icons/icon_language.svg",
                                           width: 16,
                                           height: 16,
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue500
-                                              .value,
+                                          colorFilter: ColorFilter.mode(
+                                            controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -340,10 +343,13 @@ class AccountView extends GetView<AccountController> {
                                           "assets/icons/icon_voucher-1.svg",
                                           width: 13.33,
                                           height: 10.67,
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue500
-                                              .value,
+                                          colorFilter: ColorFilter.mode(
+                                            controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -404,10 +410,13 @@ class AccountView extends GetView<AccountController> {
                                           "assets/icons/icon_save.svg",
                                           width: 12.2,
                                           height: 16,
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue500
-                                              .value,
+                                          colorFilter: ColorFilter.mode(
+                                            controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -492,10 +501,13 @@ class AccountView extends GetView<AccountController> {
                                           "assets/icons/icon_cs.svg",
                                           width: 16,
                                           height: 16,
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue500
-                                              .value,
+                                          colorFilter: ColorFilter.mode(
+                                            controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -556,10 +568,13 @@ class AccountView extends GetView<AccountController> {
                                           "assets/icons/icon_docs.svg",
                                           width: 14.22,
                                           height: 16,
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue500
-                                              .value,
+                                          colorFilter: ColorFilter.mode(
+                                            controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -620,10 +635,13 @@ class AccountView extends GetView<AccountController> {
                                           "assets/icons/icon_docs.svg",
                                           width: 14.22,
                                           height: 16,
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue500
-                                              .value,
+                                          colorFilter: ColorFilter.mode(
+                                            controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -739,10 +757,13 @@ class AccountView extends GetView<AccountController> {
                                           "assets/icons/icon_refresh.svg",
                                           width: 14.4,
                                           height: 11.2,
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue500
-                                              .value,
+                                          colorFilter: ColorFilter.mode(
+                                            controller
+                                                .themeColorServices
+                                                .sematicColorBlue500
+                                                .value,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -811,10 +832,13 @@ class AccountView extends GetView<AccountController> {
                                     "assets/icons/icon_logout.svg",
                                     width: 16,
                                     height: 16,
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed400
-                                        .value,
+                                    colorFilter: ColorFilter.mode(
+                                      controller
+                                          .themeColorServices
+                                          .sematicColorRed400
+                                          .value,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                   SizedBox(width: 8),
                                   Text(

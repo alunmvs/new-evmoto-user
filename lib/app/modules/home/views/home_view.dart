@@ -427,8 +427,12 @@ class HomeView extends GetView<HomeController> {
                                                                     width: 4.76,
                                                                     height:
                                                                         8.65,
-                                                                    color: Color(
-                                                                      0XFF272727,
+                                                                    colorFilter: ColorFilter.mode(
+                                                                      Color(
+                                                                        0XFF272727,
+                                                                      ),
+                                                                      BlendMode
+                                                                          .srcIn,
                                                                     ),
                                                                   ),
                                                                 ],
@@ -936,10 +940,13 @@ class HomeView extends GetView<HomeController> {
                                               "assets/icons/icon_arrow_right.svg",
                                               width: 13 * 1.3,
                                               height: 7.5 * 1.3,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .primaryBlue
-                                                  .value,
+                                              colorFilter: ColorFilter.mode(
+                                                controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                                BlendMode.srcIn,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -1015,15 +1022,18 @@ class HomeView extends GetView<HomeController> {
                             "assets/icons/icon_home.svg",
                             height: 24,
                             width: 24,
-                            color: controller.indexNavigationBar.value == 0
-                                ? controller
-                                      .themeColorServices
-                                      .primaryBlue
-                                      .value
-                                : controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
+                            colorFilter: ColorFilter.mode(
+                              controller.indexNavigationBar.value == 0
+                                  ? controller
+                                        .themeColorServices
+                                        .primaryBlue
+                                        .value
+                                  : controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                              BlendMode.srcIn,
+                            ),
                           ),
                           SizedBox(height: 8),
                           Text(
@@ -1081,15 +1091,18 @@ class HomeView extends GetView<HomeController> {
                             "assets/icons/icon_activity.svg",
                             height: 24,
                             width: 24,
-                            color: controller.indexNavigationBar.value == 1
-                                ? controller
-                                      .themeColorServices
-                                      .primaryBlue
-                                      .value
-                                : controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
+                            colorFilter: ColorFilter.mode(
+                              controller.indexNavigationBar.value == 1
+                                  ? controller
+                                        .themeColorServices
+                                        .primaryBlue
+                                        .value
+                                  : controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                              BlendMode.srcIn,
+                            ),
                           ),
                           SizedBox(height: 8),
                           Text(
@@ -1150,15 +1163,18 @@ class HomeView extends GetView<HomeController> {
                             "assets/icons/icon_account.svg",
                             height: 24,
                             width: 24,
-                            color: controller.indexNavigationBar.value == 2
-                                ? controller
-                                      .themeColorServices
-                                      .primaryBlue
-                                      .value
-                                : controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
+                            colorFilter: ColorFilter.mode(
+                              controller.indexNavigationBar.value == 2
+                                  ? controller
+                                        .themeColorServices
+                                        .primaryBlue
+                                        .value
+                                  : controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                              BlendMode.srcIn,
+                            ),
                           ),
                           SizedBox(height: 8),
                           Text(

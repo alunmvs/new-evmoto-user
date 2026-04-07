@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -105,7 +104,6 @@ Future<void> main() async {
         ),
       ),
       routingCallback: (routing) async {
-        print("routing_active");
         if (routing?.current == Routes.HOME) {
           var prefs = await SharedPreferences.getInstance();
 

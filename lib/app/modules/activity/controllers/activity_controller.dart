@@ -61,6 +61,8 @@ class ActivityController extends GetxController
       await Future.wait([getHistoryOrderList()]);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
     isFetch.value = false;
 
@@ -87,6 +89,8 @@ class ActivityController extends GetxController
       await Future.wait([getHistoryOrderList()]);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 

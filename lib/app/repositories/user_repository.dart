@@ -15,8 +15,6 @@ class UserRepository {
           "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/user/api/user/queryUserInfo";
 
       var formData = FormData.fromMap({"language": language});
-      print(url);
-      print({"language": language});
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -33,13 +31,14 @@ class UserRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       return UserInfo.fromJson(response.data['data']);
-    } on DioException catch (e) {
-      print(e.response);
+    } on DioException {
       rethrow;
     }
   }
@@ -66,10 +65,12 @@ class UserRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -95,7 +96,7 @@ class UserRepository {
         data: formData,
         options: Options(headers: headers),
       );
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -126,12 +127,18 @@ class UserRepository {
       };
 
       var dio = apiServices.dio;
-      await dio.post(
+      var response = await dio.post(
         url,
         data: formData,
         options: Options(headers: headers),
       );
-    } on DioException catch (e) {
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+    } on DioException {
       rethrow;
     }
   }

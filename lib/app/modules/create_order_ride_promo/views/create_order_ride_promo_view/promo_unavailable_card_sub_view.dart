@@ -29,7 +29,10 @@ class PromoExpiredCardSubView extends GetView<CreateOrderRidePromoController> {
                 "assets/icons/icon_promo.svg",
                 width: 20,
                 height: 20,
-                color: Color(0XFF808080),
+                colorFilter: ColorFilter.mode(
+                  Color(0XFF808080),
+                  BlendMode.srcIn,
+                ),
               ),
               SizedBox(width: 4),
               Expanded(

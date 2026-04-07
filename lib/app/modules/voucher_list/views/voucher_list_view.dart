@@ -453,9 +453,11 @@ class VoucherListView extends GetView<VoucherListController> {
                                                         'assets/icons/icon_calendar.svg',
                                                         width: 12,
                                                         height: 13.88,
-                                                        color: Color(
-                                                          0XFF828282,
-                                                        ),
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                              Color(0xFF828282),
+                                                              BlendMode.srcIn,
+                                                            ),
                                                       ),
                                                     ],
                                                   ),
@@ -619,9 +621,11 @@ class VoucherListView extends GetView<VoucherListController> {
                                                         'assets/icons/icon_calendar.svg',
                                                         width: 12,
                                                         height: 13.88,
-                                                        color: Color(
-                                                          0XFFB3B3B3,
-                                                        ),
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                              Color(0XFFB3B3B3),
+                                                              BlendMode.srcIn,
+                                                            ),
                                                       ),
                                                     ],
                                                   ),

@@ -11,7 +11,6 @@ import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
@@ -337,6 +336,8 @@ class AddEditUserInformationController extends GetxController {
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

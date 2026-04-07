@@ -146,10 +146,13 @@ class AddEditUserInformationView
                                             "assets/icons/icon_delete.svg",
                                             width: 12,
                                             height: 12,
-                                            color: controller
-                                                .themeColorServices
-                                                .sematicColorRed400
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              controller
+                                                  .themeColorServices
+                                                  .sematicColorRed400
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                           SizedBox(width: 5),
                                           Text(

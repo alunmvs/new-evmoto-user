@@ -30,12 +30,14 @@ class LoginRegisterRepository {
       var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       return LoginData.fromJson(response.data['data']);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

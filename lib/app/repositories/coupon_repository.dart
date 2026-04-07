@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -43,13 +41,19 @@ class CouponRepository {
         options: Options(headers: headers),
       );
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       var couponList = <Coupon>[];
       for (var coupon in response.data['data']) {
         couponList.add(Coupon.fromJson(coupon));
       }
 
       return couponList;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -77,13 +81,19 @@ class CouponRepository {
       var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       var couponList = <Coupon>[];
       for (var coupon in response.data['coupon']) {
         couponList.add(Coupon.fromJson(coupon));
       }
 
       return couponList;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

@@ -20,11 +20,26 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
             onTap: () async {
               final Uri url = Uri(scheme: 'tel', path: '112');
 
-              if (await canLaunchUrl(url)) {
+              try {
                 await launchUrl(url);
-              } else {
-                throw controller.languageServices.language.value.cantMakeCall ??
-                    "-";
+              } catch (e) {
+                final SnackBar snackBar = SnackBar(
+                  behavior: SnackBarBehavior.fixed,
+                  backgroundColor:
+                      controller.themeColorServices.sematicColorRed400.value,
+                  content: Text(
+                    controller.languageServices.language.value.cantMakeCall ??
+                        "-",
+                    style: controller.typographyServices.bodySmallRegular.value
+                        .copyWith(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey0
+                              .value,
+                        ),
+                  ),
+                );
+                rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
               }
             },
             child: Container(
@@ -60,9 +75,9 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
                   .getString("customer_cs_whatsapp");
               final Uri url = Uri.parse("https://wa.me/$customerCsWhatsapp");
 
-              if (await canLaunchUrl(url)) {
+              try {
                 await launchUrl(url, mode: LaunchMode.externalApplication);
-              } else {
+              } catch (e) {
                 final SnackBar snackBar = SnackBar(
                   behavior: SnackBarBehavior.fixed,
                   backgroundColor:

@@ -12,8 +12,6 @@ import 'package:new_evmoto_user/app/utils/maps_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../../../../routes/app_pages.dart';
-
 class RideOrderDriverArrivedPanelSubView
     extends GetView<RideOrderDetailController> {
   const RideOrderDriverArrivedPanelSubView({super.key});

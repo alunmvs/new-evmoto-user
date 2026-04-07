@@ -8,7 +8,6 @@ import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/rating_label_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
-import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
@@ -22,12 +21,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivityDetailController extends GetxController {
-  final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
   final OpenMapsRepository openMapsRepository;
 
   ActivityDetailController({
-    required this.googleMapsRepository,
     required this.orderRideRepository,
     required this.openMapsRepository,
   });
@@ -86,6 +83,12 @@ class ActivityDetailController extends GetxController {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;
       isFetch.value = false;
+    } catch (e) {
+      if (e.toString().contains("GoogleMapController") == false) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
+        isCriticalError.value = true;
+        isFetch.value = false;
+      }
     }
   }
 
@@ -170,6 +173,7 @@ class ActivityDetailController extends GetxController {
         ),
         'assets/icons/icon_pinpoint_map_green.png',
       ),
+      anchor: Offset(0.5, 0.5),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -186,6 +190,7 @@ class ActivityDetailController extends GetxController {
         ),
         'assets/icons/icon_pinpoint_map_red.png',
       ),
+      anchor: Offset(0.5, 0.5),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -274,6 +279,7 @@ class ActivityDetailController extends GetxController {
     double areaFactor = (latDiff + lngDiff) * 80000;
     var dynamicPadding = (basePadding + areaFactor).clamp(0, 50);
 
+    if (isClosed) return;
     await googleMapController.animateCamera(
       CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
     );

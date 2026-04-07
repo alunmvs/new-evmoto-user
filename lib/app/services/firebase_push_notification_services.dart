@@ -20,8 +20,6 @@ import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:uuid/uuid.dart';
-
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -260,9 +258,9 @@ class FirebasePushNotificationServices extends GetxService {
       this.apnsToken.value = apnsToken ?? '';
       // print("ini fcm token $fcmToken");
 
-      var deviceId = await getDeviceId();
-      var appVersion = await getVersion();
-      var osVersion = await getOSVersion();
+      // var deviceId = await getDeviceId();
+      // var appVersion = await getVersion();
+      // var osVersion = await getOSVersion();
 
       // await notificationRepository.subscribeNotification(
       //   fcmToken: fcmToken,
@@ -277,9 +275,9 @@ class FirebasePushNotificationServices extends GetxService {
       this.fcmToken.value = fcmToken ?? '';
       // print("ini fcm token $fcmToken");
 
-      var deviceId = await getDeviceId();
-      var appVersion = await getVersion();
-      var osVersion = await getOSVersion();
+      // var deviceId = await getDeviceId();
+      // var appVersion = await getVersion();
+      // var osVersion = await getOSVersion();
 
       // await notificationRepository.subscribeNotification(
       //   fcmToken: fcmToken,
@@ -298,7 +296,7 @@ class FirebasePushNotificationServices extends GetxService {
         .onError((err) {});
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("ini push notification ${message.data}");
+      // print("ini push notification ${message.data}");
       var isSendbirdCall = message.data.keys.contains('sendbird_call');
       if (isSendbirdCall) {
         var data = message.data;

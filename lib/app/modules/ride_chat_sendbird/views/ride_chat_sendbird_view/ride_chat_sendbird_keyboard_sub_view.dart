@@ -293,10 +293,13 @@ class RideChatSendbirdKeyboardSubView
                                             "assets/icons/icon_gallery.svg",
                                             width: 24,
                                             height: 24,
-                                            color: controller
-                                                .themeColorServices
-                                                .sematicColorBlue500
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              controller
+                                                  .themeColorServices
+                                                  .sematicColorBlue500
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -361,10 +364,13 @@ class RideChatSendbirdKeyboardSubView
                                             "assets/icons/icon_camera.svg",
                                             width: 24.079988479614258,
                                             height: 20.717695236206055,
-                                            color: controller
-                                                .themeColorServices
-                                                .sematicColorBlue500
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              controller
+                                                  .themeColorServices
+                                                  .sematicColorBlue500
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ],
                                       ),

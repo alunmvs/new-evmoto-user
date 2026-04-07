@@ -1,12 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-
 import '../controllers/login_register_controller.dart';
 
 class LoginRegisterView extends GetView<LoginRegisterController> {
@@ -269,6 +266,8 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                 .themeColorServices
                                                 .primaryBlue
                                                 .value,
+                                            autovalidateMode:
+                                                AutovalidateMode.disabled,
                                             decoration: InputDecoration(
                                               counterText: '',
                                               contentPadding:
@@ -377,7 +376,8 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                             },
                                             maxLength: 25,
                                             validator: (value) {
-                                              if (value != null) {
+                                              if (value != null &&
+                                                  value != "") {
                                                 if (value.isNotEmpty) {
                                                   if (value.substring(0, 1) !=
                                                       "8") {

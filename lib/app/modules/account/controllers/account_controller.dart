@@ -55,6 +55,8 @@ class AccountController extends GetxController {
       await getPackageInfo();
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
     isFetch.value = false;
   }
@@ -80,9 +82,9 @@ class AccountController extends GetxController {
         .getString("customer_cs_whatsapp");
     final Uri url = Uri.parse("https://wa.me/$customerCsWhatsapp");
 
-    if (await canLaunchUrl(url)) {
+    try {
       await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
+    } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
@@ -168,7 +170,10 @@ class AccountController extends GetxController {
                                             "assets/icons/icon_logout.svg",
                                             width: 16,
                                             height: 16,
-                                            color: Color(0XFF0573EA),
+                                            colorFilter: ColorFilter.mode(
+                                              Color(0XFF0573EA),
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -255,9 +260,12 @@ class AccountController extends GetxController {
                                             "assets/icons/icon_delete.svg",
                                             width: 16,
                                             height: 16,
-                                            color: themeColorServices
-                                                .sematicColorRed400
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              themeColorServices
+                                                  .sematicColorRed400
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -365,7 +373,10 @@ class AccountController extends GetxController {
                             "assets/icons/icon_logout.svg",
                             width: 26,
                             height: 26,
-                            color: Color(0XFF0573EA),
+                            colorFilter: ColorFilter.mode(
+                              Color(0XFF0573EA),
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ],
                       ),
@@ -782,6 +793,11 @@ class AccountController extends GetxController {
                           } on DioException catch (e) {
                             SnackbarHelper.showSnackbarError(
                               text: e.error.toString(),
+                            );
+                            return;
+                          } catch (e) {
+                            SnackbarHelper.showSnackbarError(
+                              text: e.toString(),
                             );
                             return;
                           }

@@ -52,6 +52,8 @@ class SettingSavedLocationController extends GetxController {
           .getSavedAddressList());
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
@@ -136,9 +138,12 @@ class SettingSavedLocationController extends GetxController {
                                   "assets/icons/icon_edit.svg",
                                   width: 16,
                                   height: 16,
-                                  color: themeColorServices
-                                      .neutralsColorGrey700
-                                      .value,
+                                  colorFilter: ColorFilter.mode(
+                                    themeColorServices
+                                        .neutralsColorGrey700
+                                        .value,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
@@ -183,9 +188,10 @@ class SettingSavedLocationController extends GetxController {
                                   "assets/icons/icon_delete.svg",
                                   width: 16,
                                   height: 16,
-                                  color: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
+                                  colorFilter: ColorFilter.mode(
+                                    themeColorServices.sematicColorRed400.value,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
@@ -530,6 +536,10 @@ class SettingSavedLocationController extends GetxController {
                                 } on DioException catch (e) {
                                   SnackbarHelper.showSnackbarError(
                                     text: e.error.toString(),
+                                  );
+                                } catch (e) {
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.toString(),
                                   );
                                 }
                               },

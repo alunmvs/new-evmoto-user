@@ -150,6 +150,8 @@ class AddEditAddressController extends GetxController {
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

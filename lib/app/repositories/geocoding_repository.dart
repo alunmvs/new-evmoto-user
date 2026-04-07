@@ -38,7 +38,7 @@ class GeocodingRepository {
       );
 
       return GeocodingAddress.fromJson(response.data['data']);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -73,13 +73,22 @@ class GeocodingRepository {
         options: Options(headers: headers),
       );
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       var geocodingPlaceList = <GeocodingPlace>[];
-      for (var geocodingPlace in response.data['data']) {
-        geocodingPlaceList.add(GeocodingPlace.fromJson(geocodingPlace));
+
+      if (response.data['data'] is Iterable<dynamic>) {
+        for (var geocodingPlace in response.data['data']) {
+          geocodingPlaceList.add(GeocodingPlace.fromJson(geocodingPlace));
+        }
       }
 
       return geocodingPlaceList;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

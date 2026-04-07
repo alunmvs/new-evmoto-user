@@ -61,6 +61,8 @@ class VoucherListController extends GetxController {
       isSeeMoreVoucherList.value = voucherList.isNotEmpty;
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
@@ -79,6 +81,9 @@ class VoucherListController extends GetxController {
     } on DioException catch (e) {
       pageNum.value -= 1;
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      pageNum.value -= 1;
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

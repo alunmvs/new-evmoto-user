@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/recommendation_location_model.dart';
@@ -82,6 +81,8 @@ class CreateOrderRideController extends GetxController {
       await measureTime("Request Location", () => requestLocation());
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
 
     try {
@@ -94,6 +95,8 @@ class CreateOrderRideController extends GetxController {
         ),
       );
     } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
       SnackbarHelper.showSnackbarError(text: e.toString());
     }
 
@@ -334,28 +337,34 @@ class CreateOrderRideController extends GetxController {
   Future<void> getOriginPlaceLocationList({String? keyword}) async {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (keywordOrigin.value == keyword) {
-        originGeocodingPlaceList.value = await geocodingRepository
-            .getGeocodingPlaceByQuery(limit: 5, query: keywordOrigin.value);
+        try {
+          originGeocodingPlaceList.value = await geocodingRepository
+              .getGeocodingPlaceByQuery(limit: 5, query: keywordOrigin.value);
 
-        if (currentLatitude.value != null) {
-          for (var location in originGeocodingPlaceList) {
-            var distanceMeter = Geolocator.distanceBetween(
-              double.parse(currentLatitude.value!),
-              double.parse(currentLongitude.value!),
-              location.lat!,
-              location.lng!,
+          if (currentLatitude.value != null) {
+            for (var location in originGeocodingPlaceList) {
+              var distanceMeter = Geolocator.distanceBetween(
+                double.parse(currentLatitude.value!),
+                double.parse(currentLongitude.value!),
+                location.lat!,
+                location.lng!,
+              );
+              var distanceKm = (distanceMeter / 1000);
+
+              location.customDistanceKm = distanceKm;
+              location.customDistanceM = distanceMeter;
+            }
+
+            originGeocodingPlaceList.sort(
+              (a, b) => a.customDistanceM!.compareTo(b.customDistanceM!),
             );
-            var distanceKm = (distanceMeter / 1000);
 
-            location.customDistanceKm = distanceKm;
-            location.customDistanceM = distanceMeter;
+            originGeocodingPlaceList.refresh();
           }
-
-          originGeocodingPlaceList.sort(
-            (a, b) => a.customDistanceM!.compareTo(b.customDistanceM!),
-          );
-
-          originGeocodingPlaceList.refresh();
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.toString());
         }
       }
     });
@@ -364,31 +373,37 @@ class CreateOrderRideController extends GetxController {
   Future<void> getDestinationPlaceLocationList({String? keyword}) async {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (keywordDestination.value == keyword) {
-        destinationGeocodingPlaceList.value = await geocodingRepository
-            .getGeocodingPlaceByQuery(
-              limit: 5,
-              query: keywordDestination.value,
+        try {
+          destinationGeocodingPlaceList.value = await geocodingRepository
+              .getGeocodingPlaceByQuery(
+                limit: 5,
+                query: keywordDestination.value,
+              );
+
+          if (currentLatitude.value != null) {
+            for (var location in destinationGeocodingPlaceList) {
+              var distanceMeter = Geolocator.distanceBetween(
+                double.parse(currentLatitude.value!),
+                double.parse(currentLongitude.value!),
+                location.lat!,
+                location.lng!,
+              );
+              var distanceKm = (distanceMeter / 1000);
+
+              location.customDistanceKm = distanceKm;
+              location.customDistanceM = distanceMeter;
+            }
+
+            destinationGeocodingPlaceList.sort(
+              (a, b) => a.customDistanceM!.compareTo(b.customDistanceM!),
             );
 
-        if (currentLatitude.value != null) {
-          for (var location in destinationGeocodingPlaceList) {
-            var distanceMeter = Geolocator.distanceBetween(
-              double.parse(currentLatitude.value!),
-              double.parse(currentLongitude.value!),
-              location.lat!,
-              location.lng!,
-            );
-            var distanceKm = (distanceMeter / 1000);
-
-            location.customDistanceKm = distanceKm;
-            location.customDistanceM = distanceMeter;
+            destinationGeocodingPlaceList.refresh();
           }
-
-          destinationGeocodingPlaceList.sort(
-            (a, b) => a.customDistanceM!.compareTo(b.customDistanceM!),
-          );
-
-          destinationGeocodingPlaceList.refresh();
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.toString());
         }
       }
     });
@@ -472,21 +487,19 @@ class CreateOrderRideController extends GetxController {
       "longitude": selectedCurrentLocation.longitude!.toString(),
     };
 
-    if (result != null) {
-      originLatitude.value = result['latitude']!;
-      originLongitude.value = result['longitude']!;
-      originAddressName.value = result['address_name']!;
-      originAddress.value = result['address']!;
-      keywordOrigin.value = result['address_name']!;
-      originTextEditingController.text = result['address_name']!;
+    originLatitude.value = result['latitude']!;
+    originLongitude.value = result['longitude']!;
+    originAddressName.value = result['address_name']!;
+    originAddress.value = result['address']!;
+    keywordOrigin.value = result['address_name']!;
+    originTextEditingController.text = result['address_name']!;
 
-      await Future.delayed(Duration(milliseconds: 100));
-      focusNodeDestination.requestFocus();
-      isOriginHasPrimaryFocus.value = false;
-      isDestinationHasPrimaryFocus.value = true;
+    await Future.delayed(Duration(milliseconds: 100));
+    focusNodeDestination.requestFocus();
+    isOriginHasPrimaryFocus.value = false;
+    isDestinationHasPrimaryFocus.value = true;
 
-      await getOriginPlaceLocationList(keyword: originAddressName.value);
-    }
+    await getOriginPlaceLocationList(keyword: originAddressName.value);
   }
 
   Future<void> onTapOriginSearchedLocation({
@@ -522,20 +535,18 @@ class CreateOrderRideController extends GetxController {
       "longitude": selectedCurrentLocation.lng.toString(),
     };
 
-    if (result != null) {
-      originLatitude.value = result['latitude'].toString();
-      originLongitude.value = result['longitude'].toString();
-      originAddressName.value = result['address_name']!;
-      originAddress.value = result['address']!;
-      keywordOrigin.value = result['address_name']!;
-      originTextEditingController.text = result['address_name']!;
+    originLatitude.value = result['latitude'].toString();
+    originLongitude.value = result['longitude'].toString();
+    originAddressName.value = result['address_name']!;
+    originAddress.value = result['address']!;
+    keywordOrigin.value = result['address_name']!;
+    originTextEditingController.text = result['address_name']!;
 
-      await Future.delayed(Duration(milliseconds: 100));
-      focusNodeDestination.requestFocus();
-      isOriginHasPrimaryFocus.value = false;
-      isDestinationHasPrimaryFocus.value = true;
-      await getOriginPlaceLocationList(keyword: originAddressName.value);
-    }
+    await Future.delayed(Duration(milliseconds: 100));
+    focusNodeDestination.requestFocus();
+    isOriginHasPrimaryFocus.value = false;
+    isDestinationHasPrimaryFocus.value = true;
+    await getOriginPlaceLocationList(keyword: originAddressName.value);
   }
 
   Future<void> onTapOriginLatestOrderLocation({
@@ -570,20 +581,18 @@ class CreateOrderRideController extends GetxController {
       "longitude": selectedCurrentLocation.longitude.toString(),
     };
 
-    if (result != null) {
-      originLatitude.value = result['latitude']!;
-      originLongitude.value = result['longitude']!;
-      originAddressName.value = result['address_name']!;
-      originAddress.value = result['address']!;
-      keywordOrigin.value = result['address_name']!;
-      originTextEditingController.text = result['address_name']!;
+    originLatitude.value = result['latitude']!;
+    originLongitude.value = result['longitude']!;
+    originAddressName.value = result['address_name']!;
+    originAddress.value = result['address']!;
+    keywordOrigin.value = result['address_name']!;
+    originTextEditingController.text = result['address_name']!;
 
-      await Future.delayed(Duration(milliseconds: 100));
-      focusNodeDestination.requestFocus();
-      isOriginHasPrimaryFocus.value = false;
-      isDestinationHasPrimaryFocus.value = true;
-      await getOriginPlaceLocationList(keyword: originAddressName.value);
-    }
+    await Future.delayed(Duration(milliseconds: 100));
+    focusNodeDestination.requestFocus();
+    isOriginHasPrimaryFocus.value = false;
+    isDestinationHasPrimaryFocus.value = true;
+    await getOriginPlaceLocationList(keyword: originAddressName.value);
   }
 
   // Destination
@@ -620,19 +629,17 @@ class CreateOrderRideController extends GetxController {
       "longitude": selectedCurrentLocation.longitude!.toString(),
     };
 
-    if (result != null) {
-      destinationLatitude.value = result['latitude']!;
-      destinationLongitude.value = result['longitude']!;
-      destinationAddressName.value = result['address_name']!;
-      destinationAddress.value = result['address']!;
-      keywordDestination.value = result['address_name']!;
-      destinationTextEditingController.text = result['address_name']!;
-      await getDestinationPlaceLocationList(
-        keyword: destinationAddressName.value,
-      );
+    destinationLatitude.value = result['latitude']!;
+    destinationLongitude.value = result['longitude']!;
+    destinationAddressName.value = result['address_name']!;
+    destinationAddress.value = result['address']!;
+    keywordDestination.value = result['address_name']!;
+    destinationTextEditingController.text = result['address_name']!;
+    await getDestinationPlaceLocationList(
+      keyword: destinationAddressName.value,
+    );
 
-      await onTapSubmit();
-    }
+    await onTapSubmit();
   }
 
   Future<void> onTapDestinationSearchedLocation({
@@ -668,19 +675,17 @@ class CreateOrderRideController extends GetxController {
       "longitude": selectedCurrentLocation.lng!.toString(),
     };
 
-    if (result != null) {
-      destinationLatitude.value = result['latitude'].toString();
-      destinationLongitude.value = result['longitude'].toString();
-      destinationAddressName.value = result['address_name']!;
-      destinationAddress.value = result['address']!;
-      keywordDestination.value = result['address_name']!;
-      destinationTextEditingController.text = result['address_name']!;
-      await getDestinationPlaceLocationList(
-        keyword: destinationAddressName.value,
-      );
+    destinationLatitude.value = result['latitude'].toString();
+    destinationLongitude.value = result['longitude'].toString();
+    destinationAddressName.value = result['address_name']!;
+    destinationAddress.value = result['address']!;
+    keywordDestination.value = result['address_name']!;
+    destinationTextEditingController.text = result['address_name']!;
+    await getDestinationPlaceLocationList(
+      keyword: destinationAddressName.value,
+    );
 
-      await onTapSubmit();
-    }
+    await onTapSubmit();
   }
 
   Future<void> onTapDestinationLatestOrderLocation({
@@ -714,19 +719,17 @@ class CreateOrderRideController extends GetxController {
       "longitude": selectedCurrentLocation.longitude!.toString(),
     };
 
-    if (result != null) {
-      destinationLatitude.value = result['latitude']!;
-      destinationLongitude.value = result['longitude']!;
-      destinationAddressName.value = result['address_name']!;
-      destinationAddress.value = result['address']!;
-      keywordDestination.value = result['address_name']!;
-      destinationTextEditingController.text = result['address_name']!;
-      await getDestinationPlaceLocationList(
-        keyword: destinationAddressName.value,
-      );
+    destinationLatitude.value = result['latitude']!;
+    destinationLongitude.value = result['longitude']!;
+    destinationAddressName.value = result['address_name']!;
+    destinationAddress.value = result['address']!;
+    keywordDestination.value = result['address_name']!;
+    destinationTextEditingController.text = result['address_name']!;
+    await getDestinationPlaceLocationList(
+      keyword: destinationAddressName.value,
+    );
 
-      await onTapSubmit();
-    }
+    await onTapSubmit();
   }
 
   Future<void> onTapOriginMapSelect() async {

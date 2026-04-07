@@ -176,6 +176,7 @@ class CreateOrderRideCheckoutController extends GetxController {
       destLng: destinationLongitude,
     );
 
+    if (isClosed) return;
     if (movementDirection == MovementDirection.vertical) {
       await googleMapController.animateCamera(
         CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
@@ -231,6 +232,7 @@ class CreateOrderRideCheckoutController extends GetxController {
           ),
           'assets/icons/icon_pinpoint_map_green.png',
         ),
+        anchor: Offset(0.5, 0.5),
       ),
     );
 
@@ -247,6 +249,7 @@ class CreateOrderRideCheckoutController extends GetxController {
           ),
           'assets/icons/icon_pinpoint_map_red.png',
         ),
+        anchor: Offset(0.5, 0.5),
       ),
     );
   }

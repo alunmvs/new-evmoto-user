@@ -54,12 +54,15 @@ class ActivityDetailDriverInformationSubView
               children: [
                 Column(
                   children: [
-                    CircleAvatar(
-                      radius: 48 / 2,
-                      backgroundImage: CachedNetworkImageProvider(
-                        controller.orderRideDetail.value.driverAvatar!,
+                    if (controller.orderRideDetail.value.driverAvatar !=
+                        null) ...[
+                      CircleAvatar(
+                        radius: 48 / 2,
+                        backgroundImage: CachedNetworkImageProvider(
+                          controller.orderRideDetail.value.driverAvatar!,
+                        ),
                       ),
-                    ),
+                    ],
                     SizedBox(height: 20),
                   ],
                 ),
@@ -91,17 +94,20 @@ class ActivityDetailDriverInformationSubView
                                 "assets/icons/icon_star.svg",
                                 width: 9.75,
                                 height: 9,
-                                color: controller
-                                    .themeColorServices
-                                    .sematicColorYellow400
-                                    .value,
+                                colorFilter: ColorFilter.mode(
+                                  controller
+                                      .themeColorServices
+                                      .sematicColorYellow400
+                                      .value,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(width: 2),
                         Text(
-                          controller.orderRideDetail.value.score!
+                          (controller.orderRideDetail.value.score ?? 0.0)
                               .toStringAsPrecision(2),
                           style: controller
                               .typographyServices

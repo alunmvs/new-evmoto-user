@@ -44,9 +44,12 @@ class PromoAvailableCardSubView
                 "assets/icons/icon_promo.svg",
                 width: 20,
                 height: 20,
-                color: controller.selectedCouponId.value == coupon.id
-                    ? controller.themeColorServices.primaryBlue.value
-                    : Color(0XFF2E2E2E),
+                colorFilter: ColorFilter.mode(
+                  controller.selectedCouponId.value == coupon.id
+                      ? controller.themeColorServices.primaryBlue.value
+                      : Color(0XFF2E2E2E),
+                  BlendMode.srcIn,
+                ),
               ),
               SizedBox(width: 4),
               Expanded(

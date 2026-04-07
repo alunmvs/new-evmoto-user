@@ -51,8 +51,10 @@ class CreateOrderRideSavedAddressSubView
                                 : "assets/icons/icon_pinpoint.svg",
                             height: 12,
                             width: 12,
-                            color:
-                                controller.themeColorServices.primaryBlue.value,
+                            colorFilter: ColorFilter.mode(
+                              controller.themeColorServices.primaryBlue.value,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ],
                       ),
@@ -114,8 +116,10 @@ class CreateOrderRideSavedAddressSubView
                             "assets/icons/icon_home.svg",
                             height: 12,
                             width: 12,
-                            color:
-                                controller.themeColorServices.primaryBlue.value,
+                            colorFilter: ColorFilter.mode(
+                              controller.themeColorServices.primaryBlue.value,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ],
                       ),
@@ -182,8 +186,10 @@ class CreateOrderRideSavedAddressSubView
                             "assets/icons/icon_office.svg",
                             height: 14,
                             width: 10,
-                            color:
-                                controller.themeColorServices.primaryBlue.value,
+                            colorFilter: ColorFilter.mode(
+                              controller.themeColorServices.primaryBlue.value,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ],
                       ),
@@ -247,8 +253,10 @@ class CreateOrderRideSavedAddressSubView
                           "assets/icons/icon_add_square.svg",
                           height: 12,
                           width: 12,
-                          color:
-                              controller.themeColorServices.primaryBlue.value,
+                          colorFilter: ColorFilter.mode(
+                            controller.themeColorServices.primaryBlue.value,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ],
                     ),

@@ -54,7 +54,10 @@ class CreateOrderRideView extends GetView<CreateOrderRideController> {
                       "assets/icons/icon_maps.svg",
                       width: 16,
                       height: 16,
-                      color: controller.themeColorServices.primaryBlue.value,
+                      colorFilter: ColorFilter.mode(
+                        controller.themeColorServices.primaryBlue.value,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     SizedBox(width: 4),
                     Text(

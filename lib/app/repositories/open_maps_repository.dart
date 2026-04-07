@@ -31,8 +31,14 @@ class OpenMapsRepository {
         queryParameters: {"overview": "full", "geometries": "geojson"},
       );
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       return OpenMapDirection.fromJson(response.data);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

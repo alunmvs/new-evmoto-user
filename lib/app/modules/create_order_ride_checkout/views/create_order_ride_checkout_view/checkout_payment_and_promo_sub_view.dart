@@ -71,7 +71,10 @@ class CheckoutPaymentAndPromoSubView
                                 "assets/icons/icon_discount.svg",
                                 width: 16,
                                 height: 16,
-                                color: Color(0XFFB3B3B3),
+                                colorFilter: ColorFilter.mode(
+                                  Color(0XFFB3B3B3),
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ],
                           ),
@@ -115,6 +118,10 @@ class CheckoutPaymentAndPromoSubView
                                 SnackbarHelper.showSnackbarError(
                                   text: e.response?.data,
                                 );
+                              } catch (e) {
+                                SnackbarHelper.showSnackbarError(
+                                  text: e.toString(),
+                                );
                               }
                             }
                           },
@@ -152,7 +159,10 @@ class CheckoutPaymentAndPromoSubView
                                   "assets/icons/icon_arrow_right.svg",
                                   width: 10.83 * 1.3,
                                   height: 6.25 * 1.3,
-                                  color: Color(0XFF2E2E2E),
+                                  colorFilter: ColorFilter.mode(
+                                    Color(0XFF2E2E2E),
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ],
                             ),
@@ -180,6 +190,10 @@ class CheckoutPaymentAndPromoSubView
                                 controller.selectedCoupon.value = Coupon();
                                 SnackbarHelper.showSnackbarError(
                                   text: e.response?.data,
+                                );
+                              } catch (e) {
+                                SnackbarHelper.showSnackbarError(
+                                  text: e.toString(),
                                 );
                               }
                             }
@@ -229,7 +243,10 @@ class CheckoutPaymentAndPromoSubView
                                   "assets/icons/icon_arrow_right.svg",
                                   width: 10.83 * 1.3,
                                   height: 6.25 * 1.3,
-                                  color: Color(0XFF2E2E2E),
+                                  colorFilter: ColorFilter.mode(
+                                    Color(0XFF2E2E2E),
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ],
                             ),

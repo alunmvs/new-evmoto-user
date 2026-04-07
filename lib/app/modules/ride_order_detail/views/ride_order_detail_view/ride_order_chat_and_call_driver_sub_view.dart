@@ -49,7 +49,10 @@ class RideOrderChatAndCallDriverSubView
                         "assets/icons/icon_phone.svg",
                         width: 11.18,
                         height: 12,
-                        color: controller.themeColorServices.primaryBlue.value,
+                        colorFilter: ColorFilter.mode(
+                          controller.themeColorServices.primaryBlue.value,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ],
                   ),

@@ -1,5 +1,3 @@
-import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
-
 class HistoryOrder {
   int? orderId;
   String? orderTime;

@@ -295,10 +295,10 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
                       "assets/icons/icon_add_square.svg",
                       width: 12,
                       height: 12,
-                      color: controller
-                          .themeColorServices
-                          .neutralsColorGrey0
-                          .value,
+                      colorFilter: ColorFilter.mode(
+                        controller.themeColorServices.neutralsColorGrey0.value,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     SizedBox(width: 6),
                     Text(

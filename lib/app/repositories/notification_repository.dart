@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -40,12 +38,18 @@ class NotificationRepository {
       };
 
       var dio = apiServices.dio;
-      await dio.post(
+      var response = await dio.post(
         url,
         data: formData,
         options: Options(headers: headers),
       );
-    } on DioException catch (e) {
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+    } on DioException {
       rethrow;
     }
   }
@@ -77,7 +81,7 @@ class NotificationRepository {
         data: formData,
         options: Options(headers: headers),
       );
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

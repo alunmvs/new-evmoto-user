@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -50,12 +48,14 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       return OrderRideServer.fromJson(response.data['data']);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -90,8 +90,10 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       var result = <ActiveOrder>[];
@@ -101,7 +103,7 @@ class OrderRideRepository {
       }
 
       return result;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -138,8 +140,10 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       var result = <HistoryOrder>[];
@@ -149,7 +153,7 @@ class OrderRideRepository {
       }
 
       return result;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -183,12 +187,14 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       return OrderRide.fromJson(response.data['data']);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -265,12 +271,14 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       return RequestedOrderRide.fromJson(response.data['data']);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -309,8 +317,10 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       var result = <OrderRidePricing>[];
@@ -320,7 +330,7 @@ class OrderRideRepository {
       }
 
       return result;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -359,10 +369,12 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -389,10 +401,12 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -431,10 +445,12 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -475,10 +491,12 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -511,12 +529,14 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       return OrderReview.fromJson(response.data['data']);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -538,13 +558,6 @@ class OrderRideRepository {
         "endLon": endLon,
       });
 
-      print({
-        "startLat": startLat,
-        "startLon": startLon,
-        "endLat": endLat,
-        "endLon": endLon,
-      });
-
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
@@ -560,10 +573,14 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      print(response.data);
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
 
       return ValidateLocationResponse.fromJson(response.data);
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

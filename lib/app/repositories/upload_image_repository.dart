@@ -23,8 +23,14 @@ class UploadImageRepository {
       var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       return response.data["url"];
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

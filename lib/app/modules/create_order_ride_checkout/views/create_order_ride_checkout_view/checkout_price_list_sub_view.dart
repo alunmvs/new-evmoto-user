@@ -123,10 +123,13 @@ class CheckoutPriceListSubView
                         "assets/icons/icon_account.svg",
                         width: 12,
                         height: 12,
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey400
-                            .value,
+                        colorFilter: ColorFilter.mode(
+                          controller
+                              .themeColorServices
+                              .neutralsColorGrey400
+                              .value,
+                          BlendMode.srcIn,
+                        ),
                       ),
                       SizedBox(width: 4),
                       Text(

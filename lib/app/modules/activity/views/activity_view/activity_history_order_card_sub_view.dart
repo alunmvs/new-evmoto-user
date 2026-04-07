@@ -44,6 +44,8 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
               }
             } on DioException catch (e) {
               SnackbarHelper.showSnackbarError(text: e.error.toString());
+            } catch (e) {
+              SnackbarHelper.showSnackbarError(text: e.toString());
             }
             await Get.toNamed(
               Routes.RIDE_ORDER_DETAIL,
@@ -524,10 +526,13 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                             "assets/icons/icon_arrow_right.svg",
                                             width: 13,
                                             height: 7.5,
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -578,10 +583,13 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                             "assets/icons/icon_arrow_right.svg",
                                             width: 13,
                                             height: 7.5,
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ),
                                       ),

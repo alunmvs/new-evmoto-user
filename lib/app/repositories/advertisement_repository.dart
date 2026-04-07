@@ -41,6 +41,12 @@ class AdvertisementRepository {
         options: Options(headers: headers),
       );
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       var advertisementList = <Advertisement>[];
 
       for (var advertisement in response.data?['data'] ?? []) {
@@ -48,7 +54,7 @@ class AdvertisementRepository {
       }
 
       return advertisementList;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

@@ -74,7 +74,9 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
                       locale: 'id_ID',
                       symbol: 'Rp',
                       decimalDigits: 0,
-                    ).format(controller.orderRideDetail.value.additionalCharge),
+                    ).format(
+                      controller.orderRideDetail.value.additionalCharge ?? 0.0,
+                    ),
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(
                           color: controller
@@ -212,7 +214,7 @@ class ActivityDetailInvoiceSubView extends GetView<ActivityDetailController> {
                 ).format(
                   controller.orderRideDetail.value.state == 10
                       ? 0
-                      : controller.orderRideDetail.value.payMoney,
+                      : (controller.orderRideDetail.value.payMoney ?? 0.0),
                 ),
                 style: controller.typographyServices.bodySmallBold.value
                     .copyWith(

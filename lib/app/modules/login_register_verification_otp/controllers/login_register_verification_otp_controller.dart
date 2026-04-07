@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/repositories/login_register_repository.dart';
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
@@ -92,6 +91,8 @@ class LoginRegisterVerificationOtpController extends GetxController {
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
@@ -116,6 +117,8 @@ class LoginRegisterVerificationOtpController extends GetxController {
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

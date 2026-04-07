@@ -63,6 +63,10 @@ class SplashScreenController extends GetxController {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;
       isFetch.value = false;
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+      isCriticalError.value = true;
+      isFetch.value = false;
     }
   }
 

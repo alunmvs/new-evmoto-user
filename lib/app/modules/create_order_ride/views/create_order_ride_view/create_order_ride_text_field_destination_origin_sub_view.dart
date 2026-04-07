@@ -5,8 +5,6 @@ import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride/controllers/create_order_ride_controller.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride/views/create_order_ride_view/create_order_ride_saved_address_sub_view.dart';
 
-import '../../../../routes/app_pages.dart';
-
 class CreateOrderRideTextFieldDestinationOriginSubView
     extends GetView<CreateOrderRideController> {
   const CreateOrderRideTextFieldDestinationOriginSubView({super.key});
@@ -169,10 +167,13 @@ class CreateOrderRideTextFieldDestinationOriginSubView
                                         "assets/icons/icon_close.svg",
                                         width: 20,
                                         height: 20,
-                                        color: controller
-                                            .themeColorServices
-                                            .neutralsColorSlate700
-                                            .value,
+                                        colorFilter: ColorFilter.mode(
+                                          controller
+                                              .themeColorServices
+                                              .neutralsColorSlate700
+                                              .value,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -323,10 +324,13 @@ class CreateOrderRideTextFieldDestinationOriginSubView
                                         "assets/icons/icon_close.svg",
                                         width: 20,
                                         height: 20,
-                                        color: controller
-                                            .themeColorServices
-                                            .neutralsColorSlate700
-                                            .value,
+                                        colorFilter: ColorFilter.mode(
+                                          controller
+                                              .themeColorServices
+                                              .neutralsColorSlate700
+                                              .value,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ],
                                   ),

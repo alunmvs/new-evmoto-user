@@ -5,10 +5,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/utils/order_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
-
 import '../../../../routes/app_pages.dart';
 
 class HomeBookmarkLocationSubview extends GetView<HomeController> {
@@ -196,6 +193,8 @@ class HomeBookmarkLocationSubview extends GetView<HomeController> {
                         SnackbarHelper.showSnackbarError(
                           text: e.error.toString(),
                         );
+                      } catch (e) {
+                        SnackbarHelper.showSnackbarError(text: e.toString());
                       }
 
                       await Get.toNamed(

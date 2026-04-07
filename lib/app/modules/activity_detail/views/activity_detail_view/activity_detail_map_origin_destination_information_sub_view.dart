@@ -158,7 +158,12 @@ class ActivityDetailMapOriginDestinationInformationSubView
                                 ),
                           ),
                           Text(
-                            controller.orderRideDetail.value.insertTime == ""
+                            controller.orderRideDetail.value.insertTime == "" ||
+                                    controller
+                                            .orderRideDetail
+                                            .value
+                                            .insertTime ==
+                                        null
                                 ? "-"
                                 : DateFormat(
                                     'HH:mm',
@@ -259,7 +264,12 @@ class ActivityDetailMapOriginDestinationInformationSubView
                                 ),
                           ),
                           Text(
-                            controller.orderRideDetail.value.arriveTime == ""
+                            controller.orderRideDetail.value.arriveTime == "" ||
+                                    controller
+                                            .orderRideDetail
+                                            .value
+                                            .arriveTime ==
+                                        null
                                 ? "-"
                                 : DateFormat(
                                     'HH:mm',

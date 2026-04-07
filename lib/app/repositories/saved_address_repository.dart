@@ -47,10 +47,12 @@ class SavedAddressRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -95,10 +97,12 @@ class SavedAddressRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -119,8 +123,10 @@ class SavedAddressRepository {
       var dio = apiServices.dio;
       var response = await dio.get(url, options: Options(headers: headers));
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
 
       var savedAddressList = <SavedAddress>[].obs;
@@ -130,7 +136,7 @@ class SavedAddressRepository {
       }
 
       return savedAddressList;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -151,10 +157,12 @@ class SavedAddressRepository {
       var dio = apiServices.dio;
       var response = await dio.delete(url, options: Options(headers: headers));
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

@@ -51,10 +51,13 @@ class ActivityDetailRatingReviewSubView
                             "assets/icons/icon_star.svg",
                             width: 13,
                             height: 12,
-                            color: controller
-                                .themeColorServices
-                                .sematicColorYellow400
-                                .value,
+                            colorFilter: ColorFilter.mode(
+                              controller
+                                  .themeColorServices
+                                  .sematicColorYellow400
+                                  .value,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                       ),

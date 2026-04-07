@@ -28,6 +28,8 @@ class PrivacyPolicyController extends GetxController {
       await getPrivacyPolicyAgreement();
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
     isFetch.value = false;
   }

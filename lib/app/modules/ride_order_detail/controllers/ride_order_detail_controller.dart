@@ -6,14 +6,12 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
-import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
-    as directionModel;
+    as direction_model;
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
-import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
@@ -31,17 +29,14 @@ import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RideOrderDetailController extends GetxController {
-  final GoogleMapsRepository googleMapsRepository;
   final OrderRideRepository orderRideRepository;
   final OpenMapsRepository openMapsRepository;
 
   RideOrderDetailController({
-    required this.googleMapsRepository,
     required this.orderRideRepository,
     required this.openMapsRepository,
   });
@@ -86,13 +81,11 @@ class RideOrderDetailController extends GetxController {
 
   final payType = 3.obs;
 
-  final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
-
   Timer? manualRefreshStatusTimer;
 
-  final driverToOriginDirection = directionModel.OpenMapDirection().obs;
-  final driverToDestinationDirection = directionModel.OpenMapDirection().obs;
-  final originToDestinationDirection = directionModel.OpenMapDirection().obs;
+  final driverToOriginDirection = direction_model.OpenMapDirection().obs;
+  final driverToDestinationDirection = direction_model.OpenMapDirection().obs;
+  final originToDestinationDirection = direction_model.OpenMapDirection().obs;
 
   final isDriverToOriginDirectionVisible = true.obs;
   final isDriverToDestinationDirectionVisible = true.obs;
@@ -501,6 +494,7 @@ class RideOrderDetailController extends GetxController {
           ),
           'assets/icons/icon_driver.png',
         ),
+        anchor: Offset(0.5, 0.5),
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -517,6 +511,7 @@ class RideOrderDetailController extends GetxController {
           ),
           'assets/icons/icon_pinpoint_map_green.png',
         ),
+        anchor: Offset(0.5, 0.5),
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -576,6 +571,7 @@ class RideOrderDetailController extends GetxController {
         );
       }
 
+      if (isClosed) return;
       await googleMapController.animateCamera(
         CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
       );
@@ -603,6 +599,7 @@ class RideOrderDetailController extends GetxController {
         ),
         'assets/icons/icon_pinpoint_map_green.png',
       ),
+      anchor: Offset(0.5, 0.5),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -619,6 +616,7 @@ class RideOrderDetailController extends GetxController {
         ),
         'assets/icons/icon_pinpoint_map_red.png',
       ),
+      anchor: Offset(0.5, 0.5),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -635,6 +633,7 @@ class RideOrderDetailController extends GetxController {
         ),
         'assets/icons/icon_driver.png',
       ),
+      anchor: Offset(0.5, 0.5),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -699,6 +698,7 @@ class RideOrderDetailController extends GetxController {
       );
     }
 
+    if (isClosed) return;
     await googleMapController.animateCamera(
       CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
     );
@@ -735,6 +735,7 @@ class RideOrderDetailController extends GetxController {
             ),
             'assets/icons/icon_driver.png',
           ),
+          anchor: Offset(0.5, 0.5),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -782,6 +783,7 @@ class RideOrderDetailController extends GetxController {
             ),
             'assets/icons/icon_driver.png',
           ),
+          anchor: Offset(0.5, 0.5),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -798,6 +800,7 @@ class RideOrderDetailController extends GetxController {
             ),
             'assets/icons/icon_pinpoint_map_green.png',
           ),
+          anchor: Offset(0.5, 0.5),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -857,6 +860,7 @@ class RideOrderDetailController extends GetxController {
           );
         }
 
+        if (isClosed) return;
         await googleMapController.animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
@@ -880,6 +884,7 @@ class RideOrderDetailController extends GetxController {
             ),
             'assets/icons/icon_driver.png',
           ),
+          anchor: Offset(0.5, 0.5),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -896,6 +901,7 @@ class RideOrderDetailController extends GetxController {
             ),
             'assets/icons/icon_pinpoint_map_red.png',
           ),
+          anchor: Offset(0.5, 0.5),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -955,6 +961,7 @@ class RideOrderDetailController extends GetxController {
           );
         }
 
+        if (isClosed) return;
         await googleMapController.animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
@@ -995,6 +1002,7 @@ class RideOrderDetailController extends GetxController {
   Future<void> onTapRefocus() async {
     if (isClosed) return;
     if (orderRideDetail.value.state == 1) {
+      if (isClosed) return;
       await googleMapController.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
@@ -1044,6 +1052,7 @@ class RideOrderDetailController extends GetxController {
         destLng: destinationLongitude,
       );
 
+      if (isClosed) return;
       if (movementDirection == MovementDirection.vertical) {
         await googleMapController.animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
@@ -1091,6 +1100,7 @@ class RideOrderDetailController extends GetxController {
         destLng: destinationLongitude,
       );
 
+      if (isClosed) return;
       if (movementDirection == MovementDirection.vertical) {
         await googleMapController.animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
@@ -1374,7 +1384,7 @@ class RideOrderDetailController extends GetxController {
               totalHitAPIGetDirectionDriverToOrigin;
         } else {
           driverToOriginDirection.value =
-              directionModel.OpenMapDirection.fromJson(
+              direction_model.OpenMapDirection.fromJson(
                 jsonDecode(driverToOriginDirectionCache),
               );
         }
@@ -1405,7 +1415,7 @@ class RideOrderDetailController extends GetxController {
               totalHitAPIGetDirectionDriverToDestination;
         } else {
           driverToDestinationDirection.value =
-              directionModel.OpenMapDirection.fromJson(
+              direction_model.OpenMapDirection.fromJson(
                 jsonDecode(driverToDestinationDirectionCache),
               );
         }
@@ -1426,7 +1436,7 @@ class RideOrderDetailController extends GetxController {
     //     jsonEncode(originToDestinationDirection.value.toJson()),
     //   );
     // } else {
-    //   originToDestinationDirection.value = directionModel
+    //   originToDestinationDirection.value = direction_model
     //       .OpenMapDirection.fromJson(jsonDecode(originToDestinationCache));
     // }
   }
@@ -1451,6 +1461,7 @@ class RideOrderDetailController extends GetxController {
           ),
           'assets/icons/icon_driver.png',
         ),
+        anchor: Offset(0.5, 0.5),
         visible: isMarkerDriverVisible.value,
       );
       upsertMarker(markerId: driverMarkerId, newMarker: driverNewMarker);
@@ -1468,6 +1479,7 @@ class RideOrderDetailController extends GetxController {
           ),
           'assets/icons/icon_pinpoint_map_green.png',
         ),
+        anchor: Offset(0.5, 0.5),
         visible: isMarkerOriginVisible.value,
       );
       upsertMarker(markerId: originMarkerId, newMarker: originNewMarker);
@@ -1487,6 +1499,7 @@ class RideOrderDetailController extends GetxController {
           ),
           'assets/icons/icon_driver.png',
         ),
+        anchor: Offset(0.5, 0.5),
         visible: isMarkerDriverVisible.value,
       );
       upsertMarker(markerId: driverMarkerId, newMarker: driverNewMarker);
@@ -1504,6 +1517,7 @@ class RideOrderDetailController extends GetxController {
           ),
           'assets/icons/icon_pinpoint_map_green.png',
         ),
+        anchor: Offset(0.5, 0.5),
         visible: isMarkerOriginVisible.value,
       );
       upsertMarker(markerId: originMarkerId, newMarker: originNewMarker);
@@ -1521,6 +1535,7 @@ class RideOrderDetailController extends GetxController {
           ),
           'assets/icons/icon_pinpoint_map_red.png',
         ),
+        anchor: Offset(0.5, 0.5),
         visible: isMarkerDestinationVisible.value,
       );
       upsertMarker(
@@ -1534,6 +1549,7 @@ class RideOrderDetailController extends GetxController {
   Future<void> updateCameraAutoFocus() async {
     // waiting driver accept
     if ([1].contains(state.value)) {
+      if (isClosed) return;
       await googleMapController.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
@@ -1545,103 +1561,162 @@ class RideOrderDetailController extends GetxController {
       );
     }
 
-    // driver to origin
-    if ([2, 3, 4].contains(state.value)) {
-      LatLngBounds bounds;
+    var driverLatitude = (double.tryParse(this.driverLatitude.value) ?? 0.0)
+        .toInt();
+    var driverLongitude = (double.tryParse(this.driverLongitude.value) ?? 0.0)
+        .toInt();
 
-      var originLatitude = double.parse(driverLatitude.value);
-      var originLongitude = double.parse(driverLongitude.value);
-      var destinationLatitude = orderRideDetail.value.startLat!;
-      var destinationLongitude = orderRideDetail.value.startLon!;
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      // driver to origin
+      if ([2, 3, 4].contains(state.value)) {
+        LatLngBounds bounds;
 
-      if (originLatitude > destinationLatitude &&
-          originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, destinationLongitude),
-          northeast: LatLng(originLatitude, originLongitude),
+        var originLatitude = double.parse(this.driverLatitude.value);
+        var originLongitude = double.parse(this.driverLongitude.value);
+        var destinationLatitude = orderRideDetail.value.startLat!;
+        var destinationLongitude = orderRideDetail.value.startLon!;
+
+        if (originLatitude > destinationLatitude &&
+            originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, destinationLongitude),
+            northeast: LatLng(originLatitude, originLongitude),
+          );
+        } else if (originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, destinationLongitude),
+            northeast: LatLng(destinationLatitude, originLongitude),
+          );
+        } else if (originLatitude > destinationLatitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, originLongitude),
+            northeast: LatLng(originLatitude, destinationLongitude),
+          );
+        } else {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, originLongitude),
+            northeast: LatLng(destinationLatitude, destinationLongitude),
+          );
+        }
+
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
         );
-      } else if (originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, destinationLongitude),
-          northeast: LatLng(destinationLatitude, originLongitude),
-        );
-      } else if (originLatitude > destinationLatitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, originLongitude),
-          northeast: LatLng(originLatitude, destinationLongitude),
-        );
-      } else {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, originLongitude),
-          northeast: LatLng(destinationLatitude, destinationLongitude),
-        );
+
+        if (isClosed) return;
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
       }
 
-      var movementDirection = compareLatLng(
-        originLat: originLatitude,
-        originLng: originLongitude,
-        destLat: destinationLatitude,
-        destLng: destinationLongitude,
-      );
+      // driver to destination
+      if ([5, 6, 7, 8].contains(state.value)) {
+        LatLngBounds bounds;
 
-      if (movementDirection == MovementDirection.vertical) {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+        var originLatitude = double.parse(this.driverLatitude.value);
+        var originLongitude = double.parse(this.driverLongitude.value);
+        var destinationLatitude = orderRideDetail.value.endLat!;
+        var destinationLongitude = orderRideDetail.value.endLon!;
+
+        if (originLatitude > destinationLatitude &&
+            originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, destinationLongitude),
+            northeast: LatLng(originLatitude, originLongitude),
+          );
+        } else if (originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, destinationLongitude),
+            northeast: LatLng(destinationLatitude, originLongitude),
+          );
+        } else if (originLatitude > destinationLatitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, originLongitude),
+            northeast: LatLng(originLatitude, destinationLongitude),
+          );
+        } else {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, originLongitude),
+            northeast: LatLng(destinationLatitude, destinationLongitude),
+          );
+        }
+
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
         );
-      } else {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
-        );
+
+        if (isClosed) return;
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
       }
-    }
+    } else {
+      if ([2, 3, 4, 5, 6, 7, 8].contains(state.value)) {
+        LatLngBounds bounds;
 
-    // driver to destination
-    if ([5, 6, 7, 8].contains(state.value)) {
-      LatLngBounds bounds;
+        var originLatitude = orderRideDetail.value.startLat!;
+        var originLongitude = orderRideDetail.value.startLon!;
+        var destinationLatitude = orderRideDetail.value.endLat!;
+        var destinationLongitude = orderRideDetail.value.endLon!;
 
-      var originLatitude = double.parse(driverLatitude.value);
-      var originLongitude = double.parse(driverLongitude.value);
-      var destinationLatitude = orderRideDetail.value.endLat!;
-      var destinationLongitude = orderRideDetail.value.endLon!;
+        if (originLatitude > destinationLatitude &&
+            originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, destinationLongitude),
+            northeast: LatLng(originLatitude, originLongitude),
+          );
+        } else if (originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, destinationLongitude),
+            northeast: LatLng(destinationLatitude, originLongitude),
+          );
+        } else if (originLatitude > destinationLatitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, originLongitude),
+            northeast: LatLng(originLatitude, destinationLongitude),
+          );
+        } else {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, originLongitude),
+            northeast: LatLng(destinationLatitude, destinationLongitude),
+          );
+        }
 
-      if (originLatitude > destinationLatitude &&
-          originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, destinationLongitude),
-          northeast: LatLng(originLatitude, originLongitude),
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
         );
-      } else if (originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, destinationLongitude),
-          northeast: LatLng(destinationLatitude, originLongitude),
-        );
-      } else if (originLatitude > destinationLatitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, originLongitude),
-          northeast: LatLng(originLatitude, destinationLongitude),
-        );
-      } else {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, originLongitude),
-          northeast: LatLng(destinationLatitude, destinationLongitude),
-        );
-      }
 
-      var movementDirection = compareLatLng(
-        originLat: originLatitude,
-        originLng: originLongitude,
-        destLat: destinationLatitude,
-        destLng: destinationLongitude,
-      );
-
-      if (movementDirection == MovementDirection.vertical) {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
-        );
-      } else {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
-        );
+        if (isClosed) return;
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
       }
     }
   }
@@ -1651,49 +1726,56 @@ class RideOrderDetailController extends GetxController {
     polylines.clear();
     polylinesCoordinate.clear();
 
-    // waiting driver accept
-    if ([1].contains(state.value)) {}
+    var driverLatitude = (double.tryParse(this.driverLatitude.value) ?? 0.0)
+        .toInt();
+    var driverLongitude = (double.tryParse(this.driverLongitude.value) ?? 0.0)
+        .toInt();
 
-    // driver to origin
-    if ([2, 3, 4].contains(state.value)) {
-      polylinesCoordinate.value = driverToOriginDirection
-          .value
-          .routes!
-          .first
-          .geometry!
-          .coordinates!
-          .map((p) => LatLng(p[1], p[0]))
-          .toList();
-      polylines.add(
-        Polyline(
-          polylineId: PolylineId("driver_to_origin_direction"),
-          points: polylinesCoordinate,
-          color: Color(0XFF4DABF5),
-          width: 6,
-          visible: isDriverToOriginDirectionVisible.value,
-        ),
-      );
-    }
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      // waiting driver accept
+      if ([1].contains(state.value)) {}
 
-    // driver to destination
-    if ([5, 6, 7, 8].contains(state.value)) {
-      polylinesCoordinate.value = driverToDestinationDirection
-          .value
-          .routes!
-          .first
-          .geometry!
-          .coordinates!
-          .map((p) => LatLng(p[1], p[0]))
-          .toList();
-      polylines.add(
-        Polyline(
-          polylineId: PolylineId("driver_to_destination_direction"),
-          points: polylinesCoordinate,
-          color: Color(0XFF4DABF5),
-          width: 6,
-          visible: isDriverToDestinationDirectionVisible.value,
-        ),
-      );
+      // driver to origin
+      if ([2, 3, 4].contains(state.value)) {
+        polylinesCoordinate.value = driverToOriginDirection
+            .value
+            .routes!
+            .first
+            .geometry!
+            .coordinates!
+            .map((p) => LatLng(p[1], p[0]))
+            .toList();
+        polylines.add(
+          Polyline(
+            polylineId: PolylineId("driver_to_origin_direction"),
+            points: polylinesCoordinate,
+            color: Color(0XFF4DABF5),
+            width: 6,
+            visible: isDriverToOriginDirectionVisible.value,
+          ),
+        );
+      }
+
+      // driver to destination
+      if ([5, 6, 7, 8].contains(state.value)) {
+        polylinesCoordinate.value = driverToDestinationDirection
+            .value
+            .routes!
+            .first
+            .geometry!
+            .coordinates!
+            .map((p) => LatLng(p[1], p[0]))
+            .toList();
+        polylines.add(
+          Polyline(
+            polylineId: PolylineId("driver_to_destination_direction"),
+            points: polylinesCoordinate,
+            color: Color(0XFF4DABF5),
+            width: 6,
+            visible: isDriverToDestinationDirectionVisible.value,
+          ),
+        );
+      }
     }
   }
 
@@ -1701,27 +1783,36 @@ class RideOrderDetailController extends GetxController {
   Future<void> handleSocketDriverPosition({
     required SocketDriverPositionData socketDriverPositionData,
   }) async {
-    driverLatitude.value = socketDriverPositionData.lat.toString();
-    driverLongitude.value = socketDriverPositionData.lon.toString();
-    var markerId = MarkerId("driver");
-    var newMarker = Marker(
-      markerId: markerId,
-      position: LatLng(
-        double.parse(driverLatitude.value),
-        double.parse(driverLongitude.value),
-      ),
-      icon: await BitmapDescriptor.asset(
-        ImageConfiguration(
-          size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+    this.driverLatitude.value = socketDriverPositionData.lat.toString();
+    this.driverLongitude.value = socketDriverPositionData.lon.toString();
+
+    var driverLatitude = (double.tryParse(this.driverLatitude.value) ?? 0.0)
+        .toInt();
+    var driverLongitude = (double.tryParse(this.driverLongitude.value) ?? 0.0)
+        .toInt();
+
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      var markerId = MarkerId("driver");
+      var newMarker = Marker(
+        markerId: markerId,
+        position: LatLng(
+          double.parse(this.driverLatitude.value),
+          double.parse(this.driverLongitude.value),
         ),
-        'assets/icons/icon_driver.png',
-      ),
-      visible: isMarkerDriverVisible.value,
-    );
-    upsertMarker(markerId: markerId, newMarker: newMarker);
-    await updateDriverPositionReducedPolyline();
-    await updateDriverPositionReroutingOffRoute();
-    await updateCameraAutoFocus();
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+          ),
+          'assets/icons/icon_driver.png',
+        ),
+        anchor: Offset(0.5, 0.5),
+        visible: isMarkerDriverVisible.value,
+      );
+      upsertMarker(markerId: markerId, newMarker: newMarker);
+      await updateDriverPositionReducedPolyline();
+      await updateDriverPositionReroutingOffRoute();
+      await updateCameraAutoFocus();
+    }
   }
 
   // orderRideDetail & orderRideServerDetail
@@ -1796,55 +1887,69 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> updateDriverPositionReducedPolyline() async {
-    var closestPointIndex = getClosestPointIndex(
-      LatLng(
-        double.parse(driverLatitude.value),
-        double.parse(driverLongitude.value),
-      ),
-      polylinesCoordinate,
-    );
+    var driverLatitude = (double.tryParse(this.driverLatitude.value) ?? 0.0)
+        .toInt();
+    var driverLongitude = (double.tryParse(this.driverLongitude.value) ?? 0.0)
+        .toInt();
 
-    var closestIndex = closestPointIndex['index'];
-    var minDistance = closestPointIndex['min_distance'];
-    var threshold = 30.0;
-
-    this.distanceFromNearestRoute.value = minDistance;
-
-    if (minDistance < threshold && closestIndex > 0) {
-      polylinesCoordinate.value = polylinesCoordinate.sublist(closestIndex);
-
-      polylines.clear();
-      polylines.add(
-        Polyline(
-          polylineId: PolylineId("updated_polyline"),
-          color: Color(0XFF4DABF5),
-          width: 5,
-          points: polylinesCoordinate,
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      var closestPointIndex = getClosestPointIndex(
+        LatLng(
+          double.parse(this.driverLatitude.value),
+          double.parse(this.driverLongitude.value),
         ),
+        polylinesCoordinate,
       );
+
+      var closestIndex = closestPointIndex['index'];
+      var minDistance = closestPointIndex['min_distance'];
+      var threshold = 30.0;
+
+      this.distanceFromNearestRoute.value = minDistance;
+
+      if (minDistance < threshold && closestIndex > 0) {
+        polylinesCoordinate.value = polylinesCoordinate.sublist(closestIndex);
+
+        polylines.clear();
+        polylines.add(
+          Polyline(
+            polylineId: PolylineId("updated_polyline"),
+            color: Color(0XFF4DABF5),
+            width: 5,
+            points: polylinesCoordinate,
+          ),
+        );
+      }
     }
   }
 
   Future<void> updateDriverPositionReroutingOffRoute() async {
-    var distanceFromRoute = getDistanceFromRoute(
-      LatLng(
-        double.parse(driverLatitude.value),
-        double.parse(driverLongitude.value),
-      ),
-      polylinesCoordinate,
-    );
+    var driverLatitude = (double.tryParse(this.driverLatitude.value) ?? 0.0)
+        .toInt();
+    var driverLongitude = (double.tryParse(this.driverLongitude.value) ?? 0.0)
+        .toInt();
 
-    this.distanceFromRoute.value = distanceFromRoute;
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      var distanceFromRoute = getDistanceFromRoute(
+        LatLng(
+          double.parse(this.driverLatitude.value),
+          double.parse(this.driverLongitude.value),
+        ),
+        polylinesCoordinate,
+      );
 
-    if (distanceFromRoute > 50) {
-      if ([2, 3, 4].contains(state.value)) {
-        await getAllRoutingCache(forceUpdateDriverToOrigin: true);
-        await setupAllRouting();
-      }
+      this.distanceFromRoute.value = distanceFromRoute;
 
-      if ([5, 6, 7, 8].contains(state.value)) {
-        await getAllRoutingCache(forceUpdateDriverToDestination: true);
-        await setupAllRouting();
+      if (distanceFromRoute > 50) {
+        if ([2, 3, 4].contains(state.value)) {
+          await getAllRoutingCache(forceUpdateDriverToOrigin: true);
+          await setupAllRouting();
+        }
+
+        if ([5, 6, 7, 8].contains(state.value)) {
+          await getAllRoutingCache(forceUpdateDriverToDestination: true);
+          await setupAllRouting();
+        }
       }
     }
   }

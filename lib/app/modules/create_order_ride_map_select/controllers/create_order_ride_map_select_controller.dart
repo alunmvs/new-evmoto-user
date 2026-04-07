@@ -106,6 +106,7 @@ class CreateOrderRideMapSelectController extends GetxController {
       latitude.value = position.latitude.toString();
       longitude.value = position.longitude.toString();
 
+      if (isClosed) return;
       googleMapController.moveCamera(
         CameraUpdate.newLatLng(
           LatLng(double.parse(latitude.value!), double.parse(longitude.value!)),
@@ -116,6 +117,7 @@ class CreateOrderRideMapSelectController extends GetxController {
       latitude.value = "-6.1744651";
       longitude.value = "106.822745";
 
+      if (isClosed) return;
       googleMapController.moveCamera(
         CameraUpdate.newLatLng(
           LatLng(double.parse(latitude.value!), double.parse(longitude.value!)),
@@ -126,6 +128,7 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   Future<void> moveGoogleMapCameraToFillLocation() async {
     if (latitude.value != null && longitude.value != null) {
+      if (isClosed) return;
       await googleMapController.moveCamera(
         CameraUpdate.newLatLng(
           LatLng(double.parse(latitude.value!), double.parse(longitude.value!)),

@@ -28,6 +28,8 @@ class TermsAndConditionsController extends GetxController {
       await getTermsAndConditionsAgreement();
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
     isFetch.value = false;
   }

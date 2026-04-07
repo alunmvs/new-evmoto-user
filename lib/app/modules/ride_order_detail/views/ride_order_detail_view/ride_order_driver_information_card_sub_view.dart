@@ -86,10 +86,13 @@ class RideOrderDriverInformationCardSubView
                               "assets/icons/icon_star.svg",
                               width: 9.75,
                               height: 9,
-                              color: controller
-                                  .themeColorServices
-                                  .sematicColorYellow400
-                                  .value,
+                              colorFilter: ColorFilter.mode(
+                                controller
+                                    .themeColorServices
+                                    .sematicColorYellow400
+                                    .value,
+                                BlendMode.srcIn,
+                              ),
                             ),
                           ],
                         ),

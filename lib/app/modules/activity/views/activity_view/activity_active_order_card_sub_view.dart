@@ -230,10 +230,13 @@ class ActivityActiveOrderCardSubView extends GetView<ActivityController> {
                                       "assets/icons/icon_pinpoint.svg",
                                       width: 12,
                                       height: 14,
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorRed400
-                                          .value,
+                                      colorFilter: ColorFilter.mode(
+                                        controller
+                                            .themeColorServices
+                                            .sematicColorRed400
+                                            .value,
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
                                   ),
                                 );
