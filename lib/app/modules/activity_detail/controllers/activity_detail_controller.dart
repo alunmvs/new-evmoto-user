@@ -15,7 +15,7 @@ import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dar
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
+
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -164,9 +164,11 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.startLat!,
         orderRideDetail.value.startLon!,
       ),
-      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_map_green.svg',
-        Size(28, 35),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(
+          size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+        ),
+        'assets/icons/icon_pinpoint_map_green.png',
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -178,9 +180,11 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.endLat!,
         orderRideDetail.value.endLon!,
       ),
-      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_map_red.svg',
-        Size(28, 35),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(
+          size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+        ),
+        'assets/icons/icon_pinpoint_map_red.png',
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);

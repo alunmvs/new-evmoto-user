@@ -23,7 +23,6 @@ import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
 
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
@@ -496,9 +495,11 @@ class RideOrderDetailController extends GetxController {
           double.parse(driverLatitude.value),
           double.parse(driverLongitude.value),
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_driver.svg',
-          Size(32, 53),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+          ),
+          'assets/icons/icon_driver.png',
         ),
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -510,9 +511,11 @@ class RideOrderDetailController extends GetxController {
           orderRideDetail.value.startLat!,
           orderRideDetail.value.startLon!,
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_pinpoint_map_green.svg',
-          Size(28, 35),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+          ),
+          'assets/icons/icon_pinpoint_map_green.png',
         ),
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -594,9 +597,11 @@ class RideOrderDetailController extends GetxController {
         orderRideDetail.value.startLat!,
         orderRideDetail.value.startLon!,
       ),
-      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_map_green.svg',
-        Size(28, 35),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(
+          size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+        ),
+        'assets/icons/icon_pinpoint_map_green.png',
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -608,9 +613,11 @@ class RideOrderDetailController extends GetxController {
         orderRideDetail.value.endLat!,
         orderRideDetail.value.endLon!,
       ),
-      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_pinpoint_map_red.svg',
-        Size(28, 35),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(
+          size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+        ),
+        'assets/icons/icon_pinpoint_map_red.png',
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -622,9 +629,11 @@ class RideOrderDetailController extends GetxController {
         double.parse(driverLatitude.value),
         double.parse(driverLongitude.value),
       ),
-      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_driver.svg',
-        Size(32, 53),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(
+          size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+        ),
+        'assets/icons/icon_driver.png',
       ),
     );
     upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -720,9 +729,11 @@ class RideOrderDetailController extends GetxController {
             double.parse(driverLatitude.value),
             double.parse(driverLongitude.value),
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-            'assets/icons/icon_driver.svg',
-            Size(32, 53),
+          icon: await BitmapDescriptor.asset(
+            ImageConfiguration(
+              size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+            ),
+            'assets/icons/icon_driver.png',
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -765,9 +776,11 @@ class RideOrderDetailController extends GetxController {
             double.parse(driverLatitude.value),
             double.parse(driverLongitude.value),
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-            'assets/icons/icon_driver.svg',
-            Size(32, 53),
+          icon: await BitmapDescriptor.asset(
+            ImageConfiguration(
+              size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+            ),
+            'assets/icons/icon_driver.png',
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -779,9 +792,11 @@ class RideOrderDetailController extends GetxController {
             orderRideDetail.value.startLat!,
             orderRideDetail.value.startLon!,
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-            'assets/icons/icon_pinpoint_map_green.svg',
-            Size(28, 35),
+          icon: await BitmapDescriptor.asset(
+            ImageConfiguration(
+              size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+            ),
+            'assets/icons/icon_pinpoint_map_green.png',
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -859,9 +874,11 @@ class RideOrderDetailController extends GetxController {
             double.parse(driverLatitude.value),
             double.parse(driverLongitude.value),
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-            'assets/icons/icon_driver.svg',
-            Size(32, 53),
+          icon: await BitmapDescriptor.asset(
+            ImageConfiguration(
+              size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+            ),
+            'assets/icons/icon_driver.png',
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -873,9 +890,11 @@ class RideOrderDetailController extends GetxController {
             orderRideDetail.value.endLat!,
             orderRideDetail.value.endLon!,
           ),
-          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-            'assets/icons/icon_pinpoint_map_red.svg',
-            Size(28, 35),
+          icon: await BitmapDescriptor.asset(
+            ImageConfiguration(
+              size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+            ),
+            'assets/icons/icon_pinpoint_map_red.png',
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -1426,9 +1445,11 @@ class RideOrderDetailController extends GetxController {
           double.parse(driverLatitude.value),
           double.parse(driverLongitude.value),
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_driver.svg',
-          Size(32, 53),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+          ),
+          'assets/icons/icon_driver.png',
         ),
         visible: isMarkerDriverVisible.value,
       );
@@ -1441,9 +1462,11 @@ class RideOrderDetailController extends GetxController {
           orderRideDetail.value.startLat!,
           orderRideDetail.value.startLon!,
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_pinpoint_map_green.svg',
-          Size(28, 35),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+          ),
+          'assets/icons/icon_pinpoint_map_green.png',
         ),
         visible: isMarkerOriginVisible.value,
       );
@@ -1458,9 +1481,11 @@ class RideOrderDetailController extends GetxController {
           double.parse(driverLatitude.value),
           double.parse(driverLongitude.value),
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_driver.svg',
-          Size(32, 53),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+          ),
+          'assets/icons/icon_driver.png',
         ),
         visible: isMarkerDriverVisible.value,
       );
@@ -1473,9 +1498,11 @@ class RideOrderDetailController extends GetxController {
           orderRideDetail.value.startLat!,
           orderRideDetail.value.startLon!,
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_pinpoint_map_green.svg',
-          Size(28, 35),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+          ),
+          'assets/icons/icon_pinpoint_map_green.png',
         ),
         visible: isMarkerOriginVisible.value,
       );
@@ -1488,9 +1515,11 @@ class RideOrderDetailController extends GetxController {
           orderRideDetail.value.endLat!,
           orderRideDetail.value.endLon!,
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_pinpoint_map_red.svg',
-          Size(28, 35),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+          ),
+          'assets/icons/icon_pinpoint_map_red.png',
         ),
         visible: isMarkerDestinationVisible.value,
       );
@@ -1681,9 +1710,11 @@ class RideOrderDetailController extends GetxController {
         double.parse(driverLatitude.value),
         double.parse(driverLongitude.value),
       ),
-      icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-        'assets/icons/icon_driver.svg',
-        Size(32, 53),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(
+          size: Size((64 / 375) * Get.width, (106 / 812) * Get.height),
+        ),
+        'assets/icons/icon_driver.png',
       ),
       visible: isMarkerDriverVisible.value,
     );

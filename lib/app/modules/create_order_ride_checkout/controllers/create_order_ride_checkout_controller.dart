@@ -16,7 +16,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
-import 'package:new_evmoto_user/app/utils/bitmap_descriptor_helper.dart';
+
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 
@@ -225,9 +225,11 @@ class CreateOrderRideCheckoutController extends GetxController {
           double.parse(originLatitude.value!),
           double.parse(originLongitude.value!),
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_pinpoint_map_green.svg',
-          Size(28, 35),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+          ),
+          'assets/icons/icon_pinpoint_map_green.png',
         ),
       ),
     );
@@ -239,9 +241,11 @@ class CreateOrderRideCheckoutController extends GetxController {
           double.parse(destinationLatitude.value!),
           double.parse(destinationLongitude.value!),
         ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromSvgAsset(
-          'assets/icons/icon_pinpoint_map_red.svg',
-          Size(28, 35),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(
+            size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
+          ),
+          'assets/icons/icon_pinpoint_map_red.png',
         ),
       ),
     );
