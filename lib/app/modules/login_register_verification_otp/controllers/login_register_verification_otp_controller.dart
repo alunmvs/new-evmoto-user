@@ -98,12 +98,9 @@ class LoginRegisterVerificationOtpController extends GetxController {
 
   Future<void> onSubmitOTP() async {
     try {
-      print("oke-1");
       await locationServices.requestLocation();
-      print("oke-2");
 
       if (locationServices.currentLatitude.value != null) {
-        print("oke-3");
         var loginData = await loginRegisterRepository.loginByOtp(
           phone: mobilePhone.value,
           code: otpCode.value,
@@ -111,12 +108,9 @@ class LoginRegisterVerificationOtpController extends GetxController {
           lat: locationServices.currentLatitude.value.toString(),
           lng: locationServices.currentLongitude.value.toString(),
         );
-        print("oke-4");
         var storage = FlutterSecureStorage();
         await storage.write(key: "token", value: loginData.token);
-        print("oke-5");
         await userServices.getUserInfo();
-        print("oke-6");
 
         Get.offAllNamed(Routes.HOME);
       }

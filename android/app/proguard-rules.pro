@@ -32,6 +32,10 @@
 -keep class io.flutter.plugins.** { *; }
 -keep class io.flutter.plugin.common.** { *; }
 -keep class io.flutter.embedding.engine.** { *; }
+-keep class com.it_nomads.fluttersecurestorage.** { *; }
+-keep class androidx.security.crypto.** { *; }
+-keep class com.baseflow.geolocator.** { *; }
+-keep class com.google.android.gms.location.** { *; }
 
 # -------------------------------------------------
 # Keep enum methods
