@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class SavedAddressRepository {
   final apiServices = Get.find<ApiServices>();
@@ -19,8 +20,7 @@ class SavedAddressRepository {
     required int addressType,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/address";
+      var url = "$baseUrl/account/user/address";
 
       var data = {
         "addressName": addressName,
@@ -68,8 +68,7 @@ class SavedAddressRepository {
     required int addressType,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/address";
+      var url = "$baseUrl/account/user/address";
 
       var data = {
         "id": id,
@@ -109,8 +108,7 @@ class SavedAddressRepository {
 
   Future<List<SavedAddress>> getSavedAddressList() async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/address";
+      var url = "$baseUrl/account/user/address";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -143,8 +141,7 @@ class SavedAddressRepository {
 
   Future<void> deleteSavedAddress({required int id}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/address/$id";
+      var url = "$baseUrl/account/user/address/$id";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

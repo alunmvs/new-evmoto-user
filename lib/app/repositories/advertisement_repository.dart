@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/advertisement_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class AdvertisementRepository {
   final apiServices = Get.find<ApiServices>();
@@ -16,8 +17,7 @@ class AdvertisementRepository {
     required int? language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/activity/base/advertisement/queryByType";
+      var url = "$baseUrl/activity/base/advertisement/queryByType";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

@@ -7,6 +7,7 @@ import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class GeocodingRepository {
   final apiServices = Get.find<ApiServices>();
@@ -19,8 +20,7 @@ class GeocodingRepository {
     required double? longitude,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/geocoding/reverse";
+      var url = "$baseUrl/businessProcess/api/geocoding/reverse";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -48,8 +48,7 @@ class GeocodingRepository {
     int? limit,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/geocoding/places";
+      var url = "$baseUrl/businessProcess/api/geocoding/places";
 
       var dio = apiServices.dio;
 

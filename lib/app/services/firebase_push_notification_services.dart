@@ -14,7 +14,6 @@ import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
-import 'package:new_evmoto_user/app/repositories/notification_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -205,7 +204,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class FirebasePushNotificationServices extends GetxService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final notificationRepository = NotificationRepository();
   final fcmToken = "".obs;
   final apnsToken = "".obs;
 
@@ -434,7 +432,9 @@ class FirebasePushNotificationServices extends GetxService {
   }
 
   Future<void> onUnsubscribe() async {
-    await FirebaseMessaging.instance.deleteToken();
+    try {
+      await FirebaseMessaging.instance.deleteToken();
+    } catch (e) {}
     // await notificationRepository.unsubscribeNotification(
     //   fcmToken: fcmToken.value != "" ? fcmToken.value : null,
     //   apnsToken: apnsToken.value != "" ? apnsToken.value : null,

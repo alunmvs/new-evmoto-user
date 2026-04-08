@@ -338,6 +338,10 @@ class CreateOrderRideController extends GetxController {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (keywordOrigin.value == keyword) {
         try {
+          if (keyword == "") {
+            originGeocodingPlaceList.value = [];
+            return;
+          }
           originGeocodingPlaceList.value = await geocodingRepository
               .getGeocodingPlaceByQuery(limit: 5, query: keywordOrigin.value);
 
@@ -374,6 +378,10 @@ class CreateOrderRideController extends GetxController {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (keywordDestination.value == keyword) {
         try {
+          if (keyword == "") {
+            destinationGeocodingPlaceList.value = [];
+            return;
+          }
           destinationGeocodingPlaceList.value = await geocodingRepository
               .getGeocodingPlaceByQuery(
                 limit: 5,

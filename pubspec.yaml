@@ -41,7 +41,6 @@ dependencies:
   timelines_plus: ^1.0.8
   highlight_text: ^1.8.0
   visibility_detector: ^0.4.0+2
-  flutter_animate: ^4.5.2
   sliding_up_panel: ^2.0.0+1
   flutter_rating_bar: ^4.0.1
   dio: ^5.9.0
@@ -65,10 +64,6 @@ dependencies:
   in_app_review: ^2.0.11
   image_picker: ^1.2.1
   photo_view: ^0.15.0
-  showcaseview: ^5.0.1
-  flutter_localizations:
-    sdk: flutter
-  # flutter_webrtc: ^1.2.1
   stop_watch_timer: ^3.2.2
   firebase_storage: ^13.0.5
   url_launcher: ^6.3.2

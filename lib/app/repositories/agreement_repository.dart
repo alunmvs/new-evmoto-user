@@ -3,6 +3,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/agreement_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class AgreementRepository {
   final apiServices = Get.find<ApiServices>();
@@ -14,8 +15,7 @@ class AgreementRepository {
     int? type,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/app/base/agreement/queryByType";
+      var url = "$baseUrl/app/base/agreement/queryByType";
 
       var formData = FormData.fromMap({
         "userType": userType,

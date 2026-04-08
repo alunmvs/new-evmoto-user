@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class CouponRepository {
   final apiServices = Get.find<ApiServices>();
@@ -16,8 +17,7 @@ class CouponRepository {
     int? state,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/activity/api/coupon/queryMyCoupons";
+      var url = "$baseUrl/activity/api/coupon/queryMyCoupons";
 
       var formData = FormData.fromMap({
         "pageNum": pageNum,
@@ -67,8 +67,7 @@ class CouponRepository {
     int? state,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/activity/api/taxi/queryCoupon";
+      var url = "$baseUrl/activity/api/taxi/queryCoupon";
 
       var formData = FormData.fromMap({
         "orderId": orderId,

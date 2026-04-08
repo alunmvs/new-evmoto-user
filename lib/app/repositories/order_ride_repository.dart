@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/data/models/validate_location_response_model
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class OrderRideRepository {
   final apiServices = Get.find<ApiServices>();
@@ -24,8 +25,7 @@ class OrderRideRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/pushSingle/api/netty/queryOrderServer";
+      var url = "$baseUrl/pushSingle/api/netty/queryOrderServer";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -66,8 +66,7 @@ class OrderRideRepository {
     int? size,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryServingOrder";
+      var url = "$baseUrl/orderServer/api/order/queryServingOrder";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -115,8 +114,7 @@ class OrderRideRepository {
     int? type,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryMyOrderList";
+      var url = "$baseUrl/orderServer/api/order/queryMyOrderList";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -163,8 +161,7 @@ class OrderRideRepository {
     int? orderType,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryOrderInfo";
+      var url = "$baseUrl/orderServer/api/order/queryOrderInfo";
 
       var formData = FormData.fromMap({
         "orderId": orderId,
@@ -227,7 +224,7 @@ class OrderRideRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/orderPrivateCar/saveOrderPrivateCar";
+          "$baseUrl/businessProcess/api/orderPrivateCar/saveOrderPrivateCar";
 
       var formData = FormData.fromMap({
         "passengersPhone": passengersPhone,
@@ -291,8 +288,7 @@ class OrderRideRepository {
     required int? couponId,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/pricing/base/serverCarModel/queryServerCarModel";
+      var url = "$baseUrl/pricing/base/serverCarModel/queryServerCarModel";
 
       var formData = FormData.fromMap({
         "startLonLat": startLonLat,
@@ -343,8 +339,7 @@ class OrderRideRepository {
     String? remark,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/cancelOrder/api/taxi/addCancle";
+      var url = "$baseUrl/cancelOrder/api/taxi/addCancle";
 
       var formData = FormData.fromMap({
         "id": orderId,
@@ -381,54 +376,9 @@ class OrderRideRepository {
 
   Future<void> confirmPayment({required String? orderId}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user/pay/confirm";
+      var url = "$baseUrl/account/user/pay/confirm";
 
       var formData = FormData.fromMap({"orderId": orderId});
-
-      var storage = FlutterSecureStorage();
-      var token = await storage.read(key: 'token');
-
-      var headers = {
-        "Content-Type": "multipart/form-data",
-        'Authorization': "Bearer $token",
-      };
-
-      var dio = apiServices.dio;
-      var response = await dio.post(
-        url,
-        data: formData,
-        options: Options(headers: headers),
-      );
-
-      if (response.data['code'] != null && response.data['code'] != 200) {
-        if (response.data['msg'] != null) {
-          throw response.data['msg'];
-        }
-      }
-    } on DioException {
-      rethrow;
-    }
-  }
-
-  Future<void> paidOrder({
-    required String orderId,
-    required int payType,
-    required int type,
-    required int orderType,
-    required int language,
-  }) async {
-    try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/payment/api/taxi/payTaxiOrder";
-
-      var formData = FormData.fromMap({
-        "orderId": orderId,
-        "payType": payType,
-        "type": type,
-        "orderType": orderType,
-        "language": language,
-      });
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -464,8 +414,7 @@ class OrderRideRepository {
     required List<int> ratingLabels,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/evaluation/api/taxi/orderEvaluate";
+      var url = "$baseUrl/evaluation/api/taxi/orderEvaluate";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -506,8 +455,7 @@ class OrderRideRepository {
     required String orderId,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/orderServer/api/order/queryOrderReview";
+      var url = "$baseUrl/orderServer/api/order/queryOrderReview";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -548,8 +496,7 @@ class OrderRideRepository {
     required String? endLon,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/orderPrivateCar/validateLocation";
+      var url = "$baseUrl/businessProcess/api/orderPrivateCar/validateLocation";
 
       var formData = FormData.fromMap({
         "startLat": startLat,

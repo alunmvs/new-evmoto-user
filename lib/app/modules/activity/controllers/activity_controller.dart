@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
@@ -8,10 +9,13 @@ import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/order_helper.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../routes/app_pages.dart';
 
 class ActivityController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -152,5 +156,69 @@ class ActivityController extends GetxController
     }
 
     this.historyOrderList.addAll(historyOrderList);
+  }
+
+  Future<void> onTapOrderAgain({required HistoryOrder historyOrder}) async {
+    await homeController.getActiveOrderList();
+    if (homeController.isActiveOrderListNotEmpty.value) {
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.snackbarOrderNotSuccess ?? "-",
+      );
+      return;
+    }
+
+    await Get.toNamed(
+      Routes.CREATE_ORDER_RIDE,
+      arguments: {
+        "origin_address_name": historyOrder.startAddressName,
+        "origin_address": historyOrder.startAddress,
+        "origin_latitude": historyOrder.startLat.toString(),
+        "origin_longitude": historyOrder.startLon.toString(),
+        "destination_address_name": historyOrder.endAddressName,
+        "destination_address": historyOrder.endAddress,
+        "destination_latitude": historyOrder.endLat.toString(),
+        "destination_longitude": historyOrder.endLon.toString(),
+      },
+    );
+  }
+
+  Future<void> onTapActivity({required HistoryOrder historyOrder}) async {
+    if (OrderState.ACTIVE_STATE_LIST.contains(historyOrder.state)) {
+      try {
+        var isCancelled = await isOrderHasBeenCancelled(
+          orderId: historyOrder.orderId.toString(),
+          orderType: historyOrder.orderType!,
+        );
+
+        if (isCancelled == true) {
+          SnackbarHelper.showSnackbarError(
+            text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+          );
+          await refreshAll();
+          return;
+        }
+      } on DioException catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
+      }
+      await Get.toNamed(
+        Routes.RIDE_ORDER_DETAIL,
+        arguments: {
+          "order_id": historyOrder.orderId.toString(),
+          "order_type": historyOrder.orderType,
+        },
+      );
+    } else {
+      await Get.toNamed(
+        Routes.ACTIVITY_DETAIL,
+        arguments: {
+          "order_id": historyOrder.orderId.toString(),
+          "order_type": historyOrder.orderType,
+        },
+      );
+    }
+
+    await refreshAll();
   }
 }

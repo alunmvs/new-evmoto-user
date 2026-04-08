@@ -525,17 +525,7 @@ class AddEditUserInformationView
                             ),
                           ),
                         ),
-
                         SizedBox(height: 16),
-                        // Text(
-                        //   "Email",
-                        //   style: controller
-                        //       .typographyServices
-                        //       .bodySmallRegular
-                        //       .value,
-                        // ),
-                        // SizedBox(height: 8),
-                        // SizedBox(height: 16),
                       ],
                     ),
                   ),

@@ -1,4 +1,8 @@
 class Language {
+  String? cancelByPassenger;
+  String? criticalErrorTitle;
+  String? criticalErrorDescription;
+  String? criticalErrorButton;
   String? onboardingIntroTitle1;
   String? onboardingIntroDescription1;
   String? onboardingIntroTitle2;
@@ -341,6 +345,10 @@ class Language {
   String? tripHasEnded;
 
   Language({
+    this.cancelByPassenger,
+    this.criticalErrorTitle,
+    this.criticalErrorDescription,
+    this.criticalErrorButton,
     this.unavailablePromoVoucherNotAvailable,
     this.unavailableNoHaveAnyPromo,
     this.onboardingIntroTitle1,
@@ -674,6 +682,13 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    cancelByPassenger = json['cancel_by_passenger'] ?? "(Translate Not Found)";
+    criticalErrorTitle =
+        json['critical_error_title'] ?? "(Translate Not Found)";
+    criticalErrorDescription =
+        json['critical_error_description'] ?? "(Translate Not Found)";
+    criticalErrorButton =
+        json['critical_error_button'] ?? "(Translate Not Found)";
     unavailablePromoVoucherNotAvailable =
         json['unavailable_promo_voucher_not_available'] ??
         "(Translate Not Found)";

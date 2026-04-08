@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/versioning_server_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class VersioningServerRepository {
   final apiServices = Get.find<ApiServices>();
@@ -11,8 +12,7 @@ class VersioningServerRepository {
 
   Future<VersioningServer> getVersioningServer({required int? type}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/app/base/version/queryNewData1";
+      var url = "$baseUrl/app/base/version/queryNewData1";
 
       var formData = FormData.fromMap({"type": type});
 

@@ -384,32 +384,6 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                         ),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      // suffixIcon: Row(
-                                      //   mainAxisSize: MainAxisSize.min,
-                                      //   mainAxisAlignment:
-                                      //       MainAxisAlignment.center,
-                                      //   crossAxisAlignment:
-                                      //       CrossAxisAlignment.center,
-                                      //   children: [
-                                      //     SizedBox(
-                                      //       width: 16,
-                                      //       height: 16,
-                                      //       child: Row(
-                                      //         mainAxisAlignment:
-                                      //             MainAxisAlignment.center,
-                                      //         crossAxisAlignment:
-                                      //             CrossAxisAlignment.center,
-                                      //         children: [
-                                      //           SvgPicture.asset(
-                                      //             "assets/icons/icon_circle.svg",
-                                      //             width: 12.6,
-                                      //             height: 12.6,
-                                      //           ),
-                                      //         ],
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
                                     ),
                                     validationMessages: {
                                       ValidationMessage.required: (error) =>

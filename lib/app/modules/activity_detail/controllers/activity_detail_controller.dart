@@ -20,6 +20,8 @@ import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../routes/app_pages.dart' as app_pages;
+
 class ActivityDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
   final OpenMapsRepository openMapsRepository;
@@ -298,34 +300,26 @@ class ActivityDetailController extends GetxController {
   }
 
   Future<void> onTapOrderAgain() async {
-    var activeOrderList = await orderRideRepository.getActiveOrderList(
-      language: languageServices.languageCodeSystem.value,
-    );
+    await homeController.getActiveOrderList();
 
-    if (activeOrderList.isNotEmpty) {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          languageServices.language.value.snackbarOrderNotSuccess ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+    if (homeController.isActiveOrderListNotEmpty.value) {
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.snackbarOrderNotSuccess ?? "-",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
-    await homeController.onTapRideService(
-      isFillCurrentLocation: false,
+    await Get.toNamed(
+      app_pages.Routes.CREATE_ORDER_RIDE,
       arguments: {
-        "start_address": orderRideDetail.value.startAddress,
-        "start_lat": orderRideDetail.value.startLat,
-        "start_lon": orderRideDetail.value.startLon,
-        "end_address": orderRideDetail.value.endAddress,
-        "end_lat": orderRideDetail.value.endLat,
-        "end_lon": orderRideDetail.value.endLon,
+        "origin_address_name": orderRideDetail.value.startAddressName,
+        "origin_address": orderRideDetail.value.startAddress,
+        "origin_latitude": orderRideDetail.value.startLat.toString(),
+        "origin_longitude": orderRideDetail.value.startLon.toString(),
+        "destination_address_name": orderRideDetail.value.endAddressName,
+        "destination_address": orderRideDetail.value.endAddress,
+        "destination_latitude": orderRideDetail.value.endLat.toString(),
+        "destination_longitude": orderRideDetail.value.endLon.toString(),
       },
     );
   }

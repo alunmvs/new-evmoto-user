@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
@@ -195,11 +194,6 @@ class SearchAddressView extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ).animate().slide(
-                      begin: Offset(0, -1),
-                      end: Offset(0, 0),
-                      curve: Curves.easeInOut,
-                      duration: 500.ms,
                     ),
                   ],
                   Expanded(

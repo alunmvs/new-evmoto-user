@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class UserRepository {
   final apiServices = Get.find<ApiServices>();
@@ -11,8 +12,7 @@ class UserRepository {
 
   Future<UserInfo> getUserInfo({int? language}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/user/api/user/queryUserInfo";
+      var url = "$baseUrl/user/api/user/queryUserInfo";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -45,8 +45,7 @@ class UserRepository {
 
   Future<void> deleteAccount({required String otpCode}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/user-state/quit-with-otp";
+      var url = "$baseUrl/account/user-state/quit-with-otp";
 
       var formData = FormData.fromMap({"otp": otpCode});
 
@@ -77,8 +76,7 @@ class UserRepository {
 
   Future<void> updateName({required String name, required int id}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/tUser/updateById";
+      var url = "$baseUrl/account/tUser/updateById";
 
       var formData = {"name": name, "id": id};
 
@@ -108,8 +106,7 @@ class UserRepository {
     required int id,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/tUser/updateById";
+      var url = "$baseUrl/account/tUser/updateById";
 
       var formData = {
         "name": name,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_cancel_driver_information_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_cancel_reason_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_driver_information_sub_view.dart';
@@ -9,10 +9,7 @@ import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detai
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_invoice_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_map_origin_destination_information_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity_detail/views/activity_detail_view/activity_detail_rating_review_sub_view.dart';
-import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/global_body_handler.dart';
-
-import '../../../routes/app_pages.dart';
 import '../controllers/activity_detail_controller.dart';
 
 class ActivityDetailView extends GetView<ActivityDetailController> {
@@ -67,8 +64,9 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 8),
-                        if (controller.orderRideDetail.value.state == 10 ||
-                            controller.orderRideDetail.value.state == 12) ...[
+                        if (OrderState.CANCELLED_STATE_LIST.contains(
+                          controller.orderRideDetail.value.state,
+                        )) ...[
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child:
@@ -126,11 +124,8 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                                 .value,
                           ),
                         ),
-                        if ((controller.orderRideDetail.value.orderScore ==
-                                    null ||
-                                controller.orderRideDetail.value.orderScore ==
-                                    0) &&
-                            controller.orderRideDetail.value.state != 10) ...[
+                        if (OrderState.WAITING_RATING_EVALUATION ==
+                            controller.orderRideDetail.value.state) ...[
                           SizedBox(height: 12),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -217,63 +212,7 @@ class ActivityDetailView extends GetView<ActivityDetailController> {
                           ),
                         ),
                         onPressed: () async {
-                          await controller.homeController.refreshAll(
-                            firstInit: true,
-                          );
-
-                          if (controller
-                              .homeController
-                              .isActiveOrderListNotEmpty
-                              .value) {
-                            SnackbarHelper.showSnackbarError(
-                              text:
-                                  controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .snackbarOrderNotSuccess ??
-                                  "-",
-                            );
-                            return;
-                          }
-
-                          await Get.toNamed(
-                            Routes.CREATE_ORDER_RIDE,
-                            arguments: {
-                              "origin_address_name": controller
-                                  .orderRideDetail
-                                  .value
-                                  .startAddressName,
-                              "origin_address":
-                                  controller.orderRideDetail.value.startAddress,
-                              "origin_latitude": controller
-                                  .orderRideDetail
-                                  .value
-                                  .startLat
-                                  .toString(),
-                              "origin_longitude": controller
-                                  .orderRideDetail
-                                  .value
-                                  .startLon
-                                  .toString(),
-                              "destination_address_name": controller
-                                  .orderRideDetail
-                                  .value
-                                  .endAddressName,
-                              "destination_address":
-                                  controller.orderRideDetail.value.endAddress,
-                              "destination_latitude": controller
-                                  .orderRideDetail
-                                  .value
-                                  .endLat
-                                  .toString(),
-                              "destination_longitude": controller
-                                  .orderRideDetail
-                                  .value
-                                  .endLon
-                                  .toString(),
-                            },
-                          );
+                          await controller.onTapOrderAgain();
                         },
                         child: Text(
                           controller

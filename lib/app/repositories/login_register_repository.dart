@@ -3,6 +3,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/login_data_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class LoginRegisterRepository {
   final apiServices = Get.find<ApiServices>();
@@ -16,8 +17,7 @@ class LoginRegisterRepository {
     String? lng,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/base/user/captchaLogin";
+      var url = "$baseUrl/account/base/user/captchaLogin";
 
       var formData = FormData.fromMap({
         "phone": phone,

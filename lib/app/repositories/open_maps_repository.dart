@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class OpenMapsRepository {
   final apiServices = Get.find<ApiServices>();
@@ -17,7 +18,7 @@ class OpenMapsRepository {
   }) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/businessProcess/api/osrm/route/v1/driving/$originLongitude,$originLatitude;$destinationLongitude,$destinationLatitude";
+          "$baseUrl/businessProcess/api/osrm/route/v1/driving/$originLongitude,$originLatitude;$destinationLongitude,$destinationLatitude";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

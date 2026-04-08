@@ -9,81 +9,95 @@ class ActivityDetailCancelDriverInformationSubView
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (controller.orderRideDetail.value.licensePlate == "" ||
-            controller.orderRideDetail.value.licensePlate == null) ...[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: controller.themeColorServices.neutralsColorGrey300.value,
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (controller.orderRideDetail.value.licensePlate == "" ||
+              controller.orderRideDetail.value.licensePlate == null) ...[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color:
+                      controller.themeColorServices.neutralsColorGrey300.value,
+                ),
+                borderRadius: BorderRadius.circular(16),
               ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  "assets/icons/icon_profile.svg",
-                  width: 32,
-                  height: 32,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  "Dibatalkan oleh pengguna",
-                  style: controller.typographyServices.bodySmallRegular.value
-                      .copyWith(color: Color(0XFFB3B3B3)),
-                ),
-              ],
-            ),
-          ),
-        ] else ...[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: controller.themeColorServices.neutralsColorGrey300.value,
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  "assets/icons/icon_profile.svg",
-                  width: 32,
-                  height: 32,
-                ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Dibatalkan oleh pengguna",
-                        style: controller
-                            .typographyServices
-                            .bodySmallRegular
-                            .value
-                            .copyWith(color: Color(0XFFB3B3B3)),
-                      ),
-                      Text(
-                        controller.orderRideDetail.value.driverName ?? "-",
-                        style: controller
-                            .typographyServices
-                            .bodyLargeRegular
-                            .value,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/icon_profile.svg",
+                    width: 32,
+                    height: 32,
                   ),
-                ),
-              ],
+                  SizedBox(width: 8),
+                  Text(
+                    controller
+                            .languageServices
+                            .language
+                            .value
+                            .cancelByPassenger ??
+                        "-",
+                    style: controller.typographyServices.bodySmallRegular.value
+                        .copyWith(color: Color(0XFFB3B3B3)),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ] else ...[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color:
+                      controller.themeColorServices.neutralsColorGrey300.value,
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/icon_profile.svg",
+                    width: 32,
+                    height: 32,
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .cancelByPassenger ??
+                              "-",
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
+                              .copyWith(color: Color(0XFFB3B3B3)),
+                        ),
+                        Text(
+                          controller.orderRideDetail.value.driverName ?? "-",
+                          style: controller
+                              .typographyServices
+                              .bodyLargeRegular
+                              .value,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }

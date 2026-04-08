@@ -42,7 +42,6 @@ import 'package:pub_semver/pub_semver.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController {
@@ -138,8 +137,6 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    ShowcaseView.register();
-
     isFetch.value = true;
     isCriticalError.value = false;
     if (locationServices.currentLatitude.value == null) {
@@ -500,104 +497,6 @@ class HomeController extends GetxController {
       } else {
         await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);
       }
-    }
-  }
-
-  Future<void> displayCoachmark() async {
-    var prefs = await SharedPreferences.getInstance();
-    var isCoachmarkDisplayed = prefs.getBool('is_coachmark_displayed') ?? false;
-
-    if (isCoachmarkDisplayed == false) {
-      await Get.dialog(
-        barrierDismissible: false,
-        PopScope(
-          canPop: false,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Material(
-                    color: themeColorServices.neutralsColorGrey0.value,
-                    child: Column(
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 325 / 110,
-                          child: Image.asset(
-                            "assets/images/img_coachmark.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                languageServices
-                                        .language
-                                        .value
-                                        .dialogCoachmarkTitle ??
-                                    "-",
-                                style: typographyServices.bodyLargeBold.value
-                                    .copyWith(),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                languageServices
-                                        .language
-                                        .value
-                                        .dialogCoachmarkDescription ??
-                                    "-",
-                                style: typographyServices.bodySmallRegular.value
-                                    .copyWith(),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(height: 16),
-                              LoaderElevatedButton(
-                                onPressed: () async {
-                                  Get.close(1);
-
-                                  isCoachmarkActive.value = true;
-
-                                  ShowcaseView.get().startShowCase([
-                                    destinationGlobalKey,
-                                    savedLocationGlobalKey,
-                                    servicesGlobalKey,
-                                    balanceGlobalKey,
-                                  ]);
-                                },
-                                child: Text(
-                                  languageServices
-                                          .language
-                                          .value
-                                          .dialogCoachmarkButton ??
-                                      "-",
-                                  style: typographyServices.bodySmallBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
     }
   }
 
@@ -1239,16 +1138,18 @@ class HomeController extends GetxController {
     if (sendbirdChatServices.isSuccessInitialize.value == true) {
       if (isFetchTotalUnreadMessageCount.value == false) {
         isFetchTotalUnreadMessageCount.value = true;
-        var query = GroupChannelListQuery();
-        var channelList = await query.next();
+        try {
+          var query = GroupChannelListQuery();
+          var channelList = await query.next();
 
-        for (var channel in channelList) {
-          for (var member in channel.members) {
-            if (member.userId == "user_${userServices.userInfo.value.id}") {
-              totalUnreadMessageCount.value += channel.unreadMessageCount;
+          for (var channel in channelList) {
+            for (var member in channel.members) {
+              if (member.userId == "user_${userServices.userInfo.value.id}") {
+                totalUnreadMessageCount.value += channel.unreadMessageCount;
+              }
             }
           }
-        }
+        } catch (e) {}
         isFetchTotalUnreadMessageCount.value = false;
       }
     }
