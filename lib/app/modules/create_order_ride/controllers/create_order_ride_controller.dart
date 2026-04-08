@@ -784,6 +784,15 @@ class CreateOrderRideController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
+    if (originLatitude.value == "" ||
+        originLongitude.value == "" ||
+        destinationLatitude.value == "" ||
+        destinationLongitude.value == "") {
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
+      );
+      return;
+    }
     var validateLocationResponse = await orderRideRepository.validateLocation(
       startLat: originLatitude.value,
       startLon: originLongitude.value,
