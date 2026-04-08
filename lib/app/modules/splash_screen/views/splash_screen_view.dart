@@ -27,6 +27,16 @@ class SplashScreenView extends GetView<SplashScreenController> {
                     ),
                   ),
                 )
+              : controller.splashScreenQueryImage.value.url == null
+              ? Center(
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: controller.themeColorServices.primaryBlue.value,
+                    ),
+                  ),
+                )
               : SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,

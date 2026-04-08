@@ -81,11 +81,18 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> getSplashScreenQueryImage() async {
-    splashScreenQueryImage.value =
-        (await queryImageRepository.getQueryImageList(
-          type: 1,
-          usePort: 1,
-        )).first;
+    var queryImageList = await queryImageRepository.getQueryImageList(
+      type: 1,
+      usePort: 1,
+    );
+
+    if (queryImageList.isNotEmpty) {
+      splashScreenQueryImage.value =
+          (await queryImageRepository.getQueryImageList(
+            type: 1,
+            usePort: 1,
+          )).first;
+    }
   }
 
   Future<void> checkIfAppFirstRun() async {
