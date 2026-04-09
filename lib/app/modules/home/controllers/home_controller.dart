@@ -511,6 +511,78 @@ class HomeController extends GetxController {
       versioningServer.value = await versioningServerRepository
           .getVersioningServer(type: 1);
 
+      if (versioningServer.value.version == null) {
+        if (isShowVersionNewestConfirmationDialog == true) {
+          Get.dialog(
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 16),
+                            Container(
+                              width: 42,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color: Color(0XFFDDFFE6),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_checkmark_circle.svg",
+                                    width: 26,
+                                    height: 26,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .usingLatestVersion ??
+                                  "-",
+                              style: typographyServices.bodyLargeBold.value,
+                            ),
+                            SizedBox(height: 16),
+                            LoaderElevatedButton(
+                              child: Text(
+                                languageServices.language.value.back ?? "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(color: Colors.white),
+                              ),
+                              onPressed: () async {
+                                Get.close(1);
+                              },
+                            ),
+                            SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
       if (versioningServer.value.version != null) {
         var packageInfo = await PackageInfo.fromPlatform();
         var currentVersion = Version.parse(packageInfo.version);

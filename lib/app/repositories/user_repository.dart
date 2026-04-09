@@ -130,9 +130,11 @@ class UserRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != null && response.data['code'] != 200) {
-        if (response.data['msg'] != null) {
-          throw response.data['msg'];
+      if (response.data.runtimeType == Map) {
+        if (response.data['code'] != null && response.data['code'] != 200) {
+          if (response.data['msg'] != null) {
+            throw response.data['msg'];
+          }
         }
       }
     } on DioException {

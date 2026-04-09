@@ -65,8 +65,8 @@ class HomeMapSubView extends GetView<HomeController> {
                               children: [
                                 SvgPicture.asset(
                                   "assets/icons/icon_pinpoint_map_home_blue.svg",
-                                  width: (16 / 375) * Get.width,
-                                  height: (30.51 / 812) * Get.height,
+                                  width: 16,
+                                  height: 30.51,
                                 ),
                               ],
                             ),

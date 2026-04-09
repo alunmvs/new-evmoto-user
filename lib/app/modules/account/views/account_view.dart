@@ -60,6 +60,7 @@ class AccountView extends GetView<AccountController> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: AccountLogoutSubView(),
                   ),
+                  SizedBox(height: 16),
                 ],
               ),
             ),

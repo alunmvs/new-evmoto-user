@@ -155,7 +155,9 @@ class SocketServices extends GetxService {
         );
 
         await schedulerDataSocket();
-      } catch (e) {}
+      } catch (e) {
+        print("[SOCKET DEBUG] Socket did not connect $e");
+      }
       isProcessConnect.value = false;
     }
   }

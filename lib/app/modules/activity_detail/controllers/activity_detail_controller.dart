@@ -170,9 +170,7 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.startLon!,
       ),
       icon: await BitmapDescriptor.asset(
-        ImageConfiguration(
-          size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
-        ),
+        ImageConfiguration(size: Size(33, 39)),
         'assets/icons/icon_pinpoint_map_green.png',
       ),
       anchor: Offset(0.5, 0.5),
@@ -187,9 +185,7 @@ class ActivityDetailController extends GetxController {
         orderRideDetail.value.endLon!,
       ),
       icon: await BitmapDescriptor.asset(
-        ImageConfiguration(
-          size: Size((33 / 375) * Get.width, (39 / 812) * Get.height),
-        ),
+        ImageConfiguration(size: Size(33, 39)),
         'assets/icons/icon_pinpoint_map_red.png',
       ),
       anchor: Offset(0.5, 0.5),

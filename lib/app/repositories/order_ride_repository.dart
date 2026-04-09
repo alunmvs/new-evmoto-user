@@ -520,11 +520,11 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      if (response.data['code'] != null && response.data['code'] != 200) {
-        if (response.data['msg'] != null) {
-          throw response.data['msg'];
-        }
-      }
+      // if (response.data['code'] != null && response.data['code'] != 200) {
+      //   if (response.data['msg'] != null) {
+      //     throw response.data['msg'];
+      //   }
+      // }
 
       return ValidateLocationResponse.fromJson(response.data);
     } on DioException {

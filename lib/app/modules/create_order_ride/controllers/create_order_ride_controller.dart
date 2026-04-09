@@ -428,11 +428,12 @@ class CreateOrderRideController extends GetxController {
   Future<void> fillOriginBySavedAddress({
     required SavedAddress savedAddress,
   }) async {
-    originTextEditingController.text = savedAddress.addressDetail!;
+    originTextEditingController.text = savedAddress.addressName!;
     originLatitude.value = savedAddress.latitude!;
     originLongitude.value = savedAddress.longitude!;
-    keywordOrigin.value = savedAddress.addressTitle!;
+    keywordOrigin.value = savedAddress.addressName!;
     originAddress.value = savedAddress.addressDetail!;
+    originAddressName.value = savedAddress.addressName!;
 
     await getOriginPlaceLocationList(keyword: keywordOrigin.value);
   }
@@ -440,24 +441,34 @@ class CreateOrderRideController extends GetxController {
   Future<void> fillDestinationBySavedAddress({
     required SavedAddress savedAddress,
   }) async {
-    destinationTextEditingController.text = savedAddress.addressDetail!;
+    destinationTextEditingController.text = savedAddress.addressName!;
     destinationLatitude.value = savedAddress.latitude!;
     destinationLongitude.value = savedAddress.longitude!;
-    keywordDestination.value = savedAddress.addressTitle!;
+    keywordDestination.value = savedAddress.addressName!;
     destinationAddress.value = savedAddress.addressDetail!;
+    destinationAddressName.value = savedAddress.addressName!;
 
     await getDestinationPlaceLocationList(keyword: keywordDestination.value);
+
+    await onTapSubmit();
   }
 
   Future<void> onTapSavedLocation({required SavedAddress savedAddress}) async {
+    if (focusNodeOrigin.hasFocus) {
+      await fillOriginBySavedAddress(savedAddress: savedAddress);
+      focusNodeDestination.requestFocus();
+      return;
+    } else if (focusNodeDestination.hasFocus) {
+      await fillDestinationBySavedAddress(savedAddress: savedAddress);
+      return;
+    }
+
     if (isLatLngOriginFilled() == false) {
       await fillOriginBySavedAddress(savedAddress: savedAddress);
 
       focusNodeDestination.requestFocus();
     } else if (isLatLngDestinationFilled() == false) {
       await fillDestinationBySavedAddress(savedAddress: savedAddress);
-
-      focusNodeDestination.requestFocus();
     }
   }
 
