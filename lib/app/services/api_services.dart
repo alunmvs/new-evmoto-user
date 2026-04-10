@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -41,6 +42,10 @@ class ApiServices extends GetxService {
 
     //       return client;
     //     };
+
+    dio.interceptors.add(
+      CurlLoggingInterceptor(showRequestLog: false, showResponseLog: false),
+    );
 
     dio.interceptors.add(
       InterceptorsWrapper(

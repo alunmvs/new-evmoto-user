@@ -36,6 +36,9 @@
 -keep class androidx.security.crypto.** { *; }
 -keep class com.baseflow.geolocator.** { *; }
 -keep class com.google.android.gms.location.** { *; }
+-keep class org.webrtc.** { *; }
+-keep class org.webrtc.WebRtcClassLoader { *; }
+
 
 # -------------------------------------------------
 # Keep enum methods
@@ -86,6 +89,7 @@
 -keepattributes *Annotation*
 -keep class io.flutter.plugins.** { *; }
 -keep class androidx.browser.customtabs.** { *; }
+-dontwarn com.google.android.play.core.splitcompat.SplitCompatApplication
 
 -keepclassmembers class * {
     public <init>(...);

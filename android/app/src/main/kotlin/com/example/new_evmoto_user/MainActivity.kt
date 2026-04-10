@@ -22,8 +22,9 @@ import android.util.Log
 import android.os.Handler
 import android.os.Looper
 import org.json.JSONObject
+import androidx.annotation.Keep
 
-
+@Keep
 class MainActivity: FlutterActivity() {
     private val METHOD_CHANNEL_NAME = "com.sendbird.calls/method"
     private val ERROR_CODE = "Sendbird Calls"

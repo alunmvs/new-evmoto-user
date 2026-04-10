@@ -98,8 +98,8 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                                 glowCount: 3,
                                 child: SvgPicture.asset(
                                   "assets/icons/icon_pinpoint_map_green.svg",
-                                  width: (38 / 375) * Get.width,
-                                  height: (44.91 / 812) * Get.height,
+                                  width: 38,
+                                  height: 44.91,
                                 ),
                               ),
                             ),

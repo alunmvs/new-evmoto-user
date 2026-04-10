@@ -76,7 +76,7 @@ class RideCallSendbirdController extends GetxController {
       }
 
       if (isCaller.value == false) {
-        // callStopWatchTimer.onStartTimer();
+        callStopWatchTimer.onStartTimer();
       }
     } catch (e) {
       SnackbarHelper.showSnackbarError(text: "Terjadi kesalahan dari server");
