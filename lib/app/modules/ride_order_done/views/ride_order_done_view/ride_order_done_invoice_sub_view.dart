@@ -12,6 +12,7 @@ class RideOrderDoneInvoiceSubView extends GetView<RideOrderDoneController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
+          width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           decoration: BoxDecoration(
             color: controller.themeColorServices.neutralsColorGrey0.value,
