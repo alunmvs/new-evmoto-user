@@ -32,6 +32,7 @@ class CreateOrderRideCheckoutView
 
                           controller.isFetch.value = true;
                           try {
+                            await controller.getOrderRidePricingList();
                             await controller.getAvailableCouponList();
 
                             await Future.wait([

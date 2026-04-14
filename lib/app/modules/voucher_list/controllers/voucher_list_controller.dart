@@ -56,6 +56,7 @@ class VoucherListController extends GetxController {
         size: size.value,
         language: languageServices.languageCodeSystem.value,
         state: selectedIndex.value,
+        priceNo: null,
       );
 
       isSeeMoreVoucherList.value = voucherList.isNotEmpty;
@@ -75,6 +76,7 @@ class VoucherListController extends GetxController {
         size: size.value,
         language: languageServices.languageCodeSystem.value,
         state: selectedIndex.value,
+        priceNo: null,
       );
 
       isSeeMoreVoucherList.value = voucherList.isNotEmpty;

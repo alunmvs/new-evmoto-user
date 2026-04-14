@@ -321,6 +321,7 @@ class HomeController extends GetxController {
       size: 7,
       language: languageServices.languageCodeSystem.value,
       state: 1,
+      priceNo: null,
     );
   }
 

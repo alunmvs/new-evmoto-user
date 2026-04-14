@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
+import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/controllers/create_order_ride_checkout_controller.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -11,6 +12,8 @@ class CreateOrderRidePromoController extends GetxController {
 
   CreateOrderRidePromoController({required this.couponRepository});
 
+  final createOrderRideCheckoutController =
+      Get.find<CreateOrderRideCheckoutController>();
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
@@ -54,6 +57,10 @@ class CreateOrderRidePromoController extends GetxController {
       pageNum: pageNum.value,
       size: size.value,
       state: 1,
+      priceNo: createOrderRideCheckoutController
+          .selectedOrderRidePricing
+          .value
+          .priceNo,
     );
 
     isSeeMoreCouponList.value = couponList.isNotEmpty;
@@ -68,6 +75,10 @@ class CreateOrderRidePromoController extends GetxController {
         pageNum: pageNum.value,
         size: size.value,
         state: 1,
+        priceNo: createOrderRideCheckoutController
+            .selectedOrderRidePricing
+            .value
+            .priceNo,
       );
 
       this.couponList.addAll(couponList);

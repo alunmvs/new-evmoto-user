@@ -8,7 +8,7 @@ class OrderRidePricing {
   double? duration;
   double? discountMoney;
   int? type;
-  dynamic priceNo;
+  String? priceNo;
 
   OrderRidePricing({
     this.id,

@@ -15,6 +15,7 @@ class CouponRepository {
     int? language,
     int? size,
     int? state,
+    required String? priceNo,
   }) async {
     try {
       var url = "$baseUrl/activity/api/coupon/queryMyCoupons";
@@ -24,6 +25,7 @@ class CouponRepository {
         "size": size,
         "state": state,
         "language": language,
+        "priceNo": priceNo,
       });
 
       var storage = FlutterSecureStorage();

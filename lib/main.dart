@@ -22,6 +22,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:new_evmoto_user/app/services/user_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/routes/app_pages.dart';
@@ -83,6 +84,7 @@ Future<void> main() async {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       scaffoldMessengerKey: rootScaffoldMessengerKey,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Get.find<ThemeColorServices>().primaryBlue.value,
@@ -111,42 +113,39 @@ Future<void> main() async {
         }
       },
       builder: (context, child) {
-        return SafeArea(
-          top: false,
-          left: false,
-          right: false,
-          bottom: true,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: child!,
-            // child: Stack(
-            //   children: [
-            //     child!,
-            //     Obx(
-            //       () => Align(
-            //         alignment: Alignment.topCenter,
-            //         child: Material(
-            //           child: Padding(
-            //             padding: const EdgeInsets.only(top: 16 * 3),
-            //             child: Text(
-            //               Get.find<SocketServices>().isSocketClose.value ==
-            //                       false
-            //                   ? "${Get.find<SocketServices>().pingMs.value} ms"
-            //                   : Get.find<SocketServices>()
-            //                             .isProcessConnect
-            //                             .value ==
-            //                         true
-            //                   ? "Reconnecting"
-            //                   : "Disconnected",
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-          ),
-        );
+        return env == "dev"
+            ? Banner(
+                message: "Dev",
+                location: BannerLocation.topEnd,
+                color: Color(0XFF0060C6),
+                shadow: BoxShadow(
+                  color: Colors.transparent,
+                  blurRadius: 0,
+                  spreadRadius: 0,
+                  offset: Offset(0, 0),
+                ),
+                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                child: SafeArea(
+                  top: false,
+                  left: false,
+                  right: false,
+                  bottom: true,
+                  child: GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: child!,
+                  ),
+                ),
+              )
+            : SafeArea(
+                top: false,
+                left: false,
+                right: false,
+                bottom: true,
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: child!,
+                ),
+              );
       },
     ),
   );

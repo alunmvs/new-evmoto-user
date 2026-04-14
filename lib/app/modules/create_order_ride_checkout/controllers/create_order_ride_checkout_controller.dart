@@ -91,6 +91,7 @@ class CreateOrderRideCheckoutController extends GetxController {
       language: languageServices.languageCodeSystem.value,
       pageNum: 1,
       size: 1,
+      priceNo: selectedOrderRidePricing.value.priceNo,
     );
 
     if (availableCouponList.isNotEmpty) {
