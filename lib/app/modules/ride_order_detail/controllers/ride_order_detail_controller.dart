@@ -116,6 +116,8 @@ class RideOrderDetailController extends GetxController {
   final driverArrivedOriginWaitingTimeSeconds = 0.obs;
   Timer? driverWaitingTimer;
 
+  final socketDriverPositionData = SocketDriverPositionData().obs;
+
   final isCriticalError = false.obs;
   final isFetch = false.obs;
 
@@ -1246,11 +1248,11 @@ class RideOrderDetailController extends GetxController {
   }
 
   String getEstimatedTimeInMinutesWaitingDriverPickUpInText() {
-    if (orderRideServerDetail.value.reservationTime != null) {
+    if (socketDriverPositionData.value.reservationTime != null) {
       int jam =
-          double.parse(orderRideServerDetail.value.reservationTime!) ~/ 60;
+          double.parse(socketDriverPositionData.value.reservationTime!) ~/ 60;
       int menit =
-          (double.parse(orderRideServerDetail.value.reservationTime!) % 60)
+          (double.parse(socketDriverPositionData.value.reservationTime!) % 60)
               .round();
 
       if (jam > 0) {
@@ -1266,7 +1268,7 @@ class RideOrderDetailController extends GetxController {
   String getEstimatedHourMinuteArrive() {
     var now = DateTime.now();
     int menit =
-        (double.parse(orderRideServerDetail.value.laveTime ?? "0.0") % 60)
+        (double.parse(socketDriverPositionData.value.laveTime ?? "0.0") % 60)
             .round();
     var estimatedArrived = now.add(Duration(minutes: menit));
     var formattedTime = DateFormat('HH:mm').format(estimatedArrived);
@@ -1755,6 +1757,8 @@ class RideOrderDetailController extends GetxController {
   }) async {
     this.driverLatitude.value = socketDriverPositionData.lat.toString();
     this.driverLongitude.value = socketDriverPositionData.lon.toString();
+
+    this.socketDriverPositionData.value = socketDriverPositionData;
 
     var driverLatitude = (double.tryParse(this.driverLatitude.value) ?? 0.0)
         .toInt();

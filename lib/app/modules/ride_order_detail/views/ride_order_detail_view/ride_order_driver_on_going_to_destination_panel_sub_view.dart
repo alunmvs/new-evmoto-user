@@ -92,7 +92,7 @@ class RideOrderDriverOnGoingToDestinationPanelSubView
                                       formatDoubleToString(
                                         double.parse(
                                           controller
-                                                  .orderRideServerDetail
+                                                  .socketDriverPositionData
                                                   .value
                                                   .laveMileage ??
                                               "0.0",
@@ -104,7 +104,7 @@ class RideOrderDriverOnGoingToDestinationPanelSubView
                                       getEstimatedTimeInMinutesInText(
                                         estimatedTimeInMinutes: double.parse(
                                           controller
-                                                  .orderRideServerDetail
+                                                  .socketDriverPositionData
                                                   .value
                                                   .laveTime ??
                                               "0.0",

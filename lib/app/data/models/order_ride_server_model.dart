@@ -3,12 +3,12 @@ class OrderRideServer {
   int? orderType;
   String? lon;
   String? lat;
-  String? reservationMileage;
-  String? reservationTime;
+  // String? reservationMileage;
+  // String? reservationTime;
   String? servedMileage;
   String? servedTime;
-  String? laveMileage;
-  String? laveTime;
+  // String? laveMileage;
+  // String? laveTime;
   int? state;
 
   OrderRideServer({
@@ -16,12 +16,12 @@ class OrderRideServer {
     this.orderType,
     this.lon,
     this.lat,
-    this.reservationMileage,
-    this.reservationTime,
+    // this.reservationMileage,
+    // this.reservationTime,
     this.servedMileage,
     this.servedTime,
-    this.laveMileage,
-    this.laveTime,
+    // this.laveMileage,
+    // this.laveTime,
     this.state,
   });
 
@@ -30,12 +30,12 @@ class OrderRideServer {
     orderType = json['orderType'];
     lon = json['lon'];
     lat = json['lat'];
-    reservationMileage = json['reservationMileage'];
-    reservationTime = json['reservationTime'];
+    // reservationMileage = json['reservationMileage'];
+    // reservationTime = json['reservationTime'];
     servedMileage = json['servedMileage'];
     servedTime = json['servedTime'];
-    laveMileage = json['laveMileage'];
-    laveTime = json['laveTime'];
+    // laveMileage = json['laveMileage'];
+    // laveTime = json['laveTime'];
     state = json['state'];
   }
 
@@ -45,12 +45,12 @@ class OrderRideServer {
     data['orderType'] = this.orderType;
     data['lon'] = this.lon;
     data['lat'] = this.lat;
-    data['reservationMileage'] = this.reservationMileage;
-    data['reservationTime'] = this.reservationTime;
+    // data['reservationMileage'] = this.reservationMileage;
+    // data['reservationTime'] = this.reservationTime;
     data['servedMileage'] = this.servedMileage;
     data['servedTime'] = this.servedTime;
-    data['laveMileage'] = this.laveMileage;
-    data['laveTime'] = this.laveTime;
+    // data['laveMileage'] = this.laveMileage;
+    // data['laveTime'] = this.laveTime;
     data['state'] = this.state;
     return data;
   }

@@ -78,7 +78,7 @@ class RideOrderWaitingDriverPickUpPanelSubView
                           ),
                         ),
                         child: Text(
-                          "${(controller.languageServices.language.value.driverPickUp ?? "-")} · ${formatDoubleToString(double.parse(controller.orderRideServerDetail.value.reservationMileage ?? "0.0"))} ${controller.languageServices.language.value.km} · ${controller.getEstimatedTimeInMinutesWaitingDriverPickUpInText().toLowerCase()}",
+                          "${(controller.languageServices.language.value.driverPickUp ?? "-")} · ${formatDoubleToString(double.parse(controller.socketDriverPositionData.value.reservationMileage ?? "0.0"))} ${controller.languageServices.language.value.km} · ${controller.getEstimatedTimeInMinutesWaitingDriverPickUpInText().toLowerCase()}",
                           style:
                               controller.typographyServices.bodySmallBold.value,
                           maxLines: 1,
