@@ -11,7 +11,6 @@ import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
-import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
@@ -41,8 +40,6 @@ class RideOrderDetailController extends GetxController {
     required this.openMapsRepository,
   });
 
-  final homeController = Get.find<HomeController>();
-
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
@@ -64,9 +61,6 @@ class RideOrderDetailController extends GetxController {
   final driverLatitude = "".obs;
   final driverLongitude = "".obs;
 
-  final currentLatitude = "".obs;
-  final currentLongitude = "".obs;
-
   final orderRideDetail = OrderRide().obs;
   final orderRideServerDetail = OrderRideServer().obs;
   final orderId = "".obs;
@@ -74,14 +68,9 @@ class RideOrderDetailController extends GetxController {
 
   Timer? driverCurrentLocationTimer;
   Timer? refocusMapBoundsTimer;
-  Timer? refreshStatusDriverGivePriceTimer;
 
   final isPinLocationWaitingForDriverHide = true.obs;
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
-
-  final payType = 3.obs;
-
-  Timer? manualRefreshStatusTimer;
 
   final driverToOriginDirection = direction_model.OpenMapDirection().obs;
   final driverToDestinationDirection = direction_model.OpenMapDirection().obs;
@@ -202,106 +191,6 @@ class RideOrderDetailController extends GetxController {
 
     await Future.wait([checkReceiveInvoice()]);
 
-    // old
-    // isFetch.value = true;
-    // isCriticalError.value = false;
-    // orderId.value = Get.arguments['order_id'] ?? "";
-    // orderType.value = Get.arguments['order_type'] ?? 1;
-
-    // try {
-    //   await Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]);
-
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     if (orderRideDetail.value.state == 10) {
-    //       Get.back();
-    //       SnackbarHelper.showSnackbarError(
-    //         text: languageServices.language.value.orderHasBeenCancelled ?? "-",
-    //       );
-    //     }
-    //   });
-    // } on DioException catch (e) {
-    //   SnackbarHelper.showSnackbarError(text: e.error.toString());
-    //   isCriticalError.value = true;
-    // }
-
-    // isFetch.value = false;
-
-    // if (isCriticalError.value == false) {
-    //   await Future.delayed(Duration(seconds: 1));
-
-    //   if (orderRideDetail.value.state == 1) {
-    //     await setupMapWaitingForDriver();
-    //   }
-    //   if (orderRideDetail.value.state == 2) {
-    //     // Driver Grab / Accepted
-    //     await setupGoogleMapsPickUpCustomer();
-    //   }
-    //   if (orderRideDetail.value.state == 3) {
-    //     // Driver On Going Origin
-    //     await setupGoogleMapsPickUpCustomer();
-    //   }
-
-    //   if (orderRideDetail.value.state == 4) {
-    //     // Driver Arrived on Origin
-    //     await setupGoogleMapOriginToDestination();
-    //   }
-
-    //   if (orderRideDetail.value.state == 5) {
-    //     // Driver On Going Destination
-    //     await setupGoogleMapOriginToDestination();
-    //   }
-
-    //   if (orderRideDetail.value.state == 6) {
-    //     // Driver Arrived on Destination
-    //     await setupGoogleMapOriginToDestination();
-    //   }
-
-    //   if (orderRideDetail.value.state == 7) {
-    //     // Driver Give Price
-    //     await setupGoogleMapOriginToDestination();
-    //   }
-
-    //   await Future.wait([
-    //     setupSchedulerDriverCurrentLocation(),
-    //     setupSchedulerDriverRefocusMapBound(),
-    //     setupRefreshStatusDriverGivePrice(),
-    //   ]);
-
-    //
-
-    //   if (orderRideDetail.value.state == 6 ||
-    //       orderRideDetail.value.state == 7 ||
-    //       orderRideDetail.value.state == 8) {
-    //     // Driver Give Price
-    //     WidgetsBinding.instance.addPostFrameCallback((_) {
-    //       if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
-    //           Get.currentRoute != Routes.HOME) {
-    //         Get.offAndToNamed(
-    //           Routes.RIDE_ORDER_DONE,
-    //           arguments: {
-    //             "order_id": orderId.value,
-    //             "order_type": orderType.value,
-    //           },
-    //         );
-    //       }
-    //     });
-    //   }
-    // }
-
-    // manualRefreshStatusTimer = Timer.periodic(Duration(seconds: 5), (
-    //   value,
-    // ) async {
-    //   if (socketServices.isSocketClose.value == true) {
-    //     var isHasConnection =
-    //         await InternetConnectionChecker.instance.hasConnection;
-    //     if (isHasConnection == true) {
-    //       try {
-    //         await refreshAll();
-    //       } catch (e) {}
-    //     }
-    //   }
-    // });
-
     allSchedulerTimer = Timer.periodic(Duration(seconds: 5), (value) async {
       if (socketServices.isSocketClose.value == true) {
         var isHasConnection =
@@ -355,44 +244,11 @@ class RideOrderDetailController extends GetxController {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
     try {
-      refreshStatusDriverGivePriceTimer?.cancel();
-    } catch (e) {}
-    try {
-      manualRefreshStatusTimer?.cancel();
-    } catch (e) {}
-    try {
       allSchedulerTimer?.cancel();
     } catch (e) {}
     try {
       driverWaitingTimer?.cancel();
     } catch (e) {}
-  }
-
-  Future<void> setupRefreshStatusDriverGivePrice() async {
-    refreshStatusDriverGivePriceTimer ??= Timer.periodic(Duration(seconds: 5), (
-      timer,
-    ) async {
-      if (orderRideDetail.value.state == 6) {
-        await getOrderRideDetail();
-      }
-
-      if (orderRideDetail.value.state == 7) {
-        if (Get.currentRoute != Routes.RIDE_ORDER_DONE &&
-            Get.currentRoute != Routes.HOME) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (Get.currentRoute != Routes.RIDE_ORDER_DONE) {
-              Get.offAndToNamed(
-                Routes.RIDE_ORDER_DONE,
-                arguments: {
-                  "order_id": orderId.value,
-                  "order_type": orderType.value,
-                },
-              );
-            }
-          });
-        }
-      }
-    });
   }
 
   Future<void> refreshAll() async {
@@ -1272,15 +1128,6 @@ class RideOrderDetailController extends GetxController {
             .round();
     var estimatedArrived = now.add(Duration(minutes: menit));
     var formattedTime = DateFormat('HH:mm').format(estimatedArrived);
-    return formattedTime;
-  }
-
-  String getEstimatedHourMinuteWaitingTime() {
-    var now = DateTime.now();
-    var estimatedWaitingTime = now.add(
-      Duration(minutes: orderRideDetail.value.freeWaitMinutes ?? 0),
-    );
-    var formattedTime = DateFormat('HH:mm').format(estimatedWaitingTime);
     return formattedTime;
   }
 

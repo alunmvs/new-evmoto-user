@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_chat_and_call_driver_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_driver_information_card_sub_view.dart';
@@ -77,12 +78,17 @@ class RideOrderDriverArrivedOriginPanelSubView
                             topRight: Radius.circular(16),
                           ),
                         ),
-                        child: Text(
-                          "${(controller.languageServices.language.value.driverArrivedWaitingTime ?? "-")} ${controller.driverWaitingTimeDuration()}",
-                          style:
-                              controller.typographyServices.bodySmallBold.value,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        child: SizedBox(
+                          height: 14,
+                          child: Marquee(
+                            text:
+                                "${(controller.languageServices.language.value.driverArrivedWaitingTime ?? "-")} ${controller.driverWaitingTimeDuration()}",
+                            style: controller
+                                .typographyServices
+                                .bodySmallBold
+                                .value,
+                            blankSpace: 16,
+                          ),
                         ),
                       ),
                       Expanded(

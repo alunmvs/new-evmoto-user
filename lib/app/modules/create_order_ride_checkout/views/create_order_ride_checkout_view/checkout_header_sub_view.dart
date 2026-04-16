@@ -154,7 +154,9 @@ class CheckoutHeaderSubView extends GetView<CreateOrderRideCheckoutController> {
                                         SizedBox(width: 4),
                                         Expanded(
                                           child: Text(
-                                            controller.originAddress.value ??
+                                            controller
+                                                    .originAddressName
+                                                    .value ??
                                                 "-",
                                             style: controller
                                                 .typographyServices
@@ -220,7 +222,7 @@ class CheckoutHeaderSubView extends GetView<CreateOrderRideCheckoutController> {
                                         Expanded(
                                           child: Text(
                                             controller
-                                                    .destinationAddress
+                                                    .destinationAddressName
                                                     .value ??
                                                 "-",
                                             style: controller

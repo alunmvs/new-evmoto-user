@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
@@ -930,14 +929,6 @@ class AccountController extends GetxController {
     await Future.delayed(Duration(seconds: 3)).then((value) {
       Get.close(1);
     });
-  }
-
-  Future<void> onTapRatingAndReviewApp() async {
-    var inAppReview = InAppReview.instance;
-
-    if (await inAppReview.isAvailable()) {
-      await inAppReview.requestReview();
-    }
   }
 
   Future<void> onTapCheckUpdate() async {

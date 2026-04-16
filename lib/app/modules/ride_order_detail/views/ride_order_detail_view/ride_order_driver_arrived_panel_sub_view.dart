@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_chat_and_call_driver_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/views/ride_order_detail_view/ride_order_driver_information_card_sub_view.dart';
@@ -80,45 +81,48 @@ class RideOrderDriverArrivedPanelSubView
                         child: Row(
                           children: [
                             Expanded(
-                              child: Text(
-                                (controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .arrived ??
-                                        "-")
-                                    .replaceFirst(
-                                      "x",
-                                      formatDoubleToString(
-                                        double.parse(
-                                          controller
-                                                  .socketDriverPositionData
+                              child: SizedBox(
+                                height: 14,
+                                child: Marquee(
+                                  text:
+                                      (controller
+                                                  .languageServices
+                                                  .language
                                                   .value
-                                                  .laveMileage ??
-                                              "0.0",
-                                        ),
-                                      ),
-                                    )
-                                    .replaceFirst(
-                                      "x",
-                                      getEstimatedTimeInMinutesInText(
-                                        estimatedTimeInMinutes: double.parse(
-                                          controller
-                                                  .socketDriverPositionData
-                                                  .value
-                                                  .laveTime ??
-                                              "0.0",
-                                        ),
-                                      ),
-                                    ),
-                                // '${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: controller.estimatedTimeInMinutes.value)} ${(controller.languageServices.language.value.arrived ?? "-")}'
-                                //     .toLowerCase(),
-                                style: controller
-                                    .typographyServices
-                                    .bodySmallBold
-                                    .value,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                                                  .arrived ??
+                                              "-")
+                                          .replaceFirst(
+                                            "x",
+                                            formatDoubleToString(
+                                              double.parse(
+                                                controller
+                                                        .socketDriverPositionData
+                                                        .value
+                                                        .laveMileage ??
+                                                    "0.0",
+                                              ),
+                                            ),
+                                          )
+                                          .replaceFirst(
+                                            "x",
+                                            getEstimatedTimeInMinutesInText(
+                                              estimatedTimeInMinutes: double.parse(
+                                                controller
+                                                        .socketDriverPositionData
+                                                        .value
+                                                        .laveTime ??
+                                                    "0.0",
+                                              ),
+                                            ),
+                                          ),
+                                  // '${formatDoubleToString(controller.estimatedDistanceInKm.value)} ${controller.languageServices.language.value.km} ·󠁏󠁏 ${getEstimatedTimeInMinutesInText(estimatedTimeInMinutes: controller.estimatedTimeInMinutes.value)} ${(controller.languageServices.language.value.arrived ?? "-")}'
+                                  //     .toLowerCase(),
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value,
+                                  blankSpace: 16,
+                                ),
                               ),
                             ),
                             SizedBox(width: 8),
