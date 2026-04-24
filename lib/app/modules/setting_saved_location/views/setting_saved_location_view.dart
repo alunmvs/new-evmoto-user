@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/modules/setting_saved_location/views/setting_saved_location_view/saved_address_card_sub_view.dart';
+import 'package:new_evmoto_user/app/modules/setting_saved_location/views/setting_saved_location_view/saved_address_list_empty_sub_view.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -87,42 +89,7 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
                           children: [
                             SizedBox(height: 16),
                             if (controller.savedAddressList.isEmpty) ...[
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      controller
-                                              .languageServices
-                                              .language
-                                              .value
-                                              .savedAddressNotFoundTitle ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .bodyLargeBold
-                                          .value,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      controller
-                                              .languageServices
-                                              .language
-                                              .value
-                                              .savedAddressNotFoundDescription ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              SavedAddressListEmptySubView(),
                             ],
                             ClipRRect(
                               borderRadius: BorderRadius.circular(16),
@@ -138,117 +105,8 @@ class SettingSavedLocationView extends GetView<SettingSavedLocationController> {
                                   children: [
                                     for (var savedAddress
                                         in controller.savedAddressList) ...[
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 16,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 32,
-                                              height: 32,
-                                              decoration: BoxDecoration(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .sematicColorBlue100
-                                                    .value,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    savedAddress.addressType ==
-                                                            1
-                                                        ? "assets/icons/icon_home.svg"
-                                                        : savedAddress
-                                                                  .addressType ==
-                                                              2
-                                                        ? "assets/icons/icon_office.svg"
-                                                        : "assets/icons/icon_pinpoint.svg",
-                                                    width: 18,
-                                                    height: 18,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    savedAddress.addressName ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallBold
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey700
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                  SizedBox(height: 2),
-                                                  Text(
-                                                    savedAddress
-                                                            .addressDetail ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey500
-                                                              .value,
-                                                        ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                await controller
-                                                    .onTapMoreOptions(
-                                                      savedAddress:
-                                                          savedAddress,
-                                                    );
-                                              },
-                                              child: Container(
-                                                color: Colors.transparent,
-                                                width: 24,
-                                                height: 24,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      "assets/icons/icon_three_dots_vertical.svg",
-                                                      width: 4.5,
-                                                      height: 21,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                      SavedAddressCardSubView(
+                                        savedAddress: savedAddress,
                                       ),
                                       if (controller.savedAddressList.last !=
                                           savedAddress) ...[

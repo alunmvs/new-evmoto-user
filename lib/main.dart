@@ -129,7 +129,65 @@ Future<void> main() async {
                   bottom: true,
                   child: GestureDetector(
                     onTap: () => FocusScope.of(context).unfocus(),
-                    child: child!,
+                    child: Stack(
+                      children: [
+                        child!,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              margin: EdgeInsets.only(right: 16),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Obx(
+                                () => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (Get.find<SocketServices>()
+                                            .isSocketClose
+                                            .value ==
+                                        true) ...[
+                                      if (Get.find<SocketServices>()
+                                              .isProcessConnect
+                                              .value ==
+                                          true) ...[
+                                        Text(
+                                          "Ping : Reconnecting",
+                                          style: Get.find<TypographyServices>()
+                                              .captionSmallRegular
+                                              .value
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                      ] else ...[
+                                        Text(
+                                          "Ping : Disconnected",
+                                          style: Get.find<TypographyServices>()
+                                              .captionSmallRegular
+                                              .value
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                      ],
+                                    ] else ...[
+                                      Text(
+                                        "Ping : ${Get.find<SocketServices>().pingMs.value} ms",
+                                        style: Get.find<TypographyServices>()
+                                            .captionSmallRegular
+                                            .value
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )
