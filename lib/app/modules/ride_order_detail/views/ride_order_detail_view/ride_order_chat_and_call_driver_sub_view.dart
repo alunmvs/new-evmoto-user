@@ -11,105 +11,115 @@ class RideOrderChatAndCallDriverSubView
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 46,
-          child: OutlinedButton(
-            onPressed: () async {
-              Get.toNamed(
-                Routes.RIDE_CALL_SENDBIRD,
-                arguments: {
-                  'is_caller': true,
-                  'driver_id': controller.orderRideDetail.value.driverId,
-                  'driver_name': controller.orderRideDetail.value.driverName,
-                  'driver_avatar_url':
-                      controller.orderRideDetail.value.driverAvatar,
-                },
-              );
-            },
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(
-                color: controller.themeColorServices.primaryBlue.value,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/icon_phone.svg",
-                        width: 11.18,
-                        height: 12,
-                        colorFilter: ColorFilter.mode(
-                          controller.themeColorServices.primaryBlue.value,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 4),
-                Text(
-                  controller.languageServices.language.value.telephone ?? "-",
-                  style: controller.typographyServices.bodyLargeBold.value
-                      .copyWith(
-                        color: controller.themeColorServices.primaryBlue.value,
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(width: 8),
-        Expanded(
-          child: LoaderElevatedButton(
-            onPressed: () async {
-              Get.toNamed(
-                Routes.RIDE_CHAT_SENDBIRD,
-                arguments: {
-                  "driver_id": controller.orderRideDetail.value.driverId,
-                  "driver_name": controller.orderRideDetail.value.driverName,
-                  "driver_avatar_url":
-                      controller.orderRideDetail.value.driverAvatar,
-                  "order_id": controller.orderRideDetail.value.orderId,
-                  "order_type": controller.orderRideDetail.value.orderType,
-                  "state": controller.orderRideDetail.value.state,
-                  "driver_license_plate":
-                      controller.orderRideDetail.value.licensePlate,
-                },
-              );
+    return Obx(
+      () => Row(
+        children: [
+          // SizedBox(
+          //   height: 46,
+          //   child: OutlinedButton(
+          //     onPressed: () async {
+          //       Get.toNamed(
+          //         Routes.RIDE_CALL_SENDBIRD,
+          //         arguments: {
+          //           'is_caller': true,
+          //           'driver_id': controller.orderRideDetail.value.driverId,
+          //           'driver_name': controller.orderRideDetail.value.driverName,
+          //           'driver_avatar_url':
+          //               controller.orderRideDetail.value.driverAvatar,
+          //         },
+          //       );
+          //     },
+          //     style: OutlinedButton.styleFrom(
+          //       side: BorderSide(
+          //         color: controller.themeColorServices.primaryBlue.value,
+          //       ),
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(16),
+          //       ),
+          //     ),
+          //     child: Row(
+          //       children: [
+          //         SizedBox(
+          //           width: 16,
+          //           height: 16,
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             crossAxisAlignment: CrossAxisAlignment.center,
+          //             children: [
+          //               SvgPicture.asset(
+          //                 "assets/icons/icon_phone.svg",
+          //                 width: 11.18,
+          //                 height: 12,
+          //                 colorFilter: ColorFilter.mode(
+          //                   controller.themeColorServices.primaryBlue.value,
+          //                   BlendMode.srcIn,
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //         SizedBox(width: 4),
+          //         Text(
+          //           controller.languageServices.language.value.telephone ?? "-",
+          //           style: controller.typographyServices.bodyLargeBold.value
+          //               .copyWith(
+          //                 color: controller.themeColorServices.primaryBlue.value,
+          //               ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(width: 8),
+          Expanded(
+            child: LoaderElevatedButton(
+              onPressed: () async {
+                await Get.toNamed(
+                  Routes.CHAT_DETAIL,
+                  arguments: {
+                    "doc_id":
+                        controller.evmotoOrderChatParticipants.value.docId,
+                  },
+                );
+                // Get.toNamed(
+                //   Routes.RIDE_CHAT_SENDBIRD,
+                //   arguments: {
+                //     "driver_id": controller.orderRideDetail.value.driverId,
+                //     "driver_name": controller.orderRideDetail.value.driverName,
+                //     "driver_avatar_url":
+                //         controller.orderRideDetail.value.driverAvatar,
+                //     "order_id": controller.orderRideDetail.value.orderId,
+                //     "order_type": controller.orderRideDetail.value.orderType,
+                //     "state": controller.orderRideDetail.value.state,
+                //     "driver_license_plate":
+                //         controller.orderRideDetail.value.licensePlate,
+                //   },
+                // );
 
-              await controller.getTotalUnreadSendbirdChat();
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  controller.languageServices.language.value.chatDriver ?? "-",
-                  style: controller.typographyServices.bodyLargeBold.value
-                      .copyWith(color: Colors.white),
-                ),
-                if (controller.totalUnreadMessageCount.value > 0) ...[
-                  SizedBox(width: 8),
-                  CircleAvatar(
-                    backgroundColor: Color(0XFF16CB8C),
-                    radius: 10 / 2,
+                // await controller.getTotalUnreadSendbirdChat();
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    controller.languageServices.language.value.chatDriver ??
+                        "-",
+                    style: controller.typographyServices.bodyLargeBold.value
+                        .copyWith(color: Colors.white),
                   ),
+                  if (controller.isUnreadChatExist.value) ...[
+                    SizedBox(width: 8),
+                    CircleAvatar(
+                      backgroundColor: Color(0XFF16CB8C),
+                      radius: 10 / 2,
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

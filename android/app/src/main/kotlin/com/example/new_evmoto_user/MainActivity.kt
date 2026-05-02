@@ -179,6 +179,10 @@ class MainActivity: FlutterActivity() {
                                     }
                                 })
                             }
+
+                            override fun onInvitationReceived(invitation: RoomInvitation) {
+                                
+                            }
                         })
                         callback(true)
                     } else {

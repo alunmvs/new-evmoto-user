@@ -34,6 +34,8 @@ abstract class Routes {
   static const CREATE_ORDER_RIDE_PROMO = _Paths.CREATE_ORDER_RIDE_PROMO;
   static const CREATE_ORDER_RIDE_MAP_SELECT =
       _Paths.CREATE_ORDER_RIDE_MAP_SELECT;
+  static const CHAT_LIST = _Paths.CHAT_LIST;
+  static const CHAT_DETAIL = _Paths.CHAT_DETAIL;
 }
 
 abstract class _Paths {
@@ -67,4 +69,6 @@ abstract class _Paths {
   static const CREATE_ORDER_RIDE_CHECKOUT = '/create-order-ride-checkout';
   static const CREATE_ORDER_RIDE_PROMO = '/create-order-ride-promo';
   static const CREATE_ORDER_RIDE_MAP_SELECT = '/create-order-ride-map-select';
+  static const CHAT_LIST = '/chat-list';
+  static const CHAT_DETAIL = '/chat-detail';
 }

@@ -268,6 +268,8 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
+      print("ini response data ${response.data}");
+
       if (response.data['code'] != null && response.data['code'] != 200) {
         if (response.data['msg'] != null) {
           throw response.data['msg'];
@@ -275,7 +277,8 @@ class OrderRideRepository {
       }
 
       return RequestedOrderRide.fromJson(response.data['data']);
-    } on DioException {
+    } on DioException catch (e) {
+      print("ini response data ${e.response?.data}");
       rethrow;
     }
   }

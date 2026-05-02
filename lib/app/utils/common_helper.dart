@@ -105,3 +105,43 @@ Future<void> logout() async {
   );
   rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 }
+
+void showLoadingDialog() {
+  var themeColorServices = Get.find<ThemeColorServices>();
+
+  Get.dialog(
+    PopScope(
+      canPop: false,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: SizedBox(
+                width: 70,
+                height: 70,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: CircularProgressIndicator(
+                        color: themeColorServices.primaryBlue.value,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+    barrierDismissible: false,
+  );
+}

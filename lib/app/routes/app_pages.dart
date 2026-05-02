@@ -10,6 +10,10 @@ import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
 import '../modules/add_edit_user_information/bindings/add_edit_user_information_binding.dart';
 import '../modules/add_edit_user_information/views/add_edit_user_information_view.dart';
+import '../modules/chat_detail/bindings/chat_detail_binding.dart';
+import '../modules/chat_detail/views/chat_detail_view.dart';
+import '../modules/chat_list/bindings/chat_list_binding.dart';
+import '../modules/chat_list/views/chat_list_view.dart';
 import '../modules/create_order_ride/bindings/create_order_ride_binding.dart';
 import '../modules/create_order_ride/views/create_order_ride_view.dart';
 import '../modules/create_order_ride_checkout/bindings/create_order_ride_checkout_binding.dart';
@@ -206,6 +210,16 @@ class AppPages {
       name: _Paths.CREATE_ORDER_RIDE_MAP_SELECT,
       page: () => const CreateOrderRideMapSelectView(),
       binding: CreateOrderRideMapSelectBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_LIST,
+      page: () => const ChatListView(),
+      binding: ChatListBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_DETAIL,
+      page: () => const ChatDetailView(),
+      binding: ChatDetailBinding(),
     ),
   ];
 }

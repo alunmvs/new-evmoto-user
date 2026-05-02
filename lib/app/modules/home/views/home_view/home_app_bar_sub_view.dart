@@ -57,7 +57,7 @@ class HomeAppBarSubView extends GetView<HomeController>
                   ),
                   GestureDetector(
                     onTap: () async {
-                      await Get.toNamed(Routes.SENDBIRD_CHAT_LIST);
+                      await Get.toNamed(Routes.CHAT_LIST);
                       await controller.refreshAll();
                     },
                     child: Badge(
