@@ -19,6 +19,8 @@ class EvmotoOrderChatParticipants {
   DateTime? lastMessageAt;
   String? driverProfileUrl;
   String? userProfileUrl;
+  int? totalUnreadChatDriver;
+  int? totalUnreadChatUser;
 
   EvmotoOrderChatParticipants({
     this.docId,
@@ -39,10 +41,13 @@ class EvmotoOrderChatParticipants {
     this.userJoinedAt,
     this.lastMessage,
     this.lastMessageAt,
+    this.totalUnreadChatDriver,
+    this.totalUnreadChatUser,
   });
 
   EvmotoOrderChatParticipants.fromJson(Map<String, dynamic> json) {
-    print(json);
+    totalUnreadChatDriver = json['totalUnreadChatDriver'];
+    totalUnreadChatUser = json['totalUnreadChatUser'];
     docId = json['docId'];
     driverProfileUrl = json['driverProfileUrl'];
     userProfileUrl = json['userProfileUrl'];

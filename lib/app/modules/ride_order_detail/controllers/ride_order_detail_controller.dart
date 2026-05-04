@@ -1998,7 +1998,7 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> streamExistingChatList() async {
-    await streamEvmotoOrderChatParticipants?.cancel();
+    await streamEvmotoOrderChatMessages?.cancel();
     streamEvmotoOrderChatMessages = FirebaseFirestore.instance
         .collection('evmoto_order_chat_messages')
         .where(

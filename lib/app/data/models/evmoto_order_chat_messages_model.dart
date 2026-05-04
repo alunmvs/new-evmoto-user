@@ -8,6 +8,8 @@ class EvmotoOrderChatMessages {
   String? senderMessage;
   String? senderType;
   bool? isRead;
+  int? totalUnreadChatDriver;
+  int? totalUnreadChatUser;
 
   EvmotoOrderChatMessages({
     this.evmotoOrderChatMessagesId,
@@ -19,9 +21,13 @@ class EvmotoOrderChatMessages {
     this.senderMessage,
     this.senderType,
     this.isRead,
+    this.totalUnreadChatDriver,
+    this.totalUnreadChatUser,
   });
 
   EvmotoOrderChatMessages.fromJson(Map<String, dynamic> json) {
+    totalUnreadChatDriver = json['totalUnreadChatDriver'];
+    totalUnreadChatUser = json['totalUnreadChatUser'];
     evmotoOrderChatParticipantsDocumentId =
         json['evmotoOrderChatParticipantsDocumentId'];
     if (json['createdAt'] != null) {

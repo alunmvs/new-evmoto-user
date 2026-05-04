@@ -89,8 +89,6 @@ class ChatDetailController extends GetxController {
           evmotoOrderChatParticipants.value =
               EvmotoOrderChatParticipants.fromJson(snapshots.data() ?? {});
           evmotoOrderChatParticipants.value.docId = snapshots.id;
-          print("[DEBUG CHAT] ${snapshots.data()}");
-          print("[DEBUG CHAT] Docs Id ${snapshots.id}");
         });
   }
 
@@ -115,7 +113,6 @@ class ChatDetailController extends GetxController {
   }
 
   Future<void> sendMessage() async {
-    print("oke-3");
     if (message.value != "" || attachmentUrl.value != "") {
       var data = {
         "evmotoOrderChatParticipantsDocumentId": docId.value,
@@ -128,22 +125,16 @@ class ChatDetailController extends GetxController {
         "createdAt": FieldValue.serverTimestamp(),
       };
 
-      print(data);
-
       await FirebaseFirestore.instance
           .collection('evmoto_order_chat_messages')
           .add(data);
-
-      print(evmotoOrderChatParticipants.value.docId);
-      print({
-        'lastMessage': message.value != "" ? message.value : "Attachment",
-        'lastMessageAt': FieldValue.serverTimestamp(),
-      });
 
       await FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
           .doc(docId.value)
           .set({
+            'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
+            'totalUnreadChatUser': await getTotalUnreadChatUser(),
             'lastMessage': message.value != "" ? message.value : "Attachment",
             'lastMessageAt': FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
@@ -187,5 +178,29 @@ class ChatDetailController extends GetxController {
       );
       Get.close(1);
     }
+  }
+
+  Future<int> getTotalUnreadChatDriver() async {
+    var data = await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_messages')
+        .where('evmotoOrderChatParticipantsDocumentId', isEqualTo: docId.value)
+        .where('senderType', isEqualTo: 'driver')
+        .where('isRead', isEqualTo: false)
+        .orderBy('createdAt', descending: true)
+        .get();
+
+    return data.docs.length;
+  }
+
+  Future<int> getTotalUnreadChatUser() async {
+    var data = await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_messages')
+        .where('evmotoOrderChatParticipantsDocumentId', isEqualTo: docId.value)
+        .where('senderType', isEqualTo: 'user')
+        .where('isRead', isEqualTo: false)
+        .orderBy('createdAt', descending: true)
+        .get();
+
+    return data.docs.length;
   }
 }

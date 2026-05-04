@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
@@ -174,7 +175,7 @@ class HomeController extends GetxController {
           sendbirdChatServices.initialize(),
         ]),
       );
-      await getTotalUnreadSendbirdChat();
+      await getTotalUnreadFirebaseChat();
       isSendbirdInit.value = true;
       await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);
 
@@ -295,7 +296,7 @@ class HomeController extends GetxController {
         await locationServices.requestLocationSplashScreen();
         await Future.wait([
           userServices.getUserInfo(),
-          getTotalUnreadSendbirdChat(),
+          getTotalUnreadFirebaseChat(),
           getAdvertisementList(),
         ], eagerError: false);
       }
@@ -1225,6 +1226,28 @@ class HomeController extends GetxController {
         } catch (e) {}
         isFetchTotalUnreadMessageCount.value = false;
       }
+    }
+  }
+
+  Future<void> getTotalUnreadFirebaseChat() async {
+    if (isFetchTotalUnreadMessageCount.value == false) {
+      isFetchTotalUnreadMessageCount.value = true;
+      totalUnreadMessageCount.value = 0;
+      var evmotoOrderChatParticipants = await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .where(
+            'driverId',
+            isEqualTo: userServices.userInfo.value.id.toString(),
+          )
+          .where('totalUnreadChatDriver', isGreaterThan: 0)
+          .orderBy('lastMessageAt', descending: true)
+          .get();
+
+      for (var doc in evmotoOrderChatParticipants.docs) {
+        totalUnreadMessageCount.value +=
+            int.tryParse(doc.data()['totalUnreadChatDriver'].toString()) ?? 0;
+      }
+      isFetchTotalUnreadMessageCount.value = false;
     }
   }
 

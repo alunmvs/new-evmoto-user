@@ -165,17 +165,51 @@ class ChatListView extends GetView<ChatListController> {
                                       ),
                                       if (room.lastMessageAt != null) ...[
                                         SizedBox(width: 8),
-                                        Text(
-                                          DateFormat(
-                                            'HH:mm',
-                                          ).format(room.lastMessageAt!),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: Color(0XFFB3B3B3),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              DateFormat(
+                                                'HH:mm',
+                                              ).format(room.lastMessageAt!),
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: Color(0XFFB3B3B3),
+                                                  ),
+                                            ),
+                                            if ((room.totalUnreadChatDriver ??
+                                                    0) >
+                                                0) ...[
+                                              SizedBox(height: 4),
+                                              CircleAvatar(
+                                                radius: 18 / 2,
+                                                backgroundColor: controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                                child: Text(
+                                                  (room.totalUnreadChatDriver ??
+                                                          0)
+                                                      .toString(),
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionSmallRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: Color(
+                                                          0XFFFFFFFF,
+                                                        ),
+                                                      ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ),
+                                            ],
+                                          ],
                                         ),
                                       ],
                                     ],
