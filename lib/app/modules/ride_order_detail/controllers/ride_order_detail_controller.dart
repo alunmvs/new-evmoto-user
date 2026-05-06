@@ -1167,9 +1167,9 @@ class RideOrderDetailController extends GetxController {
     await getTotalUnreadSendbirdChat();
 
     if (evmotoOrderChatParticipants.value.userId !=
-            orderRideDetail.value.userId &&
+            orderRideDetail.value.userId.toString() &&
         evmotoOrderChatParticipants.value.driverId !=
-            orderRideDetail.value.driverId &&
+            orderRideDetail.value.driverId.toString() &&
         evmotoOrderChatParticipants.value.orderId !=
             orderRideDetail.value.orderId.toString()) {
       await getExistingChatRoom();
@@ -1866,8 +1866,6 @@ class RideOrderDetailController extends GetxController {
             evmotoOrderChatParticipants.value =
                 EvmotoOrderChatParticipants.fromJson(snapshots.data() ?? {});
             evmotoOrderChatParticipants.value.docId = snapshots.id;
-            print("[DEBUG CHAT] ${snapshots.data()}");
-            print("[DEBUG CHAT] Docs Id ${snapshots.id}");
           });
     }
   }
@@ -1891,11 +1889,7 @@ class RideOrderDetailController extends GetxController {
                 .get())
             .docs;
 
-    print(
-      "[DEBUG CHAT] Get Existing Chat Room ${orderRideDetail.value.orderId} ${orderRideDetail.value.userId} ${orderRideDetail.value.driverId}",
-    );
     if (result.isNotEmpty) {
-      print("[DEBUG CHAT] Get Existing Chat Room is Not Empty");
       this.evmotoOrderChatParticipants.value =
           EvmotoOrderChatParticipants.fromJson(result.first.data());
       this.evmotoOrderChatParticipants.value.docId = result.first.id;
@@ -1903,7 +1897,6 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> userCreateChatRoom() async {
-    print("[DEBUG CHAT] Create Chat Room");
     if (orderRideDetail.value.userId != null &&
         orderRideDetail.value.driverId != null &&
         orderRideDetail.value.orderId != null) {
@@ -1925,10 +1918,7 @@ class RideOrderDetailController extends GetxController {
                   .get())
               .docs;
 
-      print("[DEBUG CHAT] Create Chat Room Creating...");
-
       if (evmotoOrderChatParticipantsList.isEmpty) {
-        print("[DEBUG CHAT] Create Chat Room Creating Is Empty...");
         var data = {
           "orderId": orderRideDetail.value.orderId.toString(),
           "userId": orderRideDetail.value.userId.toString(),
@@ -1939,9 +1929,13 @@ class RideOrderDetailController extends GetxController {
           "driverProfileUrl": orderRideDetail.value.driverAvatar,
           "createdAt": FieldValue.serverTimestamp(),
         };
-        await FirebaseFirestore.instance
-            .collection('evmoto_order_chat_participants')
-            .add(data);
+
+        await getExistingChatRoom();
+        if (evmotoOrderChatParticipants.value.docId == null) {
+          await FirebaseFirestore.instance
+              .collection('evmoto_order_chat_participants')
+              .add(data);
+        }
       }
     }
   }

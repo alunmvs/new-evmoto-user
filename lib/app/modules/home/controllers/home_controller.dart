@@ -168,13 +168,13 @@ class HomeController extends GetxController {
         await Permission.bluetoothScan.request();
       }
 
-      await measureTime(
-        "Sendbird Chat & Call Initialize",
-        () => Future.wait([
-          sendBirdServices.initialize(),
-          sendbirdChatServices.initialize(),
-        ]),
-      );
+      // await measureTime(
+      //   "Sendbird Chat & Call Initialize",
+      //   () => Future.wait([
+      //     sendBirdServices.initialize(),
+      //     sendbirdChatServices.initialize(),
+      //   ]),
+      // );
       await getTotalUnreadFirebaseChat();
       isSendbirdInit.value = true;
       await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);

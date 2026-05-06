@@ -30,8 +30,8 @@ Future<void> clearDataLogout() async {
   var storage = FlutterSecureStorage();
   var prefs = await SharedPreferences.getInstance();
 
-  final sendbirdServices = Get.find<SendbirdServices>();
-  final sendbirdChatServices = Get.find<SendbirdChatServices>();
+  // final sendbirdServices = Get.find<SendbirdServices>();
+  // final sendbirdChatServices = Get.find<SendbirdChatServices>();
 
   try {
     if (userServices.isLoadingRefreshHome.value == true) {
@@ -40,17 +40,17 @@ Future<void> clearDataLogout() async {
       );
     }
 
-    if (sendbirdChatServices.isSuccessInitialize.value == false) {
-      await sendbirdChatServices.isSuccessInitialize.stream.firstWhere(
-        (value) => value == true,
-      );
-    }
+    // if (sendbirdChatServices.isSuccessInitialize.value == false) {
+    //   await sendbirdChatServices.isSuccessInitialize.stream.firstWhere(
+    //     (value) => value == true,
+    //   );
+    // }
 
-    if (sendbirdServices.isSuccessInitialize.value == false) {
-      await sendbirdServices.isSuccessInitialize.stream.firstWhere(
-        (value) => value == true,
-      );
-    }
+    // if (sendbirdServices.isSuccessInitialize.value == false) {
+    //   await sendbirdServices.isSuccessInitialize.stream.firstWhere(
+    //     (value) => value == true,
+    //   );
+    // }
 
     if (homeController.isFetch.value == true) {
       await homeController.isFetch.stream.firstWhere((value) => value == false);
@@ -69,8 +69,8 @@ Future<void> clearDataLogout() async {
     }
 
     await Future.wait([
-      sendbirdServices.clearLogout(),
-      sendbirdChatServices.clearLogout(),
+      // sendbirdServices.clearLogout(),
+      // sendbirdChatServices.clearLogout(),
       firebasePushNotificationServices.onUnsubscribe(),
       storage.delete(key: 'token'),
       socketServices.closeWebsocket(),
