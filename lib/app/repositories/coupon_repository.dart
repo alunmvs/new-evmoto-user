@@ -15,6 +15,7 @@ class CouponRepository {
     int? language,
     int? size,
     int? state,
+    double? amount,
     required String? priceNo,
   }) async {
     try {
@@ -26,6 +27,7 @@ class CouponRepository {
         "state": state,
         "language": language,
         "priceNo": priceNo,
+        "amount": amount,
       });
 
       var storage = FlutterSecureStorage();

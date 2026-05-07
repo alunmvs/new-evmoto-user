@@ -61,6 +61,10 @@ class CreateOrderRidePromoController extends GetxController {
           .selectedOrderRidePricing
           .value
           .priceNo,
+      amount: createOrderRideCheckoutController
+          .selectedOrderRidePricing
+          .value
+          .amount,
     );
 
     isSeeMoreCouponList.value = couponList.isNotEmpty;
@@ -79,6 +83,10 @@ class CreateOrderRidePromoController extends GetxController {
             .selectedOrderRidePricing
             .value
             .priceNo,
+        amount: createOrderRideCheckoutController
+            .selectedOrderRidePricing
+            .value
+            .amount,
       );
 
       this.couponList.addAll(couponList);

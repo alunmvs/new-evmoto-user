@@ -92,6 +92,7 @@ class CreateOrderRideCheckoutController extends GetxController {
       pageNum: 1,
       size: 1,
       priceNo: selectedOrderRidePricing.value.priceNo,
+      amount: selectedOrderRidePricing.value.amount,
     );
 
     if (availableCouponList.isNotEmpty) {
