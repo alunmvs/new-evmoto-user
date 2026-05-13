@@ -39,10 +39,12 @@ class SplashScreenController extends GetxController {
       isFetch.value = false;
 
       var prefs = await SharedPreferences.getInstance();
+      print("[SOCKET DEBUG] ${prefs.getBool('home_controller_registered')}");
       await Future.wait([
         prefs.setBool("home_controller_registered", false),
         prefs.setBool("activity_controller_registered", false),
       ]);
+      print("[SOCKET DEBUG] ${prefs.getBool('home_controller_registered')}");
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

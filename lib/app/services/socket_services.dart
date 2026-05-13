@@ -66,8 +66,7 @@ class SocketServices extends GetxService {
             var dataJson = convertBytesToJson(bytes: data);
             if (dataJson != null) {
               var method = dataJson['method'] ?? "";
-
-              // print("[DEBUG SOCKET] $dataJson");
+              print("[DEBUG SOCKET] $dataJson");
 
               switch (method) {
                 case 'DRIVER_POSITION':
@@ -156,6 +155,7 @@ class SocketServices extends GetxService {
 
         await schedulerDataSocket();
       } catch (e) {
+        isSocketClose.value = true;
         print("[SOCKET DEBUG] Socket did not connect $e");
       }
       isProcessConnect.value = false;
@@ -212,9 +212,11 @@ class SocketServices extends GetxService {
         "msg": "SUCCESS",
       };
       try {
+        print("[DEBUG SOCKET] PING START");
         socket?.add(convertJsonToPacket(dataUser));
         pingDateTime.value = DateTime.now();
         await socket?.flush();
+        print("[DEBUG SOCKET] PING END");
       } catch (e) {}
     }
   }

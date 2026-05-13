@@ -1899,6 +1899,7 @@ class RideOrderDetailController extends GetxController {
   Future<void> userCreateChatRoom() async {
     if (orderRideDetail.value.userId != null &&
         orderRideDetail.value.driverId != null &&
+        orderRideDetail.value.driverId != 0 &&
         orderRideDetail.value.orderId != null) {
       var evmotoOrderChatParticipantsList =
           (await FirebaseFirestore.instance
@@ -1935,6 +1936,7 @@ class RideOrderDetailController extends GetxController {
           await FirebaseFirestore.instance
               .collection('evmoto_order_chat_participants')
               .add(data);
+          await getExistingChatRoom();
         }
       }
     }
@@ -1943,7 +1945,8 @@ class RideOrderDetailController extends GetxController {
   Future<void> setChatOnline() async {
     await setChatOffline();
 
-    if (orderRideDetail.value.driverId != null) {
+    if (orderRideDetail.value.driverId != null &&
+        orderRideDetail.value.driverId != 0) {
       final batch = FirebaseFirestore.instance.batch();
 
       final querySnapshot = await FirebaseFirestore.instance

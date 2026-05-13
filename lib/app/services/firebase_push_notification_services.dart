@@ -14,6 +14,7 @@ import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
+import 'package:new_evmoto_user/app/repositories/notification_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -204,6 +205,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class FirebasePushNotificationServices extends GetxService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final notificationRepository = NotificationRepository();
   final fcmToken = "".obs;
   final apnsToken = "".obs;
 
@@ -256,9 +258,9 @@ class FirebasePushNotificationServices extends GetxService {
       this.apnsToken.value = apnsToken ?? '';
       // print("ini fcm token $fcmToken");
 
-      // var deviceId = await getDeviceId();
-      // var appVersion = await getVersion();
-      // var osVersion = await getOSVersion();
+      var deviceId = await getDeviceId();
+      var appVersion = await getVersion();
+      var osVersion = await getOSVersion();
 
       // await notificationRepository.subscribeNotification(
       //   fcmToken: fcmToken,
@@ -273,9 +275,9 @@ class FirebasePushNotificationServices extends GetxService {
       this.fcmToken.value = fcmToken ?? '';
       // print("ini fcm token $fcmToken");
 
-      // var deviceId = await getDeviceId();
-      // var appVersion = await getVersion();
-      // var osVersion = await getOSVersion();
+      var deviceId = await getDeviceId();
+      var appVersion = await getVersion();
+      var osVersion = await getOSVersion();
 
       // await notificationRepository.subscribeNotification(
       //   fcmToken: fcmToken,
@@ -419,7 +421,11 @@ class FirebasePushNotificationServices extends GetxService {
             largeIcon: DrawableResourceAndroidBitmap('ic_notification_large'),
             icon: 'ic_notification_small',
             color: const Color(0XFF0060C6),
+            sound: RawResourceAndroidNotificationSound(''),
           ),
+          // iOS: DarwinNotificationDetails(
+          //   sound:
+          // ),
         ),
       );
     });
