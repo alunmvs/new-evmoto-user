@@ -510,7 +510,6 @@ class AccountController extends GetxController {
                               ),
                         ),
                       ),
-
                       SizedBox(height: 16),
                     ],
                   ),

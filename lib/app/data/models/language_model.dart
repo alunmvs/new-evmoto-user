@@ -343,8 +343,14 @@ class Language {
   String? distance;
   String? callUnanswered;
   String? tripHasEnded;
+  String? tripPriceUpdatedTitle;
+  String? tripPriceUpdatedDescription;
+  String? tripPriceUpdatedButton;
 
   Language({
+    this.tripPriceUpdatedTitle,
+    this.tripPriceUpdatedDescription,
+    this.tripPriceUpdatedButton,
     this.cancelByPassenger,
     this.criticalErrorTitle,
     this.criticalErrorDescription,
@@ -682,6 +688,12 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    tripPriceUpdatedTitle =
+        json['trip_price_updated_title'] ?? "(Translate Not Found)";
+    tripPriceUpdatedDescription =
+        json['trip_price_updated_description'] ?? "(Translate Not Found)";
+    tripPriceUpdatedButton =
+        json['trip_price_updated_button'] ?? "(Translate Not Found)";
     cancelByPassenger = json['cancel_by_passenger'] ?? "(Translate Not Found)";
     criticalErrorTitle =
         json['critical_error_title'] ?? "(Translate Not Found)";
@@ -1178,6 +1190,9 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['trip_price_updated_title'] = this.tripPriceUpdatedTitle;
+    data['trip_price_updated_description'] = this.tripPriceUpdatedDescription;
+    data['trip_price_updated_button'] = this.tripPriceUpdatedButton;
     data['unavailable_promo_voucher_not_available'] =
         this.unavailablePromoVoucherNotAvailable;
     data['unavailable_no_have_any_promo'] = this.unavailableNoHaveAnyPromo;

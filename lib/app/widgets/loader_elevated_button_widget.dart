@@ -9,6 +9,7 @@ class LoaderElevatedButton extends StatelessWidget {
   final BorderSide? borderSide;
   final bool? isWidthFitToContent;
   final EdgeInsetsGeometry? padding;
+  final bool? isShowLoading;
 
   LoaderElevatedButton({
     super.key,
@@ -18,6 +19,7 @@ class LoaderElevatedButton extends StatelessWidget {
     this.borderSide,
     this.isWidthFitToContent,
     this.padding,
+    this.isShowLoading,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -29,7 +31,11 @@ class LoaderElevatedButton extends StatelessWidget {
     return Obx(
       () => Center(
         child: SizedBox(
-          width: isLoading.value
+          width: isShowLoading == false
+              ? (isWidthFitToContent == true
+                    ? null
+                    : MediaQuery.of(context).size.width)
+              : isLoading.value
               ? 46
               : isWidthFitToContent == true
               ? null
@@ -49,16 +55,22 @@ class LoaderElevatedButton extends StatelessWidget {
               backgroundColor:
                   buttonColor ?? themeColorServices.primaryBlue.value,
               shape: RoundedRectangleBorder(
-                borderRadius: isLoading.value
+                borderRadius: isShowLoading == false
+                    ? BorderRadius.circular(16)
+                    : isLoading.value
                     ? BorderRadius.circular(9999)
                     : BorderRadius.circular(16),
                 side: borderSide ?? BorderSide.none,
               ),
-              padding: isLoading.value
+              padding: isShowLoading == false
+                  ? (padding ?? EdgeInsets.all(0))
+                  : isLoading.value
                   ? EdgeInsets.all(0)
                   : padding ?? EdgeInsets.all(0),
             ),
-            child: isLoading.value
+            child: isShowLoading == false
+                ? child
+                : isLoading.value
                 ? Center(
                     child: SizedBox(
                       width: 25,

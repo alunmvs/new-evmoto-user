@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 
 class CreateOrderRideCheckoutController extends GetxController {
@@ -271,9 +273,9 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
+    Get.dialog(LoadingDialog(), barrierDismissible: false);
     await locationServices.requestLocation();
     if (locationServices.isPermissionLocationAllow.value == true) {
-      Get.dialog(LoadingDialog(), barrierDismissible: false);
       try {
         var result = await orderRideRepository.requestOrderRide(
           language: languageServices.languageCodeSystem.value,
@@ -317,7 +319,110 @@ class CreateOrderRideCheckoutController extends GetxController {
       } on Exception catch (e) {
         Get.close(1);
         SnackbarHelper.showSnackbarError(text: e.toString());
+      } catch (e) {
+        Get.close(1);
+
+        if (e.toString() == "The price scheme is not exist") {
+          await getOrderRidePricingList();
+          await getAvailableCouponList();
+          await Future.wait([getOrderRidePricingList()]);
+
+          Get.bottomSheet(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                  child: Material(
+                    color: themeColorServices.neutralsColorGrey0.value,
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      width: Get.width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: CircleAvatar(
+                                  backgroundColor:
+                                      themeColorServices.primaryBlue.value,
+                                  radius: 52 / 2,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_wallet_1.svg",
+                                    width: 26,
+                                    height: 26,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.close(1);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/icon_close.svg",
+                                  width: 18,
+                                  height: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            languageServices
+                                    .language
+                                    .value
+                                    .tripPriceUpdatedTitle ??
+                                "-",
+                            style: typographyServices.bodyLargeBold.value,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            languageServices
+                                    .language
+                                    .value
+                                    .tripPriceUpdatedDescription ??
+                                "-",
+                            style: typographyServices.bodySmallRegular.value,
+                          ),
+                          SizedBox(height: 16),
+                          LoaderElevatedButton(
+                            child: Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .tripPriceUpdatedButton ??
+                                  "-",
+                              style: typographyServices.bodyLargeBold.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                            onPressed: () async {
+                              Get.close(1);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
       }
+    } else {
+      Get.close(1);
     }
   }
 }

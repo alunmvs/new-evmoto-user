@@ -69,6 +69,7 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: LoaderElevatedButton(
+                            isShowLoading: false,
                             onPressed:
                                 controller.selectedOrderRidePricing.value.id ==
                                     null

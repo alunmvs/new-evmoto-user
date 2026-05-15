@@ -277,8 +277,7 @@ class OrderRideRepository {
       }
 
       return RequestedOrderRide.fromJson(response.data['data']);
-    } on DioException catch (e) {
-      print("ini response data ${e.response?.data}");
+    } on DioException {
       rethrow;
     }
   }

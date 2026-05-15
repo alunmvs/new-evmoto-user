@@ -212,11 +212,11 @@ class SocketServices extends GetxService {
         "msg": "SUCCESS",
       };
       try {
-        print("[DEBUG SOCKET] PING START");
+        // print("[DEBUG SOCKET] PING START");
         socket?.add(convertJsonToPacket(dataUser));
         pingDateTime.value = DateTime.now();
         await socket?.flush();
-        print("[DEBUG SOCKET] PING END");
+        // print("[DEBUG SOCKET] PING END");
       } catch (e) {}
     }
   }
