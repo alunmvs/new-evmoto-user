@@ -7,7 +7,6 @@ import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';

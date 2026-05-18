@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -581,7 +580,6 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                         controller:
                                             controller.textEditingController,
                                         onChanged: (value) {
-                                          print(value);
                                           controller.message.value = value;
                                         },
                                         decoration: InputDecoration(
@@ -645,13 +643,11 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                     SizedBox(width: 12),
                                     GestureDetector(
                                       onTap: () async {
-                                        print("oke-1");
                                         if (controller
                                                 .textEditingController
                                                 .text
                                                 .trim() !=
                                             "") {
-                                          print("oke-2");
                                           await controller.sendMessage();
                                         }
                                       },

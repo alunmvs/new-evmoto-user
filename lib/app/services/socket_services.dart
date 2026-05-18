@@ -66,7 +66,7 @@ class SocketServices extends GetxService {
             var dataJson = convertBytesToJson(bytes: data);
             if (dataJson != null) {
               var method = dataJson['method'] ?? "";
-              print("[DEBUG SOCKET] $dataJson");
+              // print("[DEBUG SOCKET] $dataJson");
 
               switch (method) {
                 case 'DRIVER_POSITION':
@@ -156,7 +156,7 @@ class SocketServices extends GetxService {
         await schedulerDataSocket();
       } catch (e) {
         isSocketClose.value = true;
-        print("[SOCKET DEBUG] Socket did not connect $e");
+        // print("[SOCKET DEBUG] Socket did not connect $e");
       }
       isProcessConnect.value = false;
     }

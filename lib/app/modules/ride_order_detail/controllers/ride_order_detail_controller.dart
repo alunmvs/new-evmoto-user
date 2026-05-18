@@ -14,7 +14,6 @@ import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
-import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';

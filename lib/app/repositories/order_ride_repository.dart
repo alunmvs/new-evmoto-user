@@ -268,7 +268,7 @@ class OrderRideRepository {
         options: Options(headers: headers),
       );
 
-      print("ini response data ${response.data}");
+      // print("ini response data ${response.data}");
 
       if (response.data['code'] != null && response.data['code'] != 200) {
         if (response.data['msg'] != null) {

@@ -8,8 +8,6 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
-import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
-import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
