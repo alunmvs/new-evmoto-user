@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:marker_widget/marker_widget.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
+import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride/controllers/create_order_ride_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
+import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -19,20 +24,24 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
+import 'package:new_evmoto_user/main.dart';
 
 class CreateOrderRideCheckoutController extends GetxController {
   final OrderRideRepository orderRideRepository;
   final GeocodingRepository geocodingRepository;
   final OpenMapsRepository openMapsRepository;
   final CouponRepository couponRepository;
+  final DriverNearbyRepository driverNearbyRepository;
 
   CreateOrderRideCheckoutController({
     required this.orderRideRepository,
     required this.geocodingRepository,
     required this.openMapsRepository,
     required this.couponRepository,
+    required this.driverNearbyRepository,
   });
 
   final homeController = Get.find<HomeController>();
@@ -46,9 +55,9 @@ class CreateOrderRideCheckoutController extends GetxController {
     target: LatLng(-6.1744651, 106.822745),
     zoom: 14,
   ).obs;
-  late GoogleMapController googleMapController;
+  final googleMapController = Completer<GoogleMapController>();
 
-  final markers = <Marker>{}.obs;
+  // final markers = <Marker>{}.obs;
   final polylines = <Polyline>{}.obs;
   final polylinesCoordinate = <LatLng>[].obs;
 
@@ -68,6 +77,10 @@ class CreateOrderRideCheckoutController extends GetxController {
   final destinationLatitude = Rx<String?>(null);
   final destinationLongitude = Rx<String?>(null);
 
+  final driverNearbyList = <DriverNearby>[].obs;
+  final markers = <MarkerId, Marker>{}.obs;
+  Timer? driverNearbyTimer;
+
   final isPermissionLocationAllow = false.obs;
   final isFetch = false.obs;
 
@@ -85,6 +98,80 @@ class CreateOrderRideCheckoutController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  // Driver Nearby
+  Future<void> getDriverNearByList() async {
+    driverNearbyList.value = await driverNearbyRepository.getDriverNearbyList(
+      lat: double.tryParse(originLatitude.value!),
+      lon: double.tryParse(originLongitude.value!),
+    );
+  }
+
+  Future<void> refreshMarkerDriverNearby() async {
+    await getDriverNearByList();
+
+    for (var driverNearby in driverNearbyList) {
+      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var widgetBitmapDescriptor =
+          await DriverNearbyPositionWidget(
+            driverNearby: driverNearby,
+          ).toMarkerBitmap(
+            navigatorKey.currentContext!,
+            logicalSize: Size(64, 106),
+          );
+      var markerDriverNearby = Marker(
+        markerId: markerId,
+        position: LatLng(driverNearby.lat!, driverNearby.lon!),
+        icon: widgetBitmapDescriptor,
+        anchor: Offset(0.5, 0.5),
+        visible: true,
+      );
+      markers[markerId] = markerDriverNearby;
+    }
+
+    for (var markerId in markers.keys) {
+      var isExist = false;
+      for (var driverNearby in driverNearbyList) {
+        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+          isExist = true;
+        }
+      }
+
+      if (markerId.value == "origin" || markerId.value == "destination") {
+        isExist = true;
+      }
+
+      if (isExist == false) {
+        var widgetBitmapDescriptor =
+            await DriverNearbyPositionWidget(
+              driverNearby: DriverNearby(),
+            ).toMarkerBitmap(
+              navigatorKey.currentContext!,
+              logicalSize: Size(64, 106),
+            );
+        var markerDriverNearby = Marker(
+          markerId: markerId,
+          position: LatLng(0.0, 0.0),
+          icon: widgetBitmapDescriptor,
+          anchor: Offset(0.5, 0.5),
+          visible: false,
+        );
+        markers[markerId] = markerDriverNearby;
+      }
+    }
+
+    markers.refresh();
+  }
+
+  void enableDriverNearbyTimer() {
+    driverNearbyTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      await refreshMarkerDriverNearby();
+    });
+  }
+
+  void disableDriverNearbyTimer() {
+    driverNearbyTimer?.cancel();
   }
 
   Future<void> getAvailableCouponList() async {
@@ -182,11 +269,11 @@ class CreateOrderRideCheckoutController extends GetxController {
 
     if (isClosed) return;
     if (movementDirection == MovementDirection.vertical) {
-      await googleMapController.animateCamera(
+      await (await googleMapController.future).animateCamera(
         CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
       );
     } else {
-      await googleMapController.animateCamera(
+      await (await googleMapController.future).animateCamera(
         CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
       );
     }
@@ -223,34 +310,30 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   Future<void> setLatitudeLongitudeMarker() async {
-    markers.add(
-      Marker(
-        markerId: MarkerId("origin"),
-        position: LatLng(
-          double.parse(originLatitude.value!),
-          double.parse(originLongitude.value!),
-        ),
-        icon: await BitmapDescriptor.asset(
-          ImageConfiguration(size: Size((33), (39))),
-          'assets/icons/icon_pinpoint_map_green.png',
-        ),
-        anchor: Offset(0.5, 0.5),
+    markers[MarkerId("origin")] = Marker(
+      markerId: MarkerId("origin"),
+      position: LatLng(
+        double.parse(originLatitude.value!),
+        double.parse(originLongitude.value!),
       ),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(size: Size((33), (39))),
+        'assets/icons/icon_pinpoint_map_green.png',
+      ),
+      anchor: Offset(0.5, 0.5),
     );
 
-    markers.add(
-      Marker(
-        markerId: MarkerId("destination"),
-        position: LatLng(
-          double.parse(destinationLatitude.value!),
-          double.parse(destinationLongitude.value!),
-        ),
-        icon: await BitmapDescriptor.asset(
-          ImageConfiguration(size: Size(33, 39)),
-          'assets/icons/icon_pinpoint_map_red.png',
-        ),
-        anchor: Offset(0.5, 0.5),
+    markers[MarkerId("destination")] = Marker(
+      markerId: MarkerId("destination"),
+      position: LatLng(
+        double.parse(destinationLatitude.value!),
+        double.parse(destinationLongitude.value!),
       ),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(size: Size(33, 39)),
+        'assets/icons/icon_pinpoint_map_red.png',
+      ),
+      anchor: Offset(0.5, 0.5),
     );
   }
 
@@ -322,12 +405,16 @@ class CreateOrderRideCheckoutController extends GetxController {
       } catch (e) {
         Get.close(1);
 
-        if (e.toString() == "The price scheme is not exist") {
+        await Future.delayed(Duration(milliseconds: 100));
+
+        if (e.toString() == "The price scheme is not exist" ||
+            e.toString() == "Skema harga tidak ada" ||
+            e.toString() == "价格方案不存在") {
           await getOrderRidePricingList();
           await getAvailableCouponList();
           await Future.wait([getOrderRidePricingList()]);
 
-          Get.bottomSheet(
+          await Get.bottomSheet(
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,

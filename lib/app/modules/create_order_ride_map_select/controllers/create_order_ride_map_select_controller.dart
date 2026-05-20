@@ -1,15 +1,27 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:marker_widget/marker_widget.dart';
+import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
+import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
+import 'package:new_evmoto_user/main.dart';
 
 class CreateOrderRideMapSelectController extends GetxController {
   final GeocodingRepository geocodingRepository;
+  final DriverNearbyRepository driverNearbyRepository;
 
-  CreateOrderRideMapSelectController({required this.geocodingRepository});
+  CreateOrderRideMapSelectController({
+    required this.geocodingRepository,
+    required this.driverNearbyRepository,
+  });
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -19,7 +31,11 @@ class CreateOrderRideMapSelectController extends GetxController {
     target: LatLng(-6.1744651, 106.822745),
     zoom: 14,
   ).obs;
-  late GoogleMapController googleMapController;
+  final googleMapController = Completer<GoogleMapController>();
+
+  final driverNearbyList = <DriverNearby>[].obs;
+  final markers = <MarkerId, Marker>{}.obs;
+  Timer? driverNearbyTimer;
 
   final type = Rx<String?>(null);
 
@@ -45,6 +61,79 @@ class CreateOrderRideMapSelectController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    disableDriverNearbyTimer();
+  }
+
+  // Driver Nearby
+  Future<void> getDriverNearByList() async {
+    driverNearbyList.value = await driverNearbyRepository.getDriverNearbyList(
+      lat: double.tryParse(latitude.value!),
+      lon: double.tryParse(longitude.value!),
+    );
+  }
+
+  Future<void> refreshMarkerDriverNearby() async {
+    if (type.value == "origin") {
+      await getDriverNearByList();
+
+      for (var driverNearby in driverNearbyList) {
+        var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+        var widgetBitmapDescriptor =
+            await DriverNearbyPositionWidget(
+              driverNearby: driverNearby,
+            ).toMarkerBitmap(
+              navigatorKey.currentContext!,
+              logicalSize: Size(64, 106),
+            );
+        var markerDriverNearby = Marker(
+          markerId: markerId,
+          position: LatLng(driverNearby.lat!, driverNearby.lon!),
+          icon: widgetBitmapDescriptor,
+          anchor: Offset(0.5, 0.5),
+          visible: true,
+        );
+        markers[markerId] = markerDriverNearby;
+      }
+
+      for (var markerId in markers.keys) {
+        var isExist = false;
+        for (var driverNearby in driverNearbyList) {
+          if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+            isExist = true;
+          }
+        }
+
+        if (isExist == false) {
+          var widgetBitmapDescriptor =
+              await DriverNearbyPositionWidget(
+                driverNearby: DriverNearby(),
+              ).toMarkerBitmap(
+                navigatorKey.currentContext!,
+                logicalSize: Size(64, 106),
+              );
+          var markerDriverNearby = Marker(
+            markerId: markerId,
+            position: LatLng(0.0, 0.0),
+            icon: widgetBitmapDescriptor,
+            anchor: Offset(0.5, 0.5),
+            visible: false,
+          );
+          markers[markerId] = markerDriverNearby;
+        }
+      }
+
+      markers.refresh();
+    }
+  }
+
+  void enableDriverNearbyTimer() {
+    driverNearbyTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      await refreshMarkerDriverNearby();
+    });
+  }
+
+  void disableDriverNearbyTimer() {
+    driverNearbyTimer?.cancel();
   }
 
   Future<void> fillForm() async {
@@ -75,6 +164,8 @@ class CreateOrderRideMapSelectController extends GetxController {
       address.value = searchedAddress?.address ?? "-";
       addressName.value = searchedAddress?.name ?? "-";
     }
+
+    await getDriverNearByList();
   }
 
   Future<void> requestLocation() async {
@@ -107,7 +198,7 @@ class CreateOrderRideMapSelectController extends GetxController {
       longitude.value = position.longitude.toString();
 
       if (isClosed) return;
-      googleMapController.moveCamera(
+      (await googleMapController.future).moveCamera(
         CameraUpdate.newLatLng(
           LatLng(double.parse(latitude.value!), double.parse(longitude.value!)),
         ),
@@ -118,7 +209,7 @@ class CreateOrderRideMapSelectController extends GetxController {
       longitude.value = "106.822745";
 
       if (isClosed) return;
-      googleMapController.moveCamera(
+      (await googleMapController.future).moveCamera(
         CameraUpdate.newLatLng(
           LatLng(double.parse(latitude.value!), double.parse(longitude.value!)),
         ),
@@ -129,7 +220,7 @@ class CreateOrderRideMapSelectController extends GetxController {
   Future<void> moveGoogleMapCameraToFillLocation() async {
     if (latitude.value != null && longitude.value != null) {
       if (isClosed) return;
-      await googleMapController.moveCamera(
+      await (await googleMapController.future).moveCamera(
         CameraUpdate.newLatLng(
           LatLng(double.parse(latitude.value!), double.parse(longitude.value!)),
         ),
@@ -145,18 +236,29 @@ class CreateOrderRideMapSelectController extends GetxController {
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (latitude.toString() == this.latitude.value &&
           longitude.toString() == this.longitude.value) {
-        var searchedAddress = await geocodingRepository
-            .getAddressByLatitudeLongitude(
-              latitude: latitude,
-              longitude: longitude,
-            );
-        address.value = searchedAddress?.address ?? "-";
-        addressName.value = searchedAddress?.name ?? "-";
         this.latitude.value = latitude.toString();
         this.longitude.value = longitude.toString();
+        await Future.wait([
+          refreshMarkerDriverNearby(),
+          setAddressAndAddressName(latitude: latitude!, longitude: longitude!),
+        ]);
+
         isFetchAddress.value = false;
       }
     });
+  }
+
+  Future<void> setAddressAndAddressName({
+    required double latitude,
+    required double longitude,
+  }) async {
+    var searchedAddress = await geocodingRepository
+        .getAddressByLatitudeLongitude(
+          latitude: latitude,
+          longitude: longitude,
+        );
+    address.value = searchedAddress?.address ?? "-";
+    addressName.value = searchedAddress?.name ?? "-";
   }
 
   void onTapSubmit() {

@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animarker/widgets/animarker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
@@ -44,46 +45,56 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                     Expanded(
                       child: Stack(
                         children: [
-                          GoogleMap(
-                            mapType: MapType.normal,
-                            zoomControlsEnabled: false,
-                            initialCameraPosition:
-                                controller.initialCameraPosition.value,
-                            onMapCreated:
-                                (GoogleMapController googleMapController) {
-                                  controller.googleMapController =
-                                      googleMapController;
+                          Animarker(
+                            mapId: controller.googleMapController.future
+                                .then<int>((value) => value.mapId),
+                            markers: <Marker>{
+                              ...controller.markers.values.toSet(),
+                            },
+                            duration: const Duration(milliseconds: 4800),
+                            curve: Curves.linear,
+                            shouldAnimateCamera: false,
+                            child: GoogleMap(
+                              mapType: MapType.normal,
+                              zoomControlsEnabled: false,
+                              initialCameraPosition:
+                                  controller.initialCameraPosition.value,
+                              onMapCreated:
+                                  (GoogleMapController googleMapController) {
+                                    controller.googleMapController.complete(
+                                      googleMapController,
+                                    );
+                                    controller
+                                            .isGoogleMapControllerCreated
+                                            .value =
+                                        true;
+                                  },
+                              polylines: controller.polylines,
+                              tiltGesturesEnabled:
                                   controller
-                                          .isGoogleMapControllerCreated
-                                          .value =
-                                      true;
-                                },
-                            markers: controller.markers,
-                            polylines: controller.polylines,
-                            tiltGesturesEnabled:
-                                controller
-                                    .isPinLocationWaitingForDriverHide
-                                    .value ==
-                                true,
-                            zoomGesturesEnabled:
-                                controller
-                                    .isPinLocationWaitingForDriverHide
-                                    .value ==
-                                true,
-                            rotateGesturesEnabled:
-                                controller
-                                    .isPinLocationWaitingForDriverHide
-                                    .value ==
-                                true,
-                            scrollGesturesEnabled:
-                                controller
-                                    .isPinLocationWaitingForDriverHide
-                                    .value ==
-                                true,
-                            cameraTargetBounds: CameraTargetBounds(
-                              LatLngBounds(
-                                southwest: LatLng(-11.0, 95.0),
-                                northeast: LatLng(6.5, 141.0),
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
+                              zoomGesturesEnabled:
+                                  controller
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
+                              rotateGesturesEnabled:
+                                  controller
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
+                              scrollGesturesEnabled:
+                                  controller
+                                      .isPinLocationWaitingForDriverHide
+                                      .value ==
+                                  true,
+                              cameraTargetBounds: CameraTargetBounds(
+                                LatLngBounds(
+                                  southwest: LatLng(-11.0, 95.0),
+                                  northeast: LatLng(6.5, 141.0),
+                                ),
                               ),
                             ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animarker/flutter_map_marker_animation.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,33 +21,52 @@ class HomeMapSubView extends GetView<HomeController> {
               children: [
                 AspectRatio(
                   aspectRatio: 375 / 369,
-                  child: GoogleMap(
-                    mapType: MapType.normal,
-                    onCameraMove: (position) async {
-                      if (controller.isCurrentAddressIsInit.value == true &&
-                          controller.isFetch.value == false) {
-                        await controller.getCurrentAddress(
-                          latitude: position.target.latitude,
-                          longitude: position.target.longitude,
-                        );
-                        controller.initialCameraPosition.value = CameraPosition(
-                          target: LatLng(
-                            position.target.latitude,
-                            position.target.longitude,
-                          ),
-                          zoom: 14,
-                        );
-                      }
-                    },
-                    zoomControlsEnabled: false,
-                    initialCameraPosition:
-                        controller.initialCameraPosition.value,
-                    onMapCreated:
-                        (GoogleMapController googleMapController) async {
-                          controller.googleMapController = googleMapController;
-                          await controller
-                              .moveGoogleMapCameraToCurrentLocation();
-                        },
+                  child: Animarker(
+                    mapId: controller.googleMapController.future.then<int>(
+                      (value) => value.mapId,
+                    ),
+                    duration: const Duration(milliseconds: 4800),
+                    curve: Curves.linear,
+                    markers: <Marker>{...controller.markers.values.toSet()},
+                    shouldAnimateCamera: false,
+                    child: GoogleMap(
+                      mapType: MapType.normal,
+                      onCameraMove: (position) async {
+                        if (controller.isCurrentAddressIsInit.value == true &&
+                            controller.isFetch.value == false) {
+                          // controller.markersSet.value = {};
+                          // controller.markers.value = {};
+                          // controller.markersSet.clear();
+                          // controller.markers.clear();
+                          // controller.markersSet.refresh();
+                          // controller.markers.refresh();
+
+                          await controller.getCurrentAddress(
+                            latitude: position.target.latitude,
+                            longitude: position.target.longitude,
+                          );
+                          controller.initialCameraPosition.value =
+                              CameraPosition(
+                                target: LatLng(
+                                  position.target.latitude,
+                                  position.target.longitude,
+                                ),
+                                zoom: 14,
+                              );
+                        }
+                      },
+                      zoomControlsEnabled: false,
+                      initialCameraPosition:
+                          controller.initialCameraPosition.value,
+                      onMapCreated:
+                          (GoogleMapController googleMapController) async {
+                            controller.googleMapController.complete(
+                              googleMapController,
+                            );
+                            await controller
+                                .moveGoogleMapCameraToCurrentLocation();
+                          },
+                    ),
                   ),
                 ),
                 Center(

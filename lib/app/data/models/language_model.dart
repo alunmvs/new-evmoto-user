@@ -346,8 +346,14 @@ class Language {
   String? tripPriceUpdatedTitle;
   String? tripPriceUpdatedDescription;
   String? tripPriceUpdatedButton;
+  String? serviceTimeValidationTitle;
+  String? serviceTimeValidationDescription;
+  String? serviceTimeValidationButton;
 
   Language({
+    this.serviceTimeValidationTitle,
+    this.serviceTimeValidationDescription,
+    this.serviceTimeValidationButton,
     this.tripPriceUpdatedTitle,
     this.tripPriceUpdatedDescription,
     this.tripPriceUpdatedButton,
@@ -688,6 +694,12 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    serviceTimeValidationTitle =
+        json['service_time_validation_title'] ?? "(Translate Not Found)";
+    serviceTimeValidationDescription =
+        json['service_time_validation_description'] ?? "(Translate Not Found)";
+    serviceTimeValidationButton =
+        json['service_time_validation_button'] ?? "(Translate Not Found)";
     tripPriceUpdatedTitle =
         json['trip_price_updated_title'] ?? "(Translate Not Found)";
     tripPriceUpdatedDescription =
@@ -1190,6 +1202,10 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['service_time_validation_title'] = this.serviceTimeValidationTitle;
+    data['service_time_validation_description'] =
+        this.serviceTimeValidationDescription;
+    data['service_time_validation_button'] = this.serviceTimeValidationButton;
     data['trip_price_updated_title'] = this.tripPriceUpdatedTitle;
     data['trip_price_updated_description'] = this.tripPriceUpdatedDescription;
     data['trip_price_updated_button'] = this.tripPriceUpdatedButton;

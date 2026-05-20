@@ -17,6 +17,35 @@ import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+DateTime parseTime(String time) {
+  final parts = time.split(':');
+  final now = DateTime.now();
+
+  return DateTime(
+    now.year,
+    now.month,
+    now.day,
+    int.parse(parts[0]),
+    int.parse(parts[1]),
+  );
+}
+
+String formatDistance(double meters) {
+  if (meters >= 1000) {
+    double km = meters / 1000;
+
+    String kmStr = km.toStringAsFixed(2);
+    kmStr = kmStr.replaceAll(RegExp(r'\.?0+$'), '');
+
+    return '$kmStr km';
+  } else {
+    String mStr = meters.toStringAsFixed(2);
+    mStr = mStr.replaceAll(RegExp(r'\.?0+$'), '');
+
+    return '$mStr m';
+  }
+}
+
 Future<void> clearDataLogout() async {
   final homeController = Get.find<HomeController>();
   final activityController = Get.find<ActivityController>();

@@ -28,6 +28,7 @@ import 'app/routes/app_pages.dart';
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +78,7 @@ Future<void> main() async {
 
   runApp(
     GetMaterialApp(
+      navigatorKey: navigatorKey,
       title: "Evmoto",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,

@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:marker_widget/marker_widget.dart';
+import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_messages_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
@@ -14,6 +16,7 @@ import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
+import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
@@ -28,6 +31,7 @@ import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
+import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
@@ -38,10 +42,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RideOrderDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
   final OpenMapsRepository openMapsRepository;
+  final DriverNearbyRepository driverNearbyRepository;
 
   RideOrderDetailController({
     required this.orderRideRepository,
     required this.openMapsRepository,
+    required this.driverNearbyRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -58,9 +64,8 @@ class RideOrderDetailController extends GetxController {
     target: LatLng(-6.1744651, 106.822745),
     zoom: 14,
   ).obs;
-  late GoogleMapController googleMapController;
+  final googleMapController = Completer<GoogleMapController>();
 
-  final markers = <Marker>{}.obs;
   final polylines = <Polyline>{}.obs;
   final polylinesCoordinate = <LatLng>[].obs;
 
@@ -98,6 +103,10 @@ class RideOrderDetailController extends GetxController {
   final isFetchTotalUnreadMessageCount = false.obs;
 
   Timer? allSchedulerTimer;
+
+  final driverNearbyList = <DriverNearby>[].obs;
+  final markers = <MarkerId, Marker>{}.obs;
+  Timer? driverNearbyTimer;
 
   // debug purposes
   final distanceFromRoute = 0.0.obs;
@@ -221,6 +230,10 @@ class RideOrderDetailController extends GetxController {
         }
       }
 
+      if ([1].contains(state.value)) {
+        await getDriverNearByList();
+      }
+
       if ([1, 2].contains(state.value)) {
         await measureTime(
           "Check Number of Push Rounds Has Exceeded",
@@ -237,6 +250,8 @@ class RideOrderDetailController extends GetxController {
             .inSeconds;
       }
     });
+
+    enableDriverNearbyTimer();
   }
 
   @override
@@ -253,7 +268,7 @@ class RideOrderDetailController extends GetxController {
     await setChatOffline();
 
     try {
-      googleMapController.dispose();
+      (await googleMapController.future).dispose();
     } catch (e) {}
     try {
       driverCurrentLocationTimer?.cancel();
@@ -267,10 +282,14 @@ class RideOrderDetailController extends GetxController {
     try {
       driverWaitingTimer?.cancel();
     } catch (e) {}
+
+    try {
+      disableDriverNearbyTimer();
+    } catch (e) {}
   }
 
   Future<void> refreshAll() async {
-    markers.clear();
+    // markers.clear();
     polylines.clear();
     polylinesCoordinate.clear();
     driverCurrentLocationTimer?.cancel();
@@ -338,7 +357,7 @@ class RideOrderDetailController extends GetxController {
 
   Future<void> setupMapWaitingForDriver() async {
     if (isClosed) return;
-    await googleMapController.animateCamera(
+    await (await googleMapController.future).animateCamera(
       CameraUpdate.newLatLngZoom(
         LatLng(
           orderRideDetail.value.startLat!,
@@ -384,6 +403,7 @@ class RideOrderDetailController extends GetxController {
           'assets/icons/icon_pinpoint_map_green.png',
         ),
         anchor: Offset(0.5, 0.5),
+        visible: true,
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -444,7 +464,7 @@ class RideOrderDetailController extends GetxController {
       }
 
       if (isClosed) return;
-      await googleMapController.animateCamera(
+      await (await googleMapController.future).animateCamera(
         CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
       );
     } else {}
@@ -454,12 +474,23 @@ class RideOrderDetailController extends GetxController {
     if (isClosed) return;
     polylines.clear();
 
-    markers.value = markers
-        .where((m) => m.markerId != MarkerId('appointment_origin'))
-        .toSet();
-
-    var markerId = MarkerId("origin");
+    var markerId = MarkerId("appointment_origin");
     var newMarker = Marker(
+      markerId: markerId,
+      position: LatLng(
+        orderRideDetail.value.startLat!,
+        orderRideDetail.value.startLon!,
+      ),
+      icon: await BitmapDescriptor.asset(
+        ImageConfiguration(size: Size(33, 39)),
+        'assets/icons/icon_pinpoint_map_green.png',
+      ),
+      visible: false,
+      anchor: Offset(0.5, 0.5),
+    );
+    upsertMarker(markerId: markerId, newMarker: newMarker);
+    markerId = MarkerId("origin");
+    newMarker = Marker(
       markerId: MarkerId("origin"),
       position: LatLng(
         orderRideDetail.value.startLat!,
@@ -565,21 +596,13 @@ class RideOrderDetailController extends GetxController {
     }
 
     if (isClosed) return;
-    await googleMapController.animateCamera(
+    await (await googleMapController.future).animateCamera(
       CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
     );
   }
 
   void upsertMarker({required Marker newMarker, required MarkerId markerId}) {
-    var isNewMarkerExists = markers.any((m) => m.markerId == markerId);
-
-    if (isNewMarkerExists) {
-      markers.value = markers
-          .map((m) => m.markerId == markerId ? newMarker : m)
-          .toSet();
-    } else {
-      markers.add(newMarker);
-    }
+    markers[markerId] = newMarker;
   }
 
   Future<void> setupSchedulerDriverCurrentLocation() async {
@@ -661,6 +684,7 @@ class RideOrderDetailController extends GetxController {
             'assets/icons/icon_pinpoint_map_green.png',
           ),
           anchor: Offset(0.5, 0.5),
+          visible: true,
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
@@ -721,7 +745,7 @@ class RideOrderDetailController extends GetxController {
         }
 
         if (isClosed) return;
-        await googleMapController.animateCamera(
+        await (await googleMapController.future).animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
@@ -818,7 +842,7 @@ class RideOrderDetailController extends GetxController {
         }
 
         if (isClosed) return;
-        await googleMapController.animateCamera(
+        await (await googleMapController.future).animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
@@ -859,7 +883,7 @@ class RideOrderDetailController extends GetxController {
     if (isClosed) return;
     if (orderRideDetail.value.state == 1) {
       if (isClosed) return;
-      await googleMapController.animateCamera(
+      await (await googleMapController.future).animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
             orderRideDetail.value.startLat!,
@@ -910,11 +934,11 @@ class RideOrderDetailController extends GetxController {
 
       if (isClosed) return;
       if (movementDirection == MovementDirection.vertical) {
-        await googleMapController.animateCamera(
+        await (await googleMapController.future).animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
         );
       } else {
-        await googleMapController.animateCamera(
+        await (await googleMapController.future).animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
@@ -958,11 +982,11 @@ class RideOrderDetailController extends GetxController {
 
       if (isClosed) return;
       if (movementDirection == MovementDirection.vertical) {
-        await googleMapController.animateCamera(
+        await (await googleMapController.future).animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
         );
       } else {
-        await googleMapController.animateCamera(
+        await (await googleMapController.future).animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
@@ -1149,6 +1173,90 @@ class RideOrderDetailController extends GetxController {
     return formattedTime;
   }
 
+  // Driver Nearby
+  Future<void> getDriverNearByList() async {
+    driverNearbyList.value = await driverNearbyRepository.getDriverNearbyList(
+      lat: orderRideDetail.value.startLat,
+      lon: orderRideDetail.value.startLon,
+    );
+  }
+
+  Future<void> refreshMarkerDriverNearby() async {
+    if (orderRideDetail.value.state == 1) {
+      await getDriverNearByList();
+    } else {
+      driverNearbyList.value = [];
+    }
+
+    for (var driverNearby in driverNearbyList) {
+      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var widgetBitmapDescriptor =
+          await DriverNearbyPositionWidget(
+            driverNearby: driverNearby,
+          ).toMarkerBitmap(
+            navigatorKey.currentContext!,
+            logicalSize: Size(64, 106),
+          );
+      var markerDriverNearby = Marker(
+        markerId: markerId,
+        position: LatLng(driverNearby.lat!, driverNearby.lon!),
+        icon: widgetBitmapDescriptor,
+        anchor: Offset(0.5, 0.5),
+        visible: true,
+      );
+      markers[markerId] = markerDriverNearby;
+    }
+
+    for (var markerId in markers.keys) {
+      var isExist = false;
+      for (var driverNearby in driverNearbyList) {
+        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+          isExist = true;
+        }
+      }
+
+      if ([
+        "driver",
+        "origin",
+        "destination",
+        "driver_current_location",
+        "appointment_origin",
+      ].contains(markerId.value)) {
+        isExist = true;
+      }
+
+      if (isExist == false) {
+        var widgetBitmapDescriptor =
+            await DriverNearbyPositionWidget(
+              driverNearby: DriverNearby(),
+            ).toMarkerBitmap(
+              navigatorKey.currentContext!,
+              logicalSize: Size(64, 106),
+            );
+        var markerDriverNearby = Marker(
+          markerId: markerId,
+          position: LatLng(0.0, 0.0),
+          icon: widgetBitmapDescriptor,
+          anchor: Offset(0.5, 0.5),
+          visible: false,
+        );
+        markers[markerId] = markerDriverNearby;
+      }
+    }
+
+    markers.refresh();
+  }
+
+  void enableDriverNearbyTimer() {
+    driverNearbyTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      await refreshMarkerDriverNearby();
+    });
+  }
+
+  void disableDriverNearbyTimer() {
+    driverNearbyTimer?.cancel();
+  }
+
   // orderRideDetail
   Future<void> getOrderRideDetail() async {
     orderRideDetail.value = (await orderRideRepository
@@ -1163,7 +1271,10 @@ class RideOrderDetailController extends GetxController {
       );
     }
 
-    await getTotalUnreadSendbirdChat();
+    await Future.wait([
+      refreshMarkerDriverNearby(),
+      getTotalUnreadSendbirdChat(),
+    ]);
 
     if (evmotoOrderChatParticipants.value.userId !=
             orderRideDetail.value.userId.toString() &&
@@ -1306,7 +1417,7 @@ class RideOrderDetailController extends GetxController {
   // markers
   Future<void> setupAllMarkers() async {
     if ([1].contains(state.value)) {
-      markers.clear();
+      // markers.clear();
     }
 
     if ([2, 3, 4].contains(state.value)) {
@@ -1397,12 +1508,12 @@ class RideOrderDetailController extends GetxController {
     }
   }
 
-  // googleMapController
+  // (await googleMapController.future)
   Future<void> updateCameraAutoFocus() async {
     // waiting driver accept
     if ([1].contains(state.value)) {
       if (isClosed) return;
-      await googleMapController.animateCamera(
+      await (await googleMapController.future).animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
             orderRideDetail.value.startLat!,
@@ -1460,11 +1571,11 @@ class RideOrderDetailController extends GetxController {
 
         if (isClosed) return;
         if (movementDirection == MovementDirection.vertical) {
-          await googleMapController.animateCamera(
+          await (await googleMapController.future).animateCamera(
             CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
           );
         } else {
-          await googleMapController.animateCamera(
+          await (await googleMapController.future).animateCamera(
             CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
           );
         }
@@ -1511,11 +1622,11 @@ class RideOrderDetailController extends GetxController {
 
         if (isClosed) return;
         if (movementDirection == MovementDirection.vertical) {
-          await googleMapController.animateCamera(
+          await (await googleMapController.future).animateCamera(
             CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
           );
         } else {
-          await googleMapController.animateCamera(
+          await (await googleMapController.future).animateCamera(
             CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
           );
         }
@@ -1561,11 +1672,11 @@ class RideOrderDetailController extends GetxController {
 
         if (isClosed) return;
         if (movementDirection == MovementDirection.vertical) {
-          await googleMapController.animateCamera(
+          await (await googleMapController.future).animateCamera(
             CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
           );
         } else {
-          await googleMapController.animateCamera(
+          await (await googleMapController.future).animateCamera(
             CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
           );
         }

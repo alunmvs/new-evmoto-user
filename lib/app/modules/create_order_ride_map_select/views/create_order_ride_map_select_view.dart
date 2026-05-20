@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animarker/flutter_map_marker_animation.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
@@ -23,30 +24,43 @@ class CreateOrderRideMapSelectView
                 Expanded(
                   child: Stack(
                     children: [
-                      GoogleMap(
-                        mapType: MapType.normal,
-                        zoomControlsEnabled: false,
-                        onCameraMove: (position) async {
-                          controller.latitude.value = position.target.latitude
-                              .toString();
-                          controller.longitude.value = position.target.longitude
-                              .toString();
-                          controller.updateLocationLatLng(
-                            latitude: position.target.latitude,
-                            longitude: position.target.longitude,
-                          );
-                        },
-                        initialCameraPosition:
-                            controller.initialCameraPosition.value,
-                        onMapCreated:
-                            (GoogleMapController googleMapController) async {
-                              controller.googleMapController =
-                                  googleMapController;
-
-                              controller.isFetch.value = true;
-                              await controller.fillForm();
-                              controller.isFetch.value = false;
-                            },
+                      Animarker(
+                        mapId: controller.googleMapController.future.then<int>(
+                          (value) => value.mapId,
+                        ),
+                        markers: <Marker>{...controller.markers.values.toSet()},
+                        duration: const Duration(milliseconds: 4800),
+                        curve: Curves.linear,
+                        shouldAnimateCamera: false,
+                        child: GoogleMap(
+                          mapType: MapType.normal,
+                          zoomControlsEnabled: false,
+                          onCameraMove: (position) async {
+                            controller.latitude.value = position.target.latitude
+                                .toString();
+                            controller.longitude.value = position
+                                .target
+                                .longitude
+                                .toString();
+                            controller.updateLocationLatLng(
+                              latitude: position.target.latitude,
+                              longitude: position.target.longitude,
+                            );
+                          },
+                          initialCameraPosition:
+                              controller.initialCameraPosition.value,
+                          onMapCreated:
+                              (GoogleMapController googleMapController) async {
+                                controller.googleMapController.complete(
+                                  googleMapController,
+                                );
+                                controller.isFetch.value = true;
+                                await controller.fillForm();
+                                await controller.refreshMarkerDriverNearby();
+                                controller.enableDriverNearbyTimer();
+                                controller.isFetch.value = false;
+                              },
+                        ),
                       ),
                       Center(
                         child: SvgPicture.asset(

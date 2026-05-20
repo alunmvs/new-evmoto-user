@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,14 +10,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:marker_widget/marker_widget.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/advertisement_model.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
+import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/versioning_server_model.dart';
+import 'package:new_evmoto_user/app/data/models/service_time_schedule_model.dart';
 import 'package:new_evmoto_user/app/repositories/advertisement_repository.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
+import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
@@ -33,10 +38,13 @@ import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/services/user_services.dart';
+import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/app/utils/order_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
+import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -53,6 +61,7 @@ class HomeController extends GetxController {
   final GeocodingRepository geocodingRepository;
   final AdvertisementRepository advertisementRepository;
   final VersioningServerRepository versioningServerRepository;
+  final DriverNearbyRepository driverNearbyRepository;
 
   HomeController({
     required this.userRepository,
@@ -62,6 +71,7 @@ class HomeController extends GetxController {
     required this.geocodingRepository,
     required this.advertisementRepository,
     required this.versioningServerRepository,
+    required this.driverNearbyRepository,
   });
 
   final homeRefreshController = RefreshController();
@@ -92,6 +102,14 @@ class HomeController extends GetxController {
 
   final savedAddressList = <SavedAddress>[].obs;
 
+  // Service Time Schedule
+  final serviceTimeScheduleList = <ServiceTimeSchedule>[].obs;
+
+  // Driver Nearby
+  final driverNearbyList = <DriverNearby>[].obs;
+  final markers = <MarkerId, Marker>{}.obs;
+  Timer? driverNearbyTimer;
+
   // coachmark
   final destinationGlobalKey = GlobalKey();
   final savedLocationGlobalKey = GlobalKey();
@@ -106,7 +124,7 @@ class HomeController extends GetxController {
     target: LatLng(-6.1744651, 106.822745),
     zoom: 14,
   ).obs;
-  late GoogleMapController googleMapController;
+  final googleMapController = Completer<GoogleMapController>();
 
   // location permission
   final currentLatitude = Rx<double?>(-6.1744651);
@@ -187,6 +205,9 @@ class HomeController extends GetxController {
         await checkInitialCall();
       }
       await setHomeControllerRegistered();
+      await getServiceTimeScheduleList();
+      await checkServiceTimeSchedule();
+      enableDriverNearbyTimer();
       isFetch.value = false;
     });
   }
@@ -255,6 +276,7 @@ class HomeController extends GetxController {
   Future<void> onClose() async {
     super.onClose();
     FlutterCallkitIncoming.endAllCalls();
+    disableDriverNearbyTimer();
   }
 
   Future<void> setHomeControllerRegistered() async {
@@ -267,10 +289,12 @@ class HomeController extends GetxController {
       currentLatitude.value = locationServices.currentLatitude.value;
       currentLongitude.value = locationServices.currentLongitude.value;
 
+      await refreshMarkerDriverNearby();
+
       if (currentLatitude.value != null) {
         try {
           if (isClosed) return;
-          googleMapController.moveCamera(
+          await (await googleMapController.future).moveCamera(
             CameraUpdate.newLatLng(
               LatLng(currentLatitude.value!, currentLongitude.value!),
             ),
@@ -298,6 +322,7 @@ class HomeController extends GetxController {
           userServices.getUserInfo(),
           getTotalUnreadFirebaseChat(),
           getAdvertisementList(),
+          refreshMarkerDriverNearby(),
         ], eagerError: false);
       }
     } on DioException catch (e) {
@@ -305,6 +330,237 @@ class HomeController extends GetxController {
     } catch (e) {
       SnackbarHelper.showSnackbarError(text: e.toString());
     }
+  }
+
+  // Working Time Schedule
+  Future<void> getServiceTimeScheduleList() async {
+    var serviceTimeScheduleList = <ServiceTimeSchedule>[];
+    if (firebaseRemoteConfigServices.remoteConfig
+        .getString("evmoto_global_service_time")
+        .isNotEmpty) {
+      var evmotoGlobalWorkingTime = jsonDecode(
+        firebaseRemoteConfigServices.remoteConfig.getString(
+          "evmoto_global_service_time",
+        ),
+      );
+
+      for (var workingTimeSchedule
+          in evmotoGlobalWorkingTime['service_time_schedule']) {
+        serviceTimeScheduleList.add(
+          ServiceTimeSchedule.fromJson(workingTimeSchedule),
+        );
+      }
+    }
+
+    this.serviceTimeScheduleList.value = serviceTimeScheduleList;
+  }
+
+  Future<void> checkServiceTimeSchedule() async {
+    if (serviceTimeScheduleList.isNotEmpty) {
+      var isInServiceTimeSchedule = false;
+
+      for (var serviceTimeSchedule in serviceTimeScheduleList) {
+        final now = DateTime.now();
+        final startTime = parseTime(serviceTimeSchedule.startTime!);
+        final endTime = parseTime(serviceTimeSchedule.endTime!);
+
+        isInServiceTimeSchedule =
+            (now.isAtSameMomentAs(startTime) || now.isAfter(startTime)) &&
+            (now.isAtSameMomentAs(endTime) || now.isBefore(endTime));
+
+        if (isInServiceTimeSchedule == true) {
+          break;
+        }
+      }
+
+      if (isInServiceTimeSchedule == false) {
+        Get.dialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 400,
+                      maxHeight: MediaQuery.of(
+                        navigatorKey.currentContext!,
+                      ).size.height,
+                    ),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Stack(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  "assets/icons/icon_service_time.png",
+                                  width: 64,
+                                  height: 64,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  languageServices
+                                          .language
+                                          .value
+                                          .serviceTimeValidationTitle ??
+                                      "-",
+                                  style: typographyServices.bodyLargeBold.value,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  languageServices
+                                          .language
+                                          .value
+                                          .serviceTimeValidationDescription ??
+                                      "-",
+                                  style: typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(color: Color(0XFFB3B3B3)),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 16),
+                                LoaderElevatedButton(
+                                  child: Text(
+                                    languageServices
+                                            .language
+                                            .value
+                                            .serviceTimeValidationButton ??
+                                        "-",
+                                    style: typographyServices
+                                        .bodyLargeBold
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                  onPressed: () async {
+                                    Get.close(1);
+                                  },
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.close(1);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  width: 24,
+                                  height: 24,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_close.svg",
+                                        width: 18,
+                                        height: 18,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  // Driver Nearby
+  Future<void> getDriverNearByList() async {
+    driverNearbyList.value = await driverNearbyRepository.getDriverNearbyList(
+      lat: currentLatitude.value,
+      lon: currentLongitude.value,
+    );
+  }
+
+  Future<void> refreshMarkerDriverNearby() async {
+    await getDriverNearByList();
+
+    for (var driverNearby in driverNearbyList) {
+      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var widgetBitmapDescriptor =
+          await DriverNearbyPositionWidget(
+            driverNearby: driverNearby,
+          ).toMarkerBitmap(
+            navigatorKey.currentContext!,
+            logicalSize: Size(64, 106),
+          );
+      var markerDriverNearby = Marker(
+        markerId: markerId,
+        position: LatLng(driverNearby.lat!, driverNearby.lon!),
+        icon: widgetBitmapDescriptor,
+        anchor: Offset(0.5, 0.5),
+        visible: true,
+      );
+      markers[markerId] = markerDriverNearby;
+    }
+
+    for (var markerId in markers.keys) {
+      var isExist = false;
+      for (var driverNearby in driverNearbyList) {
+        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+          isExist = true;
+        }
+      }
+
+      if (isExist == false) {
+        var widgetBitmapDescriptor =
+            await DriverNearbyPositionWidget(
+              driverNearby: DriverNearby(),
+            ).toMarkerBitmap(
+              navigatorKey.currentContext!,
+              logicalSize: Size(64, 106),
+            );
+        var markerDriverNearby = Marker(
+          markerId: markerId,
+          position: LatLng(0.0, 0.0),
+          icon: widgetBitmapDescriptor,
+          anchor: Offset(0.5, 0.5),
+          visible: false,
+        );
+        markers[markerId] = markerDriverNearby;
+      }
+    }
+
+    markers.refresh();
+  }
+
+  void enableDriverNearbyTimer() {
+    driverNearbyTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      await refreshMarkerDriverNearby();
+    });
+  }
+
+  void disableDriverNearbyTimer() {
+    driverNearbyTimer?.cancel();
   }
 
   Future<void> getActiveOrderList() async {
@@ -1059,6 +1315,7 @@ class HomeController extends GetxController {
         } catch (e) {
           SnackbarHelper.showSnackbarError(text: e.toString());
         }
+        await refreshMarkerDriverNearby();
         currentAddressIsLoading.value = false;
       }
     });
@@ -1081,6 +1338,7 @@ class HomeController extends GetxController {
             GeocodingAddress();
         currentAddress.value = currentGeocodingAddress.value.address;
       }
+      await refreshMarkerDriverNearby();
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     } catch (e) {

@@ -155,7 +155,14 @@ class HomeView extends GetView<HomeController> {
                                         children: [
                                           HomeShortcutSubView(),
                                           SizedBox(height: 16),
-                                          HomeAdvertisementListSubView(),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              await controller
+                                                  .checkServiceTimeSchedule();
+                                            },
+                                            child:
+                                                HomeAdvertisementListSubView(),
+                                          ),
                                           SizedBox(height: 16),
                                         ],
                                       ),

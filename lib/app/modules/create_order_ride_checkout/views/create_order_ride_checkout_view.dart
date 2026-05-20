@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animarker/widgets/animarker.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_checkout/views/create_order_ride_checkout_view/checkout_footer_sub_view.dart';
@@ -20,40 +21,52 @@ class CreateOrderRideCheckoutView
             Column(
               children: [
                 Expanded(
-                  child: GoogleMap(
-                    mapType: MapType.normal,
-                    initialCameraPosition:
-                        controller.initialCameraPosition.value,
-                    markers: controller.markers,
-                    polylines: controller.polylines,
-                    onMapCreated:
-                        (GoogleMapController googleMapController) async {
-                          controller.googleMapController = googleMapController;
-
-                          controller.isFetch.value = true;
-                          try {
-                            await controller.getOrderRidePricingList();
-                            await controller.getAvailableCouponList();
-
-                            await Future.wait([
-                              controller.generatePolylinesOpenMapsApi(),
-                              controller.refocusMapsBound(),
-                              controller.getOrderRidePricingList(),
-                              controller.setLatitudeLongitudeMarker(),
-                            ]);
-                          } on DioException catch (e) {
-                            Get.back();
-
-                            SnackbarHelper.showSnackbarError(
-                              text: e.error.toString(),
+                  child: Animarker(
+                    mapId: controller.googleMapController.future.then<int>(
+                      (value) => value.mapId,
+                    ),
+                    markers: <Marker>{...controller.markers.values.toSet()},
+                    shouldAnimateCamera: false,
+                    duration: const Duration(milliseconds: 4800),
+                    curve: Curves.linear,
+                    child: GoogleMap(
+                      mapType: MapType.normal,
+                      initialCameraPosition:
+                          controller.initialCameraPosition.value,
+                      polylines: controller.polylines,
+                      onMapCreated:
+                          (GoogleMapController googleMapController) async {
+                            controller.googleMapController.complete(
+                              googleMapController,
                             );
-                          } catch (e) {
-                            SnackbarHelper.showSnackbarError(
-                              text: e.toString(),
-                            );
-                          }
-                          controller.isFetch.value = false;
-                        },
+
+                            controller.isFetch.value = true;
+                            try {
+                              await controller.getOrderRidePricingList();
+                              await controller.getAvailableCouponList();
+
+                              await Future.wait([
+                                controller.generatePolylinesOpenMapsApi(),
+                                controller.refocusMapsBound(),
+                                controller.getOrderRidePricingList(),
+                                controller.setLatitudeLongitudeMarker(),
+                                controller.refreshMarkerDriverNearby(),
+                              ]);
+                              controller.enableDriverNearbyTimer();
+                            } on DioException catch (e) {
+                              Get.back();
+
+                              SnackbarHelper.showSnackbarError(
+                                text: e.error.toString(),
+                              );
+                            } catch (e) {
+                              SnackbarHelper.showSnackbarError(
+                                text: e.toString(),
+                              );
+                            }
+                            controller.isFetch.value = false;
+                          },
+                    ),
                   ),
                 ),
                 SizedBox(
