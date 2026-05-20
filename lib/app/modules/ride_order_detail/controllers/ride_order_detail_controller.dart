@@ -1283,9 +1283,21 @@ class RideOrderDetailController extends GetxController {
         evmotoOrderChatParticipants.value.orderId !=
             orderRideDetail.value.orderId.toString()) {
       await getExistingChatRoom();
-      if (evmotoOrderChatParticipants.value.docId == null) {
-        await userCreateChatRoom();
-      }
+      // if (evmotoOrderChatParticipants.value.docId == null) {
+      //   await userCreateChatRoom();
+      // }
+      await setChatOnline();
+      await streamExistingChatRoom();
+      await streamExistingChatList();
+    }
+  }
+
+  Future<void> refreshChatRoom() async {
+    await getExistingChatRoom();
+    if (evmotoOrderChatParticipants.value.docId != null) {
+      // if (evmotoOrderChatParticipants.value.docId == null) {
+      //   await userCreateChatRoom();
+      // }
       await setChatOnline();
       await streamExistingChatRoom();
       await streamExistingChatList();

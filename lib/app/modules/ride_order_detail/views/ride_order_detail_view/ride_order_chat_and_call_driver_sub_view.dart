@@ -73,6 +73,15 @@ class RideOrderChatAndCallDriverSubView
           Expanded(
             child: LoaderElevatedButton(
               onPressed: () async {
+                if (controller.evmotoOrderChatParticipants.value.docId ==
+                    null) {
+                  await controller.refreshChatRoom();
+                }
+                if (controller.evmotoOrderChatParticipants.value.docId ==
+                    null) {
+                  return;
+                }
+
                 await Get.toNamed(
                   Routes.CHAT_DETAIL,
                   arguments: {
@@ -106,7 +115,12 @@ class RideOrderChatAndCallDriverSubView
                     style: controller.typographyServices.bodyLargeBold.value
                         .copyWith(color: Colors.white),
                   ),
-                  if (controller.isUnreadChatExist.value) ...[
+                  if (controller.isUnreadChatExist.value &&
+                      controller.evmotoOrderChatParticipants.value.docId !=
+                          null &&
+                      controller.evmotoOrderChatParticipants.value.orderId ==
+                          controller.orderRideDetail.value.orderId
+                              .toString()) ...[
                     SizedBox(width: 8),
                     CircleAvatar(
                       backgroundColor: Color(0XFF16CB8C),

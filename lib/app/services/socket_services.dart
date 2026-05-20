@@ -10,6 +10,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 import 'package:new_evmoto_user/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -114,10 +115,7 @@ class SocketServices extends GetxService {
                   }
                   break;
                 case 'OFFLINE':
-                  var storage = FlutterSecureStorage();
-                  await storage.delete(key: 'token');
-                  await closeWebsocket();
-
+                  await clearDataLogout();
                   Get.offAllNamed(Routes.LOGIN_REGISTER);
                   break;
                 case 'END_PUSH':
