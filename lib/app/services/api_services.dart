@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -35,7 +36,7 @@ class ApiServices extends GetxService {
     // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     //     (client) {
     //       client.findProxy = (uri) {
-    //         return "PROXY 192.168.18.106:8888";
+    //         return "PROXY 192.168.0.120:8888";
     //       };
 
     //       client.badCertificateCallback =
@@ -45,7 +46,7 @@ class ApiServices extends GetxService {
     //     };
 
     dio.interceptors.add(
-      CurlLoggingInterceptor(showRequestLog: true, showResponseLog: true),
+      CurlLoggingInterceptor(showRequestLog: false, showResponseLog: false),
     );
 
     dio.interceptors.add(

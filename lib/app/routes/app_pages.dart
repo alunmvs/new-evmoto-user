@@ -10,6 +10,8 @@ import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
 import '../modules/add_edit_user_information/bindings/add_edit_user_information_binding.dart';
 import '../modules/add_edit_user_information/views/add_edit_user_information_view.dart';
+import '../modules/advanced_booking_detail/bindings/advanced_booking_detail_binding.dart';
+import '../modules/advanced_booking_detail/views/advanced_booking_detail_view.dart';
 import '../modules/chat_detail/bindings/chat_detail_binding.dart';
 import '../modules/chat_detail/views/chat_detail_view.dart';
 import '../modules/chat_list/bindings/chat_list_binding.dart';
@@ -220,6 +222,11 @@ class AppPages {
       name: _Paths.CHAT_DETAIL,
       page: () => const ChatDetailView(),
       binding: ChatDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADVANCED_BOOKING_DETAIL,
+      page: () => const AdvancedBookingDetailView(),
+      binding: AdvancedBookingDetailBinding(),
     ),
   ];
 }

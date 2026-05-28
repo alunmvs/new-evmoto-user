@@ -133,7 +133,8 @@ class ChatDetailController extends GetxController {
   }
 
   Future<void> sendMessage() async {
-    if (message.value != "" || attachmentUrl.value != "") {
+    if ((message.value != "" && textEditingController.text.trim() != "") ||
+        attachmentUrl.value != "") {
       var data = {
         "evmotoOrderChatParticipantsDocumentId": docId.value,
         "senderAttachmentUrl": attachmentUrl.value,
@@ -230,7 +231,9 @@ class ChatDetailController extends GetxController {
     if (homeController.activeOrderList.isNotEmpty) {
       for (var activeOrder in homeController.activeOrderList) {
         if (activeOrder.orderId.toString() ==
-            evmotoOrderChatParticipants.value.orderId) {
+                evmotoOrderChatParticipants.value.orderId &&
+            activeOrder.driverId.toString() ==
+                evmotoOrderChatParticipants.value.driverId) {
           isTripHasEnded.value = false;
         }
       }

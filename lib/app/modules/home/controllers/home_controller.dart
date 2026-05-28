@@ -107,6 +107,7 @@ class HomeController extends GetxController {
 
   // Driver Nearby
   final driverNearbyList = <DriverNearby>[].obs;
+  final nearestDistanceDriverNearby = 0.0.obs;
   final markers = <MarkerId, Marker>{}.obs;
   Timer? driverNearbyTimer;
 
@@ -499,6 +500,24 @@ class HomeController extends GetxController {
       lat: currentLatitude.value,
       lon: currentLongitude.value,
     );
+
+    if (driverNearbyList.isEmpty) {
+      nearestDistanceDriverNearby.value = 0.0;
+    } else {
+      var nearestDistanceDriverNearby = 0.0;
+
+      for (var driverNearby in driverNearbyList) {
+        if (nearestDistanceDriverNearby == 0.0) {
+          nearestDistanceDriverNearby = driverNearby.distance ?? 0.0;
+        } else {
+          if ((driverNearby.distance ?? 0.0) < nearestDistanceDriverNearby) {
+            nearestDistanceDriverNearby = driverNearby.distance ?? 0.0;
+          }
+        }
+      }
+
+      this.nearestDistanceDriverNearby.value = nearestDistanceDriverNearby;
+    }
   }
 
   Future<void> refreshMarkerDriverNearby() async {
@@ -516,7 +535,11 @@ class HomeController extends GetxController {
       var markerDriverNearby = Marker(
         markerId: markerId,
         position: LatLng(driverNearby.lat!, driverNearby.lon!),
-        icon: widgetBitmapDescriptor,
+        // icon: widgetBitmapDescriptor,
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(64, 106)),
+          'assets/icons/icon_driver.png',
+        ),
         anchor: Offset(0.5, 0.5),
         visible: true,
       );
@@ -542,7 +565,11 @@ class HomeController extends GetxController {
         var markerDriverNearby = Marker(
           markerId: markerId,
           position: LatLng(0.0, 0.0),
-          icon: widgetBitmapDescriptor,
+          // icon: widgetBitmapDescriptor,
+          icon: await BitmapDescriptor.asset(
+            ImageConfiguration(size: Size(64, 106)),
+            'assets/icons/icon_driver.png',
+          ),
           anchor: Offset(0.5, 0.5),
           visible: false,
         );

@@ -3,15 +3,18 @@ import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
+import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
+import 'package:new_evmoto_user/app/widgets/driver_cancel_dialog.dart';
 import 'package:new_evmoto_user/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -107,7 +110,8 @@ class SocketServices extends GetxService {
 
                   break;
                 case 'ORDER_STATUS':
-                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL ||
+                      Get.currentRoute == Routes.CHAT_DETAIL) {
                     // await Get.find<RideOrderDetailController>().refreshAll();
 
                     await Get.find<RideOrderDetailController>()
@@ -127,6 +131,90 @@ class SocketServices extends GetxService {
                   //     ),
                   //   );
                   // }
+                  break;
+                case 'DRIVER_CANCEL_POPUP':
+                  if (Get.currentRoute == Routes.CHAT_DETAIL) {
+                    Get.back();
+                  } else if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                    var rideOrderDetailController =
+                        Get.find<RideOrderDetailController>();
+                    rideOrderDetailController
+                            .evmotoOrderChatParticipants
+                            .value =
+                        EvmotoOrderChatParticipants();
+                    rideOrderDetailController.isUnreadChatExist.value = false;
+                    var result = await Get.dialog(
+                      DriverCancelDialog(
+                        onTapSearchingDriver: () async {
+                          var orderRideRepository = OrderRideRepository();
+                          var rideOrderDetailController =
+                              Get.find<RideOrderDetailController>();
+                          await orderRideRepository.driverCancelChoice(
+                            orderId: dataJson['data']['orderId'].toString(),
+                            orderType: int.tryParse(
+                              dataJson['data']['orderType'].toString(),
+                            )!,
+                            choice: "reassign",
+                          );
+
+                          await rideOrderDetailController
+                              .handleSocketOrderStatus();
+                        },
+                      ),
+                    );
+
+                    if (result != true) {
+                      var orderRideRepository = OrderRideRepository();
+                      var rideOrderDetailController =
+                          Get.find<RideOrderDetailController>();
+
+                      await orderRideRepository.driverCancelChoice(
+                        orderId: dataJson['data']['orderId'].toString(),
+                        orderType: int.tryParse(
+                          dataJson['data']['orderType'].toString(),
+                        )!,
+                        choice: "cancel",
+                      );
+
+                      await rideOrderDetailController.handleSocketOrderStatus();
+                      await rideOrderDetailController
+                          .checkOrderHasBeenCancelled();
+                    }
+                  } else {
+                    var result = await Get.dialog(
+                      DriverCancelDialog(
+                        onTapSearchingDriver: () async {
+                          var orderRideRepository = OrderRideRepository();
+                          var homeController = Get.find<HomeController>();
+
+                          await orderRideRepository.driverCancelChoice(
+                            orderId: dataJson['data']['orderId'].toString(),
+                            orderType: int.tryParse(
+                              dataJson['data']['orderType'].toString(),
+                            )!,
+                            choice: "reassign",
+                          );
+
+                          await homeController.refreshAll();
+                        },
+                      ),
+                    );
+
+                    if (result != true) {
+                      var orderRideRepository = OrderRideRepository();
+                      var homeController = Get.find<HomeController>();
+
+                      await orderRideRepository.driverCancelChoice(
+                        orderId: dataJson['data']['orderId'].toString(),
+                        orderType: int.tryParse(
+                          dataJson['data']['orderType'].toString(),
+                        )!,
+                        choice: "cancel",
+                      );
+
+                      await homeController.refreshAll();
+                    }
+                  }
                   break;
                 case 'PONG':
                   pongDateTime.value = DateTime.now();

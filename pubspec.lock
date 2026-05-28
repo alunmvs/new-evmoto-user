@@ -373,10 +373,10 @@ packages:
     dependency: transitive
     description:
       name: diffutil_dart
-      sha256: e0297e4600b9797edff228ed60f4169a778ea357691ec98408fa3b72994c7d06
+      sha256: "5e74883aedf87f3b703cb85e815bdc1ed9208b33501556e4a8a5572af9845c81"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "4.0.1"
   dio:
     dependency: "direct main"
     description:
@@ -617,10 +617,11 @@ packages:
   flutter_animarker:
     dependency: "direct main"
     description:
-      name: flutter_animarker
-      sha256: "7e3dbfe01292379ae7d8ddf59859d5b7973ecc881602cccc5dd1ac240f4d5c8d"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: f7ba9a5678a44e2b693927ac083afad05607aabc
+      url: "https://github.com/dbspoudel/flutter_animarker.git"
+    source: git
     version: "3.4.0-beta.1"
   flutter_cache_manager:
     dependency: transitive

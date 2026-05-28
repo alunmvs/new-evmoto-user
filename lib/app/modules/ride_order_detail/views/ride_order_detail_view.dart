@@ -48,9 +48,9 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                           Animarker(
                             mapId: controller.googleMapController.future
                                 .then<int>((value) => value.mapId),
-                            markers: <Marker>{
-                              ...controller.markers.values.toSet(),
-                            },
+                            markers: Set<Marker>.from(
+                              controller.markers.values,
+                            ),
                             duration: const Duration(milliseconds: 4800),
                             curve: Curves.linear,
                             shouldAnimateCamera: false,
@@ -119,7 +119,10 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                       ),
                     ),
                     SizedBox(
-                      height: controller.orderRideDetail.value.state == 1
+                      height:
+                          controller.orderRideDetail.value.state == 1 ||
+                              (controller.state.value == 11 &&
+                                  controller.previousState.value == 1)
                           ? 100
                           : MediaQuery.of(context).size.height * (150 / 812),
                     ),
@@ -336,26 +339,42 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                     ],
                   ),
                 ),
-                if (controller.orderRideDetail.value.state == 1) ...[
+                if (controller.orderRideDetail.value.state == 1 ||
+                    (controller.state.value == 11 &&
+                        controller.previousState.value == 1)) ...[
                   RideOrderWaitingDriverAcceptancePanelSubView(),
                 ],
-                if (controller.orderRideDetail.value.state == 2) ...[
+                if (controller.orderRideDetail.value.state == 2 ||
+                    (controller.state.value == 11 &&
+                        controller.previousState.value == 2)) ...[
                   RideOrderWaitingDriverPickUpPanelSubView(),
                 ],
-                if (controller.orderRideDetail.value.state == 3) ...[
+                if (controller.orderRideDetail.value.state == 3 ||
+                    (controller.state.value == 11 &&
+                        controller.previousState.value == 3)) ...[
                   // RideOrderDriverArrivedOriginPanelSubView(),
                   RideOrderWaitingDriverPickUpPanelSubView(),
                 ],
-                if (controller.orderRideDetail.value.state == 4) ...[
+                if (controller.orderRideDetail.value.state == 4 ||
+                    (controller.state.value == 11 &&
+                        controller.previousState.value == 4)) ...[
                   // RideOrderDriverReadyToGoDestinationPanelSubView(),
                   RideOrderDriverArrivedOriginPanelSubView(),
                 ],
-                if (controller.orderRideDetail.value.state == 5) ...[
+                if (controller.orderRideDetail.value.state == 5 ||
+                    (controller.state.value == 11 &&
+                        controller.previousState.value == 5)) ...[
                   RideOrderDriverOnGoingToDestinationPanelSubView(),
                 ],
-                if (controller.orderRideDetail.value.state == 6 ||
-                    controller.orderRideDetail.value.state == 7 ||
-                    controller.orderRideDetail.value.state == 8) ...[
+                if ((controller.orderRideDetail.value.state == 6 ||
+                        controller.orderRideDetail.value.state == 7 ||
+                        controller.orderRideDetail.value.state == 8) ||
+                    ((controller.state.value == 11 &&
+                            controller.previousState.value == 6) ||
+                        (controller.state.value == 11 &&
+                            controller.previousState.value == 7)) ||
+                    (controller.state.value == 11 &&
+                        controller.previousState.value == 8)) ...[
                   RideOrderDriverArrivedPanelSubView(),
                 ],
                 // Align(

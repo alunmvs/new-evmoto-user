@@ -22,6 +22,7 @@ class DriverNearbyPositionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (isDisplayDistance == true) ...[
           Container(
@@ -43,7 +44,11 @@ class DriverNearbyPositionWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset("assets/icons/icon_pinpoint_primary_blue.svg"),
+                SvgPicture.asset(
+                  "assets/icons/icon_pinpoint_primary_blue.svg",
+                  width: 9.33,
+                  height: 11.67,
+                ),
                 SizedBox(width: 2),
                 Text(
                   formatDistance(driverNearby.distance ?? 0.0),

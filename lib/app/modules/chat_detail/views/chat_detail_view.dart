@@ -643,13 +643,7 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                     SizedBox(width: 12),
                                     GestureDetector(
                                       onTap: () async {
-                                        if (controller
-                                                .textEditingController
-                                                .text
-                                                .trim() !=
-                                            "") {
-                                          await controller.sendMessage();
-                                        }
+                                        await controller.sendMessage();
                                       },
                                       child: Container(
                                         height: 40,

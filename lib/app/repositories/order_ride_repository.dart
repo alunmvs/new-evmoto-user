@@ -19,6 +19,41 @@ class OrderRideRepository {
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final languageServices = Get.find<LanguageServices>();
 
+  Future<void> driverCancelChoice({
+    required String orderId,
+    required int orderType,
+    required String choice,
+  }) async {
+    try {
+      var url = "$baseUrl/cancelOrder/api/cancel/driverCancelChoice";
+
+      var data = {"orderId": orderId, "orderType": orderType, "choice": choice};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: data,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+    } on DioException {
+      rethrow;
+    }
+  }
+
   Future<OrderRideServer> getOrderRideServerDetail({
     required String orderId,
     required int orderType,

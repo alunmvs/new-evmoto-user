@@ -36,6 +36,7 @@ abstract class Routes {
       _Paths.CREATE_ORDER_RIDE_MAP_SELECT;
   static const CHAT_LIST = _Paths.CHAT_LIST;
   static const CHAT_DETAIL = _Paths.CHAT_DETAIL;
+  static const ADVANCED_BOOKING_DETAIL = _Paths.ADVANCED_BOOKING_DETAIL;
 }
 
 abstract class _Paths {
@@ -71,4 +72,5 @@ abstract class _Paths {
   static const CREATE_ORDER_RIDE_MAP_SELECT = '/create-order-ride-map-select';
   static const CHAT_LIST = '/chat-list';
   static const CHAT_DETAIL = '/chat-detail';
+  static const ADVANCED_BOOKING_DETAIL = '/advanced-booking-detail';
 }

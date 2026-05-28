@@ -78,8 +78,23 @@ class CreateOrderRideCheckoutController extends GetxController {
   final destinationLongitude = Rx<String?>(null);
 
   final driverNearbyList = <DriverNearby>[].obs;
+  final nearestDistanceDriverNearby = 0.0.obs;
   final markers = <MarkerId, Marker>{}.obs;
   Timer? driverNearbyTimer;
+
+  // Advanced Order
+  final minDateTimeAdvanceOrder = Rx<DateTime?>(null);
+  final maxDateTimeAdvanceOrder = Rx<DateTime?>(null);
+  final dateRecommendationList = <DateTime>[].obs;
+  final timeRecommendationList = <DateTime>[].obs;
+
+  final selectedDate = Rx<DateTime?>(null);
+  final selectedTime = Rx<DateTime?>(null);
+
+  final selectedDateIndex = 0.obs;
+  final selectedTimeIndex = 0.obs;
+
+  final isAdvanceOrderEnable = false.obs;
 
   final isPermissionLocationAllow = false.obs;
   final isFetch = false.obs;
@@ -88,6 +103,13 @@ class CreateOrderRideCheckoutController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     fillForm();
+    await generateMinMaxDateTimeAdvanceOrder();
+    await generateDateRecommendationList();
+    timeRecommendationList.value = await generateTimeRecommendationList(
+      selectedDate: selectedDate.value!,
+    );
+    selectedTime.value = timeRecommendationList.first;
+    selectedTimeIndex.value = 0;
   }
 
   @override
@@ -100,12 +122,116 @@ class CreateOrderRideCheckoutController extends GetxController {
     super.onClose();
   }
 
+  Future<void> generateMinMaxDateTimeAdvanceOrder() async {
+    minDateTimeAdvanceOrder.value = DateTime.now().add(Duration(minutes: 30));
+    maxDateTimeAdvanceOrder.value = DateTime.now().add(Duration(hours: 18));
+  }
+
+  Future<void> generateDateRecommendationList() async {
+    var maxDay =
+        minDateTimeAdvanceOrder.value!.day == maxDateTimeAdvanceOrder.value!.day
+        ? 1
+        : 2;
+
+    for (var i = 0; i < maxDay; i++) {
+      dateRecommendationList.add(
+        DateTime(
+          minDateTimeAdvanceOrder.value!.year,
+          minDateTimeAdvanceOrder.value!.month,
+          minDateTimeAdvanceOrder.value!.day + i,
+        ),
+      );
+    }
+
+    selectedDate.value = dateRecommendationList.first;
+  }
+
+  Future<List<DateTime>> generateTimeRecommendationList({
+    required DateTime selectedDate,
+  }) async {
+    final now = DateTime.now();
+
+    final minDateTime = minDateTimeAdvanceOrder.value!;
+    final maxDateTime = maxDateTimeAdvanceOrder.value!;
+
+    final isToday =
+        selectedDate.year == now.year &&
+        selectedDate.month == now.month &&
+        selectedDate.day == now.day;
+
+    DateTime start;
+
+    if (isToday) {
+      start = minDateTime;
+    } else {
+      start = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        0,
+        0,
+      );
+    }
+
+    DateTime endOfDay = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      23,
+      59,
+    );
+
+    final end = isToday
+        ? (endOfDay.isAfter(maxDateTime) ? maxDateTime : endOfDay)
+        : endOfDay;
+
+    int remainder = start.minute % 5;
+    if (remainder != 0) {
+      start = start.add(Duration(minutes: 5 - remainder));
+    }
+
+    start = DateTime(
+      start.year,
+      start.month,
+      start.day,
+      start.hour,
+      start.minute,
+    );
+
+    final List<DateTime> result = [];
+
+    while (!start.isAfter(end)) {
+      result.add(start);
+      start = start.add(const Duration(minutes: 5));
+    }
+
+    return result;
+  }
+
   // Driver Nearby
   Future<void> getDriverNearByList() async {
     driverNearbyList.value = await driverNearbyRepository.getDriverNearbyList(
       lat: double.tryParse(originLatitude.value!),
       lon: double.tryParse(originLongitude.value!),
     );
+
+    if (driverNearbyList.isEmpty) {
+      nearestDistanceDriverNearby.value = 0.0;
+    } else {
+      var nearestDistanceDriverNearby = 0.0;
+
+      for (var driverNearby in driverNearbyList) {
+        if (nearestDistanceDriverNearby == 0.0) {
+          nearestDistanceDriverNearby = driverNearby.distance ?? 0.0;
+        } else {
+          if ((driverNearby.distance ?? 0.0) < nearestDistanceDriverNearby) {
+            nearestDistanceDriverNearby = driverNearby.distance ?? 0.0;
+          }
+        }
+      }
+
+      this.nearestDistanceDriverNearby.value = nearestDistanceDriverNearby;
+    }
   }
 
   Future<void> refreshMarkerDriverNearby() async {
@@ -123,7 +249,11 @@ class CreateOrderRideCheckoutController extends GetxController {
       var markerDriverNearby = Marker(
         markerId: markerId,
         position: LatLng(driverNearby.lat!, driverNearby.lon!),
-        icon: widgetBitmapDescriptor,
+        // icon: widgetBitmapDescriptor,
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(64, 106)),
+          'assets/icons/icon_driver.png',
+        ),
         anchor: Offset(0.5, 0.5),
         visible: true,
       );
@@ -153,7 +283,11 @@ class CreateOrderRideCheckoutController extends GetxController {
         var markerDriverNearby = Marker(
           markerId: markerId,
           position: LatLng(0.0, 0.0),
-          icon: widgetBitmapDescriptor,
+          // icon: widgetBitmapDescriptor,
+          icon: await BitmapDescriptor.asset(
+            ImageConfiguration(size: Size(64, 106)),
+            'assets/icons/icon_driver.png',
+          ),
           anchor: Offset(0.5, 0.5),
           visible: false,
         );

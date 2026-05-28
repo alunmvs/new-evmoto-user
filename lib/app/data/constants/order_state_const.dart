@@ -12,6 +12,7 @@ class OrderState {
   static const int REASSIGN_ANOTHER_DRIVER = 11;
   static const int WAITING_FOR_CANCELLATION_PAYMENT = 12;
   static const List<int> ACTIVE_STATE_LIST = [
+    0,
     OrderState.LOOKING_FOR_DRIVER,
     OrderState.DRIVER_ACCEPT_ORDER,
     OrderState.DRIVER_PICK_UP_PASSENGER,

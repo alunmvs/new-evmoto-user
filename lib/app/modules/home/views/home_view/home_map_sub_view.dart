@@ -27,7 +27,7 @@ class HomeMapSubView extends GetView<HomeController> {
                     ),
                     duration: const Duration(milliseconds: 4800),
                     curve: Curves.linear,
-                    markers: <Marker>{...controller.markers.values.toSet()},
+                    markers: Set<Marker>.from(controller.markers.values),
                     shouldAnimateCamera: false,
                     child: GoogleMap(
                       mapType: MapType.normal,
@@ -97,7 +97,7 @@ class HomeMapSubView extends GetView<HomeController> {
                           left: 0,
                           child: GestureDetector(
                             onTap: () async {
-                              await controller.onTapPickUpLocation();
+                              await controller.onTapWhereAreYouGoingToday();
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

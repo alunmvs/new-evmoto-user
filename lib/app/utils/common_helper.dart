@@ -46,6 +46,25 @@ String formatDistance(double meters) {
   }
 }
 
+String formatDistanceNearestDriver(
+  double meters,
+  String? nearestDriverAvailable2,
+) {
+  if (meters >= 1000) {
+    double km = meters / 1000;
+
+    String kmStr = km.toStringAsFixed(2);
+    kmStr = kmStr.replaceAll(RegExp(r'\.?0+$'), '');
+
+    return '$kmStr km$nearestDriverAvailable2';
+  } else {
+    String mStr = meters.toStringAsFixed(2);
+    mStr = mStr.replaceAll(RegExp(r'\.?0+$'), '');
+
+    return '$mStr m$nearestDriverAvailable2';
+  }
+}
+
 Future<void> clearDataLogout() async {
   final homeController = Get.find<HomeController>();
   final activityController = Get.find<ActivityController>();

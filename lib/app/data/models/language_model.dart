@@ -71,6 +71,7 @@ class Language {
   String? allPromotion;
   String? inProcess;
   String? orderCompleted;
+  String? orderScheduled;
   String? canceled;
   String? viewTopupHistory;
   String? pickup;
@@ -349,8 +350,23 @@ class Language {
   String? serviceTimeValidationTitle;
   String? serviceTimeValidationDescription;
   String? serviceTimeValidationButton;
+  String? driverCancelTitle;
+  String? driverCancelDescription;
+  String? driverCancelButton;
+  String? nearestDriverAvailable1;
+  String? nearestDriverAvailable2;
+  String? nearestDriverNotAvailable;
+  String? retryFailedSnackbar;
 
   Language({
+    this.retryFailedSnackbar,
+    this.orderScheduled,
+    this.nearestDriverAvailable1,
+    this.nearestDriverAvailable2,
+    this.nearestDriverNotAvailable,
+    this.driverCancelTitle,
+    this.driverCancelDescription,
+    this.driverCancelButton,
     this.serviceTimeValidationTitle,
     this.serviceTimeValidationDescription,
     this.serviceTimeValidationButton,
@@ -694,6 +710,20 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    retryFailedSnackbar =
+        json['retry_failed_snackbar'] ?? "(Translate Not Found)";
+    orderScheduled = json['order_scheduled'] ?? "(Translate Not Found)";
+    nearestDriverAvailable1 =
+        json['nearest_driver_available_1'] ?? "(Translate Not Found)";
+    nearestDriverAvailable2 =
+        json['nearest_driver_available_2'] ?? "(Translate Not Found)";
+    nearestDriverNotAvailable =
+        json['nearest_driver_not_available'] ?? "(Translate Not Found)";
+    driverCancelTitle = json['driver_cancel_title'] ?? "(Translate Not Found)";
+    driverCancelDescription =
+        json['driver_cancel_description'] ?? "(Translate Not Found)";
+    driverCancelButton =
+        json['driver_cancel_button'] ?? "(Translate Not Found)";
     serviceTimeValidationTitle =
         json['service_time_validation_title'] ?? "(Translate Not Found)";
     serviceTimeValidationDescription =
@@ -1202,6 +1232,8 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['retry_failed_snackbar'] = this.retryFailedSnackbar;
+    data['order_scheduled'] = this.orderScheduled;
     data['service_time_validation_title'] = this.serviceTimeValidationTitle;
     data['service_time_validation_description'] =
         this.serviceTimeValidationDescription;

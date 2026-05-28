@@ -25,7 +25,7 @@ class CreateOrderRideCheckoutView
                     mapId: controller.googleMapController.future.then<int>(
                       (value) => value.mapId,
                     ),
-                    markers: <Marker>{...controller.markers.values.toSet()},
+                    markers: Set<Marker>.from(controller.markers.values),
                     shouldAnimateCamera: false,
                     duration: const Duration(milliseconds: 4800),
                     curve: Curves.linear,

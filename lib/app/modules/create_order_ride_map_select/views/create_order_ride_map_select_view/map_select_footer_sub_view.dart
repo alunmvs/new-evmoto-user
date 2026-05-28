@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_map_select/controllers/create_order_ride_map_select_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -63,6 +64,141 @@ class MapSelectFooterSubView
                   ],
                 ),
               ),
+              if (controller.isFetch.value == false) ...[
+                SizedBox(height: 8),
+                if (controller.driverNearbyList.isEmpty) ...[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Color(0XFFFFF7ED),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Color(0XFFA65226)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_alert_circle_driver_nearby_empty.svg",
+                                      width: 13.33,
+                                      height: 13.33,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              RichText(
+                                text: TextSpan(
+                                  text:
+                                      controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .nearestDriverNotAvailable ??
+                                      "-",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value
+                                      .copyWith(color: Color(0XFFA65226)),
+                                  children: <TextSpan>[],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                if (controller.driverNearbyList.isNotEmpty) ...[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Color(0XFFF2F8FF),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Color(0XFF0060C6)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_pinpoint_primary_blue.svg",
+                                      width: 9.33,
+                                      height: 11.67,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              RichText(
+                                text: TextSpan(
+                                  text:
+                                      controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .nearestDriverAvailable1 ??
+                                      "-",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value
+                                      .copyWith(color: Color(0XFF0060C6)),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: formatDistanceNearestDriver(
+                                        controller
+                                            .nearestDistanceDriverNearby
+                                            .value,
+                                        controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .nearestDriverAvailable2,
+                                      ),
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Color(0XFF0060C6)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
               SizedBox(height: 16),
             ],
             Container(

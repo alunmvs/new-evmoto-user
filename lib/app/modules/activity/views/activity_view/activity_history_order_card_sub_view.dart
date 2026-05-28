@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/modules/activity/controllers/activity_contro
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_action_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_origin_destination_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_status_sub_view.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
   final HistoryOrder historyOrder;
@@ -22,6 +23,13 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
       () => GestureDetector(
         onTap: () async {
           await controller.onTapActivity(historyOrder: historyOrder);
+          // Get.toNamed(
+          //   Routes.ADVANCED_BOOKING_DETAIL,
+          //   arguments: {
+          //     "order_id": historyOrder.orderId.toString(),
+          //     "order_type": historyOrder.orderType,
+          //   },
+          // );
         },
         child: Container(
           color: Colors.transparent,
