@@ -6,10 +6,12 @@ import 'package:new_evmoto_user/app/modules/activity/controllers/activity_contro
 import 'package:timelines_plus/timelines_plus.dart';
 
 class ActivityCardOriginDestinationSubView extends GetView<ActivityController> {
-  final HistoryOrder historyOrder;
+  final String startAddress;
+  final String endAddress;
   const ActivityCardOriginDestinationSubView({
     super.key,
-    required this.historyOrder,
+    required this.startAddress,
+    required this.endAddress,
   });
 
   @override
@@ -84,7 +86,7 @@ class ActivityCardOriginDestinationSubView extends GetView<ActivityController> {
               children: [
                 if (index == 0) ...[
                   Text(
-                    historyOrder.startAddress ?? "-",
+                    startAddress,
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(
                           color: controller
@@ -98,7 +100,7 @@ class ActivityCardOriginDestinationSubView extends GetView<ActivityController> {
                 ],
                 if (index == 1) ...[
                   Text(
-                    historyOrder.endAddress ?? "-",
+                    endAddress,
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(
                           color: controller

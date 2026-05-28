@@ -5,10 +5,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
@@ -21,10 +23,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AdvancedBookingDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
   final OpenMapsRepository openMapsRepository;
+  final AdvanceBookingRepository advanceBookingRepository;
 
   AdvancedBookingDetailController({
     required this.orderRideRepository,
     required this.openMapsRepository,
+    required this.advanceBookingRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -46,8 +50,9 @@ class AdvancedBookingDetailController extends GetxController {
 
   final orderRideDetail = OrderRide().obs;
   final orderReviewDetail = OrderReview().obs;
-  final orderId = "".obs;
-  final orderType = 0.obs;
+  final id = Rx<int?>(null);
+
+  final advancedBooking = AdvancedBooking().obs;
 
   final isCriticalError = false.obs;
   final isFetch = false.obs;
@@ -57,9 +62,9 @@ class AdvancedBookingDetailController extends GetxController {
     super.onInit();
     isFetch.value = true;
     isCriticalError.value = false;
-    orderId.value = Get.arguments['order_id'] ?? "";
-    orderType.value = Get.arguments['order_type'] ?? 1;
+    id.value = Get.arguments['id'];
     try {
+      await Future.wait([getAdvancedBookingDetail()]);
       await Future.wait([getOrderRideDetail()]);
       isFetch.value = false;
       await setupGoogleMapOriginToDestination();
@@ -86,12 +91,22 @@ class AdvancedBookingDetailController extends GetxController {
     super.onClose();
   }
 
+  Future<void> getAdvancedBookingDetail() async {
+    advancedBooking.value =
+        (await advanceBookingRepository.getAdvancedBookingDetail(
+          id: id.value,
+        )) ??
+        AdvancedBooking();
+  }
+
   Future<void> getOrderRideDetail() async {
-    orderRideDetail.value = (await orderRideRepository
-        .getOrderRideDetailbyOrderId(
-          orderId: orderId.value,
-          orderType: orderType.value,
-        ));
+    if (advancedBooking.value.orderId != null) {
+      orderRideDetail.value = (await orderRideRepository
+          .getOrderRideDetailbyOrderId(
+            orderId: advancedBooking.value.orderId.toString(),
+            orderType: advancedBooking.value.orderType,
+          ));
+    }
   }
 
   Future<void> setupGoogleMapOriginToDestination() async {
@@ -106,8 +121,8 @@ class AdvancedBookingDetailController extends GetxController {
     var newMarker = Marker(
       markerId: MarkerId("origin"),
       position: LatLng(
-        orderRideDetail.value.startLat!,
-        orderRideDetail.value.startLon!,
+        advancedBooking.value.startLat!,
+        advancedBooking.value.startLon!,
       ),
       icon: await BitmapDescriptor.asset(
         ImageConfiguration(size: Size(33, 39)),
@@ -121,8 +136,8 @@ class AdvancedBookingDetailController extends GetxController {
     newMarker = Marker(
       markerId: markerId,
       position: LatLng(
-        orderRideDetail.value.endLat!,
-        orderRideDetail.value.endLon!,
+        advancedBooking.value.endLat!,
+        advancedBooking.value.endLon!,
       ),
       icon: await BitmapDescriptor.asset(
         ImageConfiguration(size: Size(33, 39)),
@@ -135,18 +150,18 @@ class AdvancedBookingDetailController extends GetxController {
     var prefs = await SharedPreferences.getInstance();
 
     var originToDestinationCache = prefs.getString(
-      'order_${orderRideDetail.value.orderId}_origin_to_destination_direction_cache',
+      'order_${advancedBooking.value.orderId}_origin_to_destination_direction_cache',
     );
 
     if (originToDestinationCache == null) {
       direction.value = await openMapsRepository.getDirection(
-        originLatitude: orderRideDetail.value.startLat.toString(),
-        originLongitude: orderRideDetail.value.startLon.toString(),
-        destinationLatitude: orderRideDetail.value.endLat.toString(),
-        destinationLongitude: orderRideDetail.value.endLon.toString(),
+        originLatitude: advancedBooking.value.startLat.toString(),
+        originLongitude: advancedBooking.value.startLon.toString(),
+        destinationLatitude: advancedBooking.value.endLat.toString(),
+        destinationLongitude: advancedBooking.value.endLon.toString(),
       );
       await prefs.setString(
-        'order_${orderRideDetail.value.orderId}_origin_to_destination_direction_cache',
+        'order_${advancedBooking.value.orderId}_origin_to_destination_direction_cache',
         jsonEncode(direction.value.toJson()),
       );
     } else {
@@ -181,10 +196,10 @@ class AdvancedBookingDetailController extends GetxController {
 
     LatLngBounds bounds;
 
-    var originLatitude = orderRideDetail.value.startLat!;
-    var originLongitude = orderRideDetail.value.startLon!;
-    var destinationLatitude = orderRideDetail.value.endLat!;
-    var destinationLongitude = orderRideDetail.value.endLon!;
+    var originLatitude = advancedBooking.value.startLat!;
+    var originLongitude = advancedBooking.value.startLon!;
+    var destinationLatitude = advancedBooking.value.endLat!;
+    var destinationLongitude = advancedBooking.value.endLon!;
 
     if (originLatitude > destinationLatitude &&
         originLongitude > destinationLongitude) {
@@ -238,25 +253,36 @@ class AdvancedBookingDetailController extends GetxController {
   double getTravelFare() {
     var travelFare = 0.0;
 
-    travelFare += orderRideDetail.value.startMoney ?? 0.0;
-    travelFare += orderRideDetail.value.waitMoney ?? 0.0;
-    travelFare += orderRideDetail.value.mileageMoney ?? 0.0;
-    travelFare += orderRideDetail.value.durationMoney ?? 0.0;
-    travelFare += orderRideDetail.value.longDistanceMoney ?? 0.0;
-    travelFare += orderRideDetail.value.nightMoney ?? 0.0;
-    travelFare += orderRideDetail.value.fastigiumMoney ?? 0.0;
+    travelFare += advancedBooking.value.startMoney ?? 0.0;
+    travelFare += advancedBooking.value.waitMoney ?? 0.0;
+    travelFare += advancedBooking.value.mileageMoney ?? 0.0;
+    travelFare += advancedBooking.value.durationMoney ?? 0.0;
+    travelFare += advancedBooking.value.longDistanceMoney ?? 0.0;
+    travelFare += advancedBooking.value.nightMoney ?? 0.0;
+    travelFare += advancedBooking.value.fastigiumMoney ?? 0.0;
 
     return travelFare;
   }
 
   double getPromoMoney() {
     var promoMoney = 0.0;
-    if (orderRideDetail.value.couponMoney != null &&
-        orderRideDetail.value.couponMoney != 0) {
-      promoMoney += orderRideDetail.value.couponMoney!;
+    if (advancedBooking.value.couponMoney != null &&
+        advancedBooking.value.couponMoney != 0) {
+      promoMoney += advancedBooking.value.couponMoney!;
       return promoMoney;
     }
-    promoMoney += orderRideDetail.value.discountMoney ?? 0.0;
+    promoMoney += advancedBooking.value.discountMoney ?? 0.0;
     return promoMoney;
+  }
+
+  bool isAbleCancelAdvanceBooking() {
+    var result = true;
+
+    if (orderRideDetail.value.orderId != null ||
+        [1, 2, 3, 4].contains(orderRideDetail.value.state)) {
+      result = true;
+    }
+
+    return result;
   }
 }

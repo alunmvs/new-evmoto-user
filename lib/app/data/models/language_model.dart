@@ -357,8 +357,14 @@ class Language {
   String? nearestDriverAvailable2;
   String? nearestDriverNotAvailable;
   String? retryFailedSnackbar;
+  String? advancedBookingListNotFoundTitle;
+  String? advancedBookingListNotFoundDescription;
+  String? advancedBookingListNotFoundButton;
 
   Language({
+    this.advancedBookingListNotFoundTitle,
+    this.advancedBookingListNotFoundDescription,
+    this.advancedBookingListNotFoundButton,
     this.retryFailedSnackbar,
     this.orderScheduled,
     this.nearestDriverAvailable1,
@@ -710,6 +716,15 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    advancedBookingListNotFoundTitle =
+        json['advanced_booking_list_not_found_title'] ??
+        "(Translate Not Found)";
+    advancedBookingListNotFoundDescription =
+        json['advanced_booking_list_not_found_description'] ??
+        "(Translate Not Found)";
+    advancedBookingListNotFoundButton =
+        json['advanced_booking_list_not_found_button'] ??
+        "(Translate Not Found)";
     retryFailedSnackbar =
         json['retry_failed_snackbar'] ?? "(Translate Not Found)";
     orderScheduled = json['order_scheduled'] ?? "(Translate Not Found)";

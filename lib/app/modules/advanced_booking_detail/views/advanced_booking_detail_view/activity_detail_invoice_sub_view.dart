@@ -24,39 +24,8 @@ class AdvancedBookingDetailInvoiceSubView
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (controller.orderRideDetail.value.state != 10) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    controller.languageServices.language.value.travelExpense ??
-                        "-",
-                    style: controller.typographyServices.bodySmallRegular.value
-                        .copyWith(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey700
-                              .value,
-                        ),
-                  ),
-                  Text(
-                    NumberFormat.currency(
-                      locale: 'id_ID',
-                      symbol: 'Rp',
-                      decimalDigits: 0,
-                    ).format(controller.getTravelFare()),
-                    style: controller.typographyServices.bodySmallBold.value
-                        .copyWith(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey700
-                              .value,
-                        ),
-                  ),
-                ],
-              ),
-              if (controller.orderRideDetail.value.additionalCharge != 0) ...[
-                SizedBox(height: 12),
+            if (controller.orderRideDetail.value.orderId != null) ...[
+              if (controller.orderRideDetail.value.state != 10) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -65,7 +34,7 @@ class AdvancedBookingDetailInvoiceSubView
                               .languageServices
                               .language
                               .value
-                              .additionalCost ??
+                              .travelExpense ??
                           "-",
                       style: controller
                           .typographyServices
@@ -83,58 +52,98 @@ class AdvancedBookingDetailInvoiceSubView
                         locale: 'id_ID',
                         symbol: 'Rp',
                         decimalDigits: 0,
-                      ).format(
-                        controller.orderRideDetail.value.additionalCharge ??
-                            0.0,
+                      ).format(controller.getTravelFare()),
+                      style: controller.typographyServices.bodySmallBold.value
+                          .copyWith(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey700
+                                .value,
+                          ),
+                    ),
+                  ],
+                ),
+                if (controller.orderRideDetail.value.additionalCharge != 0) ...[
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .additionalCost ??
+                            "-",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value
+                            .copyWith(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey700
+                                  .value,
+                            ),
                       ),
-                      style: controller.typographyServices.bodySmallBold.value
-                          .copyWith(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey700
-                                .value,
-                          ),
-                    ),
-                  ],
-                ),
-              ],
-              if (controller.getPromoMoney() != 0) ...[
+                      Text(
+                        NumberFormat.currency(
+                          locale: 'id_ID',
+                          symbol: 'Rp',
+                          decimalDigits: 0,
+                        ).format(
+                          controller.orderRideDetail.value.additionalCharge ??
+                              0.0,
+                        ),
+                        style: controller.typographyServices.bodySmallBold.value
+                            .copyWith(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey700
+                                  .value,
+                            ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (controller.getPromoMoney() != 0) ...[
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        controller.languageServices.language.value.promotion ??
+                            "-",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value
+                            .copyWith(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey700
+                                  .value,
+                            ),
+                      ),
+                      Text(
+                        NumberFormat.currency(
+                          locale: 'id_ID',
+                          symbol: '-Rp',
+                          decimalDigits: 0,
+                        ).format(controller.getPromoMoney()),
+                        style: controller.typographyServices.bodySmallBold.value
+                            .copyWith(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey700
+                                  .value,
+                            ),
+                      ),
+                    ],
+                  ),
+                ],
                 SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      controller.languageServices.language.value.promotion ??
-                          "-",
-                      style: controller
-                          .typographyServices
-                          .bodySmallRegular
-                          .value
-                          .copyWith(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey700
-                                .value,
-                          ),
-                    ),
-                    Text(
-                      NumberFormat.currency(
-                        locale: 'id_ID',
-                        symbol: '-Rp',
-                        decimalDigits: 0,
-                      ).format(controller.getPromoMoney()),
-                      style: controller.typographyServices.bodySmallBold.value
-                          .copyWith(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey700
-                                .value,
-                          ),
-                    ),
-                  ],
-                ),
               ],
-              SizedBox(height: 12),
             ],
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +159,7 @@ class AdvancedBookingDetailInvoiceSubView
                             .value,
                       ),
                 ),
-                if (controller.orderRideDetail.value.payType == 2) ...[
+                if (controller.advancedBooking.value.payType == 2) ...[
                   Row(
                     children: [
                       SizedBox(
@@ -181,7 +190,7 @@ class AdvancedBookingDetailInvoiceSubView
                     ],
                   ),
                 ],
-                if (controller.orderRideDetail.value.payType == 3) ...[
+                if (controller.advancedBooking.value.payType == 3) ...[
                   Row(
                     children: [
                       SizedBox(
@@ -214,7 +223,9 @@ class AdvancedBookingDetailInvoiceSubView
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  controller.languageServices.language.value.total ?? "-",
+                  controller.orderRideDetail.value.orderId == null
+                      ? "Estimasi Harga"
+                      : controller.languageServices.language.value.total ?? "-",
                   style: controller.typographyServices.bodySmallBold.value
                       .copyWith(
                         color: controller
@@ -229,7 +240,9 @@ class AdvancedBookingDetailInvoiceSubView
                     symbol: 'Rp',
                     decimalDigits: 0,
                   ).format(
-                    controller.orderRideDetail.value.state == 10
+                    controller.orderRideDetail.value.orderId == null
+                        ? controller.advancedBooking.value.orderMoney
+                        : controller.orderRideDetail.value.state == 10
                         ? 0
                         : (controller.orderRideDetail.value.payMoney ?? 0.0),
                   ),

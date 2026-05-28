@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/activity_detail_invoice_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advanced_booking_detail_map_origin_destination_information_sub_view.dart';
 import 'package:new_evmoto_user/app/widgets/global_body_handler.dart';
@@ -64,7 +65,24 @@ class AdvancedBookingDetailView
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "21 Mei 2026 · 10:05",
+                                controller.advancedBooking.value.travelTime ==
+                                        null
+                                    ? "-"
+                                    : DateFormat(
+                                        'dd MMMM yyyy ⬩ HH:mm',
+                                        controller
+                                            .languageServices
+                                            .languageCode
+                                            .value,
+                                      ).format(
+                                        DateTime.parse(
+                                          controller
+                                              .advancedBooking
+                                              .value
+                                              .travelTime!
+                                              .replaceFirst(' ', 'T'),
+                                        ),
+                                      ),
                                 style: controller
                                     .typographyServices
                                     .bodyLargeBold
@@ -115,6 +133,8 @@ class AdvancedBookingDetailView
         ),
         bottomNavigationBar:
             controller.isFetch.value || controller.isCriticalError.value
+            ? null
+            : controller.isAbleCancelAdvanceBooking() == false
             ? null
             : BottomAppBar(
                 height: 78,

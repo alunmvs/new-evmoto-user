@@ -3,18 +3,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
-import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
-import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_action_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_origin_destination_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_status_sub_view.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/modules/activity/views/activity_view/advanced_booking_history_card/advanced_booking_action_sub_view.dart';
 
-class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
-  final HistoryOrder historyOrder;
-  const ActivityHistoryOrderCardSubView({
+class AdvancedBookingHistoryCardSubView extends GetView<ActivityController> {
+  final AdvancedBooking advancedOrder;
+  const AdvancedBookingHistoryCardSubView({
     super.key,
-    required this.historyOrder,
+    required this.advancedOrder,
   });
 
   @override
@@ -22,14 +21,9 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
     return Obx(
       () => GestureDetector(
         onTap: () async {
-          await controller.onTapActivity(historyOrder: historyOrder);
-          // Get.toNamed(
-          //   Routes.ADVANCED_BOOKING_DETAIL,
-          //   arguments: {
-          //     "order_id": historyOrder.orderId.toString(),
-          //     "order_type": historyOrder.orderType,
-          //   },
-          // );
+          await controller.onTapActivityAdvancedBooking(
+            advancedBooking: advancedOrder,
+          );
         },
         child: Container(
           color: Colors.transparent,
@@ -72,21 +66,32 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ActivityCardStatus(state: historyOrder.state),
+                            ActivityCardStatus(
+                              state: advancedOrder.spawnedOrderState,
+                            ),
                             Visibility(
-                              visible: OrderState.COMPLETED_STATE_LIST.contains(
-                                historyOrder.state,
-                              ),
+                              visible:
+                                  advancedOrder.spawnedOrderState == null ||
+                                  OrderState.COMPLETED_STATE_LIST.contains(
+                                    advancedOrder.spawnedOrderState,
+                                  ),
                               child: Text(
                                 NumberFormat.currency(
                                   locale: 'id_ID',
                                   symbol: 'Rp ',
                                   decimalDigits: 0,
                                 ).format(
-                                  historyOrder.state ==
+                                  advancedOrder.state ==
                                           OrderState.ORDER_CANCELLED
                                       ? 0
-                                      : historyOrder.payMoney,
+                                      : advancedOrder.spawnedOrderState == null
+                                      ? advancedOrder.orderMoney
+                                      : OrderState.COMPLETED_STATE_LIST
+                                            .contains(
+                                              advancedOrder.spawnedOrderState,
+                                            )
+                                      ? advancedOrder.payMoney
+                                      : advancedOrder.payMoney,
                                 ),
                                 style: controller
                                     .typographyServices
@@ -98,12 +103,12 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                         ),
                         SizedBox(height: 8),
                         ActivityCardOriginDestinationSubView(
-                          startAddress: historyOrder.startAddress ?? "-",
-                          endAddress: historyOrder.endAddress ?? "-",
+                          endAddress: advancedOrder.endAddress ?? "-",
+                          startAddress: advancedOrder.startAddress ?? "-",
                         ),
                         SizedBox(height: 8),
                         Text(
-                          historyOrder.orderTime == null
+                          advancedOrder.travelTime == null
                               ? "-"
                               : DateFormat(
                                   'dd MMMM yyyy ⬩ HH:mm',
@@ -113,7 +118,7 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                       .value,
                                 ).format(
                                   DateTime.parse(
-                                    historyOrder.orderTime!.replaceFirst(
+                                    advancedOrder.travelTime!.replaceFirst(
                                       ' ',
                                       'T',
                                     ),
@@ -128,7 +133,9 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                               .neutralsColorGrey600
                               .value,
                         ),
-                        ActivityCardActionSubView(historyOrder: historyOrder),
+                        AdvancedBookingActionSubView(
+                          advancedBooking: advancedOrder,
+                        ),
                       ],
                     ),
                   ),

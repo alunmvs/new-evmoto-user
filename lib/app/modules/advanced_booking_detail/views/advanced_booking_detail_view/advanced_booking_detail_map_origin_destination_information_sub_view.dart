@@ -47,30 +47,35 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
             ),
           ),
           SizedBox(height: 12),
-          Container(
-            height: 33,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: BoxDecoration(
-              color: controller.themeColorServices.neutralsColorSlate100.value,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: Text(
-                controller.orderRideDetail.value.orderNum.toString(),
-                style: controller.typographyServices.bodySmallRegular.value
-                    .copyWith(
-                      color: controller
-                          .themeColorServices
-                          .neutralsColorGrey700
-                          .value,
-                    ),
+          if (controller.orderRideDetail.value.orderNum != null) ...[
+            Container(
+              height: 33,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                color:
+                    controller.themeColorServices.neutralsColorSlate100.value,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Text(
+                  controller.orderRideDetail.value.orderNum.toString(),
+                  style: controller.typographyServices.bodySmallRegular.value
+                      .copyWith(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey700
+                            .value,
+                      ),
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 12),
-          AdvancedBookingDetailDriverInformationSubView(),
-          SizedBox(height: 12),
+            SizedBox(height: 12),
+          ],
+          if (controller.orderRideDetail.value.orderId != null) ...[
+            AdvancedBookingDetailDriverInformationSubView(),
+            SizedBox(height: 12),
+          ],
           Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -180,12 +185,12 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                         ),
                         SizedBox(height: 4),
 
-                        if (controller.orderRideDetail.value.startAddressName !=
+                        if (controller.advancedBooking.value.startAddressName !=
                                 '' &&
-                            controller.orderRideDetail.value.startAddressName !=
+                            controller.advancedBooking.value.startAddressName !=
                                 null) ...[
                           Text(
-                            controller.orderRideDetail.value.startAddressName ??
+                            controller.advancedBooking.value.startAddressName ??
                                 "-",
                             style: controller
                                 .typographyServices
@@ -200,7 +205,7 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                           ),
                         ] else ...[
                           Text(
-                            controller.orderRideDetail.value.startAddress ??
+                            controller.advancedBooking.value.startAddress ??
                                 "-",
                             style: controller
                                 .typographyServices
@@ -239,12 +244,12 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                           ],
                         ),
                         SizedBox(height: 4),
-                        if (controller.orderRideDetail.value.endAddressName !=
+                        if (controller.advancedBooking.value.endAddressName !=
                                 '' &&
-                            controller.orderRideDetail.value.endAddressName !=
+                            controller.advancedBooking.value.endAddressName !=
                                 null) ...[
                           Text(
-                            controller.orderRideDetail.value.endAddressName ??
+                            controller.advancedBooking.value.endAddressName ??
                                 "-",
                             style: controller
                                 .typographyServices
@@ -259,7 +264,7 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                           ),
                         ] else ...[
                           Text(
-                            controller.orderRideDetail.value.endAddress ?? "-",
+                            controller.advancedBooking.value.endAddress ?? "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular

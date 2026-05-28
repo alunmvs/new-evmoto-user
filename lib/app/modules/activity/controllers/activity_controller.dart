@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -20,8 +22,12 @@ import '../../../routes/app_pages.dart';
 class ActivityController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final OrderRideRepository orderRideRepository;
+  final AdvanceBookingRepository advancedBookingRepository;
 
-  ActivityController({required this.orderRideRepository});
+  ActivityController({
+    required this.orderRideRepository,
+    required this.advancedBookingRepository,
+  });
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -47,10 +53,10 @@ class ActivityController extends GetxController
   final historyOrderSeeMore = true.obs;
 
   final advancedBookingRefreshController = RefreshController();
-  // final historyOrderList = <HistoryOrder>[].obs;
-  // final historyOrderPageNum = 1.obs;
-  // final historyOrderSize = 10.obs;
-  // final historyOrderSeeMore = true.obs;
+  final advancedBookingList = <AdvancedBooking>[].obs;
+  final advancedBookingPageNum = 1.obs;
+  final advancedBookingSize = 10.obs;
+  final advancedBookingSeeMore = true.obs;
 
   final historyOrderSelectedOrderType = 1.obs;
 
@@ -68,7 +74,7 @@ class ActivityController extends GetxController
     });
 
     try {
-      await Future.wait([getHistoryOrderList()]);
+      await Future.wait([getHistoryOrderList(), getAdvancedBookingList()]);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     } catch (e) {
@@ -97,6 +103,16 @@ class ActivityController extends GetxController
   Future<void> refreshAll() async {
     try {
       await Future.wait([getHistoryOrderList()]);
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+    }
+  }
+
+  Future<void> refreshAllAdvancedBooking() async {
+    try {
+      await Future.wait([getAdvancedBookingList()]);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     } catch (e) {
@@ -164,6 +180,36 @@ class ActivityController extends GetxController
     this.historyOrderList.addAll(historyOrderList);
   }
 
+  Future<void> getAdvancedBookingList() async {
+    advancedBookingPageNum.value = 1;
+    advancedBookingSeeMore.value = true;
+
+    advancedBookingList.value =
+        (await advancedBookingRepository.getAdvancedBookingList(
+          pageNo: advancedBookingPageNum.value,
+          pageSize: advancedBookingSize.value,
+        )) ??
+        <AdvancedBooking>[];
+
+    advancedBookingList.refresh();
+  }
+
+  Future<void> seeMoreAdvancedBookingList() async {
+    advancedBookingPageNum.value += 1;
+
+    var advancedBookingList = (await advancedBookingRepository
+        .getAdvancedBookingList(
+          pageNo: advancedBookingPageNum.value,
+          pageSize: advancedBookingSize.value,
+        ));
+
+    if (advancedBookingList?.isEmpty ?? true) {
+      advancedBookingSeeMore.value = false;
+    }
+
+    this.advancedBookingList.addAll(advancedBookingList ?? <AdvancedBooking>[]);
+  }
+
   Future<void> onTapOrderAgain({required HistoryOrder historyOrder}) async {
     await homeController.getActiveOrderList();
     if (homeController.isActiveOrderListNotEmpty.value) {
@@ -226,5 +272,76 @@ class ActivityController extends GetxController
     }
 
     await refreshAll();
+  }
+
+  Future<void> onTapOrderAgainAdvancedBooking({
+    required AdvancedBooking advancedBooking,
+  }) async {
+    await homeController.getActiveOrderList();
+    if (homeController.isActiveOrderListNotEmpty.value) {
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.snackbarOrderNotSuccess ?? "-",
+      );
+      return;
+    }
+
+    await Get.toNamed(
+      Routes.CREATE_ORDER_RIDE,
+      arguments: {
+        "origin_address_name": advancedBooking.startAddressName,
+        "origin_address": advancedBooking.startAddress,
+        "origin_latitude": advancedBooking.startLat.toString(),
+        "origin_longitude": advancedBooking.startLon.toString(),
+        "destination_address_name": advancedBooking.endAddressName,
+        "destination_address": advancedBooking.endAddress,
+        "destination_latitude": advancedBooking.endLat.toString(),
+        "destination_longitude": advancedBooking.endLon.toString(),
+      },
+    );
+  }
+
+  Future<void> onTapActivityAdvancedBooking({
+    required AdvancedBooking advancedBooking,
+  }) async {
+    if (OrderState.ACTIVE_STATE_LIST.contains(
+      advancedBooking.spawnedOrderState,
+    )) {
+      try {
+        var isCancelled = await isOrderHasBeenCancelled(
+          orderId: advancedBooking.orderId.toString(),
+          orderType: advancedBooking.orderType!,
+        );
+
+        if (isCancelled == true) {
+          SnackbarHelper.showSnackbarError(
+            text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+          );
+          await refreshAll();
+          return;
+        }
+      } on DioException catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.error.toString());
+      } catch (e) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
+      }
+      await Get.toNamed(
+        Routes.RIDE_ORDER_DETAIL,
+        arguments: {
+          "order_id": advancedBooking.orderId.toString(),
+          "order_type": advancedBooking.orderType,
+        },
+      );
+    } else {
+      await Get.toNamed(
+        Routes.ADVANCED_BOOKING_DETAIL,
+        arguments: {
+          "id": advancedBooking.id,
+          // "order_id": advancedBooking.orderId.toString(),
+          // "order_type": advancedBooking.orderType,
+        },
+      );
+    }
+
+    await refreshAllAdvancedBooking();
   }
 }

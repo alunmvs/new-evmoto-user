@@ -37,7 +37,7 @@ class AdvancedBookingDetailDriverInformationSubView
                     style: controller.typographyServices.bodySmallRegular.value
                         .copyWith(color: Color(0XFF7D7D7D)),
                   ),
-                  if (controller.orderRideDetail.value.state != 9) ...[
+                  if (controller.advancedBooking.value.state != 9) ...[
                     Text(
                       "${controller.orderRideDetail.value.driverName}",
                       style: controller
@@ -50,7 +50,7 @@ class AdvancedBookingDetailDriverInformationSubView
                 ],
               ),
             ),
-            if (controller.orderRideDetail.value.state != 9) ...[
+            if (controller.advancedBooking.value.state != 9) ...[
               SizedBox(width: 16),
               Stack(
                 alignment: Alignment.center,

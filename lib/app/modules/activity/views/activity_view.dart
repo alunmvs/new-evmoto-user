@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view.dart';
+import 'package:new_evmoto_user/app/modules/activity/views/activity_view/advanced_booking_history_card_sub_view.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
@@ -216,14 +217,14 @@ class ActivityView extends GetView<ActivityController> {
                       failedIcon: null,
                     ),
                     enablePullDown: true,
-                    enablePullUp: controller.historyOrderSeeMore.value,
+                    enablePullUp: controller.advancedBookingSeeMore.value,
                     onRefresh: () async {
-                      await controller.refreshAll();
+                      await controller.refreshAllAdvancedBooking();
                       controller.advancedBookingRefreshController
                           .refreshCompleted();
                     },
                     onLoading: () async {
-                      await controller.seeMoreHistoryOrderList();
+                      await controller.seeMoreAdvancedBookingList();
                       controller.advancedBookingRefreshController
                           .loadComplete();
                     },
@@ -241,7 +242,7 @@ class ActivityView extends GetView<ActivityController> {
                               ),
                             ),
                           )
-                        : controller.historyOrderList.isEmpty
+                        : controller.advancedBookingList.isEmpty
                         ? Column(
                             children: [
                               SizedBox(height: 134),
@@ -256,7 +257,7 @@ class ActivityView extends GetView<ActivityController> {
                                         .languageServices
                                         .language
                                         .value
-                                        .haveTriedEvmoto ??
+                                        .advancedBookingListNotFoundTitle ??
                                     "-",
                                 style: controller
                                     .typographyServices
@@ -270,7 +271,7 @@ class ActivityView extends GetView<ActivityController> {
                                         .languageServices
                                         .language
                                         .value
-                                        .travelComfort ??
+                                        .advancedBookingListNotFoundDescription ??
                                     "-",
                                 style: controller
                                     .typographyServices
@@ -287,7 +288,7 @@ class ActivityView extends GetView<ActivityController> {
                                           .indexNavigationBar
                                           .value =
                                       0;
-                                  await controller.refreshAll();
+                                  await controller.refreshAllAdvancedBooking();
                                 },
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 borderSide: BorderSide(
@@ -302,7 +303,7 @@ class ActivityView extends GetView<ActivityController> {
                                           .languageServices
                                           .language
                                           .value
-                                          .orderEvMoto ??
+                                          .advancedBookingListNotFoundButton ??
                                       "-",
                                   style: controller
                                       .typographyServices
@@ -321,10 +322,10 @@ class ActivityView extends GetView<ActivityController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  for (var historyOrder
-                                      in controller.historyOrderList) ...[
-                                    ActivityHistoryOrderCardSubView(
-                                      historyOrder: historyOrder,
+                                  for (var advancedBooking
+                                      in controller.advancedBookingList) ...[
+                                    AdvancedBookingHistoryCardSubView(
+                                      advancedOrder: advancedBooking,
                                     ),
                                     DashedLine(
                                       height: 0,

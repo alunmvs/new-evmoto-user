@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
+import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -80,6 +81,75 @@ class AdvanceBookingRepository {
           throw response.data['msg'];
         }
       }
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<List<AdvancedBooking>?> getAdvancedBookingList({
+    required int? pageNo,
+    required int? pageSize,
+  }) async {
+    try {
+      var url = "$baseUrl/businessProcess/api/advanceBooking/list";
+
+      var queryParameters = {"pageNo": pageNo, "pageSize": pageSize};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      var result = <AdvancedBooking>[];
+
+      for (var advancedBooking in response.data['data']['list']) {
+        result.add(AdvancedBooking.fromJson(advancedBooking));
+      }
+
+      return result;
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<AdvancedBooking?> getAdvancedBookingDetail({required int? id}) async {
+    try {
+      var url = "$baseUrl/businessProcess/api/advanceBooking/$id";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(url, options: Options(headers: headers));
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return AdvancedBooking.fromJson(response.data['data']);
     } on DioException {
       rethrow;
     }

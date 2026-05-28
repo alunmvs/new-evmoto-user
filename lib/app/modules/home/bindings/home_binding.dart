@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/controllers/account_controller.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
+import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/advertisement_repository.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
@@ -38,7 +39,10 @@ class HomeBinding extends Bindings {
     );
 
     Get.lazyPut<ActivityController>(
-      () => ActivityController(orderRideRepository: OrderRideRepository()),
+      () => ActivityController(
+        orderRideRepository: OrderRideRepository(),
+        advancedBookingRepository: AdvanceBookingRepository(),
+      ),
     );
   }
 }
