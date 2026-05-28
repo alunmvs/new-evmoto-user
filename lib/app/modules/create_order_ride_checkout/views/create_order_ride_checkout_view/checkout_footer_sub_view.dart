@@ -833,6 +833,8 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                         .bodyLargeBold
                                         .value
                                         .copyWith(color: Colors.white),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ),

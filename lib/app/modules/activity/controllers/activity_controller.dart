@@ -46,6 +46,12 @@ class ActivityController extends GetxController
   final historyOrderSize = 10.obs;
   final historyOrderSeeMore = true.obs;
 
+  final advancedBookingRefreshController = RefreshController();
+  // final historyOrderList = <HistoryOrder>[].obs;
+  // final historyOrderPageNum = 1.obs;
+  // final historyOrderSize = 10.obs;
+  // final historyOrderSeeMore = true.obs;
+
   final historyOrderSelectedOrderType = 1.obs;
 
   final isCriticalError = false.obs;

@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride/controllers/create_order_ride_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
@@ -35,6 +36,7 @@ class CreateOrderRideCheckoutController extends GetxController {
   final OpenMapsRepository openMapsRepository;
   final CouponRepository couponRepository;
   final DriverNearbyRepository driverNearbyRepository;
+  final AdvanceBookingRepository advanceBookingRepository;
 
   CreateOrderRideCheckoutController({
     required this.orderRideRepository,
@@ -42,6 +44,7 @@ class CreateOrderRideCheckoutController extends GetxController {
     required this.openMapsRepository,
     required this.couponRepository,
     required this.driverNearbyRepository,
+    required this.advanceBookingRepository,
   });
 
   final homeController = Get.find<HomeController>();
@@ -647,28 +650,23 @@ class CreateOrderRideCheckoutController extends GetxController {
 
       if (isAdvanceOrderEnable.value == true) {
         try {
-          var result = await orderRideRepository.requestOrderRide(
-            language: languageServices.languageCodeSystem.value,
+          var result = await advanceBookingRepository.requestAdvanceBooking(
             endAddress: destinationAddress.value,
             endLat: destinationLatitude.value,
             endLon: destinationLongitude.value,
             startAddress: originAddress.value,
             startLat: originLatitude.value,
             startLon: originLongitude.value,
-            orderSource: "1", // statis 1
-            orderType: 1, // 1 = normal, 2 = appointment
             passengers: homeController.userServices.userInfo.value.name,
-            passengersPhone: homeController.userServices.userInfo.value.phone,
             placementLat: locationServices.currentLatitude.value.toString(),
             placementLon: locationServices.currentLongitude.value.toString(),
             tipMoney: "0",
             serverCarModelId: selectedOrderRidePricing.value.id.toString(),
             substitute: "0", // 0 = no, 1 = yes
-            travelTime: DateFormat('yyyy-MM-dd HH:mm').format(
-              DateTime.now(),
-            ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
-            type: "1", // 1 = Ride, 2 = Intercity
-            amount: selectedOrderRidePricing.value.amount,
+            travelTime:
+                "${DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.value!)} ${DateFormat('HH:mm').format(selectedTime.value!)}:00", // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
+            orderMoney: selectedOrderRidePricing.value.amount!.round(),
+            payManner: 2,
             payType: payType.value,
             couponId: selectedCoupon.value.id,
             priceNo: selectedOrderRidePricing.value.priceNo,
@@ -679,10 +677,10 @@ class CreateOrderRideCheckoutController extends GetxController {
 
           Get.back();
           Get.back();
-          Get.toNamed(
-            Routes.ADVANCED_BOOKING_DETAIL,
-            arguments: {"order_id": result.id.toString(), "order_type": 1},
-          );
+          // Get.toNamed(
+          //   Routes.ADVANCED_BOOKING_DETAIL,
+          //   arguments: {"order_id": result.id.toString(), "order_type": 1},
+          // );
         } on DioException catch (e) {
           Get.close(1);
           SnackbarHelper.showSnackbarError(text: e.error.toString());

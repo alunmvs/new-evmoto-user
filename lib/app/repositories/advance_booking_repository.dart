@@ -37,7 +37,7 @@ class AdvanceBookingRepository {
     try {
       var url = "$baseUrl/businessProcess/api/advanceBooking/create";
 
-      var formData = FormData.fromMap({
+      var data = {
         "startLon": startLon,
         "startLat": startLat,
         "startAddress": startAddress,
@@ -55,20 +55,23 @@ class AdvanceBookingRepository {
         "substitute": substitute,
         "passengers": passengers,
         "tipMoney": tipMoney,
-      });
+        "placementLat": placementLat,
+        "placementLon": placementLon,
+        "couponId": couponId,
+      };
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
       var headers = {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
         'Authorization': "Bearer $token",
       };
 
       var dio = apiServices.dio;
       var response = await dio.post(
         url,
-        data: formData,
+        data: data,
         options: Options(headers: headers),
       );
 
