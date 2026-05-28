@@ -24,6 +24,15 @@ class ActivityView extends GetView<ActivityController> {
         ),
         child: Column(
           children: [
+            TabBar(
+              labelColor: controller.themeColorServices.primaryBlue.value,
+              // indicatorColor: controller.themeColorServices.primaryBlue.value,
+              controller: controller.tabController,
+              tabs: [
+                Tab(text: 'Reguler'),
+                Tab(text: 'Booking'),
+              ],
+            ),
             SizedBox(height: 16),
             Expanded(
               child: controller.isFetch.value

@@ -493,157 +493,332 @@ class CreateOrderRideCheckoutController extends GetxController {
     Get.dialog(LoadingDialog(), barrierDismissible: false);
     await locationServices.requestLocation();
     if (locationServices.isPermissionLocationAllow.value == true) {
-      try {
-        var result = await orderRideRepository.requestOrderRide(
-          language: languageServices.languageCodeSystem.value,
-          endAddress: destinationAddress.value,
-          endLat: destinationLatitude.value,
-          endLon: destinationLongitude.value,
-          startAddress: originAddress.value,
-          startLat: originLatitude.value,
-          startLon: originLongitude.value,
-          orderSource: "1", // statis 1
-          orderType: 1, // 1 = normal, 2 = appointment
-          passengers: homeController.userServices.userInfo.value.name,
-          passengersPhone: homeController.userServices.userInfo.value.phone,
-          placementLat: locationServices.currentLatitude.value.toString(),
-          placementLon: locationServices.currentLongitude.value.toString(),
-          tipMoney: "0",
-          serverCarModelId: selectedOrderRidePricing.value.id.toString(),
-          substitute: "0", // 0 = no, 1 = yes
-          travelTime: DateFormat('yyyy-MM-dd HH:mm').format(
-            DateTime.now(),
-          ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
-          type: "1", // 1 = Ride, 2 = Intercity
-          amount: selectedOrderRidePricing.value.amount,
-          payType: payType.value,
-          couponId: selectedCoupon.value.id,
-          priceNo: selectedOrderRidePricing.value.priceNo,
-          startAddressName: originAddressName.value,
-          endAddressName: destinationAddressName.value,
-        );
-        Get.close(1);
+      if (isAdvanceOrderEnable.value == false) {
+        try {
+          var result = await orderRideRepository.requestOrderRide(
+            language: languageServices.languageCodeSystem.value,
+            endAddress: destinationAddress.value,
+            endLat: destinationLatitude.value,
+            endLon: destinationLongitude.value,
+            startAddress: originAddress.value,
+            startLat: originLatitude.value,
+            startLon: originLongitude.value,
+            orderSource: "1", // statis 1
+            orderType: 1, // 1 = normal, 2 = appointment
+            passengers: homeController.userServices.userInfo.value.name,
+            passengersPhone: homeController.userServices.userInfo.value.phone,
+            placementLat: locationServices.currentLatitude.value.toString(),
+            placementLon: locationServices.currentLongitude.value.toString(),
+            tipMoney: "0",
+            serverCarModelId: selectedOrderRidePricing.value.id.toString(),
+            substitute: "0", // 0 = no, 1 = yes
+            travelTime: DateFormat('yyyy-MM-dd HH:mm').format(
+              DateTime.now(),
+            ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
+            type: "1", // 1 = Ride, 2 = Intercity
+            amount: selectedOrderRidePricing.value.amount,
+            payType: payType.value,
+            couponId: selectedCoupon.value.id,
+            priceNo: selectedOrderRidePricing.value.priceNo,
+            startAddressName: originAddressName.value,
+            endAddressName: destinationAddressName.value,
+          );
+          Get.close(1);
 
-        Get.back();
-        Get.back();
-        Get.toNamed(
-          Routes.RIDE_ORDER_DETAIL,
-          arguments: {"order_id": result.id.toString(), "order_type": 1},
-        );
-      } on DioException catch (e) {
-        Get.close(1);
-        SnackbarHelper.showSnackbarError(text: e.error.toString());
-      } on Exception catch (e) {
-        Get.close(1);
-        SnackbarHelper.showSnackbarError(text: e.toString());
-      } catch (e) {
-        Get.close(1);
+          Get.back();
+          Get.back();
+          Get.toNamed(
+            Routes.RIDE_ORDER_DETAIL,
+            arguments: {"order_id": result.id.toString(), "order_type": 1},
+          );
+        } on DioException catch (e) {
+          Get.close(1);
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } on Exception catch (e) {
+          Get.close(1);
+          SnackbarHelper.showSnackbarError(text: e.toString());
+        } catch (e) {
+          Get.close(1);
 
-        await Future.delayed(Duration(milliseconds: 100));
+          await Future.delayed(Duration(milliseconds: 100));
 
-        if (e.toString() == "The price scheme is not exist" ||
-            e.toString() == "Skema harga tidak ada" ||
-            e.toString() == "价格方案不存在") {
-          await getOrderRidePricingList();
-          await getAvailableCouponList();
-          await Future.wait([getOrderRidePricingList()]);
+          if (e.toString() == "The price scheme is not exist" ||
+              e.toString() == "Skema harga tidak ada" ||
+              e.toString() == "价格方案不存在") {
+            await getOrderRidePricingList();
+            await getAvailableCouponList();
+            await Future.wait([getOrderRidePricingList()]);
 
-          await Get.bottomSheet(
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  ),
-                  child: Material(
-                    color: themeColorServices.neutralsColorGrey0.value,
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      width: Get.width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: CircleAvatar(
-                                  backgroundColor:
-                                      themeColorServices.primaryBlue.value,
-                                  radius: 52 / 2,
-                                  child: SvgPicture.asset(
-                                    "assets/icons/icon_wallet_1.svg",
-                                    width: 26,
-                                    height: 26,
+            await Get.bottomSheet(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        width: Get.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        themeColorServices.primaryBlue.value,
+                                    radius: 52 / 2,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/icon_wallet_1.svg",
+                                      width: 26,
+                                      height: 26,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.close(1);
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/icons/icon_close.svg",
-                                  width: 18,
-                                  height: 18,
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.close(1);
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_close.svg",
+                                    width: 18,
+                                    height: 18,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            languageServices
-                                    .language
-                                    .value
-                                    .tripPriceUpdatedTitle ??
-                                "-",
-                            style: typographyServices.bodyLargeBold.value,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            languageServices
-                                    .language
-                                    .value
-                                    .tripPriceUpdatedDescription ??
-                                "-",
-                            style: typographyServices.bodySmallRegular.value,
-                          ),
-                          SizedBox(height: 16),
-                          LoaderElevatedButton(
-                            child: Text(
+                              ],
+                            ),
+                            SizedBox(height: 16),
+                            Text(
                               languageServices
                                       .language
                                       .value
-                                      .tripPriceUpdatedButton ??
+                                      .tripPriceUpdatedTitle ??
                                   "-",
-                              style: typographyServices.bodyLargeBold.value
-                                  .copyWith(
-                                    color: themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                  ),
+                              style: typographyServices.bodyLargeBold.value,
                             ),
-                            onPressed: () async {
-                              Get.close(1);
-                            },
-                          ),
-                        ],
+                            SizedBox(height: 4),
+                            Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .tripPriceUpdatedDescription ??
+                                  "-",
+                              style: typographyServices.bodySmallRegular.value,
+                            ),
+                            SizedBox(height: 16),
+                            LoaderElevatedButton(
+                              child: Text(
+                                languageServices
+                                        .language
+                                        .value
+                                        .tripPriceUpdatedButton ??
+                                    "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                    ),
+                              ),
+                              onPressed: () async {
+                                Get.close(1);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            );
+          }
+        }
+      }
+
+      if (isAdvanceOrderEnable.value == true) {
+        try {
+          var result = await orderRideRepository.requestOrderRide(
+            language: languageServices.languageCodeSystem.value,
+            endAddress: destinationAddress.value,
+            endLat: destinationLatitude.value,
+            endLon: destinationLongitude.value,
+            startAddress: originAddress.value,
+            startLat: originLatitude.value,
+            startLon: originLongitude.value,
+            orderSource: "1", // statis 1
+            orderType: 1, // 1 = normal, 2 = appointment
+            passengers: homeController.userServices.userInfo.value.name,
+            passengersPhone: homeController.userServices.userInfo.value.phone,
+            placementLat: locationServices.currentLatitude.value.toString(),
+            placementLon: locationServices.currentLongitude.value.toString(),
+            tipMoney: "0",
+            serverCarModelId: selectedOrderRidePricing.value.id.toString(),
+            substitute: "0", // 0 = no, 1 = yes
+            travelTime: DateFormat('yyyy-MM-dd HH:mm').format(
+              DateTime.now(),
+            ), // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
+            type: "1", // 1 = Ride, 2 = Intercity
+            amount: selectedOrderRidePricing.value.amount,
+            payType: payType.value,
+            couponId: selectedCoupon.value.id,
+            priceNo: selectedOrderRidePricing.value.priceNo,
+            startAddressName: originAddressName.value,
+            endAddressName: destinationAddressName.value,
           );
+          Get.close(1);
+
+          Get.back();
+          Get.back();
+          Get.toNamed(
+            Routes.ADVANCED_BOOKING_DETAIL,
+            arguments: {"order_id": result.id.toString(), "order_type": 1},
+          );
+        } on DioException catch (e) {
+          Get.close(1);
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } on Exception catch (e) {
+          Get.close(1);
+          SnackbarHelper.showSnackbarError(text: e.toString());
+        } catch (e) {
+          Get.close(1);
+
+          await Future.delayed(Duration(milliseconds: 100));
+
+          if (e.toString() == "The price scheme is not exist" ||
+              e.toString() == "Skema harga tidak ada" ||
+              e.toString() == "价格方案不存在") {
+            await getOrderRidePricingList();
+            await getAvailableCouponList();
+            await Future.wait([getOrderRidePricingList()]);
+
+            await Get.bottomSheet(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        width: Get.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        themeColorServices.primaryBlue.value,
+                                    radius: 52 / 2,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/icon_wallet_1.svg",
+                                      width: 26,
+                                      height: 26,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.close(1);
+                                  },
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_close.svg",
+                                    width: 18,
+                                    height: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .tripPriceUpdatedTitle ??
+                                  "-",
+                              style: typographyServices.bodyLargeBold.value,
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .tripPriceUpdatedDescription ??
+                                  "-",
+                              style: typographyServices.bodySmallRegular.value,
+                            ),
+                            SizedBox(height: 16),
+                            LoaderElevatedButton(
+                              child: Text(
+                                languageServices
+                                        .language
+                                        .value
+                                        .tripPriceUpdatedButton ??
+                                    "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                    ),
+                              ),
+                              onPressed: () async {
+                                Get.close(1);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
         }
       }
     } else {
       Get.close(1);
+    }
+  }
+
+  String getAdvanceBookingSelectedDateTime() {
+    var selectedDateString = "";
+    var selectedTimeString = "";
+    if (selectedDate.value != null) {
+      selectedDateString = DateFormat(
+        'EEEE, dd/MM/yyyy',
+        'id_ID',
+      ).format(selectedDate.value!);
+    }
+
+    if (selectedTime.value != null) {
+      selectedTimeString = DateFormat('HH:mm').format(selectedTime.value!);
+    }
+
+    if (selectedDate.value == null || selectedTime.value == null) {
+      return "-";
+    } else {
+      return "$selectedDateString - $selectedTimeString";
     }
   }
 }

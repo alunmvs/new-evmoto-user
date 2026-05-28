@@ -210,529 +210,604 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
-                              // SizedBox(
-                              //   height: 46,
-                              //   width: 110,
-                              //   child: OutlinedButton(
-                              //     style: OutlinedButton.styleFrom(
-                              //       side: BorderSide(
-                              //         color: controller
-                              //             .themeColorServices
-                              //             .primaryBlue
-                              //             .value,
-                              //       ),
-                              //       shape: RoundedRectangleBorder(
-                              //         borderRadius: BorderRadius.circular(16),
-                              //       ),
-                              //     ),
-                              //     onPressed: () async {
-                              //       var dateRecommendationController =
-                              //           FixedExtentScrollController(
-                              //             initialItem: controller
-                              //                 .selectedDateIndex
-                              //                 .value,
-                              //           );
+                              SizedBox(
+                                height: 46,
+                                width: 110,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 12,
+                                    ),
+                                    side: BorderSide(
+                                      color: controller
+                                          .themeColorServices
+                                          .primaryBlue
+                                          .value,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    var dateRecommendationController =
+                                        FixedExtentScrollController(
+                                          initialItem: controller
+                                              .selectedDateIndex
+                                              .value,
+                                        );
 
-                              //       var timeRecommendationController =
-                              //           FixedExtentScrollController(
-                              //             initialItem: controller
-                              //                 .selectedTimeIndex
-                              //                 .value,
-                              //           );
+                                    var timeRecommendationController =
+                                        FixedExtentScrollController(
+                                          initialItem: controller
+                                              .selectedTimeIndex
+                                              .value,
+                                        );
 
-                              //       final timeRecommendationList =
-                              //           <DateTime>[].obs;
+                                    final timeRecommendationList =
+                                        <DateTime>[].obs;
 
-                              //       final selectedDate = Rx<DateTime?>(null);
-                              //       final selectedTime = Rx<DateTime?>(null);
+                                    final selectedDate = Rx<DateTime?>(null);
+                                    final selectedTime = Rx<DateTime?>(null);
 
-                              //       final selectedDateIndex = 0.obs;
-                              //       final selectedTimeIndex = 0.obs;
+                                    final selectedDateIndex = 0.obs;
+                                    final selectedTimeIndex = 0.obs;
 
-                              //       selectedDate.value =
-                              //           controller.selectedDate.value;
-                              //       selectedDateIndex.value =
-                              //           controller.selectedDateIndex.value;
+                                    selectedDate.value =
+                                        controller.selectedDate.value;
+                                    selectedDateIndex.value =
+                                        controller.selectedDateIndex.value;
 
-                              //       timeRecommendationList.value =
-                              //           await controller
-                              //               .generateTimeRecommendationList(
-                              //                 selectedDate: selectedDate.value!,
-                              //               );
+                                    timeRecommendationList.value =
+                                        await controller
+                                            .generateTimeRecommendationList(
+                                              selectedDate: selectedDate.value!,
+                                            );
 
-                              //       selectedTime.value =
-                              //           controller.selectedTime.value;
-                              //       selectedTimeIndex.value =
-                              //           controller.selectedTimeIndex.value;
+                                    selectedTime.value =
+                                        controller.selectedTime.value;
+                                    selectedTimeIndex.value =
+                                        controller.selectedTimeIndex.value;
 
-                              //       await Get.bottomSheet(
-                              //         ClipRRect(
-                              //           borderRadius: BorderRadius.only(
-                              //             topRight: Radius.circular(16),
-                              //             topLeft: Radius.circular(16),
-                              //           ),
-                              //           child: ConstrainedBox(
-                              //             constraints: BoxConstraints(
-                              //               maxWidth: 600,
-                              //               maxHeight: MediaQuery.of(
-                              //                 navigatorKey.currentContext!,
-                              //               ).size.height,
-                              //             ),
-                              //             child: Material(
-                              //               color: controller
-                              //                   .themeColorServices
-                              //                   .neutralsColorGrey0
-                              //                   .value,
-                              //               child: SizedBox(
-                              //                 width: MediaQuery.of(
-                              //                   context,
-                              //                 ).size.width,
-                              //                 child: Column(
-                              //                   crossAxisAlignment:
-                              //                       CrossAxisAlignment.start,
-                              //                   mainAxisSize: MainAxisSize.min,
-                              //                   children: [
-                              //                     Container(
-                              //                       width: MediaQuery.of(
-                              //                         context,
-                              //                       ).size.width,
-                              //                       padding:
-                              //                           EdgeInsets.symmetric(
-                              //                             horizontal: 12,
-                              //                             vertical: 16,
-                              //                           ),
-                              //                       decoration: BoxDecoration(
-                              //                         gradient: LinearGradient(
-                              //                           colors: [
-                              //                             Color(0XFFF5F9FF),
-                              //                             Color(0XFFCDE2F8),
-                              //                           ],
-                              //                           begin:
-                              //                               Alignment.topCenter,
-                              //                           end: Alignment
-                              //                               .bottomCenter,
-                              //                           stops: [0.0, 1],
-                              //                         ),
-                              //                       ),
-                              //                       child: Text(
-                              //                         "Pilih Pesanan Terjadwal",
-                              //                         style: controller
-                              //                             .typographyServices
-                              //                             .bodySmallBold
-                              //                             .value,
-                              //                       ),
-                              //                     ),
-                              //                     Container(
-                              //                       padding:
-                              //                           EdgeInsets.symmetric(
-                              //                             horizontal: 16,
-                              //                             vertical: 16,
-                              //                           ),
-                              //                       child: Row(
-                              //                         children: [
-                              //                           Expanded(
-                              //                             flex: 7,
-                              //                             child: SizedBox(
-                              //                               height: 218,
-                              //                               width:
-                              //                                   MediaQuery.of(
-                              //                                     context,
-                              //                                   ).size.width,
-                              //                               child: Column(
-                              //                                 mainAxisAlignment:
-                              //                                     MainAxisAlignment
-                              //                                         .start,
-                              //                                 crossAxisAlignment:
-                              //                                     CrossAxisAlignment
-                              //                                         .start,
-                              //                                 mainAxisSize:
-                              //                                     MainAxisSize
-                              //                                         .min,
-                              //                                 children: [
-                              //                                   Expanded(
-                              //                                     child: ListWheelScrollView.useDelegate(
-                              //                                       controller:
-                              //                                           dateRecommendationController,
-                              //                                       physics:
-                              //                                           const FixedExtentScrollPhysics(),
-                              //                                       perspective:
-                              //                                           0.005,
-                              //                                       diameterRatio:
-                              //                                           2.0,
-                              //                                       itemExtent:
-                              //                                           32.0 +
-                              //                                           24.0,
-                              //                                       onSelectedItemChanged: (int index) async {
-                              //                                         selectedDate
-                              //                                             .value = controller
-                              //                                             .dateRecommendationList[index];
-                              //                                         selectedDateIndex
-                              //                                                 .value =
-                              //                                             index;
+                                    await Get.bottomSheet(
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(16),
+                                          topLeft: Radius.circular(16),
+                                        ),
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            maxWidth: 600,
+                                            maxHeight: MediaQuery.of(
+                                              navigatorKey.currentContext!,
+                                            ).size.height,
+                                          ),
+                                          child: Material(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                            child: SizedBox(
+                                              width: MediaQuery.of(
+                                                context,
+                                              ).size.width,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    width: MediaQuery.of(
+                                                      context,
+                                                    ).size.width,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 16,
+                                                        ),
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          Color(0XFFF5F9FF),
+                                                          Color(0XFFCDE2F8),
+                                                        ],
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                        stops: [0.0, 1],
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      "Pilih Pesanan Terjadwal",
+                                                      style: controller
+                                                          .typographyServices
+                                                          .bodySmallBold
+                                                          .value,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                          vertical: 16,
+                                                        ),
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 7,
+                                                          child: SizedBox(
+                                                            height: 218,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                  context,
+                                                                ).size.width,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Expanded(
+                                                                  child: ListWheelScrollView.useDelegate(
+                                                                    controller:
+                                                                        dateRecommendationController,
+                                                                    physics:
+                                                                        const FixedExtentScrollPhysics(),
+                                                                    perspective:
+                                                                        0.005,
+                                                                    diameterRatio:
+                                                                        2.0,
+                                                                    itemExtent:
+                                                                        32.0 +
+                                                                        24.0,
+                                                                    onSelectedItemChanged: (int index) async {
+                                                                      selectedDate
+                                                                          .value = controller
+                                                                          .dateRecommendationList[index];
+                                                                      selectedDateIndex
+                                                                              .value =
+                                                                          index;
 
-                              //                                         timeRecommendationList
-                              //                                             .value = await controller.generateTimeRecommendationList(
-                              //                                           selectedDate:
-                              //                                               selectedDate.value!,
-                              //                                         );
+                                                                      timeRecommendationList
+                                                                          .value = await controller.generateTimeRecommendationList(
+                                                                        selectedDate:
+                                                                            selectedDate.value!,
+                                                                      );
 
-                              //                                         selectedTime
-                              //                                             .value = timeRecommendationList
-                              //                                             .first;
-                              //                                         selectedTimeIndex
-                              //                                                 .value =
-                              //                                             0;
-                              //                                         timeRecommendationController
-                              //                                             .jumpTo(
-                              //                                               0,
-                              //                                             );
-                              //                                       },
+                                                                      selectedTime
+                                                                          .value = timeRecommendationList
+                                                                          .first;
+                                                                      selectedTimeIndex
+                                                                              .value =
+                                                                          0;
+                                                                      timeRecommendationController
+                                                                          .jumpTo(
+                                                                            0,
+                                                                          );
+                                                                    },
 
-                              //                                       childDelegate: ListWheelChildBuilderDelegate(
-                              //                                         childCount: controller
-                              //                                             .dateRecommendationList
-                              //                                             .length,
-                              //                                         builder:
-                              //                                             (
-                              //                                               context,
-                              //                                               index,
-                              //                                             ) {
-                              //                                               return Obx(
-                              //                                                 () => Container(
-                              //                                                   padding: EdgeInsets.symmetric(
-                              //                                                     horizontal: 16,
-                              //                                                     vertical: 12,
-                              //                                                   ),
-                              //                                                   decoration:
-                              //                                                       selectedDate.value ==
-                              //                                                           controller.dateRecommendationList[index]
-                              //                                                       ? BoxDecoration(
-                              //                                                           color: Color(
-                              //                                                             0XFFF6F6F6,
-                              //                                                           ),
-                              //                                                           border: Border.all(
-                              //                                                             color: controller.themeColorServices.primaryBlue.value,
-                              //                                                           ),
-                              //                                                           borderRadius: BorderRadius.circular(
-                              //                                                             12,
-                              //                                                           ),
-                              //                                                         )
-                              //                                                       : null,
-                              //                                                   child: Align(
-                              //                                                     alignment: Alignment.centerLeft,
-                              //                                                     child: Text(
-                              //                                                       DateFormat(
-                              //                                                         'EEEE, dd-MM-yyyy',
-                              //                                                         'id_ID',
-                              //                                                       ).format(
-                              //                                                         controller.dateRecommendationList[index],
-                              //                                                       ),
-                              //                                                       style: controller.typographyServices.bodyLargeRegular.value.copyWith(
-                              //                                                         color:
-                              //                                                             selectedDate.value ==
-                              //                                                                 controller.dateRecommendationList[index]
-                              //                                                             ? controller.themeColorServices.primaryBlue.value
-                              //                                                             : Color(
-                              //                                                                 0XFFB3B3B3,
-                              //                                                               ),
-                              //                                                         fontWeight:
-                              //                                                             selectedDate.value ==
-                              //                                                                 controller.dateRecommendationList[index]
-                              //                                                             ? FontWeight.w700
-                              //                                                             : FontWeight.w400,
-                              //                                                       ),
-                              //                                                       maxLines: 1,
-                              //                                                       overflow: TextOverflow.ellipsis,
-                              //                                                     ),
-                              //                                                   ),
-                              //                                                 ),
-                              //                                               );
-                              //                                             },
-                              //                                       ),
-                              //                                     ),
-                              //                                   ),
-                              //                                 ],
-                              //                               ),
-                              //                             ),
-                              //                           ),
-                              //                           SizedBox(width: 16),
-                              //                           Expanded(
-                              //                             flex: 5,
-                              //                             child: SizedBox(
-                              //                               height: 218,
-                              //                               width:
-                              //                                   MediaQuery.of(
-                              //                                     context,
-                              //                                   ).size.width,
-                              //                               child: Column(
-                              //                                 mainAxisAlignment:
-                              //                                     MainAxisAlignment
-                              //                                         .start,
-                              //                                 crossAxisAlignment:
-                              //                                     CrossAxisAlignment
-                              //                                         .start,
-                              //                                 mainAxisSize:
-                              //                                     MainAxisSize
-                              //                                         .min,
-                              //                                 children: [
-                              //                                   Expanded(
-                              //                                     child: ListWheelScrollView.useDelegate(
-                              //                                       controller:
-                              //                                           timeRecommendationController,
-                              //                                       physics:
-                              //                                           const FixedExtentScrollPhysics(),
-                              //                                       perspective:
-                              //                                           0.005,
-                              //                                       diameterRatio:
-                              //                                           2.0,
-                              //                                       itemExtent:
-                              //                                           32.0 +
-                              //                                           24.0,
-                              //                                       onSelectedItemChanged: (int index) {
-                              //                                         selectedTime
-                              //                                                 .value =
-                              //                                             timeRecommendationList[index];
-                              //                                         selectedTimeIndex
-                              //                                                 .value =
-                              //                                             index;
-                              //                                       },
+                                                                    childDelegate: ListWheelChildBuilderDelegate(
+                                                                      childCount: controller
+                                                                          .dateRecommendationList
+                                                                          .length,
+                                                                      builder:
+                                                                          (
+                                                                            context,
+                                                                            index,
+                                                                          ) {
+                                                                            return Obx(
+                                                                              () => Container(
+                                                                                padding: EdgeInsets.symmetric(
+                                                                                  horizontal: 16,
+                                                                                  vertical: 12,
+                                                                                ),
+                                                                                decoration:
+                                                                                    selectedDate.value ==
+                                                                                        controller.dateRecommendationList[index]
+                                                                                    ? BoxDecoration(
+                                                                                        color: Color(
+                                                                                          0XFFF6F6F6,
+                                                                                        ),
+                                                                                        border: Border.all(
+                                                                                          color: controller.themeColorServices.primaryBlue.value,
+                                                                                        ),
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          12,
+                                                                                        ),
+                                                                                      )
+                                                                                    : null,
+                                                                                child: Align(
+                                                                                  alignment: Alignment.centerLeft,
+                                                                                  child: Text(
+                                                                                    DateFormat(
+                                                                                      'EEEE, dd-MM-yyyy',
+                                                                                      'id_ID',
+                                                                                    ).format(
+                                                                                      controller.dateRecommendationList[index],
+                                                                                    ),
+                                                                                    style: controller.typographyServices.bodyLargeRegular.value.copyWith(
+                                                                                      color:
+                                                                                          selectedDate.value ==
+                                                                                              controller.dateRecommendationList[index]
+                                                                                          ? controller.themeColorServices.primaryBlue.value
+                                                                                          : Color(
+                                                                                              0XFFB3B3B3,
+                                                                                            ),
+                                                                                      fontWeight:
+                                                                                          selectedDate.value ==
+                                                                                              controller.dateRecommendationList[index]
+                                                                                          ? FontWeight.w700
+                                                                                          : FontWeight.w400,
+                                                                                    ),
+                                                                                    maxLines: 1,
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 16),
+                                                        Expanded(
+                                                          flex: 5,
+                                                          child: SizedBox(
+                                                            height: 218,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                  context,
+                                                                ).size.width,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Expanded(
+                                                                  child: ListWheelScrollView.useDelegate(
+                                                                    controller:
+                                                                        timeRecommendationController,
+                                                                    physics:
+                                                                        const FixedExtentScrollPhysics(),
+                                                                    perspective:
+                                                                        0.005,
+                                                                    diameterRatio:
+                                                                        2.0,
+                                                                    itemExtent:
+                                                                        32.0 +
+                                                                        24.0,
+                                                                    onSelectedItemChanged: (int index) {
+                                                                      selectedTime
+                                                                              .value =
+                                                                          timeRecommendationList[index];
+                                                                      selectedTimeIndex
+                                                                              .value =
+                                                                          index;
+                                                                    },
 
-                              //                                       childDelegate: ListWheelChildBuilderDelegate(
-                              //                                         childCount:
-                              //                                             timeRecommendationList
-                              //                                                 .length,
-                              //                                         builder:
-                              //                                             (
-                              //                                               context,
-                              //                                               index,
-                              //                                             ) {
-                              //                                               return Obx(
-                              //                                                 () => Container(
-                              //                                                   padding: EdgeInsets.symmetric(
-                              //                                                     horizontal: 16,
-                              //                                                     vertical: 12,
-                              //                                                   ),
-                              //                                                   decoration:
-                              //                                                       selectedTime.value ==
-                              //                                                           timeRecommendationList[index]
-                              //                                                       ? BoxDecoration(
-                              //                                                           color: Color(
-                              //                                                             0XFFF6F6F6,
-                              //                                                           ),
-                              //                                                           border: Border.all(
-                              //                                                             color: controller.themeColorServices.primaryBlue.value,
-                              //                                                           ),
-                              //                                                           borderRadius: BorderRadius.circular(
-                              //                                                             12,
-                              //                                                           ),
-                              //                                                         )
-                              //                                                       : null,
-                              //                                                   child: Align(
-                              //                                                     alignment: Alignment.center,
-                              //                                                     child: Text(
-                              //                                                       DateFormat(
-                              //                                                         'HH : mm',
-                              //                                                       ).format(
-                              //                                                         timeRecommendationList[index],
-                              //                                                       ),
-                              //                                                       style: controller.typographyServices.bodyLargeRegular.value.copyWith(
-                              //                                                         color:
-                              //                                                             selectedTime.value ==
-                              //                                                                 timeRecommendationList[index]
-                              //                                                             ? controller.themeColorServices.primaryBlue.value
-                              //                                                             : Color(
-                              //                                                                 0XFFB3B3B3,
-                              //                                                               ),
-                              //                                                         fontWeight:
-                              //                                                             selectedTime.value ==
-                              //                                                                 timeRecommendationList[index]
-                              //                                                             ? FontWeight.w700
-                              //                                                             : FontWeight.w400,
-                              //                                                       ),
-                              //                                                       maxLines: 1,
-                              //                                                       overflow: TextOverflow.ellipsis,
-                              //                                                     ),
-                              //                                                   ),
-                              //                                                 ),
-                              //                                               );
-                              //                                             },
-                              //                                       ),
-                              //                                     ),
-                              //                                   ),
-                              //                                 ],
-                              //                               ),
-                              //                             ),
-                              //                           ),
-                              //                         ],
-                              //                       ),
-                              //                     ),
-                              //                     Container(
-                              //                       padding: EdgeInsets.all(16),
-                              //                       decoration: BoxDecoration(
-                              //                         color: controller
-                              //                             .themeColorServices
-                              //                             .neutralsColorGrey0
-                              //                             .value,
-                              //                         boxShadow: [
-                              //                           BoxShadow(
-                              //                             color: controller
-                              //                                 .themeColorServices
-                              //                                 .overlayDark100
-                              //                                 .value
-                              //                                 .withValues(
-                              //                                   alpha: 0.12,
-                              //                                 ),
-                              //                             blurRadius: 16,
-                              //                             spreadRadius: 0,
-                              //                             offset: Offset(0, 0),
-                              //                           ),
-                              //                         ],
-                              //                       ),
-                              //                       child: Row(
-                              //                         children: [
-                              //                           SizedBox(
-                              //                             height: 46,
-                              //                             width: 120,
-                              //                             child: OutlinedButton(
-                              //                               style: OutlinedButton.styleFrom(
-                              //                                 side: BorderSide(
-                              //                                   color: controller
-                              //                                       .themeColorServices
-                              //                                       .redColor
-                              //                                       .value,
-                              //                                 ),
-                              //                                 shape: RoundedRectangleBorder(
-                              //                                   borderRadius:
-                              //                                       BorderRadius.circular(
-                              //                                         16,
-                              //                                       ),
-                              //                                 ),
-                              //                               ),
-                              //                               onPressed: () async {
-                              //                                 Get.close(1);
-                              //                                 controller
-                              //                                         .isAdvanceOrderEnable
-                              //                                         .value =
-                              //                                     false;
-                              //                                 controller
-                              //                                     .selectedDate
-                              //                                     .value = controller
-                              //                                     .dateRecommendationList
-                              //                                     .first;
-                              //                                 controller
-                              //                                         .selectedDateIndex
-                              //                                         .value =
-                              //                                     0;
-                              //                                 controller
-                              //                                     .timeRecommendationList
-                              //                                     .value = await controller
-                              //                                     .generateTimeRecommendationList(
-                              //                                       selectedDate:
-                              //                                           selectedDate
-                              //                                               .value!,
-                              //                                     );
-                              //                                 controller
-                              //                                     .selectedTime
-                              //                                     .value = controller
-                              //                                     .timeRecommendationList
-                              //                                     .first;
-                              //                                 controller
-                              //                                         .selectedTimeIndex
-                              //                                         .value =
-                              //                                     0;
-                              //                               },
-                              //                               child: Text(
-                              //                                 "Batalkan",
-                              //                                 style: controller
-                              //                                     .typographyServices
-                              //                                     .bodyLargeBold
-                              //                                     .value
-                              //                                     .copyWith(
-                              //                                       color: controller
-                              //                                           .themeColorServices
-                              //                                           .redColor
-                              //                                           .value,
-                              //                                     ),
-                              //                               ),
-                              //                             ),
-                              //                           ),
-                              //                           SizedBox(width: 16),
-                              //                           Expanded(
-                              //                             child: LoaderElevatedButton(
-                              //                               onPressed: () async {
-                              //                                 controller
-                              //                                         .isAdvanceOrderEnable
-                              //                                         .value =
-                              //                                     true;
-                              //                                 controller
-                              //                                         .selectedDate
-                              //                                         .value =
-                              //                                     selectedDate
-                              //                                         .value;
-                              //                                 controller
-                              //                                         .selectedTime
-                              //                                         .value =
-                              //                                     selectedTime
-                              //                                         .value;
-                              //                                 controller
-                              //                                         .selectedDateIndex
-                              //                                         .value =
-                              //                                     selectedDateIndex
-                              //                                         .value;
-                              //                                 controller
-                              //                                         .selectedTimeIndex
-                              //                                         .value =
-                              //                                     selectedTimeIndex
-                              //                                         .value;
-                              //                                 controller
-                              //                                         .timeRecommendationList
-                              //                                         .value =
-                              //                                     timeRecommendationList;
+                                                                    childDelegate: ListWheelChildBuilderDelegate(
+                                                                      childCount:
+                                                                          timeRecommendationList
+                                                                              .length,
+                                                                      builder:
+                                                                          (
+                                                                            context,
+                                                                            index,
+                                                                          ) {
+                                                                            return Obx(
+                                                                              () => Container(
+                                                                                padding: EdgeInsets.symmetric(
+                                                                                  horizontal: 16,
+                                                                                  vertical: 12,
+                                                                                ),
+                                                                                decoration:
+                                                                                    selectedTime.value ==
+                                                                                        timeRecommendationList[index]
+                                                                                    ? BoxDecoration(
+                                                                                        color: Color(
+                                                                                          0XFFF6F6F6,
+                                                                                        ),
+                                                                                        border: Border.all(
+                                                                                          color: controller.themeColorServices.primaryBlue.value,
+                                                                                        ),
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          12,
+                                                                                        ),
+                                                                                      )
+                                                                                    : null,
+                                                                                child: Align(
+                                                                                  alignment: Alignment.center,
+                                                                                  child: Text(
+                                                                                    DateFormat(
+                                                                                      'HH : mm',
+                                                                                    ).format(
+                                                                                      timeRecommendationList[index],
+                                                                                    ),
+                                                                                    style: controller.typographyServices.bodyLargeRegular.value.copyWith(
+                                                                                      color:
+                                                                                          selectedTime.value ==
+                                                                                              timeRecommendationList[index]
+                                                                                          ? controller.themeColorServices.primaryBlue.value
+                                                                                          : Color(
+                                                                                              0XFFB3B3B3,
+                                                                                            ),
+                                                                                      fontWeight:
+                                                                                          selectedTime.value ==
+                                                                                              timeRecommendationList[index]
+                                                                                          ? FontWeight.w700
+                                                                                          : FontWeight.w400,
+                                                                                    ),
+                                                                                    maxLines: 1,
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.all(16),
+                                                    decoration: BoxDecoration(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey0
+                                                          .value,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .overlayDark100
+                                                              .value
+                                                              .withValues(
+                                                                alpha: 0.12,
+                                                              ),
+                                                          blurRadius: 16,
+                                                          spreadRadius: 0,
+                                                          offset: Offset(0, 0),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 46,
+                                                          width: 120,
+                                                          child: OutlinedButton(
+                                                            style: OutlinedButton.styleFrom(
+                                                              side: BorderSide(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .redColor
+                                                                    .value,
+                                                              ),
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      16,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                            onPressed: () async {
+                                                              Get.close(1);
+                                                              controller
+                                                                      .isAdvanceOrderEnable
+                                                                      .value =
+                                                                  false;
+                                                              controller
+                                                                  .selectedDate
+                                                                  .value = controller
+                                                                  .dateRecommendationList
+                                                                  .first;
+                                                              controller
+                                                                      .selectedDateIndex
+                                                                      .value =
+                                                                  0;
+                                                              controller
+                                                                  .timeRecommendationList
+                                                                  .value = await controller
+                                                                  .generateTimeRecommendationList(
+                                                                    selectedDate:
+                                                                        selectedDate
+                                                                            .value!,
+                                                                  );
+                                                              controller
+                                                                  .selectedTime
+                                                                  .value = controller
+                                                                  .timeRecommendationList
+                                                                  .first;
+                                                              controller
+                                                                      .selectedTimeIndex
+                                                                      .value =
+                                                                  0;
+                                                            },
+                                                            child: Text(
+                                                              "Batalkan",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodyLargeBold
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .redColor
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 16),
+                                                        Expanded(
+                                                          child: LoaderElevatedButton(
+                                                            onPressed: () async {
+                                                              controller
+                                                                      .isAdvanceOrderEnable
+                                                                      .value =
+                                                                  true;
+                                                              controller
+                                                                      .selectedDate
+                                                                      .value =
+                                                                  selectedDate
+                                                                      .value;
+                                                              controller
+                                                                      .selectedTime
+                                                                      .value =
+                                                                  selectedTime
+                                                                      .value;
+                                                              controller
+                                                                      .selectedDateIndex
+                                                                      .value =
+                                                                  selectedDateIndex
+                                                                      .value;
+                                                              controller
+                                                                      .selectedTimeIndex
+                                                                      .value =
+                                                                  selectedTimeIndex
+                                                                      .value;
+                                                              controller
+                                                                      .timeRecommendationList
+                                                                      .value =
+                                                                  timeRecommendationList;
 
-                              //                                 Get.close(1);
-                              //                               },
-                              //                               child: Text(
-                              //                                 "Pilih",
-                              //                                 style: controller
-                              //                                     .typographyServices
-                              //                                     .bodyLargeBold
-                              //                                     .value
-                              //                                     .copyWith(
-                              //                                       color: controller
-                              //                                           .themeColorServices
-                              //                                           .neutralsColorGrey0
-                              //                                           .value,
-                              //                                     ),
-                              //                               ),
-                              //                             ),
-                              //                           ),
-                              //                         ],
-                              //                       ),
-                              //                     ),
-                              //                   ],
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //         ),
-                              //       );
-                              //     },
-                              //     child: Text(
-                              //       "Booking",
-                              //       style: controller
-                              //           .typographyServices
-                              //           .bodyLargeBold
-                              //           .value
-                              //           .copyWith(
-                              //             color: controller
-                              //                 .themeColorServices
-                              //                 .primaryBlue
-                              //                 .value,
-                              //           ),
-                              //     ),
-                              //   ),
-                              // ),
-                              // SizedBox(width: 16),
+                                                              Get.close(1);
+                                                            },
+                                                            child: Text(
+                                                              "Pilih",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodyLargeBold
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey0
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      if (controller
+                                              .isAdvanceOrderEnable
+                                              .value ==
+                                          true) ...[
+                                        SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_date_advance_order_selected.svg",
+                                                width: 15,
+                                                height: 16.67,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 4),
+                                        Expanded(
+                                          child: Text(
+                                            controller
+                                                        .isAdvanceOrderEnable
+                                                        .value ==
+                                                    false
+                                                ? "Booking"
+                                                : controller
+                                                      .getAdvanceBookingSelectedDateTime(),
+                                            style: controller
+                                                .typographyServices
+                                                .bodyLargeBold
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .primaryBlue
+                                                      .value,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+
+                                      if (controller
+                                              .isAdvanceOrderEnable
+                                              .value ==
+                                          false) ...[
+                                        Expanded(
+                                          child: Center(
+                                            child: Text(
+                                              controller
+                                                          .isAdvanceOrderEnable
+                                                          .value ==
+                                                      false
+                                                  ? "Booking"
+                                                  : controller
+                                                        .getAdvanceBookingSelectedDateTime(),
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                                  ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 16),
                               Expanded(
                                 child: LoaderElevatedButton(
                                   isShowLoading: false,
