@@ -224,35 +224,35 @@ class CheckoutPriceListSubView
                           ],
                         ],
                       ),
-                      SizedBox(width: 18),
-                      Checkbox(
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        fillColor: WidgetStatePropertyAll(
-                          controller.selectedOrderRidePricing.value.id ==
-                                  orderRidePricing.id
-                              ? controller.themeColorServices.primaryBlue.value
-                              : controller
-                                    .themeColorServices
-                                    .neutralsColorGrey0
-                                    .value,
-                        ),
-                        activeColor: Colors.white,
-                        side: BorderSide(
-                          color:
-                              controller.selectedOrderRidePricing.value.id ==
-                                  orderRidePricing.id
-                              ? controller.themeColorServices.primaryBlue.value
-                              : Color(0XFFD7D7D7),
-                          width: 2,
-                        ),
-                        value:
-                            controller.selectedOrderRidePricing.value.id ==
-                            orderRidePricing.id,
-                        onChanged: (value) {
-                          controller.selectedOrderRidePricing.value =
-                              orderRidePricing;
-                        },
-                      ),
+                      // SizedBox(width: 18),
+                      // Checkbox(
+                      //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      //   fillColor: WidgetStatePropertyAll(
+                      //     controller.selectedOrderRidePricing.value.id ==
+                      //             orderRidePricing.id
+                      //         ? controller.themeColorServices.primaryBlue.value
+                      //         : controller
+                      //               .themeColorServices
+                      //               .neutralsColorGrey0
+                      //               .value,
+                      //   ),
+                      //   activeColor: Colors.white,
+                      //   side: BorderSide(
+                      //     color:
+                      //         controller.selectedOrderRidePricing.value.id ==
+                      //             orderRidePricing.id
+                      //         ? controller.themeColorServices.primaryBlue.value
+                      //         : Color(0XFFD7D7D7),
+                      //     width: 2,
+                      //   ),
+                      //   value:
+                      //       controller.selectedOrderRidePricing.value.id ==
+                      //       orderRidePricing.id,
+                      //   onChanged: (value) {
+                      //     controller.selectedOrderRidePricing.value =
+                      //         orderRidePricing;
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

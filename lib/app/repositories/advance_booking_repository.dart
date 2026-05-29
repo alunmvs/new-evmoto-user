@@ -122,7 +122,7 @@ class AdvanceBookingRepository {
 
       var result = <AdvancedBooking>[];
 
-      for (var advancedBooking in response.data['data']['list']) {
+      for (var advancedBooking in response.data['data']?['list'] ?? []) {
         result.add(AdvancedBooking.fromJson(advancedBooking));
       }
 

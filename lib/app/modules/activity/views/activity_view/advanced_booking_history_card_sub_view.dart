@@ -66,9 +66,177 @@ class AdvancedBookingHistoryCardSubView extends GetView<ActivityController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ActivityCardStatus(
-                              state: advancedOrder.spawnedOrderState,
-                            ),
+                            if ([0, 1].contains(advancedOrder.state)) ...[
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFFFFF6E8),
+                                      border: Border.all(
+                                        color: Color(0XFFEA7405),
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .advancedBookingStatusOrderScheduled ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFEA7405)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                            if ([2].contains(advancedOrder.state)) ...[
+                              if (advancedOrder.spawnedOrderState == 9) ...[
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0XFFCAEDDB),
+                                        border: Border.all(
+                                          color: Color(0XFF99CEB3),
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .advancedBookingStatusOrderDone ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .captionLargeRegular
+                                            .value
+                                            .copyWith(color: Color(0XFF17412C)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ] else ...[
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0XFFE3F1FF),
+                                        border: Border.all(
+                                          color: Color(0XFF0573EA),
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .advancedBookingStatusOrderInService ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .captionLargeRegular
+                                            .value
+                                            .copyWith(color: Color(0XFF0573EA)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ],
+                            if ([5].contains(advancedOrder.state)) ...[
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFFFFECEC),
+                                      border: Border.all(
+                                        color: Color(0XFFD9463E),
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .advancedBookingStatusOrderCancelled ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFD9463E)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                            if ([6].contains(advancedOrder.state)) ...[
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFFF6F6F6),
+                                      border: Border.all(
+                                        color: Color(0XFFB3B3B3),
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .advancedBookingStatusOrderExpired ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                             Visibility(
                               visible:
                                   advancedOrder.spawnedOrderState == null ||
@@ -90,8 +258,8 @@ class AdvancedBookingHistoryCardSubView extends GetView<ActivityController> {
                                             .contains(
                                               advancedOrder.spawnedOrderState,
                                             )
-                                      ? advancedOrder.payMoney
-                                      : advancedOrder.payMoney,
+                                      ? (advancedOrder.payMoney ?? 0)
+                                      : (advancedOrder.payMoney ?? 0),
                                 ),
                                 style: controller
                                     .typographyServices

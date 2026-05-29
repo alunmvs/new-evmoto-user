@@ -5,19 +5,23 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
 import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
-import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart';
+import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
+    hide Routes;
 import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/widgets/advanced_booking_cancel_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AdvancedBookingDetailController extends GetxController {
@@ -67,7 +71,6 @@ class AdvancedBookingDetailController extends GetxController {
       await Future.wait([getAdvancedBookingDetail()]);
       await Future.wait([getOrderRideDetail()]);
       isFetch.value = false;
-      await setupGoogleMapOriginToDestination();
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
       isCriticalError.value = true;
@@ -276,33 +279,63 @@ class AdvancedBookingDetailController extends GetxController {
   }
 
   bool isAbleCancelAdvanceBooking() {
-    var result = true;
+    var result = false;
 
-    if (orderRideDetail.value.orderId != null ||
-        [1, 2, 3, 4].contains(orderRideDetail.value.state)) {
+    if ([0, 1].contains(advancedBooking.value.state)) {
       result = true;
+    }
+
+    if ([2].contains(advancedBooking.value.state)) {
+      if ([1, 2, 3, 4].contains(orderRideDetail.value.state)) {
+        result = true;
+      }
+    }
+
+    return result;
+  }
+
+  bool isAbleOrderAgainAdvanceBooking() {
+    var result = false;
+
+    if ([5, 6].contains(advancedBooking.value.state)) {
+      result = true;
+    }
+
+    if ([2].contains(advancedBooking.value.state)) {
+      if (OrderState.COMPLETED_STATE_LIST.contains(
+        orderRideDetail.value.state,
+      )) {
+        result = true;
+      }
     }
 
     return result;
   }
 
   Future<void> onTapCancel() async {
-    try {
-      await advanceBookingRepository.cancelAdvanceBooking(
-        bookingId: advancedBooking.value.id!,
-      );
-      await Future.wait([getAdvancedBookingDetail()]);
-      await Future.wait([getOrderRideDetail()]);
-    } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(text: e.error.toString());
-      isCriticalError.value = true;
-      isFetch.value = false;
-    } catch (e) {
-      if (e.toString().contains("GoogleMapController") == false) {
-        SnackbarHelper.showSnackbarError(text: e.toString());
-        isCriticalError.value = true;
-        isFetch.value = false;
-      }
-    }
+    await Get.dialog(
+      AdvancedBookingCancelDialog(
+        onTapConfirm: () async {
+          try {
+            await advanceBookingRepository.cancelAdvanceBooking(
+              bookingId: advancedBooking.value.id!,
+            );
+            Get.close(1);
+            await Future.wait([getAdvancedBookingDetail()]);
+            await Future.wait([getOrderRideDetail()]);
+          } on DioException catch (e) {
+            SnackbarHelper.showSnackbarError(text: e.error.toString());
+            isCriticalError.value = true;
+            isFetch.value = false;
+          } catch (e) {
+            if (e.toString().contains("GoogleMapController") == false) {
+              SnackbarHelper.showSnackbarError(text: e.toString());
+              isCriticalError.value = true;
+              isFetch.value = false;
+            }
+          }
+        },
+      ),
+    );
   }
 }

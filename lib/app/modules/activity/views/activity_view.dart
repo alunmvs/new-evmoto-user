@@ -13,41 +13,47 @@ class ActivityView extends GetView<ActivityController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Column(
-        children: [
-          TabBar(
-            controller: controller.tabController,
-            labelStyle: controller.typographyServices.bodySmallBold.value
-                .copyWith(
-                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                ),
-            unselectedLabelStyle: controller
-                .typographyServices
-                .bodySmallRegular
-                .value
-                .copyWith(color: Color(0XFFC5C5C5)),
-            labelColor: controller.themeColorServices.neutralsColorGrey0.value,
-            unselectedLabelColor: Color(0XFFC5C5C5),
-            dividerColor: Colors.transparent,
-            indicatorColor:
-                controller.themeColorServices.neutralsColorGrey0.value,
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: 'Reguler'),
-              Tab(text: 'Booking'),
-            ],
+      () => Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: controller.themeColorServices.neutralsColorGrey0.value,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(16),
+            topLeft: Radius.circular(16),
           ),
-          Expanded(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: controller.themeColorServices.neutralsColorGrey0.value,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(0),
-                  topLeft: Radius.circular(0),
-                ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TabBar(
+                controller: controller.tabController,
+                labelStyle: controller.typographyServices.bodySmallBold.value
+                    .copyWith(
+                      color: controller
+                          .themeColorServices
+                          .neutralsColorGrey0
+                          .value,
+                    ),
+                unselectedLabelStyle: controller
+                    .typographyServices
+                    .bodySmallRegular
+                    .value
+                    .copyWith(color: Color(0XFFC5C5C5)),
+                labelColor: Color(0XFF0060C5),
+                unselectedLabelColor: Color(0XFFC5C5C5),
+                dividerColor: Color(0XFFC5C5C5),
+                indicatorColor: Color(0XFF0060C5),
+                automaticIndicatorColorAdjustment: true,
+                indicatorSize: TabBarIndicatorSize.tab,
+                tabs: [
+                  Tab(text: 'Reguler'),
+                  Tab(text: 'Booking'),
+                ],
               ),
+            ),
+            Expanded(
               child: TabBarView(
                 controller: controller.tabController,
                 children: [
@@ -345,8 +351,8 @@ class ActivityView extends GetView<ActivityController> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -680,7 +680,7 @@ class CreateOrderRideCheckoutController extends GetxController {
           Get.back();
           Get.back();
           Get.toNamed(
-            Routes.ADVANCED_BOOKING_DETAIL,
+            Routes.ADVANCED_BOOKING_SEARCHING_DRIVER,
             arguments: {"id": advanceBookingId},
           );
         } on DioException catch (e) {
@@ -793,6 +793,8 @@ class CreateOrderRideCheckoutController extends GetxController {
                 ],
               ),
             );
+          } else {
+            SnackbarHelper.showSnackbarError(text: e.toString());
           }
         }
       }

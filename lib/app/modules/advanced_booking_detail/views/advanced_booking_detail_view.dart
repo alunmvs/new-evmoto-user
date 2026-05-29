@@ -46,72 +46,384 @@ class AdvancedBookingDetailView
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0XFFD3D3D3),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color(0XFFF5F5F5),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/icon_calendar_schedule_fill.svg",
+                    if ([
+                      0,
+                      1,
+                    ].contains(controller.advancedBooking.value.state)) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0XFFD3D3D3),
+                              width: 2,
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    controller
-                                                .advancedBooking
-                                                .value
-                                                .travelTime ==
-                                            null
-                                        ? "-"
-                                        : DateFormat(
-                                            'dd MMMM yyyy ⬩ HH:mm',
-                                            controller
-                                                .languageServices
-                                                .languageCode
-                                                .value,
-                                          ).format(
-                                            DateTime.parse(
-                                              controller
+                            borderRadius: BorderRadius.circular(12),
+                            color: Color(0XFFF5F5F5),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_calendar_schedule_fill.svg",
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      controller
                                                   .advancedBooking
                                                   .value
-                                                  .travelTime!
-                                                  .replaceFirst(' ', 'T'),
+                                                  .travelTime ==
+                                              null
+                                          ? "-"
+                                          : DateFormat(
+                                              'dd MMMM yyyy ⬩ HH:mm',
+                                              controller
+                                                  .languageServices
+                                                  .languageCode
+                                                  .value,
+                                            ).format(
+                                              DateTime.parse(
+                                                controller
+                                                    .advancedBooking
+                                                    .value
+                                                    .travelTime!
+                                                    .replaceFirst(' ', 'T'),
+                                              ),
                                             ),
-                                          ),
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeBold
-                                        .value,
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    "Pesanan akan diproses sesuai jadwal yang telah dipilih. Mohon periksa kembali jadwal pesanan Anda.",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(color: Color(0XFFB3B3B3)),
-                                  ),
-                                ],
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value,
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .advancedBookingStatusDescriptionScheduled ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
+                    if ([
+                      2,
+                    ].contains(controller.advancedBooking.value.state)) ...[
+                      if (controller.advancedBooking.value.spawnedOrderState ==
+                          9) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0XFFD3D3D3),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              color: Color(0XFFF5F5F5),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/icon_calendar_schedule_fill.svg",
+                                ),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        controller
+                                                    .advancedBooking
+                                                    .value
+                                                    .travelTime ==
+                                                null
+                                            ? "-"
+                                            : DateFormat(
+                                                'dd MMMM yyyy ⬩ HH:mm',
+                                                controller
+                                                    .languageServices
+                                                    .languageCode
+                                                    .value,
+                                              ).format(
+                                                DateTime.parse(
+                                                  controller
+                                                      .advancedBooking
+                                                      .value
+                                                      .travelTime!
+                                                      .replaceFirst(' ', 'T'),
+                                                ),
+                                              ),
+                                        style: controller
+                                            .typographyServices
+                                            .bodyLargeBold
+                                            .value,
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .advancedBookingStatusDescriptionDone ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(color: Color(0XFFB3B3B3)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ] else ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0XFFD3D3D3),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              color: Color(0XFFF5F5F5),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/icon_calendar_schedule_fill.svg",
+                                ),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        controller
+                                                    .advancedBooking
+                                                    .value
+                                                    .travelTime ==
+                                                null
+                                            ? "-"
+                                            : DateFormat(
+                                                'dd MMMM yyyy ⬩ HH:mm',
+                                                controller
+                                                    .languageServices
+                                                    .languageCode
+                                                    .value,
+                                              ).format(
+                                                DateTime.parse(
+                                                  controller
+                                                      .advancedBooking
+                                                      .value
+                                                      .travelTime!
+                                                      .replaceFirst(' ', 'T'),
+                                                ),
+                                              ),
+                                        style: controller
+                                            .typographyServices
+                                            .bodyLargeBold
+                                            .value,
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .advancedBookingStatusDescriptionInService ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(color: Color(0XFFB3B3B3)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                    if ([
+                      5,
+                    ].contains(controller.advancedBooking.value.state)) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0XFFD3D3D3),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Color(0XFFF5F5F5),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_advance_order_expired.svg",
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      controller
+                                                  .advancedBooking
+                                                  .value
+                                                  .travelTime ==
+                                              null
+                                          ? "-"
+                                          : DateFormat(
+                                              'dd MMMM yyyy ⬩ HH:mm',
+                                              controller
+                                                  .languageServices
+                                                  .languageCode
+                                                  .value,
+                                            ).format(
+                                              DateTime.parse(
+                                                controller
+                                                    .advancedBooking
+                                                    .value
+                                                    .travelTime!
+                                                    .replaceFirst(' ', 'T'),
+                                              ),
+                                            ),
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value,
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .advancedBookingStatusDescriptionCancelled ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                    if ([
+                      6,
+                    ].contains(controller.advancedBooking.value.state)) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0XFFD3D3D3),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: Color(0XFFF5F5F5),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_advance_order_expired.svg",
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      controller
+                                                  .advancedBooking
+                                                  .value
+                                                  .travelTime ==
+                                              null
+                                          ? "-"
+                                          : DateFormat(
+                                              'dd MMMM yyyy ⬩ HH:mm',
+                                              controller
+                                                  .languageServices
+                                                  .languageCode
+                                                  .value,
+                                            ).format(
+                                              DateTime.parse(
+                                                controller
+                                                    .advancedBooking
+                                                    .value
+                                                    .travelTime!
+                                                    .replaceFirst(' ', 'T'),
+                                              ),
+                                            ),
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value,
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .advancedBookingStatusDescriptionExpired ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                     SizedBox(height: 16),
                     Container(
                       height: 5.5,
@@ -180,7 +492,9 @@ class AdvancedBookingDetailView
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        onPressed: () async {},
+                        onPressed: () async {
+                          await controller.onTapCancel();
+                        },
                         child: Text(
                           controller.languageServices.language.value.cancel ??
                               "-",

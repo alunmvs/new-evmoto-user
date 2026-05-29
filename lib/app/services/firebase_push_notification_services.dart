@@ -13,10 +13,12 @@ import 'package:flutter_callkit_incoming/entities/notification_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/notification_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
+import 'package:new_evmoto_user/app/widgets/advanced_booking_expired_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -262,14 +264,14 @@ class FirebasePushNotificationServices extends GetxService {
       var appVersion = await getVersion();
       var osVersion = await getOSVersion();
 
-      // await notificationRepository.subscribeNotification(
-      //   fcmToken: fcmToken,
-      //   apnsToken: apnsToken,
-      //   deviceType: "1",
-      //   deviceId: deviceId,
-      //   appVersion: appVersion,
-      //   osVersion: osVersion,
-      // );
+      await notificationRepository.subscribeNotification(
+        fcmToken: fcmToken,
+        apnsToken: apnsToken,
+        deviceType: "1",
+        deviceId: deviceId,
+        appVersion: appVersion,
+        osVersion: osVersion,
+      );
     } else {
       final fcmToken = await FirebaseMessaging.instance.getToken();
       this.fcmToken.value = fcmToken ?? '';
@@ -279,14 +281,14 @@ class FirebasePushNotificationServices extends GetxService {
       var appVersion = await getVersion();
       var osVersion = await getOSVersion();
 
-      // await notificationRepository.subscribeNotification(
-      //   fcmToken: fcmToken,
-      //   apnsToken: null,
-      //   deviceType: "1",
-      //   deviceId: deviceId,
-      //   appVersion: appVersion,
-      //   osVersion: osVersion,
-      // );
+      await notificationRepository.subscribeNotification(
+        fcmToken: fcmToken,
+        apnsToken: null,
+        deviceType: "1",
+        deviceId: deviceId,
+        appVersion: appVersion,
+        osVersion: osVersion,
+      );
     }
   }
 
@@ -408,6 +410,17 @@ class FirebasePushNotificationServices extends GetxService {
         return;
       }
 
+      if (message.data['notification_type'] == 'ADVANCE_ORDER_EXPIRED') {
+        Get.dialog(
+          AdvancedBookingExpiredDialog(
+            onTapConfirm: () async {
+              Get.until((route) => Get.currentRoute == Routes.HOME);
+              Get.find<HomeController>().indexNavigationBar.value = 0;
+            },
+          ),
+        );
+      }
+
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
         message.notification?.title,
@@ -441,10 +454,10 @@ class FirebasePushNotificationServices extends GetxService {
     try {
       await FirebaseMessaging.instance.deleteToken();
     } catch (e) {}
-    // await notificationRepository.unsubscribeNotification(
-    //   fcmToken: fcmToken.value != "" ? fcmToken.value : null,
-    //   apnsToken: apnsToken.value != "" ? apnsToken.value : null,
-    // );
+    await notificationRepository.unsubscribeNotification(
+      fcmToken: fcmToken.value != "" ? fcmToken.value : null,
+      apnsToken: apnsToken.value != "" ? apnsToken.value : null,
+    );
   }
 
   Future<String> getDeviceId() async {

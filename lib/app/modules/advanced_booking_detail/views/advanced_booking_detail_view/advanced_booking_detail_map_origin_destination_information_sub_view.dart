@@ -27,8 +27,10 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
               child: GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition: controller.initialCameraPosition.value,
-                onMapCreated: (GoogleMapController googleMapController) {
+                onMapCreated: (GoogleMapController googleMapController) async {
                   controller.googleMapController = googleMapController;
+
+                  await controller.setupGoogleMapOriginToDestination();
                 },
                 markers: controller.markers,
                 polylines: controller.polylines,

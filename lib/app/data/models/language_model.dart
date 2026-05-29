@@ -360,8 +360,47 @@ class Language {
   String? advancedBookingListNotFoundTitle;
   String? advancedBookingListNotFoundDescription;
   String? advancedBookingListNotFoundButton;
+  String? advancedBookingCancelTitle;
+  String? advancedBookingCancelDescription;
+  String? advancedBookingCancelButtonBack;
+  String? advancedBookingCancelButtonConfirm;
+
+  String? advancedBookingExpiredTitle;
+  String? advancedBookingExpiredlDescription;
+  String? advancedBookingExpiredButtonBack;
+  String? advancedBookingExpiredButtonConfirm;
+
+  String? advancedBookingStatusOrderScheduled;
+  String? advancedBookingStatusOrderDone;
+  String? advancedBookingStatusOrderInService;
+  String? advancedBookingStatusOrderCancelled;
+  String? advancedBookingStatusOrderExpired;
+
+  String? advancedBookingStatusDescriptionScheduled;
+  String? advancedBookingStatusDescriptionDone;
+  String? advancedBookingStatusDescriptionInService;
+  String? advancedBookingStatusDescriptionCancelled;
+  String? advancedBookingStatusDescriptionExpired;
 
   Language({
+    this.advancedBookingStatusDescriptionScheduled,
+    this.advancedBookingStatusDescriptionDone,
+    this.advancedBookingStatusDescriptionInService,
+    this.advancedBookingStatusDescriptionCancelled,
+    this.advancedBookingStatusDescriptionExpired,
+    this.advancedBookingStatusOrderScheduled,
+    this.advancedBookingStatusOrderDone,
+    this.advancedBookingStatusOrderInService,
+    this.advancedBookingStatusOrderCancelled,
+    this.advancedBookingStatusOrderExpired,
+    this.advancedBookingExpiredTitle,
+    this.advancedBookingExpiredlDescription,
+    this.advancedBookingExpiredButtonBack,
+    this.advancedBookingExpiredButtonConfirm,
+    this.advancedBookingCancelTitle,
+    this.advancedBookingCancelDescription,
+    this.advancedBookingCancelButtonBack,
+    this.advancedBookingCancelButtonConfirm,
     this.advancedBookingListNotFoundTitle,
     this.advancedBookingListNotFoundDescription,
     this.advancedBookingListNotFoundButton,
@@ -716,6 +755,57 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    advancedBookingStatusDescriptionExpired =
+        json['advanced_booking_status_description_expired'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusDescriptionScheduled =
+        json['advanced_booking_status_description_scheduled'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusDescriptionDone =
+        json['advanced_booking_status_description_done'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusDescriptionInService =
+        json['advanced_booking_status_description_in_service'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusDescriptionCancelled =
+        json['advanced_booking_status_description_cancelled'] ??
+        "(Translate Not Found)";
+
+    advancedBookingStatusOrderScheduled =
+        json['advanced_booking_status_order_scheduled'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusOrderDone =
+        json['advanced_booking_status_order_done'] ?? "(Translate Not Found)";
+    advancedBookingStatusOrderInService =
+        json['advanced_booking_status_order_in_service'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusOrderCancelled =
+        json['advanced_booking_status_order_cancelled'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusOrderExpired =
+        json['advanced_booking_status_order_expired'] ??
+        "(Translate Not Found)";
+
+    advancedBookingExpiredTitle =
+        json['advanced_booking_expired_title'] ?? "(Translate Not Found)";
+    advancedBookingExpiredlDescription =
+        json['advanced_booking_expired_description'] ?? "(Translate Not Found)";
+    advancedBookingExpiredButtonBack =
+        json['advanced_booking_expired_button_back'] ?? "(Translate Not Found)";
+    advancedBookingExpiredButtonConfirm =
+        json['advanced_booking_expired_button_confirm'] ??
+        "(Translate Not Found)";
+
+    advancedBookingCancelTitle =
+        json['advanced_booking_cancel_title'] ?? "(Translate Not Found)";
+    advancedBookingCancelDescription =
+        json['advanced_booking_cancel_description'] ?? "(Translate Not Found)";
+    advancedBookingCancelButtonBack =
+        json['advanced_booking_cancel_button_back'] ?? "(Translate Not Found)";
+    advancedBookingCancelButtonConfirm =
+        json['advanced_booking_cancel_button_confirm'] ??
+        "(Translate Not Found)";
+
     advancedBookingListNotFoundTitle =
         json['advanced_booking_list_not_found_title'] ??
         "(Translate Not Found)";

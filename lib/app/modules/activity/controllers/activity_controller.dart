@@ -112,7 +112,7 @@ class ActivityController extends GetxController
 
   Future<void> refreshAllAdvancedBooking() async {
     try {
-      await Future.wait([getHistoryOrderList(), getAdvancedBookingList()]);
+      await Future.wait([getAdvancedBookingList()]);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     } catch (e) {

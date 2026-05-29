@@ -37,6 +37,8 @@ abstract class Routes {
   static const CHAT_LIST = _Paths.CHAT_LIST;
   static const CHAT_DETAIL = _Paths.CHAT_DETAIL;
   static const ADVANCED_BOOKING_DETAIL = _Paths.ADVANCED_BOOKING_DETAIL;
+  static const ADVANCED_BOOKING_SEARCHING_DRIVER =
+      _Paths.ADVANCED_BOOKING_SEARCHING_DRIVER;
 }
 
 abstract class _Paths {
@@ -73,4 +75,6 @@ abstract class _Paths {
   static const CHAT_LIST = '/chat-list';
   static const CHAT_DETAIL = '/chat-detail';
   static const ADVANCED_BOOKING_DETAIL = '/advanced-booking-detail';
+  static const ADVANCED_BOOKING_SEARCHING_DRIVER =
+      '/advanced-booking-searching-driver';
 }

@@ -106,6 +106,7 @@ Future<void> main() async {
           if (prefs.getBool('activity_controller_registered') == true) {
             var activityController = Get.find<ActivityController>();
             processList.add(activityController.refreshAll());
+            processList.add(activityController.refreshAllAdvancedBooking());
           }
           await Future.wait(processList);
           userServices.isLoadingRefreshHome.value = false;

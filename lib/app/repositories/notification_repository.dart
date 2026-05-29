@@ -18,7 +18,7 @@ class NotificationRepository {
     required String? osVersion,
   }) async {
     try {
-      var url = "$baseUrl/notification/subscribe";
+      var url = "$baseUrl/account/api/user/notification/subscribe";
 
       var formData = FormData.fromMap({
         "fcmToken": fcmToken,
@@ -59,7 +59,7 @@ class NotificationRepository {
     required String? apnsToken,
   }) async {
     try {
-      var url = "$baseUrl/notification/unsubscribe";
+      var url = "$baseUrl/account/api/notification/unsubscribe";
 
       var formData = FormData.fromMap({
         "fcmToken": fcmToken,
