@@ -285,4 +285,24 @@ class AdvancedBookingDetailController extends GetxController {
 
     return result;
   }
+
+  Future<void> onTapCancel() async {
+    try {
+      await advanceBookingRepository.cancelAdvanceBooking(
+        bookingId: advancedBooking.value.id!,
+      );
+      await Future.wait([getAdvancedBookingDetail()]);
+      await Future.wait([getOrderRideDetail()]);
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+      isCriticalError.value = true;
+      isFetch.value = false;
+    } catch (e) {
+      if (e.toString().contains("GoogleMapController") == false) {
+        SnackbarHelper.showSnackbarError(text: e.toString());
+        isCriticalError.value = true;
+        isFetch.value = false;
+      }
+    }
+  }
 }

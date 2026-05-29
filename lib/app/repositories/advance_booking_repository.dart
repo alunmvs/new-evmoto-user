@@ -12,7 +12,7 @@ class AdvanceBookingRepository {
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final languageServices = Get.find<LanguageServices>();
 
-  Future<void> requestAdvanceBooking({
+  Future<int> requestAdvanceBooking({
     String? startLon,
     String? startLat,
     String? startAddress,
@@ -81,6 +81,10 @@ class AdvanceBookingRepository {
           throw response.data['msg'];
         }
       }
+
+      var advanceOrderId = response.data['data'];
+
+      return advanceOrderId;
     } on DioException {
       rethrow;
     }
@@ -150,6 +154,35 @@ class AdvanceBookingRepository {
       }
 
       return AdvancedBooking.fromJson(response.data['data']);
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<void> cancelAdvanceBooking({required int bookingId}) async {
+    try {
+      var url = "$baseUrl/businessProcess/api/advanceBooking/cancel";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        options: Options(headers: headers),
+        data: {"bookingId": bookingId},
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
     } on DioException {
       rethrow;
     }

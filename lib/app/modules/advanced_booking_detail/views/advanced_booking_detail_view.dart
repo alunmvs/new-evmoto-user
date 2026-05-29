@@ -33,103 +33,129 @@ class AdvancedBookingDetailView
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
         backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
-        body: GlobalBodyHandler(
-          isFetch: false,
-          isCriticalError: controller.isCriticalError.value,
-          onInit: () async {
-            await controller.onInit();
-          },
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0XFFD3D3D3), width: 2),
-                      borderRadius: BorderRadius.circular(12),
-                      color: Color(0XFFF5F5F5),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/icon_calendar_schedule_fill.svg",
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                controller.advancedBooking.value.travelTime ==
-                                        null
-                                    ? "-"
-                                    : DateFormat(
-                                        'dd MMMM yyyy ⬩ HH:mm',
-                                        controller
-                                            .languageServices
-                                            .languageCode
-                                            .value,
-                                      ).format(
-                                        DateTime.parse(
-                                          controller
-                                              .advancedBooking
-                                              .value
-                                              .travelTime!
-                                              .replaceFirst(' ', 'T'),
-                                        ),
-                                      ),
-                                style: controller
-                                    .typographyServices
-                                    .bodyLargeBold
-                                    .value,
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                "Pesanan akan diproses sesuai jadwal yang telah dipilih. Mohon periksa kembali jadwal pesanan Anda.",
-                                style: controller
-                                    .typographyServices
-                                    .bodySmallRegular
-                                    .value
-                                    .copyWith(color: Color(0XFFB3B3B3)),
-                              ),
-                            ],
+        body: Stack(
+          children: [
+            GlobalBodyHandler(
+              isFetch: false,
+              isCriticalError: controller.isCriticalError.value,
+              onInit: () async {
+                await controller.onInit();
+              },
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0XFFD3D3D3),
+                            width: 2,
                           ),
+                          borderRadius: BorderRadius.circular(12),
+                          color: Color(0XFFF5F5F5),
                         ),
-                      ],
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_calendar_schedule_fill.svg",
+                            ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    controller
+                                                .advancedBooking
+                                                .value
+                                                .travelTime ==
+                                            null
+                                        ? "-"
+                                        : DateFormat(
+                                            'dd MMMM yyyy ⬩ HH:mm',
+                                            controller
+                                                .languageServices
+                                                .languageCode
+                                                .value,
+                                          ).format(
+                                            DateTime.parse(
+                                              controller
+                                                  .advancedBooking
+                                                  .value
+                                                  .travelTime!
+                                                  .replaceFirst(' ', 'T'),
+                                            ),
+                                          ),
+                                    style: controller
+                                        .typographyServices
+                                        .bodyLargeBold
+                                        .value,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    "Pesanan akan diproses sesuai jadwal yang telah dipilih. Mohon periksa kembali jadwal pesanan Anda.",
+                                    style: controller
+                                        .typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(color: Color(0XFFB3B3B3)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Container(
+                      height: 5.5,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey100
+                            .value,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child:
+                          AdvancedBookingDetailMapOriginDestinationInformationSubView(),
+                    ),
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: AdvancedBookingDetailInvoiceSubView(),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+            if (controller.isFetch.value == true) ...[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: controller.themeColorServices.neutralsColorGrey0.value,
+                child: Center(
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: controller.themeColorServices.primaryBlue.value,
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                Container(
-                  height: 5.5,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: controller
-                        .themeColorServices
-                        .neutralsColorGrey100
-                        .value,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child:
-                      AdvancedBookingDetailMapOriginDestinationInformationSubView(),
-                ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: AdvancedBookingDetailInvoiceSubView(),
-                ),
-                SizedBox(height: 16),
-              ],
-            ),
-          ),
+              ),
+            ],
+          ],
         ),
         bottomNavigationBar:
             controller.isFetch.value || controller.isCriticalError.value

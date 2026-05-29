@@ -650,37 +650,39 @@ class CreateOrderRideCheckoutController extends GetxController {
 
       if (isAdvanceOrderEnable.value == true) {
         try {
-          var result = await advanceBookingRepository.requestAdvanceBooking(
-            endAddress: destinationAddress.value,
-            endLat: destinationLatitude.value,
-            endLon: destinationLongitude.value,
-            startAddress: originAddress.value,
-            startLat: originLatitude.value,
-            startLon: originLongitude.value,
-            passengers: homeController.userServices.userInfo.value.name,
-            placementLat: locationServices.currentLatitude.value.toString(),
-            placementLon: locationServices.currentLongitude.value.toString(),
-            tipMoney: "0",
-            serverCarModelId: selectedOrderRidePricing.value.id.toString(),
-            substitute: "0", // 0 = no, 1 = yes
-            travelTime:
-                "${DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.value!)} ${DateFormat('HH:mm').format(selectedTime.value!)}:00", // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
-            orderMoney: selectedOrderRidePricing.value.amount!.round(),
-            payManner: 2,
-            payType: payType.value,
-            couponId: selectedCoupon.value.id,
-            priceNo: selectedOrderRidePricing.value.priceNo,
-            startAddressName: originAddressName.value,
-            endAddressName: destinationAddressName.value,
-          );
+          var advanceBookingId = await advanceBookingRepository
+              .requestAdvanceBooking(
+                endAddress: destinationAddress.value,
+                endLat: destinationLatitude.value,
+                endLon: destinationLongitude.value,
+                startAddress: originAddress.value,
+                startLat: originLatitude.value,
+                startLon: originLongitude.value,
+                passengers: homeController.userServices.userInfo.value.name,
+                placementLat: locationServices.currentLatitude.value.toString(),
+                placementLon: locationServices.currentLongitude.value
+                    .toString(),
+                tipMoney: "0",
+                serverCarModelId: selectedOrderRidePricing.value.id.toString(),
+                substitute: "0", // 0 = no, 1 = yes
+                travelTime:
+                    "${DateFormat('yyyy-MM-dd').format(selectedDate.value!)} ${DateFormat('HH:mm').format(selectedTime.value!)}:00", // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
+                orderMoney: selectedOrderRidePricing.value.amount!.round(),
+                payManner: 2,
+                payType: payType.value,
+                couponId: selectedCoupon.value.id,
+                priceNo: selectedOrderRidePricing.value.priceNo,
+                startAddressName: originAddressName.value,
+                endAddressName: destinationAddressName.value,
+              );
           Get.close(1);
 
           Get.back();
           Get.back();
-          // Get.toNamed(
-          //   Routes.ADVANCED_BOOKING_DETAIL,
-          //   arguments: {"order_id": result.id.toString(), "order_type": 1},
-          // );
+          Get.toNamed(
+            Routes.ADVANCED_BOOKING_DETAIL,
+            arguments: {"id": advanceBookingId},
+          );
         } on DioException catch (e) {
           Get.close(1);
           SnackbarHelper.showSnackbarError(text: e.error.toString());
