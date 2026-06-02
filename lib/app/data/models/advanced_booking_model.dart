@@ -75,6 +75,12 @@ class AdvancedBooking {
   });
 
   AdvancedBooking.fromJson(Map<String, dynamic> json) {
+    state = json['state'];
+    spawnedOrderState = json['spawnedOrderState'];
+
+    // state = 2;
+    // spawnedOrderState = 9;
+
     orderType = json['orderType'];
     payMoney = json['payMoney'];
     id = json['id'];
@@ -95,9 +101,7 @@ class AdvancedBooking {
     passengers = json['passengers'];
     passengersPhone = json['passengersPhone'];
     remark = json['remark'];
-    state = json['state'];
     orderId = json['orderId'];
-    spawnedOrderState = json['spawnedOrderState'];
     driverId = json['driverId'];
     insertTime = json['insertTime'];
 

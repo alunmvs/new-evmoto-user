@@ -184,6 +184,8 @@ class RideOrderDetailController extends GetxController {
         () => Future.wait([getOrderRideDetail(), getOrderRideServerDetail()]),
       );
 
+      await Future.wait([checkOrderHasBeenCancelled()]);
+
       await updateVisibility();
 
       if (value == 1) {}
@@ -1245,6 +1247,7 @@ class RideOrderDetailController extends GetxController {
       markers[markerId] = markerDriverNearby;
     }
 
+    var removedMarkerIdList = <MarkerId>[];
     for (var markerId in markers.keys) {
       var isExist = false;
       for (var driverNearby in driverNearbyList) {
@@ -1282,8 +1285,13 @@ class RideOrderDetailController extends GetxController {
           anchor: Offset(0.5, 0.5),
           visible: false,
         );
-        markers[markerId] = markerDriverNearby;
+        removedMarkerIdList.add(markerId);
+        // markers[markerId] = markerDriverNearby;
       }
+    }
+
+    for (var removedMarkerId in removedMarkerIdList) {
+      markers.remove(removedMarkerId);
     }
 
     markers.refresh();

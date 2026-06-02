@@ -29,6 +29,7 @@ import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateOrderRideCheckoutController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -101,6 +102,8 @@ class CreateOrderRideCheckoutController extends GetxController {
 
   final isPermissionLocationAllow = false.obs;
   final isFetch = false.obs;
+
+  final idPinpoint = "".obs;
 
   @override
   Future<void> onInit() async {
@@ -240,8 +243,14 @@ class CreateOrderRideCheckoutController extends GetxController {
   Future<void> refreshMarkerDriverNearby() async {
     await getDriverNearByList();
 
+    if (idPinpoint.value == "") {
+      idPinpoint.value = Uuid().v4();
+    }
+
     for (var driverNearby in driverNearbyList) {
-      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var markerId = MarkerId(
+        "driver_nearby_${driverNearby.driverId}_${idPinpoint.value}",
+      );
       var widgetBitmapDescriptor =
           await DriverNearbyPositionWidget(
             driverNearby: driverNearby,
@@ -263,10 +272,12 @@ class CreateOrderRideCheckoutController extends GetxController {
       markers[markerId] = markerDriverNearby;
     }
 
+    var removedMarkerIdList = <MarkerId>[];
     for (var markerId in markers.keys) {
       var isExist = false;
       for (var driverNearby in driverNearbyList) {
-        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+        if (markerId.value ==
+            "driver_nearby_${driverNearby.driverId}_${idPinpoint.value}") {
           isExist = true;
         }
       }
@@ -294,8 +305,15 @@ class CreateOrderRideCheckoutController extends GetxController {
           anchor: Offset(0.5, 0.5),
           visible: false,
         );
-        markers[markerId] = markerDriverNearby;
+        // markers[markerId] = markerDriverNearby;
+        removedMarkerIdList.add(markerId);
       }
+    }
+
+    if (removedMarkerIdList.isNotEmpty) {
+      idPinpoint.value = "";
+      markers.clear();
+      await refreshMarkerDriverNearby();
     }
 
     markers.refresh();
@@ -674,6 +692,7 @@ class CreateOrderRideCheckoutController extends GetxController {
                 priceNo: selectedOrderRidePricing.value.priceNo,
                 startAddressName: originAddressName.value,
                 endAddressName: destinationAddressName.value,
+                orderType: 1, // 1 = normal, 2 = appointment
               );
           Get.close(1);
 

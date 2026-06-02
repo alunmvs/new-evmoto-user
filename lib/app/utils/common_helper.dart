@@ -86,6 +86,12 @@ Future<void> clearDataLogout() async {
       );
     }
 
+    if (homeController.isRefreshAllLoading.value == true) {
+      await homeController.isRefreshAllLoading.stream.firstWhere(
+        (value) => value == false,
+      );
+    }
+
     // if (sendbirdChatServices.isSuccessInitialize.value == false) {
     //   await sendbirdChatServices.isSuccessInitialize.stream.firstWhere(
     //     (value) => value == true,

@@ -30,9 +30,7 @@ class AdvancedBookingCancelDialog extends StatelessWidget {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: 400,
-                maxHeight: MediaQuery.of(
-                  navigatorKey.currentContext!,
-                ).size.height,
+                maxHeight: MediaQuery.of(context).size.height,
               ),
               child: Material(
                 color: themeColorServices.neutralsColorGrey0.value,
@@ -43,18 +41,16 @@ class AdvancedBookingCancelDialog extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  "assets/icons/icon_date_advance_order_cancel.png",
-                                  width: 52,
-                                  height: 52,
-                                ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/icons/icon_date_advance_order_cancel.png",
+                                width: 52,
+                                height: 52,
+                              ),
+                            ],
                           ),
                           Align(
                             alignment: Alignment.topRight,

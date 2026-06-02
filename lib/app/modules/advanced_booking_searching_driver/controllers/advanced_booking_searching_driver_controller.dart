@@ -14,6 +14,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:uuid/uuid.dart';
 
 class AdvancedBookingSearchingDriverController extends GetxController {
   final AdvanceBookingRepository advanceBookingRepository;
@@ -47,6 +48,8 @@ class AdvancedBookingSearchingDriverController extends GetxController {
 
   final advanceBookingId = Rx<int?>(null);
   final advancedBooking = AdvancedBooking().obs;
+
+  final idPinpoint = "".obs;
 
   final isFetch = false.obs;
 
@@ -142,8 +145,14 @@ class AdvancedBookingSearchingDriverController extends GetxController {
   Future<void> refreshMarkerDriverNearby() async {
     await getDriverNearByList();
 
+    if (idPinpoint.value == "") {
+      idPinpoint.value = Uuid().v4();
+    }
+
     for (var driverNearby in driverNearbyList) {
-      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var markerId = MarkerId(
+        "driver_nearby_${driverNearby.driverId}_${idPinpoint.value}",
+      );
       var widgetBitmapDescriptor =
           await DriverNearbyPositionWidget(
             driverNearby: driverNearby,
@@ -165,10 +174,12 @@ class AdvancedBookingSearchingDriverController extends GetxController {
       markers[markerId] = markerDriverNearby;
     }
 
+    var removedMarkerIdList = <MarkerId>[];
     for (var markerId in markers.keys) {
       var isExist = false;
       for (var driverNearby in driverNearbyList) {
-        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+        if (markerId.value ==
+            "driver_nearby_${driverNearby.driverId}_${idPinpoint.value}") {
           isExist = true;
         }
       }
@@ -202,8 +213,15 @@ class AdvancedBookingSearchingDriverController extends GetxController {
           anchor: Offset(0.5, 0.5),
           visible: false,
         );
-        markers[markerId] = markerDriverNearby;
+        // markers[markerId] = markerDriverNearby;
+        removedMarkerIdList.add(markerId);
       }
+    }
+
+    if (removedMarkerIdList.isNotEmpty) {
+      idPinpoint.value = "";
+      markers.clear();
+      await refreshMarkerDriverNearby();
     }
 
     markers.refresh();

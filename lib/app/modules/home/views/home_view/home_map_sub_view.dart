@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uuid/uuid.dart';
 
 class HomeMapSubView extends GetView<HomeController> {
   const HomeMapSubView({super.key});
@@ -63,6 +64,7 @@ class HomeMapSubView extends GetView<HomeController> {
                             controller.googleMapController.complete(
                               googleMapController,
                             );
+
                             await controller
                                 .moveGoogleMapCameraToCurrentLocation();
                           },

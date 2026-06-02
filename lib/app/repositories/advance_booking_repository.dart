@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
+import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -11,6 +12,37 @@ class AdvanceBookingRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final languageServices = Get.find<LanguageServices>();
+
+  Future<OrderRide> getOrderRideDetailbyOrderId({int? bookingId}) async {
+    try {
+      var url = "$baseUrl/orderServer/api/advanceBooking/queryBookingInfo";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: {"bookingId": bookingId},
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return OrderRide.fromJson(response.data['data']);
+    } on DioException {
+      rethrow;
+    }
+  }
 
   Future<int> requestAdvanceBooking({
     String? startLon,
@@ -34,6 +66,7 @@ class AdvanceBookingRepository {
 
     String? passengers,
     String? tipMoney,
+    required int? orderType,
   }) async {
     try {
       var url = "$baseUrl/businessProcess/api/advanceBooking/create";
@@ -59,6 +92,7 @@ class AdvanceBookingRepository {
         "placementLat": placementLat,
         "placementLon": placementLon,
         "couponId": couponId,
+        "orderType": orderType,
       };
 
       var storage = FlutterSecureStorage();

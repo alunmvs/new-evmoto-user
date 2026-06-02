@@ -11,6 +11,7 @@ import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
     hide Routes;
 import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
+import 'package:new_evmoto_user/app/data/models/rating_label_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
@@ -58,6 +59,9 @@ class AdvancedBookingDetailController extends GetxController {
 
   final advancedBooking = AdvancedBooking().obs;
 
+  final rating = 0.0.obs;
+  final ratingLabelList = <RatingLabel>[].obs;
+
   final isCriticalError = false.obs;
   final isFetch = false.obs;
 
@@ -70,6 +74,13 @@ class AdvancedBookingDetailController extends GetxController {
     try {
       await Future.wait([getAdvancedBookingDetail()]);
       await Future.wait([getOrderRideDetail()]);
+      await getRatingLabelList(
+        rating:
+            orderRideDetail.value.orderScore == 0 ||
+                orderRideDetail.value.orderScore == null
+            ? 0
+            : orderRideDetail.value.orderScore!,
+      );
       isFetch.value = false;
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
@@ -104,11 +115,8 @@ class AdvancedBookingDetailController extends GetxController {
 
   Future<void> getOrderRideDetail() async {
     if (advancedBooking.value.orderId != null) {
-      orderRideDetail.value = (await orderRideRepository
-          .getOrderRideDetailbyOrderId(
-            orderId: advancedBooking.value.orderId.toString(),
-            orderType: advancedBooking.value.orderType,
-          ));
+      orderRideDetail.value = (await advanceBookingRepository
+          .getOrderRideDetailbyOrderId(bookingId: advancedBooking.value.id));
     }
   }
 
@@ -323,6 +331,13 @@ class AdvancedBookingDetailController extends GetxController {
             Get.close(1);
             await Future.wait([getAdvancedBookingDetail()]);
             await Future.wait([getOrderRideDetail()]);
+            await getRatingLabelList(
+              rating:
+                  orderRideDetail.value.orderScore == 0 ||
+                      orderRideDetail.value.orderScore == null
+                  ? 0
+                  : orderRideDetail.value.orderScore!,
+            );
           } on DioException catch (e) {
             SnackbarHelper.showSnackbarError(text: e.error.toString());
             isCriticalError.value = true;
@@ -337,5 +352,45 @@ class AdvancedBookingDetailController extends GetxController {
         },
       ),
     );
+  }
+
+  Future<void> onTapOrderAgain() async {
+    Get.back();
+    homeController.indexNavigationBar.value = 0;
+  }
+
+  Future<void> getRatingLabelList({required int rating}) async {
+    var ratingLabelConfiguration = jsonDecode(
+      firebaseRemoteConfigServices.remoteConfig.getString(
+        'user_order_rating_label',
+      ),
+    );
+
+    ratingLabelList.value = [];
+    if ((orderRideDetail.value.orderScore == null ||
+            orderRideDetail.value.orderScore == 0) &&
+        orderRideDetail.value.state != 10) {
+      for (var ratingLabel
+          in ratingLabelConfiguration[languageServices
+                  .languageCode
+                  .value]?['rate_${rating.toInt()}'] ??
+              []) {
+        ratingLabelList.add(RatingLabel.fromJson(ratingLabel));
+      }
+    } else {
+      for (var ratingLabel
+          in ratingLabelConfiguration[languageServices
+                  .languageCode
+                  .value]?['rate_${rating.toInt()}'] ??
+              []) {
+        for (var ratingLabelId in orderRideDetail.value.ratingLabels ?? []) {
+          if (ratingLabelId == ratingLabel['id']) {
+            var selectedRatingLabel = RatingLabel.fromJson(ratingLabel);
+            selectedRatingLabel.isSelected = true;
+            ratingLabelList.add(selectedRatingLabel);
+          }
+        }
+      }
+    }
   }
 }

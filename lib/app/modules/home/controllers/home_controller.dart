@@ -52,6 +52,7 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 class HomeController extends GetxController {
   final UserRepository userRepository;
@@ -154,6 +155,9 @@ class HomeController extends GetxController {
   final isCriticalError = false.obs;
   final isFetch = false.obs;
 
+  final isRefreshAllLoading = false.obs;
+  final idPinpoint = "".obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -201,7 +205,8 @@ class HomeController extends GetxController {
       if ((userServices.userInfo.value.name == "" ||
               userServices.userInfo.value.name == null) &&
           userServices.userInfo.value.id != null) {
-        await Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
+        Get.offAllNamed(Routes.ONBOARDING_REGISTRATION_FORM);
+        return;
       } else {
         await checkInitialCall();
       }
@@ -312,6 +317,7 @@ class HomeController extends GetxController {
 
   Future<void> refreshAll({bool firstInit = false}) async {
     try {
+      isRefreshAllLoading.value = true;
       await Future.wait([
         getActiveOrderList(),
         getSavedAddressList(),
@@ -331,6 +337,8 @@ class HomeController extends GetxController {
     } catch (e) {
       SnackbarHelper.showSnackbarError(text: e.toString());
     }
+
+    isRefreshAllLoading.value = false;
   }
 
   // Working Time Schedule
@@ -523,8 +531,14 @@ class HomeController extends GetxController {
   Future<void> refreshMarkerDriverNearby() async {
     await getDriverNearByList();
 
+    if (idPinpoint.value == "") {
+      idPinpoint.value = Uuid().v4();
+    }
+
     for (var driverNearby in driverNearbyList) {
-      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var markerId = MarkerId(
+        "driver_nearby_${driverNearby.driverId}_${idPinpoint.value}",
+      );
       var widgetBitmapDescriptor =
           await DriverNearbyPositionWidget(
             driverNearby: driverNearby,
@@ -546,10 +560,12 @@ class HomeController extends GetxController {
       markers[markerId] = markerDriverNearby;
     }
 
+    var removedMarkerIdList = <MarkerId>[];
     for (var markerId in markers.keys) {
       var isExist = false;
       for (var driverNearby in driverNearbyList) {
-        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+        if (markerId.value ==
+            "driver_nearby_${driverNearby.driverId}_${idPinpoint.value}") {
           isExist = true;
         }
       }
@@ -564,7 +580,7 @@ class HomeController extends GetxController {
             );
         var markerDriverNearby = Marker(
           markerId: markerId,
-          position: LatLng(0.0, 0.0),
+          position: markers[markerId]!.position,
           // icon: widgetBitmapDescriptor,
           icon: await BitmapDescriptor.asset(
             ImageConfiguration(size: Size(64, 106)),
@@ -573,8 +589,15 @@ class HomeController extends GetxController {
           anchor: Offset(0.5, 0.5),
           visible: false,
         );
-        markers[markerId] = markerDriverNearby;
+        // markers[markerId] = markerDriverNearby;
+        removedMarkerIdList.add(markerId);
       }
+    }
+
+    if (removedMarkerIdList.isNotEmpty) {
+      idPinpoint.value = "";
+      markers.clear();
+      await refreshMarkerDriverNearby();
     }
 
     markers.refresh();
