@@ -357,8 +357,10 @@ class Language {
   String? nearestDriverAvailable2;
   String? nearestDriverNotAvailable;
   String? retryFailedSnackbar;
+  String? offlineText;
 
   Language({
+    this.offlineText,
     this.retryFailedSnackbar,
     this.orderScheduled,
     this.nearestDriverAvailable1,
@@ -710,6 +712,7 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    offlineText = json['offline_text'] ?? "(Translate Not Found)";
     retryFailedSnackbar =
         json['retry_failed_snackbar'] ?? "(Translate Not Found)";
     orderScheduled = json['order_scheduled'] ?? "(Translate Not Found)";
@@ -1232,6 +1235,7 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['offline_text'] = this.offlineText;
     data['retry_failed_snackbar'] = this.retryFailedSnackbar;
     data['order_scheduled'] = this.orderScheduled;
     data['service_time_validation_title'] = this.serviceTimeValidationTitle;

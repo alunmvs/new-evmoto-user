@@ -10,6 +10,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/utils/common_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 
@@ -158,9 +160,11 @@ class ApiServices extends GetxService {
             if (response.data is Map<String, dynamic>) {
               if (response.data['code'] == 600) {
                 if (Get.currentRoute != Routes.LOGIN_REGISTER) {
-                  var storage = FlutterSecureStorage();
-                  await storage.delete(key: 'token');
+                  await clearDataLogout();
                   Get.offAllNamed(Routes.LOGIN_REGISTER);
+                  SnackbarHelper.showSnackbarError(
+                    text: languageServices.language.value.offlineText ?? "-",
+                  );
                 }
               }
             }

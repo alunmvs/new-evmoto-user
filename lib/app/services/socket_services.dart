@@ -10,9 +10,11 @@ import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_o
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 import 'package:new_evmoto_user/app/widgets/driver_cancel_dialog.dart';
 import 'package:new_evmoto_user/environment.dart';
@@ -119,8 +121,12 @@ class SocketServices extends GetxService {
                   }
                   break;
                 case 'OFFLINE':
+                  var languageServices = Get.find<LanguageServices>();
                   await clearDataLogout();
                   Get.offAllNamed(Routes.LOGIN_REGISTER);
+                  SnackbarHelper.showSnackbarError(
+                    text: languageServices.language.value.offlineText ?? "-",
+                  );
                   break;
                 case 'END_PUSH':
                   // if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
