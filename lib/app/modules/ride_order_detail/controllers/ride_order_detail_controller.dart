@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:marker_widget/marker_widget.dart';
+import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_messages_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
@@ -16,6 +17,7 @@ import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_server_model.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
+import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -43,11 +45,13 @@ class RideOrderDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
   final OpenMapsRepository openMapsRepository;
   final DriverNearbyRepository driverNearbyRepository;
+  final AdvanceBookingRepository advanceBookingRepository;
 
   RideOrderDetailController({
     required this.orderRideRepository,
     required this.openMapsRepository,
     required this.driverNearbyRepository,
+    required this.advanceBookingRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -1092,15 +1096,31 @@ class RideOrderDetailController extends GetxController {
                             child: LoaderElevatedButton(
                               onPressed: () async {
                                 try {
-                                  await orderRideRepository.cancelOrderRide(
-                                    orderId: orderId.value,
-                                    orderType: orderType.value,
-                                    language: languageServices
-                                        .languageCodeSystem
-                                        .value,
-                                    reason: null,
-                                    remark: null,
-                                  );
+                                  var activeAdvanceBooking =
+                                      await getActiveAdvanceBooking();
+                                  var isAdvanceBooking = false;
+                                  if (activeAdvanceBooking?.orderId ==
+                                      orderRideDetail.value.orderId) {
+                                    isAdvanceBooking = true;
+                                  }
+
+                                  if (isAdvanceBooking == true) {
+                                    await advanceBookingRepository
+                                        .cancelAdvanceBooking(
+                                          bookingId: activeAdvanceBooking!.id!,
+                                        );
+                                  } else {
+                                    await orderRideRepository.cancelOrderRide(
+                                      orderId: orderId.value,
+                                      orderType: orderType.value,
+                                      language: languageServices
+                                          .languageCodeSystem
+                                          .value,
+                                      reason: null,
+                                      remark: null,
+                                    );
+                                  }
+
                                   Get.close(1);
                                   Get.back();
 
@@ -2222,6 +2242,11 @@ class RideOrderDetailController extends GetxController {
             }
           });
     }
+  }
+
+  Future<AdvancedBooking?> getActiveAdvanceBooking() async {
+    var advanceBooking = advanceBookingRepository.getActiveAdvanceBooking();
+    return advanceBooking;
   }
 }
 

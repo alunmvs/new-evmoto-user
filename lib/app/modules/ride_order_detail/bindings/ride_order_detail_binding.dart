@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
@@ -13,6 +14,7 @@ class RideOrderDetailBinding extends Bindings {
         orderRideRepository: OrderRideRepository(),
         openMapsRepository: OpenMapsRepository(),
         driverNearbyRepository: DriverNearbyRepository(),
+        advanceBookingRepository: AdvanceBookingRepository(),
       ),
     );
   }
