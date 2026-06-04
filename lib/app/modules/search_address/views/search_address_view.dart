@@ -154,13 +154,23 @@ class SearchAddressView extends StatelessWidget {
                                 vertical: 12,
                                 horizontal: 12,
                               ),
-                              hintText:
-                                  controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .enterYourAddress ??
-                                  "-",
+                              hintText: controller.addressType.value == 1
+                                  ? controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterLocationHomeAddress
+                                  : controller.addressType.value == 2
+                                  ? controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterLocationOfficeAddress
+                                  : controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterLocationOtherAddress,
                               hintStyle: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -333,12 +343,24 @@ class SearchAddressView extends StatelessWidget {
                                             horizontal: 12,
                                           ),
                                           hintText:
-                                              controller
-                                                  .languageServices
-                                                  .language
-                                                  .value
-                                                  .enterYourAddress ??
-                                              "-",
+                                              controller.addressType.value == 1
+                                              ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterLocationHomeAddress
+                                              : controller.addressType.value ==
+                                                    2
+                                              ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterLocationOfficeAddress
+                                              : controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterLocationOtherAddress,
                                           hintStyle: controller
                                               .typographyServices
                                               .bodySmallRegular

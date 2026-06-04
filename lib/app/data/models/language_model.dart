@@ -117,6 +117,11 @@ class Language {
   String? addHome;
   String? enterHomeAddress;
   String? enterYourAddress;
+
+  String? enterLocationHomeAddress;
+  String? enterLocationOtherAddress;
+  String? enterLocationOfficeAddress;
+
   String? name;
   String? enterName;
   String? enterNameUser;
@@ -383,8 +388,14 @@ class Language {
   String? advancedBookingStatusDescriptionCancelled;
   String? advancedBookingStatusDescriptionExpired;
 
+  String? offlineText;
+
   Language({
+    this.enterLocationHomeAddress,
+    this.enterLocationOtherAddress,
+    this.enterLocationOfficeAddress,
     this.enterNameUser,
+    this.offlineText,
     this.advancedBookingStatusDescriptionScheduled,
     this.advancedBookingStatusDescriptionDone,
     this.advancedBookingStatusDescriptionInService,
@@ -757,6 +768,14 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    enterLocationHomeAddress =
+        json['enter_location_home_address'] ?? "(Translate Not Found)";
+    enterLocationOtherAddress =
+        json['enter_location_other_address'] ?? "(Translate Not Found)";
+    enterLocationOfficeAddress =
+        json['enter_location_office_address'] ?? "(Translate Not Found)";
+
+    offlineText = json['offline_text'] ?? "(Translate Not Found)";
     enterNameUser = json['enter_name_user'] ?? "(Translate Not Found)";
 
     advancedBookingStatusDescriptionExpired =
@@ -1341,7 +1360,7 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-
+    data['offline_text'] = offlineText;
     data['enter_name_user'] = enterNameUser;
 
     data['retry_failed_snackbar'] = this.retryFailedSnackbar;
