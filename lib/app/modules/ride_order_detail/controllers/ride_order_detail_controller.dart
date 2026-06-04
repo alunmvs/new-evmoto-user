@@ -38,6 +38,7 @@ import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class RideOrderDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -134,6 +135,8 @@ class RideOrderDetailController extends GetxController {
   final isFetch = false.obs;
 
   final totalRetryFailed = 0.obs;
+
+  final markerUuid = "".obs;
 
   @override
   Future<void> onInit() async {
@@ -1222,8 +1225,14 @@ class RideOrderDetailController extends GetxController {
       driverNearbyList.value = [];
     }
 
+    if (markerUuid.value == "") {
+      markerUuid.value = Uuid().v4();
+    }
+
     for (var driverNearby in driverNearbyList) {
-      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var markerId = MarkerId(
+        "driver_nearby_${driverNearby.driverId}_${markerUuid.value}",
+      );
       var widgetBitmapDescriptor =
           await DriverNearbyPositionWidget(
             driverNearby: driverNearby,
@@ -1245,10 +1254,12 @@ class RideOrderDetailController extends GetxController {
       markers[markerId] = markerDriverNearby;
     }
 
+    var isResetMarkerUuid = false;
     for (var markerId in markers.keys) {
       var isExist = false;
       for (var driverNearby in driverNearbyList) {
-        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+        if (markerId.value ==
+            "driver_nearby_${driverNearby.driverId}_${markerUuid.value}") {
           isExist = true;
         }
       }
@@ -1283,7 +1294,14 @@ class RideOrderDetailController extends GetxController {
           visible: false,
         );
         markers[markerId] = markerDriverNearby;
+        isResetMarkerUuid = true;
       }
+    }
+
+    if (isResetMarkerUuid == true) {
+      markers.clear();
+      markerUuid.value = Uuid().v4();
+      await refreshMarkerDriverNearby();
     }
 
     markers.refresh();

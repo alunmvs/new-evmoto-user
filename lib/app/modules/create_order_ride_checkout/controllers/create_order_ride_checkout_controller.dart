@@ -28,6 +28,7 @@ import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateOrderRideCheckoutController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -98,6 +99,8 @@ class CreateOrderRideCheckoutController extends GetxController {
 
   final isPermissionLocationAllow = false.obs;
   final isFetch = false.obs;
+
+  final markerUuid = "".obs;
 
   @override
   Future<void> onInit() async {
@@ -237,8 +240,14 @@ class CreateOrderRideCheckoutController extends GetxController {
   Future<void> refreshMarkerDriverNearby() async {
     await getDriverNearByList();
 
+    if (markerUuid.value == "") {
+      markerUuid.value = Uuid().v4();
+    }
+
     for (var driverNearby in driverNearbyList) {
-      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var markerId = MarkerId(
+        "driver_nearby_${driverNearby.driverId}_${markerUuid.value}",
+      );
       var widgetBitmapDescriptor =
           await DriverNearbyPositionWidget(
             driverNearby: driverNearby,
@@ -260,10 +269,12 @@ class CreateOrderRideCheckoutController extends GetxController {
       markers[markerId] = markerDriverNearby;
     }
 
+    var isResetMarkerUuid = false;
     for (var markerId in markers.keys) {
       var isExist = false;
       for (var driverNearby in driverNearbyList) {
-        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+        if (markerId.value ==
+            "driver_nearby_${driverNearby.driverId}_${markerUuid.value}") {
           isExist = true;
         }
       }
@@ -292,7 +303,14 @@ class CreateOrderRideCheckoutController extends GetxController {
           visible: false,
         );
         markers[markerId] = markerDriverNearby;
+        isResetMarkerUuid = true;
       }
+    }
+
+    if (isResetMarkerUuid == true) {
+      markers.clear();
+      markerUuid.value = Uuid().v4();
+      await refreshMarkerDriverNearby();
     }
 
     markers.refresh();

@@ -52,6 +52,7 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 class HomeController extends GetxController {
   final UserRepository userRepository;
@@ -153,6 +154,8 @@ class HomeController extends GetxController {
 
   final isCriticalError = false.obs;
   final isFetch = false.obs;
+
+  final markerUuid = "".obs;
 
   @override
   Future<void> onInit() async {
@@ -523,8 +526,14 @@ class HomeController extends GetxController {
   Future<void> refreshMarkerDriverNearby() async {
     await getDriverNearByList();
 
+    if (markerUuid.value == "") {
+      markerUuid.value = Uuid().v4();
+    }
+
     for (var driverNearby in driverNearbyList) {
-      var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
+      var markerId = MarkerId(
+        "driver_nearby_${driverNearby.driverId}_${markerUuid.value}",
+      );
       var widgetBitmapDescriptor =
           await DriverNearbyPositionWidget(
             driverNearby: driverNearby,
@@ -546,10 +555,12 @@ class HomeController extends GetxController {
       markers[markerId] = markerDriverNearby;
     }
 
+    var isResetMarkerUuid = false;
     for (var markerId in markers.keys) {
       var isExist = false;
       for (var driverNearby in driverNearbyList) {
-        if (markerId.value == "driver_nearby_${driverNearby.driverId}") {
+        if (markerId.value ==
+            "driver_nearby_${driverNearby.driverId}_${markerUuid.value}") {
           isExist = true;
         }
       }
@@ -574,7 +585,14 @@ class HomeController extends GetxController {
           visible: false,
         );
         markers[markerId] = markerDriverNearby;
+        isResetMarkerUuid = true;
       }
+    }
+
+    if (isResetMarkerUuid == true) {
+      markers.clear();
+      markerUuid.value = Uuid().v4();
+      await refreshMarkerDriverNearby();
     }
 
     markers.refresh();
