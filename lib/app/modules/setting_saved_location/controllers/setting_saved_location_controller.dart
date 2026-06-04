@@ -115,10 +115,17 @@ class SettingSavedLocationController extends GetxController {
                         GestureDetector(
                           onTap: () {
                             Get.close(1);
-                            Get.toNamed(
-                              Routes.ADD_EDIT_ADDRESS,
-                              arguments: {"saved_address": savedAddress},
-                            );
+                            if (savedAddress.addressType == 3) {
+                              Get.toNamed(
+                                Routes.ADD_EDIT_ADDRESS_OTHER,
+                                arguments: {"saved_address": savedAddress},
+                              );
+                            } else {
+                              Get.toNamed(
+                                Routes.ADD_EDIT_ADDRESS,
+                                arguments: {"saved_address": savedAddress},
+                              );
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.all(12),

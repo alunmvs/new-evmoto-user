@@ -221,13 +221,7 @@ class CreateOrderRideSavedAddressSubView
           ],
           GestureDetector(
             onTap: () async {
-              await Get.toNamed(
-                Routes.SEARCH_ADDRESS,
-                arguments: {
-                  "address_type": 3,
-                  "tag": DateTime.now().millisecondsSinceEpoch.toString(),
-                },
-              );
+              await Get.toNamed(Routes.ADD_EDIT_ADDRESS_OTHER);
               await controller.getSavedAddressList();
             },
             child: Container(

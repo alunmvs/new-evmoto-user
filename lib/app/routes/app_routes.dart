@@ -39,6 +39,7 @@ abstract class Routes {
   static const ADVANCED_BOOKING_DETAIL = _Paths.ADVANCED_BOOKING_DETAIL;
   static const ADVANCED_BOOKING_SEARCHING_DRIVER =
       _Paths.ADVANCED_BOOKING_SEARCHING_DRIVER;
+  static const ADD_EDIT_ADDRESS_OTHER = _Paths.ADD_EDIT_ADDRESS_OTHER;
 }
 
 abstract class _Paths {
@@ -77,4 +78,5 @@ abstract class _Paths {
   static const ADVANCED_BOOKING_DETAIL = '/advanced-booking-detail';
   static const ADVANCED_BOOKING_SEARCHING_DRIVER =
       '/advanced-booking-searching-driver';
+  static const ADD_EDIT_ADDRESS_OTHER = '/add-edit-address-other';
 }

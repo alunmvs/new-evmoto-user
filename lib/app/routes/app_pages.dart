@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/add_edit_address_other/bindings/add_edit_address_other_binding.dart';
+import '../modules/add_edit_address_other/views/add_edit_address_other_view.dart';
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
 import '../modules/activity/bindings/activity_binding.dart';
@@ -234,6 +236,11 @@ class AppPages {
       name: _Paths.ADVANCED_BOOKING_SEARCHING_DRIVER,
       page: () => const AdvancedBookingSearchingDriverView(),
       binding: AdvancedBookingSearchingDriverBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_EDIT_ADDRESS_OTHER,
+      page: () => const AddEditAddressOtherView(),
+      binding: AddEditAddressOtherBinding(),
     ),
   ];
 }
