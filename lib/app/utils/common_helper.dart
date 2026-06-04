@@ -92,6 +92,8 @@ Future<void> clearDataLogout() async {
       );
     }
 
+    homeController.disableDriverNearbyTimer();
+
     // if (sendbirdChatServices.isSuccessInitialize.value == false) {
     //   await sendbirdChatServices.isSuccessInitialize.stream.firstWhere(
     //     (value) => value == true,

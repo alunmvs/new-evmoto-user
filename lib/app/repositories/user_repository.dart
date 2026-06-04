@@ -19,6 +19,10 @@ class UserRepository {
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
+      if (token == null) {
+        return UserInfo();
+      }
+
       var headers = {
         "Content-Type": "multipart/form-data",
         'Authorization': "Bearer $token",
