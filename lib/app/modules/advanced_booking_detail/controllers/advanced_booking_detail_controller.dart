@@ -93,6 +93,10 @@ class AdvancedBookingDetailController extends GetxController {
         isFetch.value = false;
       }
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await setupGoogleMapOriginToDestination();
+    });
   }
 
   @override
@@ -340,13 +344,9 @@ class AdvancedBookingDetailController extends GetxController {
             );
           } on DioException catch (e) {
             SnackbarHelper.showSnackbarError(text: e.error.toString());
-            isCriticalError.value = true;
-            isFetch.value = false;
           } catch (e) {
             if (e.toString().contains("GoogleMapController") == false) {
               SnackbarHelper.showSnackbarError(text: e.toString());
-              isCriticalError.value = true;
-              isFetch.value = false;
             }
           }
         },

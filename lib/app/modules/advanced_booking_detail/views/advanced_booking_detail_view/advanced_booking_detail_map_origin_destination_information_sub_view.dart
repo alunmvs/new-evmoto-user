@@ -29,8 +29,6 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                 initialCameraPosition: controller.initialCameraPosition.value,
                 onMapCreated: (GoogleMapController googleMapController) async {
                   controller.googleMapController = googleMapController;
-
-                  await controller.setupGoogleMapOriginToDestination();
                 },
                 markers: controller.markers,
                 polylines: controller.polylines,
@@ -74,7 +72,8 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
             ),
             SizedBox(height: 12),
           ],
-          if (controller.orderRideDetail.value.orderId != null) ...[
+          if (controller.orderRideDetail.value.orderId != null &&
+              controller.orderRideDetail.value.driverId != null) ...[
             AdvancedBookingDetailDriverInformationSubView(),
             SizedBox(height: 12),
           ],

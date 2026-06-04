@@ -193,9 +193,36 @@ class AdvanceBookingRepository {
     }
   }
 
+  Future<AdvancedBooking?> getActiveAdvanceBooking() async {
+    try {
+      var url = "$baseUrl/businessProcess/api/advanceBooking";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(url, options: Options(headers: headers));
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return AdvancedBooking.fromJson(response.data['data']);
+    } on DioException {
+      rethrow;
+    }
+  }
+
   Future<void> cancelAdvanceBooking({required int bookingId}) async {
     try {
-      var url = "$baseUrl/businessProcess/api/advanceBooking/cancel";
+      var url = "$baseUrl/businessProcess/api/advanceBooking/cancelRunning";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

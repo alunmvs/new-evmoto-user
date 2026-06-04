@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -298,9 +297,6 @@ class AdvancedBookingDetailView
                                   ) async {
                                     controller.googleMapController =
                                         googleMapController;
-
-                                    await controller
-                                        .setupGoogleMapOriginToDestination();
                                   },
                               markers: controller.markers,
                               polylines: controller.polylines,
