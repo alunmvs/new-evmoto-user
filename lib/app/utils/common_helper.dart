@@ -66,58 +66,58 @@ String formatDistanceNearestDriver(
 }
 
 Future<void> clearDataLogout() async {
-  final homeController = Get.find<HomeController>();
-  final activityController = Get.find<ActivityController>();
-  final accountController = Get.find<AccountController>();
+  var prefs = await SharedPreferences.getInstance();
+
+  try {
+    if (prefs.getBool('home_controller_registered') == true) {
+      final homeController = Get.find<HomeController>();
+
+      if (homeController.isRefreshAllLoading.value == true) {
+        await homeController.isRefreshAllLoading.stream.firstWhere(
+          (value) => value == false,
+        );
+      }
+
+      homeController.disableDriverNearbyTimer();
+
+      if (homeController.isFetch.value == true) {
+        await homeController.isFetch.stream.firstWhere(
+          (value) => value == false,
+        );
+      }
+    }
+  } catch (e) {}
+  try {
+    if (prefs.getBool('activity_controller_registered') == true) {
+      final activityController = Get.find<ActivityController>();
+      if (activityController.isFetch.value == true) {
+        await activityController.isFetch.stream.firstWhere(
+          (value) => value == false,
+        );
+      }
+    }
+  } catch (e) {}
+
+  try {
+    if (Get.isRegistered<AccountController>() == true) {
+      final accountController = Get.find<AccountController>();
+      if (accountController.isFetch.value == true) {
+        await accountController.isFetch.stream.firstWhere(
+          (value) => value == false,
+        );
+      }
+    }
+  } catch (e) {}
+
   final socketServices = Get.find<SocketServices>();
   final firebasePushNotificationServices =
       Get.find<FirebasePushNotificationServices>();
   final userServices = Get.find<UserServices>();
   var storage = FlutterSecureStorage();
-  var prefs = await SharedPreferences.getInstance();
-
-  // final sendbirdServices = Get.find<SendbirdServices>();
-  // final sendbirdChatServices = Get.find<SendbirdChatServices>();
 
   try {
     if (userServices.isLoadingRefreshHome.value == true) {
       await userServices.isLoadingRefreshHome.stream.firstWhere(
-        (value) => value == false,
-      );
-    }
-
-    if (homeController.isRefreshAllLoading.value == true) {
-      await homeController.isRefreshAllLoading.stream.firstWhere(
-        (value) => value == false,
-      );
-    }
-
-    homeController.disableDriverNearbyTimer();
-
-    // if (sendbirdChatServices.isSuccessInitialize.value == false) {
-    //   await sendbirdChatServices.isSuccessInitialize.stream.firstWhere(
-    //     (value) => value == true,
-    //   );
-    // }
-
-    // if (sendbirdServices.isSuccessInitialize.value == false) {
-    //   await sendbirdServices.isSuccessInitialize.stream.firstWhere(
-    //     (value) => value == true,
-    //   );
-    // }
-
-    if (homeController.isFetch.value == true) {
-      await homeController.isFetch.stream.firstWhere((value) => value == false);
-    }
-
-    if (activityController.isFetch.value == true) {
-      await activityController.isFetch.stream.firstWhere(
-        (value) => value == false,
-      );
-    }
-
-    if (accountController.isFetch.value == true) {
-      await accountController.isFetch.stream.firstWhere(
         (value) => value == false,
       );
     }
