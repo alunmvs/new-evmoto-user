@@ -100,18 +100,10 @@ class AddEditAddressController extends GetxController {
             await Get.find<SettingSavedLocationController>()
                 .getSavedAddressList();
           }
-
-          var snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorGreen400.value,
-            content: Text(
-              languageServices.language.value.successfullySavedAddress ?? "-",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
-              ),
-            ),
+          SnackbarHelper.showSnackbarSuccess(
+            text:
+                languageServices.language.value.successfullySavedAddress ?? "-",
           );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
         } else {
           await savedAddressRepository.updateSavedAddress(
             id: savedAddress.value.id!,
@@ -134,18 +126,11 @@ class AddEditAddressController extends GetxController {
             await Get.find<SettingSavedLocationController>()
                 .getSavedAddressList();
           }
-
-          var snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorGreen400.value,
-            content: Text(
-              languageServices.language.value.snackbarAddressEditSuccess ?? "-",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
-              ),
-            ),
+          SnackbarHelper.showSnackbarSuccess(
+            text:
+                languageServices.language.value.snackbarAddressEditSuccess ??
+                "-",
           );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
         }
       }
     } on DioException catch (e) {

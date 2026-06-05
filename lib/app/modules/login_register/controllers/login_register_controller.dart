@@ -4,6 +4,7 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 
 class LoginRegisterController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -46,5 +47,6 @@ class LoginRegisterController extends GetxController {
             "62${mobileNumberTextEditingController.text}".removeAllWhitespace,
       },
     );
+    // SnackbarHelper.showSnackbarError(text: "test");
   }
 }

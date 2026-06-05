@@ -13,6 +13,7 @@ import 'package:flutter_callkit_incoming/entities/notification_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/modules/advanced_booking_detail/controllers/advanced_booking_detail_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/notification_repository.dart';
@@ -189,8 +190,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   flutterLocalNotificationsPlugin.show(
     DateTime.now().millisecondsSinceEpoch ~/ 1000,
-    message.notification?.title,
-    message.notification?.body,
+    message.data['title'],
+    message.data['body'],
     NotificationDetails(
       android: AndroidNotificationDetails(
         'default_channel',
@@ -411,6 +412,9 @@ class FirebasePushNotificationServices extends GetxService {
       }
 
       if (message.data['notification_type'] == 'ADVANCE_ORDER_EXPIRED') {
+        if (Get.currentRoute == Routes.ADVANCED_BOOKING_DETAIL) {
+          Get.find<AdvancedBookingDetailController>().refreshAll();
+        }
         Get.dialog(
           AdvancedBookingExpiredDialog(
             onTapConfirm: () async {
@@ -421,10 +425,16 @@ class FirebasePushNotificationServices extends GetxService {
         );
       }
 
+      if ([
+        'ADVANCE_ORDER_DRIVER_FOUND',
+      ].contains(message.data['notification_type'])) {
+        Get.find<AdvancedBookingDetailController>().refreshAll();
+      }
+
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        message.notification?.title,
-        message.notification?.body,
+        message.data['title'],
+        message.data['body'],
         NotificationDetails(
           android: AndroidNotificationDetails(
             'default_channel',

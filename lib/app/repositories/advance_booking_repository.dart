@@ -214,7 +214,7 @@ class AdvanceBookingRepository {
         }
       }
 
-      return AdvancedBooking.fromJson(response.data['data']);
+      return AdvancedBooking.fromJson(response.data['data'] ?? {});
     } on DioException {
       rethrow;
     }

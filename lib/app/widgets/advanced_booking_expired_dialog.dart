@@ -132,7 +132,7 @@ class AdvancedBookingExpiredDialog extends StatelessWidget {
                           SizedBox(width: 8),
                           Expanded(
                             child: LoaderElevatedButton(
-                              buttonColor: Color(0XFFF44336),
+                              buttonColor: themeColorServices.primaryBlue.value,
                               onPressed: () async {
                                 await onTapConfirm();
                               },

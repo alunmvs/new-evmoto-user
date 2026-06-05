@@ -160,6 +160,7 @@ class ApiServices extends GetxService {
             if (response.data is Map<String, dynamic>) {
               if (response.data['code'] == 600) {
                 if (Get.currentRoute != Routes.LOGIN_REGISTER) {
+                  // print("[DEBUG LOGOUT] API 600 ${response.realUri}");
                   await clearDataLogout();
                   Get.offAllNamed(Routes.LOGIN_REGISTER);
                   SnackbarHelper.showSnackbarError(

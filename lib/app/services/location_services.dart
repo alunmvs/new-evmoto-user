@@ -54,7 +54,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
     }
   }
 
-  Future<void> requestLocation() async {
+  Future<void> requestLocation({bool? isSkipGeocodingAddress}) async {
     if (isRequestingPermission.value == false) {
       isRequestingPermission.value = true;
       isPermissionLocationAllow.value = true;
@@ -98,8 +98,9 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
       currentLatitude.value = position.latitude;
       currentLongitude.value = position.longitude;
 
-      await getGeocodingAddress();
-
+      if (isSkipGeocodingAddress != true) {
+        await getGeocodingAddress();
+      }
       isRequestingPermission.value = false;
     }
   }

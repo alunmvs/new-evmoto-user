@@ -163,7 +163,8 @@ class HomeController extends GetxController {
     super.onInit();
     isFetch.value = true;
     isCriticalError.value = false;
-    if (locationServices.currentLatitude.value == null) {
+    if (locationServices.currentLatitude.value == null ||
+        locationServices.geocodingAddress.value.address == null) {
       await locationServices.requestLocation();
     }
     await measureTime(

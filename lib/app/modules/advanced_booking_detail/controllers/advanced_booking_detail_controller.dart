@@ -109,6 +109,18 @@ class AdvancedBookingDetailController extends GetxController {
     super.onClose();
   }
 
+  Future<void> refreshAll() async {
+    await Future.wait([getAdvancedBookingDetail()]);
+    await Future.wait([getOrderRideDetail()]);
+    await getRatingLabelList(
+      rating:
+          orderRideDetail.value.orderScore == 0 ||
+              orderRideDetail.value.orderScore == null
+          ? 0
+          : orderRideDetail.value.orderScore!,
+    );
+  }
+
   Future<void> getAdvancedBookingDetail() async {
     advancedBooking.value =
         (await advanceBookingRepository.getAdvancedBookingDetail(

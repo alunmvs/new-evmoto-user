@@ -1,52 +1,78 @@
+import 'package:flutter_svg/svg.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/main.dart';
 
 class SnackbarHelper {
   static showSnackbarSuccess({required String text}) {
     final themeColorServices = Get.find<ThemeColorServices>();
     final typographyServices = Get.find<TypographyServices>();
 
-    Get.snackbar(
-      "",
-      "",
-      padding: EdgeInsets.all(16),
-      snackStyle: SnackStyle.GROUNDED,
-      titleText: const SizedBox(),
-      messageText: Text(
-        text,
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
+    var snackBar = SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SvgPicture.asset("assets/icons/icon_snackbar_success.svg"),
+          SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: typographyServices.bodySmallRegular.value.copyWith(
+                color: Color(0XFF005216),
+              ),
+            ),
+          ),
+        ],
       ),
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: themeColorServices.sematicColorGreen400.value,
-
-      margin: const EdgeInsets.all(0),
+      closeIconColor: Color(0XFF005216),
+      showCloseIcon: true,
+      padding: EdgeInsets.only(left: 16),
+      margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      duration: Duration(seconds: 3),
+      backgroundColor: Color(0XFFE1FFE9),
+      elevation: 0,
     );
+
+    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 
   static showSnackbarError({required String text}) {
     final themeColorServices = Get.find<ThemeColorServices>();
     final typographyServices = Get.find<TypographyServices>();
 
-    Get.snackbar(
-      "",
-      "",
-      padding: EdgeInsets.all(16),
-      snackStyle: SnackStyle.GROUNDED,
-      titleText: const SizedBox(),
-      messageText: Text(
-        text,
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
+    var snackBar = SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SvgPicture.asset("assets/icons/icon_snackbar_error.svg"),
+          SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: typographyServices.bodySmallRegular.value.copyWith(
+                color: Color(0XFFCD0000),
+              ),
+            ),
+          ),
+        ],
       ),
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: themeColorServices.sematicColorRed400.value,
-
-      margin: const EdgeInsets.all(0),
+      closeIconColor: Color(0XFFCD0000),
+      showCloseIcon: true,
+      padding: EdgeInsets.only(left: 16),
+      margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      duration: Duration(seconds: 3),
+      backgroundColor: Color(0XFFFFEBEB),
+      elevation: 0,
     );
+
+    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 }

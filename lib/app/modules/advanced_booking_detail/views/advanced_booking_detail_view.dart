@@ -1599,11 +1599,22 @@ class AdvancedBookingDetailView
                                       SizedBox(height: 4),
                                       Text(
                                         controller
-                                                .languageServices
-                                                .language
-                                                .value
-                                                .advancedBookingStatusDescriptionCancelled ??
-                                            "-",
+                                                    .advancedBooking
+                                                    .value
+                                                    .actorType ==
+                                                "user"
+                                            ? (controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .advancedBookingStatusDescriptionCancelledUser ??
+                                                  "-")
+                                            : (controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .advancedBookingStatusDescriptionCancelledDriver ??
+                                                  "-"),
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular

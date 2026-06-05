@@ -8,9 +8,14 @@ import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class DriverCancelDialog extends StatelessWidget {
+  final Function onTapCancel;
   final Function onTapSearchingDriver;
 
-  DriverCancelDialog({super.key, required this.onTapSearchingDriver});
+  DriverCancelDialog({
+    super.key,
+    required this.onTapCancel,
+    required this.onTapSearchingDriver,
+  });
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -54,8 +59,8 @@ class DriverCancelDialog extends StatelessWidget {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Get.close(1);
+                            onTap: () async {
+                              await onTapCancel();
                             },
                             child: Container(
                               color: Colors.transparent,
@@ -98,7 +103,6 @@ class DriverCancelDialog extends StatelessWidget {
                       LoaderElevatedButton(
                         onPressed: () async {
                           await onTapSearchingDriver();
-                          Get.back(result: true);
                         },
                         child: Text(
                           languageServices.language.value.driverCancelButton ??

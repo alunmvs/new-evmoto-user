@@ -68,20 +68,11 @@ class RideOrderDoneController extends GetxController {
 
       if (orderRideDetail.value.state == 8) {
         Get.back();
-
-        var snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorGreen400.value,
-          content: Text(
-            languageServices.language.value.snackbarCompleteOrderSuccess ?? "-",
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
-          ),
+        SnackbarHelper.showSnackbarSuccess(
+          text:
+              languageServices.language.value.snackbarCompleteOrderSuccess ??
+              "-",
         );
-
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-
         await Get.toNamed(
           Routes.ACTIVITY_DETAIL,
           arguments: {"order_id": orderId.value, "order_type": orderType.value},
@@ -124,22 +115,11 @@ class RideOrderDoneController extends GetxController {
   Future<void> onTapDone() async {
     try {
       await orderRideRepository.confirmPayment(orderId: orderId.value);
-
       Get.back();
-
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorGreen400.value,
-        content: Text(
-          languageServices.language.value.snackbarCompleteOrderSuccess ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarSuccess(
+        text:
+            languageServices.language.value.snackbarCompleteOrderSuccess ?? "-",
       );
-
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-
       await Get.toNamed(
         Routes.ACTIVITY_DETAIL,
         arguments: {"order_id": orderId.value, "order_type": orderType.value},

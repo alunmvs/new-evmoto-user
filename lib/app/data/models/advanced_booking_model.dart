@@ -36,7 +36,10 @@ class AdvancedBooking {
   double? couponMoney;
   double? discountMoney;
 
+  String? actorType;
+
   AdvancedBooking({
+    this.actorType,
     this.additionalCharge,
     this.startMoney,
     this.waitMoney,
@@ -81,6 +84,8 @@ class AdvancedBooking {
     // state = 2;
     // spawnedOrderState = 9;
 
+    actorType = json['actorType'];
+
     orderType = json['orderType'];
     payMoney = json['payMoney'];
     id = json['id'];
@@ -119,6 +124,7 @@ class AdvancedBooking {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['actorType'] = this.actorType;
     data['orderType'] = this.orderType;
     data['id'] = this.id;
     data['userId'] = this.userId;

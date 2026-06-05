@@ -343,19 +343,9 @@ class ActivityDetailController extends GetxController {
 
       await Future.wait([getOrderRideDetail(), getOrderReviewDetail()]);
       await getRatingLabelList(rating: orderRideDetail.value.orderScore!);
-
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorGreen400.value,
-        content: Text(
-          languageServices.language.value.successfullyRatingReview ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarSuccess(
+        text: languageServices.language.value.successfullyRatingReview ?? "-",
       );
-
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } else {
       SnackbarHelper.showSnackbarError(text: "Please tap star to rate");
     }

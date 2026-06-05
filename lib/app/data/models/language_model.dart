@@ -385,12 +385,15 @@ class Language {
   String? advancedBookingStatusDescriptionScheduled;
   String? advancedBookingStatusDescriptionDone;
   String? advancedBookingStatusDescriptionInService;
-  String? advancedBookingStatusDescriptionCancelled;
+  String? advancedBookingStatusDescriptionCancelledUser;
+  String? advancedBookingStatusDescriptionCancelledDriver;
   String? advancedBookingStatusDescriptionExpired;
 
   String? offlineText;
+  String? orderExpiredText;
 
   Language({
+    this.orderExpiredText,
     this.enterLocationHomeAddress,
     this.enterLocationOtherAddress,
     this.enterLocationOfficeAddress,
@@ -399,7 +402,8 @@ class Language {
     this.advancedBookingStatusDescriptionScheduled,
     this.advancedBookingStatusDescriptionDone,
     this.advancedBookingStatusDescriptionInService,
-    this.advancedBookingStatusDescriptionCancelled,
+    this.advancedBookingStatusDescriptionCancelledUser,
+    this.advancedBookingStatusDescriptionCancelledDriver,
     this.advancedBookingStatusDescriptionExpired,
     this.advancedBookingStatusOrderScheduled,
     this.advancedBookingStatusOrderDone,
@@ -768,6 +772,8 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    orderExpiredText = json['order_expired_text'] ?? "(Translate Not Found)";
+
     enterLocationHomeAddress =
         json['enter_location_home_address'] ?? "(Translate Not Found)";
     enterLocationOtherAddress =
@@ -790,8 +796,11 @@ class Language {
     advancedBookingStatusDescriptionInService =
         json['advanced_booking_status_description_in_service'] ??
         "(Translate Not Found)";
-    advancedBookingStatusDescriptionCancelled =
-        json['advanced_booking_status_description_cancelled'] ??
+    advancedBookingStatusDescriptionCancelledUser =
+        json['advanced_booking_status_description_cancelled_user'] ??
+        "(Translate Not Found)";
+    advancedBookingStatusDescriptionCancelledDriver =
+        json['advanced_booking_status_description_cancelled_driver'] ??
         "(Translate Not Found)";
 
     advancedBookingStatusOrderScheduled =
@@ -1360,6 +1369,7 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['order_expired_text'] = orderExpiredText;
     data['offline_text'] = offlineText;
     data['enter_name_user'] = enterNameUser;
 

@@ -8,6 +8,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/services/user_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -121,29 +122,14 @@ class OnboardingRegistrationFormController extends GetxController {
 
                                 Get.offAllNamed(Routes.LOGIN_REGISTER);
 
-                                var snackBar = SnackBar(
-                                  behavior: SnackBarBehavior.fixed,
-                                  backgroundColor: themeColorServices
-                                      .sematicColorGreen400
-                                      .value,
-                                  content: Text(
-                                    languageServices
-                                            .language
-                                            .value
-                                            .snackbarLogoutSuccess ??
-                                        "-",
-                                    style: typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
+                                SnackbarHelper.showSnackbarSuccess(
+                                  text:
+                                      languageServices
+                                          .language
+                                          .value
+                                          .snackbarLogoutSuccess ??
+                                      "-",
                                 );
-                                rootScaffoldMessengerKey.currentState
-                                    ?.showSnackBar(snackBar);
                               },
                               buttonColor:
                                   themeColorServices.sematicColorRed400.value,
@@ -184,17 +170,9 @@ class OnboardingRegistrationFormController extends GetxController {
 
       Get.offAllNamed(Routes.HOME);
     } else {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
   }

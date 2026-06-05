@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
@@ -121,6 +122,7 @@ class SocketServices extends GetxService {
                   }
                   break;
                 case 'OFFLINE':
+                  // print("[DEBUG LOGOUT] SOCKET OFFLINE");
                   var languageServices = Get.find<LanguageServices>();
                   await clearDataLogout();
                   Get.offAllNamed(Routes.LOGIN_REGISTER);
@@ -149,47 +151,96 @@ class SocketServices extends GetxService {
                             .value =
                         EvmotoOrderChatParticipants();
                     rideOrderDetailController.isUnreadChatExist.value = false;
-                    var result = await Get.dialog(
+
+                    await Get.dialog(
                       DriverCancelDialog(
-                        onTapSearchingDriver: () async {
+                        onTapCancel: () async {
+                          Get.close(1);
+
                           var orderRideRepository = OrderRideRepository();
                           var rideOrderDetailController =
                               Get.find<RideOrderDetailController>();
+
                           await orderRideRepository.driverCancelChoice(
                             orderId: dataJson['data']['orderId'].toString(),
                             orderType: int.tryParse(
                               dataJson['data']['orderType'].toString(),
                             )!,
-                            choice: "reassign",
+                            choice: "cancel",
                           );
 
                           await rideOrderDetailController
                               .handleSocketOrderStatus();
+                          await rideOrderDetailController
+                              .checkOrderHasBeenCancelled();
+                        },
+                        onTapSearchingDriver: () async {
+                          var orderRideRepository = OrderRideRepository();
+                          var rideOrderDetailController =
+                              Get.find<RideOrderDetailController>();
+                          var languageServices = Get.find<LanguageServices>();
+
+                          try {
+                            await orderRideRepository.driverCancelChoice(
+                              orderId: dataJson['data']['orderId'].toString(),
+                              orderType: int.tryParse(
+                                dataJson['data']['orderType'].toString(),
+                              )!,
+                              choice: "reassign",
+                            );
+
+                            await rideOrderDetailController
+                                .handleSocketOrderStatus();
+
+                            Get.close(1);
+                          } on DioException catch (e) {
+                            SnackbarHelper.showSnackbarError(
+                              text: e.error.toString(),
+                            );
+                          } on Exception catch (e) {
+                            if (['expired'].contains(e.toString())) {
+                              Get.close(1);
+                              Get.back();
+                              SnackbarHelper.showSnackbarError(
+                                text:
+                                    languageServices
+                                        .language
+                                        .value
+                                        .orderExpiredText ??
+                                    "-",
+                              );
+                              return;
+                            }
+                            SnackbarHelper.showSnackbarError(
+                              text: e.toString(),
+                            );
+                          } catch (e) {
+                            if (['expired'].contains(e.toString())) {
+                              Get.close(1);
+                              Get.back();
+                              SnackbarHelper.showSnackbarError(
+                                text:
+                                    languageServices
+                                        .language
+                                        .value
+                                        .orderExpiredText ??
+                                    "-",
+                              );
+                              return;
+                            }
+                            SnackbarHelper.showSnackbarError(
+                              text: e.toString(),
+                            );
+                          }
                         },
                       ),
                     );
-
-                    if (result != true) {
-                      var orderRideRepository = OrderRideRepository();
-                      var rideOrderDetailController =
-                          Get.find<RideOrderDetailController>();
-
-                      await orderRideRepository.driverCancelChoice(
-                        orderId: dataJson['data']['orderId'].toString(),
-                        orderType: int.tryParse(
-                          dataJson['data']['orderType'].toString(),
-                        )!,
-                        choice: "cancel",
-                      );
-
-                      await rideOrderDetailController.handleSocketOrderStatus();
-                      await rideOrderDetailController
-                          .checkOrderHasBeenCancelled();
-                    }
                   } else {
-                    var result = await Get.dialog(
+                    await Get.dialog(
                       DriverCancelDialog(
-                        onTapSearchingDriver: () async {
+                        onTapCancel: () async {
+                          Get.close(1);
+
                           var orderRideRepository = OrderRideRepository();
                           var homeController = Get.find<HomeController>();
 
@@ -198,28 +249,68 @@ class SocketServices extends GetxService {
                             orderType: int.tryParse(
                               dataJson['data']['orderType'].toString(),
                             )!,
-                            choice: "reassign",
+                            choice: "cancel",
                           );
 
                           await homeController.refreshAll();
                         },
+                        onTapSearchingDriver: () async {
+                          var orderRideRepository = OrderRideRepository();
+                          var homeController = Get.find<HomeController>();
+                          var languageServices = Get.find<LanguageServices>();
+
+                          try {
+                            await orderRideRepository.driverCancelChoice(
+                              orderId: dataJson['data']['orderId'].toString(),
+                              orderType: int.tryParse(
+                                dataJson['data']['orderType'].toString(),
+                              )!,
+                              choice: "reassign",
+                            );
+
+                            await homeController.refreshAll();
+                          } on DioException catch (e) {
+                            SnackbarHelper.showSnackbarError(
+                              text: e.error.toString(),
+                            );
+                          } on Exception catch (e) {
+                            if (['expired'].contains(e.toString())) {
+                              Get.close(1);
+                              Get.back();
+                              SnackbarHelper.showSnackbarError(
+                                text:
+                                    languageServices
+                                        .language
+                                        .value
+                                        .orderExpiredText ??
+                                    "-",
+                              );
+                              return;
+                            }
+                            SnackbarHelper.showSnackbarError(
+                              text: e.toString(),
+                            );
+                          } catch (e) {
+                            if (['expired'].contains(e.toString())) {
+                              Get.close(1);
+                              Get.back();
+                              SnackbarHelper.showSnackbarError(
+                                text:
+                                    languageServices
+                                        .language
+                                        .value
+                                        .orderExpiredText ??
+                                    "-",
+                              );
+                              return;
+                            }
+                            SnackbarHelper.showSnackbarError(
+                              text: e.toString(),
+                            );
+                          }
+                        },
                       ),
                     );
-
-                    if (result != true) {
-                      var orderRideRepository = OrderRideRepository();
-                      var homeController = Get.find<HomeController>();
-
-                      await orderRideRepository.driverCancelChoice(
-                        orderId: dataJson['data']['orderId'].toString(),
-                        orderType: int.tryParse(
-                          dataJson['data']['orderType'].toString(),
-                        )!,
-                        choice: "cancel",
-                      );
-
-                      await homeController.refreshAll();
-                    }
                   }
                   break;
                 case 'PONG':

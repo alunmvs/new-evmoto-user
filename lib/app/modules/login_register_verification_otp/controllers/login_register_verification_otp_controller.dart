@@ -77,18 +77,9 @@ class LoginRegisterVerificationOtpController extends GetxController {
           otpProtectionTimerSeconds.value -= 1;
         }
       });
-
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorGreen400.value,
-        content: Text(
-          languageServices.language.value.snackbarOtpSuccess ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarSuccess(
+        text: languageServices.language.value.snackbarOtpSuccess ?? "-",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     } catch (e) {
@@ -98,8 +89,7 @@ class LoginRegisterVerificationOtpController extends GetxController {
 
   Future<void> onSubmitOTP() async {
     try {
-      await locationServices.requestLocation();
-
+      await locationServices.requestLocation(isSkipGeocodingAddress: true);
       if (locationServices.currentLatitude.value != null) {
         var loginData = await loginRegisterRepository.loginByOtp(
           phone: mobilePhone.value,

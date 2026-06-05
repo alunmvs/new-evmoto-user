@@ -25,6 +25,147 @@ class ActivityView extends GetView<ActivityController> {
         ),
         child: Column(
           children: [
+            // Expanded(
+            //   child: SmartRefresher(
+            //     header: MaterialClassicHeader(
+            //       color: controller.themeColorServices.primaryBlue.value,
+            //     ),
+            //     footer: ClassicFooter(
+            //       loadStyle: LoadStyle.HideAlways,
+            //       textStyle: controller
+            //           .typographyServices
+            //           .bodySmallRegular
+            //           .value
+            //           .copyWith(
+            //             color: controller.themeColorServices.primaryBlue.value,
+            //           ),
+            //       canLoadingIcon: null,
+            //       loadingIcon: null,
+            //       idleIcon: null,
+            //       noMoreIcon: null,
+            //       failedIcon: null,
+            //     ),
+            //     enablePullDown: true,
+            //     enablePullUp: controller.historyOrderSeeMore.value,
+            //     onRefresh: () async {
+            //       await controller.refreshAll();
+            //       controller.historyOrderRefreshController.refreshCompleted();
+            //     },
+            //     onLoading: () async {
+            //       await controller.seeMoreHistoryOrderList();
+            //       controller.historyOrderRefreshController.loadComplete();
+            //     },
+            //     controller: controller.historyOrderRefreshController,
+            //     child: controller.isFetch.value
+            //         ? Center(
+            //             child: SizedBox(
+            //               width: 25,
+            //               height: 25,
+            //               child: CircularProgressIndicator(
+            //                 color:
+            //                     controller.themeColorServices.primaryBlue.value,
+            //               ),
+            //             ),
+            //           )
+            //         : controller.historyOrderList.isEmpty
+            //         ? Column(
+            //             children: [
+            //               SizedBox(height: 134),
+            //               SvgPicture.asset(
+            //                 "assets/images/img_latest_activity_not_found.svg",
+            //                 height: 120,
+            //                 width: 120,
+            //               ),
+            //               SizedBox(height: 16),
+            //               Text(
+            //                 controller
+            //                         .languageServices
+            //                         .language
+            //                         .value
+            //                         .haveTriedEvmoto ??
+            //                     "-",
+            //                 style: controller
+            //                     .typographyServices
+            //                     .bodyLargeBold
+            //                     .value,
+            //                 textAlign: TextAlign.center,
+            //               ),
+            //               SizedBox(height: 8),
+            //               Text(
+            //                 controller
+            //                         .languageServices
+            //                         .language
+            //                         .value
+            //                         .travelComfort ??
+            //                     "-",
+            //                 style: controller
+            //                     .typographyServices
+            //                     .bodySmallRegular
+            //                     .value,
+            //                 textAlign: TextAlign.center,
+            //               ),
+            //               SizedBox(height: 16),
+            //               LoaderElevatedButton(
+            //                 isWidthFitToContent: true,
+            //                 onPressed: () async {
+            //                   controller
+            //                           .homeController
+            //                           .indexNavigationBar
+            //                           .value =
+            //                       0;
+            //                   await controller.refreshAll();
+            //                 },
+            //                 padding: EdgeInsets.symmetric(horizontal: 16),
+            //                 borderSide: BorderSide(
+            //                   color: controller
+            //                       .themeColorServices
+            //                       .sematicColorBlue200
+            //                       .value,
+            //                   width: 2,
+            //                 ),
+            //                 child: Text(
+            //                   controller
+            //                           .languageServices
+            //                           .language
+            //                           .value
+            //                           .orderEvMoto ??
+            //                       "-",
+            //                   style: controller
+            //                       .typographyServices
+            //                       .bodyLargeBold
+            //                       .value
+            //                       .copyWith(color: Colors.white),
+            //                 ),
+            //               ),
+            //             ],
+            //           )
+            //         : SingleChildScrollView(
+            //             child: Padding(
+            //               padding: const EdgeInsets.symmetric(horizontal: 16),
+            //               child: Column(
+            //                 crossAxisAlignment: CrossAxisAlignment.start,
+            //                 children: [
+            //                   for (var historyOrder
+            //                       in controller.historyOrderList) ...[
+            //                     ActivityHistoryOrderCardSubView(
+            //                       historyOrder: historyOrder,
+            //                     ),
+            //                     DashedLine(
+            //                       height: 0,
+            //                       dashSpace: 8,
+            //                       dashWidth: 8,
+            //                       color: controller
+            //                           .themeColorServices
+            //                           .neutralsColorGrey200
+            //                           .value,
+            //                     ),
+            //                   ],
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TabBar(

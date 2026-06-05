@@ -147,17 +147,9 @@ Future<void> logout() async {
 
   Get.offAllNamed(Routes.LOGIN_REGISTER);
 
-  var snackBar = SnackBar(
-    behavior: SnackBarBehavior.fixed,
-    backgroundColor: themeColorServices.sematicColorGreen400.value,
-    content: Text(
-      languageServices.language.value.snackbarLogoutSuccess ?? "-",
-      style: typographyServices.bodySmallRegular.value.copyWith(
-        color: themeColorServices.neutralsColorGrey0.value,
-      ),
-    ),
+  SnackbarHelper.showSnackbarSuccess(
+    text: languageServices.language.value.snackbarLogoutSuccess ?? "-",
   );
-  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 }
 
 void showLoadingDialog() {

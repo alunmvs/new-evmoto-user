@@ -1123,30 +1123,14 @@ class RideOrderDetailController extends GetxController {
 
                                   Get.close(1);
                                   Get.back();
-
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      languageServices
-                                              .language
-                                              .value
-                                              .snackbarCancelTransactionSuccess ??
-                                          "-",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
+                                  SnackbarHelper.showSnackbarSuccess(
+                                    text:
+                                        languageServices
+                                            .language
+                                            .value
+                                            .snackbarCancelTransactionSuccess ??
+                                        "-",
                                   );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
                                 } on DioException catch (e) {
                                   SnackbarHelper.showSnackbarError(
                                     text: e.error.toString(),
@@ -1930,14 +1914,18 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> checkOrderHasBeenCancelled() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (orderRideDetail.value.state == 10) {
-        Get.back();
-        SnackbarHelper.showSnackbarError(
-          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
-        );
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (orderRideDetail.value.state == 10) {
+    //     print("[DEBUG CANCELLED] ${Get.isDialogOpen}");
+    //     if (Get.isDialogOpen ?? false) {
+    //       Get.back();
+    //     }
+    //     Get.back();
+    //     SnackbarHelper.showSnackbarError(
+    //       text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+    //     );
+    //   }
+    // });
   }
 
   Future<void> checkNumberOfPushRoundsHasExceeded() async {

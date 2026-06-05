@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,23 +24,11 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
               try {
                 await launchUrl(url);
               } catch (e) {
-                final SnackBar snackBar = SnackBar(
-                  behavior: SnackBarBehavior.fixed,
-                  backgroundColor:
-                      controller.themeColorServices.sematicColorRed400.value,
-                  content: Text(
-                    controller.languageServices.language.value.cantMakeCall ??
-                        "-",
-                    style: controller.typographyServices.bodySmallRegular.value
-                        .copyWith(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey0
-                              .value,
-                        ),
-                  ),
+                SnackbarHelper.showSnackbarError(
+                  text:
+                      controller.languageServices.language.value.cantMakeCall ??
+                      "-",
                 );
-                rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
               }
             },
             child: Container(
@@ -78,27 +67,15 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
               try {
                 await launchUrl(url, mode: LaunchMode.externalApplication);
               } catch (e) {
-                final SnackBar snackBar = SnackBar(
-                  behavior: SnackBarBehavior.fixed,
-                  backgroundColor:
-                      controller.themeColorServices.sematicColorRed400.value,
-                  content: Text(
-                    controller
-                            .languageServices
-                            .language
-                            .value
-                            .unableOpenWhatsapp ??
-                        "-",
-                    style: controller.typographyServices.bodySmallRegular.value
-                        .copyWith(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey0
-                              .value,
-                        ),
-                  ),
+                SnackbarHelper.showSnackbarSuccess(
+                  text:
+                      controller
+                          .languageServices
+                          .language
+                          .value
+                          .unableOpenWhatsapp ??
+                      "-",
                 );
-                rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
               }
             },
             child: Container(

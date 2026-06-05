@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class SettingLanguageController extends GetxController {
@@ -35,16 +36,9 @@ class SettingLanguageController extends GetxController {
       isSave: true,
     );
     Get.back();
-    var snackBar = SnackBar(
-      behavior: SnackBarBehavior.fixed,
-      backgroundColor: themeColorServices.sematicColorGreen400.value,
-      content: Text(
-        languageServices.language.value.snackbarChangeLanguageSuccess ?? "-",
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
-      ),
+    SnackbarHelper.showSnackbarSuccess(
+      text:
+          languageServices.language.value.snackbarChangeLanguageSuccess ?? "-",
     );
-    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 }

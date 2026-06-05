@@ -391,7 +391,7 @@ class SettingSavedLocationController extends GetxController {
                             Get.close(1);
 
                             await Get.toNamed(
-                              Routes.SEARCH_ADDRESS,
+                              Routes.ADD_EDIT_ADDRESS_OTHER,
                               arguments: {
                                 "address_type": 3,
                                 "tag": DateTime.now().millisecondsSinceEpoch
@@ -515,29 +515,14 @@ class SettingSavedLocationController extends GetxController {
                                   await savedAddressRepository
                                       .deleteSavedAddress(id: savedAddress.id!);
                                   Get.close(1);
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      languageServices
-                                              .language
-                                              .value
-                                              .snackbarDeleteAddressSuccess ??
-                                          "-",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
+                                  SnackbarHelper.showSnackbarSuccess(
+                                    text:
+                                        languageServices
+                                            .language
+                                            .value
+                                            .snackbarDeleteAddressSuccess ??
+                                        "-",
                                   );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
 
                                   await getSavedAddressList();
                                 } on DioException catch (e) {

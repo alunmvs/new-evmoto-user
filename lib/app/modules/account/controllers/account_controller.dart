@@ -84,17 +84,9 @@ class AccountController extends GetxController {
     try {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          languageServices.language.value.unableOpenWhatsapp ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.unableOpenWhatsapp ?? "-",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 
@@ -803,29 +795,16 @@ class AccountController extends GetxController {
                           await onTapSuccessDeleteAccountDialog();
 
                           await clearDataLogout();
+                          // print("[DEBUG LOGOUT] ACCOUNT LOGOUT");
 
                           Get.offAllNamed(Routes.LOGIN_REGISTER);
-
-                          var snackBar = SnackBar(
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor:
-                                themeColorServices.sematicColorGreen400.value,
-                            content: Text(
-                              languageServices
-                                      .language
-                                      .value
-                                      .successDeleteAccount ??
-                                  "-",
-                              style: typographyServices.bodySmallRegular.value
-                                  .copyWith(
-                                    color: themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                  ),
-                            ),
-                          );
-                          rootScaffoldMessengerKey.currentState?.showSnackBar(
-                            snackBar,
+                          SnackbarHelper.showSnackbarSuccess(
+                            text:
+                                languageServices
+                                    .language
+                                    .value
+                                    .successDeleteAccount ??
+                                "-",
                           );
                         },
                         child: Text(
