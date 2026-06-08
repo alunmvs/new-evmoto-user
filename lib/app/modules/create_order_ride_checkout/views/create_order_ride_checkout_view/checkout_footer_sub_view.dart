@@ -801,7 +801,12 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                                           .isAdvanceOrderEnable
                                                           .value ==
                                                       false
-                                                  ? "Booking"
+                                                  ? (controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .advanceBookingButton ??
+                                                        "-")
                                                   : controller
                                                         .getAdvanceBookingSelectedDateTime(),
                                               style: controller

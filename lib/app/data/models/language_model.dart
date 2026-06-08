@@ -394,8 +394,12 @@ class Language {
   String? orderExpiredText;
 
   String? advanceBookingButton;
+  String? activityCategoryNormal;
+  String? activityCategoryBooking;
 
   Language({
+    this.activityCategoryNormal,
+    this.activityCategoryBooking,
     this.advanceBookingButton,
     this.enterNameRegistrationForm,
     this.orderExpiredText,
@@ -777,6 +781,11 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    activityCategoryNormal =
+        json['activity_category_normal'] ?? "(Translate Not Found)";
+    activityCategoryBooking =
+        json['activity_category_booking'] ?? "(Translate Not Found)";
+
     advanceBookingButton =
         json['advance_booking_button'] ?? "(Translate Not Found)";
     enterNameRegistrationForm =

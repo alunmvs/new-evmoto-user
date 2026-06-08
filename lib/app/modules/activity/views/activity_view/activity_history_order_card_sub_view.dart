@@ -8,7 +8,6 @@ import 'package:new_evmoto_user/app/modules/activity/controllers/activity_contro
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_action_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_origin_destination_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_status_sub_view.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
 
 class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
   final HistoryOrder historyOrder;
@@ -89,7 +88,12 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      "Reguler",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .activityCategoryNormal ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular
@@ -113,7 +117,12 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      "Booking",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .activityCategoryBooking ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular
