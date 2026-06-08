@@ -68,12 +68,19 @@ class ActivityDetailCancelDriverInformationSubView
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .cancelByPassenger ??
-                              "-",
+                          controller.orderRideDetail.value.actorType == "driver"
+                              ? (controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .cancelByDriver ??
+                                    "-")
+                              : (controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .cancelByPassenger ??
+                                    "-"),
                           style: controller
                               .typographyServices
                               .bodySmallRegular

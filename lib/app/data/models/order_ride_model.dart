@@ -85,7 +85,10 @@ class OrderRide {
   String? driverArrivedOriginAt;
   String? driverConfirmFeesAt;
 
+  String? actorType;
+
   OrderRide({
+    this.actorType,
     this.orderId,
     this.orderType,
     this.type,
@@ -174,6 +177,7 @@ class OrderRide {
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
+    actorType = json['actorType'];
     orderId = json['orderId'];
     orderType = json['orderType'];
     type = json['type'];

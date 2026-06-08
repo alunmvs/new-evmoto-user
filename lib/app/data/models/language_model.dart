@@ -397,7 +397,10 @@ class Language {
   String? activityCategoryNormal;
   String? activityCategoryBooking;
 
+  String? cancelByDriver;
+
   Language({
+    this.cancelByDriver,
     this.activityCategoryNormal,
     this.activityCategoryBooking,
     this.advanceBookingButton,
@@ -781,6 +784,7 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    cancelByDriver = json['cancel_by_driver'] ?? "(Translate Not Found)";
     activityCategoryNormal =
         json['activity_category_normal'] ?? "(Translate Not Found)";
     activityCategoryBooking =
