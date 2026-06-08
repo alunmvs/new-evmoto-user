@@ -93,6 +93,9 @@ class ChatListView extends GetView<ChatListController> {
                                     vertical: 16,
                                   ),
                                   child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       if (room.driverProfileUrl == null ||
                                           room.driverProfileUrl == "") ...[
@@ -109,12 +112,12 @@ class ChatListView extends GetView<ChatListController> {
                                           room.driverProfileUrl != "") ...[
                                         CircleAvatar(
                                           radius: 42 / 2,
-                                          child: CachedNetworkImage(
-                                            imageUrl: room.driverProfileUrl!,
-                                            width: 42,
-                                            height: 42,
-                                            fit: BoxFit.cover,
-                                          ),
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                                room.driverProfileUrl!,
+                                                maxWidth: 42,
+                                                maxHeight: 42,
+                                              ),
                                         ),
                                       ],
                                       SizedBox(width: 8),

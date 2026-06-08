@@ -105,7 +105,7 @@ class OnboardingRegistrationFormView
                                       .languageServices
                                       .language
                                       .value
-                                      .enterName ??
+                                      .enterNameRegistrationForm ??
                                   "-",
                               hintStyle: controller
                                   .typographyServices

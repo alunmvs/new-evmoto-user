@@ -428,7 +428,9 @@ class FirebasePushNotificationServices extends GetxService {
       if ([
         'ADVANCE_ORDER_DRIVER_FOUND',
       ].contains(message.data['notification_type'])) {
-        Get.find<AdvancedBookingDetailController>().refreshAll();
+        if (Get.currentRoute == Routes.ADVANCED_BOOKING_DETAIL) {
+          Get.find<AdvancedBookingDetailController>().refreshAll();
+        }
       }
 
       flutterLocalNotificationsPlugin.show(

@@ -124,6 +124,7 @@ class Language {
 
   String? name;
   String? enterName;
+  String? enterNameRegistrationForm;
   String? enterNameUser;
   String? locationDetails;
   String? address;
@@ -392,7 +393,11 @@ class Language {
   String? offlineText;
   String? orderExpiredText;
 
+  String? advanceBookingButton;
+
   Language({
+    this.advanceBookingButton,
+    this.enterNameRegistrationForm,
     this.orderExpiredText,
     this.enterLocationHomeAddress,
     this.enterLocationOtherAddress,
@@ -772,6 +777,10 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    advanceBookingButton =
+        json['advance_booking_button'] ?? "(Translate Not Found)";
+    enterNameRegistrationForm =
+        json['enter_name_registration_form'] ?? "(Translate Not Found)";
     orderExpiredText = json['order_expired_text'] ?? "(Translate Not Found)";
 
     enterLocationHomeAddress =

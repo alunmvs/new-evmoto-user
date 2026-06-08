@@ -68,18 +68,18 @@ class ChatDetailView extends GetView<ChatDetailController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      controller.evmotoOrderChatParticipants.value.userName ==
+                      controller.evmotoOrderChatParticipants.value.driverName ==
                                   "" ||
                               controller
                                       .evmotoOrderChatParticipants
                                       .value
-                                      .userName ==
+                                      .driverName ==
                                   null
                           ? "-"
                           : controller
                                 .evmotoOrderChatParticipants
                                 .value
-                                .userName!,
+                                .driverName!,
                       style: controller.typographyServices.bodyLargeBold.value
                           .copyWith(
                             color: controller
@@ -94,31 +94,31 @@ class ChatDetailView extends GetView<ChatDetailController> {
                 ),
               ],
             ),
-            actions: [
-              GestureDetector(
-                onTap: () {},
-                child: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/icon_phone.svg",
-                        width: 16.78,
-                        height: 18,
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey700
-                            .value,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(width: 16),
-            ],
+            // actions: [
+            //   GestureDetector(
+            //     onTap: () {},
+            //     child: SizedBox(
+            //       height: 24,
+            //       width: 24,
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           SvgPicture.asset(
+            //             "assets/icons/icon_phone.svg",
+            //             width: 16.78,
+            //             height: 18,
+            //             color: controller
+            //                 .themeColorServices
+            //                 .neutralsColorGrey700
+            //                 .value,
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            //   SizedBox(width: 16),
+            // ],
             centerTitle: false,
             titleSpacing: 0,
             backgroundColor:

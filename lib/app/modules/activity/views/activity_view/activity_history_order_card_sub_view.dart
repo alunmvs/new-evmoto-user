@@ -72,7 +72,65 @@ class ActivityHistoryOrderCardSubView extends GetView<ActivityController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ActivityCardStatus(state: historyOrder.state),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (historyOrder.reservation == 1) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: controller
+                                          .themeColorServices
+                                          .primaryBlue
+                                          .value,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "Reguler",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  ),
+                                ] else ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFFEA7405),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "Booking",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                                SizedBox(width: 8),
+                                ActivityCardStatus(state: historyOrder.state),
+                              ],
+                            ),
                             Visibility(
                               visible: OrderState.COMPLETED_STATE_LIST.contains(
                                 historyOrder.state,

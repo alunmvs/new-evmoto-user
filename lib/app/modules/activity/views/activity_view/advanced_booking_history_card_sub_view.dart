@@ -66,176 +66,230 @@ class AdvancedBookingHistoryCardSubView extends GetView<ActivityController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            if ([0, 1].contains(advancedOrder.state)) ...[
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0XFFFFF6E8),
-                                      border: Border.all(
-                                        color: Color(0XFFEA7405),
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      controller
-                                              .languageServices
-                                              .language
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Color(0XFFEA7405),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    "Booking",
+                                    style: controller
+                                        .typographyServices
+                                        .captionLargeRegular
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                if ([0, 1].contains(advancedOrder.state)) ...[
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0XFFFFF6E8),
+                                          border: Border.all(
+                                            color: Color(0XFFEA7405),
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .advancedBookingStatusOrderScheduled ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .captionLargeRegular
                                               .value
-                                              .advancedBookingStatusOrderScheduled ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(color: Color(0XFFEA7405)),
-                                    ),
+                                              .copyWith(
+                                                color: Color(0XFFEA7405),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ],
-                            if ([2, 3].contains(advancedOrder.state)) ...[
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0XFFE3F1FF),
-                                      border: Border.all(
-                                        color: Color(0XFF0573EA),
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      controller
-                                              .languageServices
-                                              .language
+                                if ([2, 3].contains(advancedOrder.state)) ...[
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0XFFE3F1FF),
+                                          border: Border.all(
+                                            color: Color(0XFF0573EA),
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .advancedBookingStatusOrderInService ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .captionLargeRegular
                                               .value
-                                              .advancedBookingStatusOrderInService ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(color: Color(0XFF0573EA)),
-                                    ),
+                                              .copyWith(
+                                                color: Color(0XFF0573EA),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ],
-                            if ([4].contains(advancedOrder.state)) ...[
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0XFFCAEDDB),
-                                      border: Border.all(
-                                        color: Color(0XFF99CEB3),
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      controller
-                                              .languageServices
-                                              .language
+                                if ([4].contains(advancedOrder.state)) ...[
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0XFFCAEDDB),
+                                          border: Border.all(
+                                            color: Color(0XFF99CEB3),
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .advancedBookingStatusOrderDone ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .captionLargeRegular
                                               .value
-                                              .advancedBookingStatusOrderDone ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(color: Color(0XFF17412C)),
-                                    ),
+                                              .copyWith(
+                                                color: Color(0XFF17412C),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ],
-                            if ([5].contains(advancedOrder.state)) ...[
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0XFFFFECEC),
-                                      border: Border.all(
-                                        color: Color(0XFFD9463E),
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      controller
-                                              .languageServices
-                                              .language
+                                if ([5].contains(advancedOrder.state)) ...[
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0XFFFFECEC),
+                                          border: Border.all(
+                                            color: Color(0XFFD9463E),
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .advancedBookingStatusOrderCancelled ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .captionLargeRegular
                                               .value
-                                              .advancedBookingStatusOrderCancelled ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(color: Color(0XFFD9463E)),
-                                    ),
+                                              .copyWith(
+                                                color: Color(0XFFD9463E),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ],
-                            if ([6].contains(advancedOrder.state)) ...[
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0XFFF6F6F6),
-                                      border: Border.all(
-                                        color: Color(0XFFB3B3B3),
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      controller
-                                              .languageServices
-                                              .language
+                                if ([6].contains(advancedOrder.state)) ...[
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0XFFF6F6F6),
+                                          border: Border.all(
+                                            color: Color(0XFFB3B3B3),
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .advancedBookingStatusOrderExpired ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .captionLargeRegular
                                               .value
-                                              .advancedBookingStatusOrderExpired ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(color: Color(0XFFB3B3B3)),
-                                    ),
+                                              .copyWith(
+                                                color: Color(0XFFB3B3B3),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ],
+                              ],
+                            ),
                             Visibility(
                               visible:
                                   advancedOrder.spawnedOrderState == null ||

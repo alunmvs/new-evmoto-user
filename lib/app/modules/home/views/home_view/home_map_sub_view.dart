@@ -27,9 +27,10 @@ class HomeMapSubView extends GetView<HomeController> {
                       (value) => value.mapId,
                     ),
                     duration: const Duration(milliseconds: 4800),
-                    curve: Curves.linear,
+                    curve: Curves.easeInOut,
                     markers: Set<Marker>.from(controller.markers.values),
                     shouldAnimateCamera: false,
+                    useRotation: true,
                     child: GoogleMap(
                       mapType: MapType.normal,
                       onCameraMove: (position) async {

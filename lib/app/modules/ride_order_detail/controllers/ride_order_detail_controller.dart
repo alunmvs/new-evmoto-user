@@ -2163,8 +2163,8 @@ class RideOrderDetailController extends GetxController {
       for (var doc in querySnapshot.docs) {
         batch.set(doc.reference, {
           "userId": orderRideDetail.value.userId.toString(),
-          "userName": orderRideDetail.value.user,
-          "userProfileUrl": orderRideDetail.value.userHeadImg,
+          "userName": userServices.userInfo.value.name,
+          "userProfileUrl": userServices.userInfo.value.avatar,
           "userIsOnline": true,
           "userLastSeen": FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
@@ -2186,8 +2186,8 @@ class RideOrderDetailController extends GetxController {
       for (var doc in querySnapshot.docs) {
         batch.set(doc.reference, {
           "userId": orderRideDetail.value.userId.toString(),
-          "userName": orderRideDetail.value.user,
-          "userProfileUrl": orderRideDetail.value.userHeadImg,
+          "userName": userServices.userInfo.value.name,
+          "userProfileUrl": userServices.userInfo.value.avatar,
           "userIsOnline": false,
           "userLastSeen": FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));

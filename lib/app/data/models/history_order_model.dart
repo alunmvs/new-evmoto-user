@@ -25,6 +25,7 @@ class HistoryOrder {
   String? endLon;
   String? endLat;
   int? orderScore;
+  int? reservation;
 
   HistoryOrder({
     this.orderId,
@@ -53,9 +54,11 @@ class HistoryOrder {
     this.endLon,
     this.endLat,
     this.orderScore,
+    this.reservation,
   });
 
   HistoryOrder.fromJson(Map<String, dynamic> json) {
+    reservation = json['reservation'];
     orderId = json['orderId'];
     orderTime = json['orderTime'];
     time = json['time'];
@@ -86,6 +89,7 @@ class HistoryOrder {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['reservation'] = this.reservation;
     data['orderId'] = this.orderId;
     data['orderTime'] = this.orderTime;
     data['time'] = this.time;

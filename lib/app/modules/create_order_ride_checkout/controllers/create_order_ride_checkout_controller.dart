@@ -187,9 +187,7 @@ class CreateOrderRideCheckoutController extends GetxController {
       59,
     );
 
-    final end = isToday
-        ? (endOfDay.isAfter(maxDateTime) ? maxDateTime : endOfDay)
-        : endOfDay;
+    final end = (endOfDay.isAfter(maxDateTime) ? maxDateTime : endOfDay);
 
     int remainder = start.minute % 5;
     if (remainder != 0) {
@@ -206,7 +204,7 @@ class CreateOrderRideCheckoutController extends GetxController {
 
     final List<DateTime> result = [];
 
-    while (!start.isAfter(end)) {
+    while (!start.isAfter(end) || start.isAtSameMomentAs(end)) {
       result.add(start);
       start = start.add(const Duration(minutes: 5));
     }

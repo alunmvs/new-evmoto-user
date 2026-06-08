@@ -83,10 +83,11 @@ dependencies:
   dio_curl_logger: ^1.3.0
   marquee: ^2.3.0
   cloud_firestore: ^6.1.1
+  flutter_animarker: ^3.4.0-beta.1
 
-  flutter_animarker:
-    git:
-      url: https://github.com/dbspoudel/flutter_animarker.git
+  # flutter_animarker:
+  #   git:
+  #     url: https://github.com/dbspoudel/flutter_animarker.git
 
   # Need SDK Update
   package_info_plus: ^8.3.1

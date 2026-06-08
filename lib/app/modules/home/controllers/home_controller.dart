@@ -587,6 +587,7 @@ class HomeController extends GetxController {
             ImageConfiguration(size: Size(64, 106)),
             'assets/icons/icon_driver.png',
           ),
+          rotation: 0,
           anchor: Offset(0.5, 0.5),
           visible: false,
         );
