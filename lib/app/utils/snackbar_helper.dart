@@ -25,11 +25,18 @@ class SnackbarHelper {
               ),
             ),
           ),
+          SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+            },
+            child: Icon(Icons.close, color: Color(0XFF005216), size: 20),
+          ),
         ],
       ),
       closeIconColor: Color(0XFF005216),
-      showCloseIcon: true,
-      padding: EdgeInsets.only(left: 16),
+      showCloseIcon: false,
+      padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
       margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -60,11 +67,18 @@ class SnackbarHelper {
               ),
             ),
           ),
+          SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+            },
+            child: Icon(Icons.close, color: Color(0XFFCD0000), size: 20),
+          ),
         ],
       ),
       closeIconColor: Color(0XFFCD0000),
-      showCloseIcon: true,
-      padding: EdgeInsets.only(left: 16),
+      showCloseIcon: false,
+      padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
       margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
