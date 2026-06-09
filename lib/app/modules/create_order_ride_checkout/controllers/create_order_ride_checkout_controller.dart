@@ -463,8 +463,8 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   Future<void> setLatitudeLongitudeMarker() async {
-    markers[MarkerId("origin")] = Marker(
-      markerId: MarkerId("origin"),
+    markers[MarkerId("origin_${idPinpoint.value}")] = Marker(
+      markerId: MarkerId("origin_${idPinpoint.value}"),
       position: LatLng(
         double.parse(originLatitude.value!),
         double.parse(originLongitude.value!),
@@ -476,8 +476,8 @@ class CreateOrderRideCheckoutController extends GetxController {
       anchor: Offset(0.5, 0.5),
     );
 
-    markers[MarkerId("destination")] = Marker(
-      markerId: MarkerId("destination"),
+    markers[MarkerId("destination_${idPinpoint.value}")] = Marker(
+      markerId: MarkerId("destination_${idPinpoint.value}"),
       position: LatLng(
         double.parse(destinationLatitude.value!),
         double.parse(destinationLongitude.value!),
