@@ -1914,18 +1914,17 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> checkOrderHasBeenCancelled() async {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (orderRideDetail.value.state == 10) {
-    //     print("[DEBUG CANCELLED] ${Get.isDialogOpen}");
-    //     if (Get.isDialogOpen ?? false) {
-    //       Get.back();
-    //     }
-    //     Get.back();
-    //     SnackbarHelper.showSnackbarError(
-    //       text: languageServices.language.value.orderHasBeenCancelled ?? "-",
-    //     );
-    //   }
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (orderRideDetail.value.state == 10) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        Get.back();
+        SnackbarHelper.showSnackbarError(
+          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
+        );
+      }
+    });
   }
 
   Future<void> checkNumberOfPushRoundsHasExceeded() async {
