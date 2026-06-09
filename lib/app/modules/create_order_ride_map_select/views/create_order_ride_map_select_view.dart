@@ -29,7 +29,7 @@ class CreateOrderRideMapSelectView
                           (value) => value.mapId,
                         ),
                         markers: Set<Marker>.from(controller.markers.values),
-                        duration: const Duration(milliseconds: 4800),
+                        duration: const Duration(milliseconds: 2400),
                         curve: Curves.linear,
                         shouldAnimateCamera: false,
                         child: GoogleMap(
