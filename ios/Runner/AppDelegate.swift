@@ -12,6 +12,9 @@ import GoogleMaps
     if let apiKey = Bundle.main.infoDictionary?["MAPS_API_KEY"] as? String {
       GMSServices.provideAPIKey(apiKey)
     }
+
+    enableSendbirdFlutter(application)
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

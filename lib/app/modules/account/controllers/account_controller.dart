@@ -1,19 +1,38 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
+import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
+import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/common_helper.dart';
+
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:pinput/pinput.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends GetxController {
+  final OtpRepository otpRepository;
+  final UserRepository userRepository;
+  final OrderRideRepository orderRideRepository;
+
+  AccountController({
+    required this.otpRepository,
+    required this.userRepository,
+    required this.orderRideRepository,
+  });
+
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
@@ -23,6 +42,7 @@ class AccountController extends GetxController {
   final homeController = Get.find<HomeController>();
 
   final packageVersion = "".obs;
+  final buildNumber = "".obs;
 
   final isFetch = false.obs;
 
@@ -30,7 +50,13 @@ class AccountController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    await getPackageInfo();
+    try {
+      await getPackageInfo();
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+    }
     isFetch.value = false;
   }
 
@@ -47,6 +73,7 @@ class AccountController extends GetxController {
   Future<void> getPackageInfo() async {
     var packageInfo = await PackageInfo.fromPlatform();
     packageVersion.value = packageInfo.version;
+    buildNumber.value = packageInfo.buildNumber;
   }
 
   Future<void> onTapContactCs() async {
@@ -54,27 +81,772 @@ class AccountController extends GetxController {
         .getString("customer_cs_whatsapp");
     final Uri url = Uri.parse("https://wa.me/$customerCsWhatsapp");
 
-    if (await canLaunchUrl(url)) {
+    try {
       await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Tidak dapat membuka whatsapp",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.unableOpenWhatsapp ?? "-",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 
+  Future<void> onTapManageAccount() async {
+    await Get.bottomSheet(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      languageServices.language.value.manageAccount ?? "-",
+                      style: typographyServices.bodyLargeBold.value,
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      languageServices
+                              .language
+                              .value
+                              .manageAccountLogoutAppRequestAccountDelete ??
+                          "-",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFFB3B3B3),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Color(0XFFE8E8E8)),
+                      ),
+                      child: Column(
+                        children: [
+                          IntrinsicHeight(
+                            child: GestureDetector(
+                              onTap: () async {
+                                Get.close(1);
+                                await onTapLogout();
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: Color(0XFFD7EAFF),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_logout.svg",
+                                            width: 16,
+                                            height: 16,
+                                            colorFilter: ColorFilter.mode(
+                                              Color(0XFF0573EA),
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .signOutAccount ??
+                                                "-",
+                                            style: typographyServices
+                                                .bodySmallBold
+                                                .value,
+                                          ),
+                                          Text(
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .logoutAccountSecureAccess ??
+                                                "-",
+                                            style: typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFB3B3B3),
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_arrow_right.svg",
+                                            width: 6,
+                                            height: 12,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          IntrinsicHeight(
+                            child: GestureDetector(
+                              onTap: () async {
+                                Get.close(1);
+                                await onTapDeleteAccount();
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: Color(0XFFFFEAE9),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_delete.svg",
+                                            width: 16,
+                                            height: 16,
+                                            colorFilter: ColorFilter.mode(
+                                              themeColorServices
+                                                  .sematicColorRed400
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .deleteAccount ??
+                                                "-",
+                                            style: typographyServices
+                                                .bodySmallBold
+                                                .value,
+                                          ),
+                                          Text(
+                                            languageServices
+                                                    .language
+                                                    .value
+                                                    .actionPermanentlyDeleteAccountData ??
+                                                "-",
+                                            style: typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFB3B3B3),
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_arrow_right.svg",
+                                            width: 6,
+                                            height: 12,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      isDismissible: true,
+      isScrollControlled: true,
+    );
+  }
+
   Future<void> onTapLogout() async {
-    await Get.dialog(
+    await Get.bottomSheet(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: Container(
+                padding: EdgeInsets.all(16),
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: Color(0XFFD7EAFF),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_logout.svg",
+                            width: 26,
+                            height: 26,
+                            colorFilter: ColorFilter.mode(
+                              Color(0XFF0573EA),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      languageServices
+                              .language
+                              .value
+                              .logoutAccountConfirmation ??
+                          "-",
+                      style: typographyServices.bodyLargeBold.value,
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      languageServices.language.value.logoutAndNeedLogBack ??
+                          "-",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFFB3B3B3),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        await logout();
+                      },
+                      child: Text(
+                        languageServices.language.value.exitNow ?? "-",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: themeColorServices.neutralsColorGrey0.value,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        Get.close(1);
+                      },
+                      buttonColor: Color(0XFFD9D9D9),
+                      child: Text(
+                        languageServices.language.value.cancel ?? "-",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      isDismissible: true,
+      isScrollControlled: true,
+    );
+  }
+
+  Future<void> onTapDeleteAccount() async {
+    var activeOrderList = await orderRideRepository.getActiveOrderList(
+      language: languageServices.languageCodeSystem.value,
+    );
+
+    if (activeOrderList.isNotEmpty) {
+      await Get.bottomSheet(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  width: Get.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFFFEAE9),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_alert_circle.svg",
+                              width: 26,
+                              height: 26,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        languageServices.language.value.journeyNotOverYet ??
+                            "-",
+                        style: typographyServices.bodyLargeBold.value,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        languageServices
+                                .language
+                                .value
+                                .unfinishedTripsDeleteAccount ??
+                            "-",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(color: Color(0XFFB3B3B3)),
+                      ),
+                      SizedBox(height: 16),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        buttonColor:
+                            themeColorServices.sematicColorRed400.value,
+                        child: Text(
+                          languageServices.language.value.understand ?? "-",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        isDismissible: true,
+        isScrollControlled: true,
+      );
+    } else {
+      await Get.bottomSheet(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  width: Get.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFFFEAE9),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_alert_circle.svg",
+                              width: 26,
+                              height: 26,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        languageServices
+                                .language
+                                .value
+                                .deleteAccountConfirmation ??
+                            "-",
+                        style: typographyServices.bodyLargeBold.value,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        languageServices
+                                .language
+                                .value
+                                .accountPermanentlyDeletedCannotRecovered ??
+                            "-",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(color: Color(0XFFB3B3B3)),
+                      ),
+                      SizedBox(height: 16),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                          await onTapValidateOtpDeleteAccount();
+                        },
+                        buttonColor:
+                            themeColorServices.sematicColorRed400.value,
+                        child: Text(
+                          languageServices.language.value.deleteAccount ?? "-",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        buttonColor: Color(0XFFD9D9D9),
+                        child: Text(
+                          languageServices.language.value.cancel ?? "-",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        isDismissible: true,
+        isScrollControlled: true,
+      );
+    }
+  }
+
+  Future<void> onTapValidateOtpDeleteAccount() async {
+    // send otp code
+    final otpCode = "".obs;
+    final errorMessage = "".obs;
+    final isButtonResendEnable = false.obs;
+
+    await otpRepository.requestOTP(
+      phone: homeController.userServices.userInfo.value.phone,
+      language: languageServices.languageCodeSystem.value,
+      type: 6,
+    );
+
+    await Get.bottomSheet(
+      Obx(
+        () => Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  width: Get.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        languageServices.language.value.enterOtpCode ?? "-",
+                        style: typographyServices.bodyLargeBold.value,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        languageServices.language.value.confirmDeleteAccount ??
+                            "-",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(color: Color(0XFFB3B3B3)),
+                      ),
+                      SvgPicture.asset(
+                        "assets/images/img_otp.svg",
+                        width: 139,
+                        height: 80,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          text:
+                              "${languageServices.language.value.verificationOtpDescription ?? "-"} ",
+                          style: typographyServices.bodySmallRegular.value
+                              .copyWith(
+                                color: themeColorServices
+                                    .neutralsColorGrey600
+                                    .value,
+                              ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text:
+                                  "+${homeController.userServices.userInfo.value.phone}",
+                              style: typographyServices.bodySmallBold.value,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Pinput(
+                        defaultPinTheme: PinTheme(
+                          textStyle: typographyServices.headingMediumBold.value
+                              .copyWith(
+                                color: themeColorServices.primaryBlue.value,
+                              ),
+                          width: 48,
+                          height: 52 + 5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: themeColorServices.primaryBlue.value,
+                            ),
+                          ),
+                        ),
+                        onCompleted: (pin) async {
+                          otpCode.value = pin;
+                        },
+                      ),
+                      if (errorMessage.value != "") ...[
+                        SizedBox(height: 16),
+                        Text(
+                          errorMessage.value,
+                          style: typographyServices.bodySmallRegular.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.sematicColorRed400.value,
+                              ),
+                        ),
+                      ],
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          if (isButtonResendEnable.value == false) ...[
+                            SlideCountdown(
+                              duration: Duration(minutes: 1),
+                              countUp: false,
+                              separatorStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(color: Color(0XFF676767)),
+                              shouldShowMinutes: (value) {
+                                return true;
+                              },
+                              onDone: () {
+                                isButtonResendEnable.value = true;
+                              },
+                              decoration: BoxDecoration(),
+                              padding: EdgeInsets.all(0),
+                              style: typographyServices.bodySmallRegular.value
+                                  .copyWith(color: Color(0XFF676767)),
+                            ),
+                          ],
+                          SizedBox(width: 10),
+                          SizedBox(
+                            height: 34,
+                            child: ElevatedButton(
+                              onPressed: isButtonResendEnable.value
+                                  ? () async {
+                                      await otpRepository.requestOTP(
+                                        phone: homeController
+                                            .userServices
+                                            .userInfo
+                                            .value
+                                            .phone,
+                                        language: languageServices
+                                            .languageCodeSystem
+                                            .value,
+                                        type: 6,
+                                      );
+                                      isButtonResendEnable.value = false;
+                                    }
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                backgroundColor:
+                                    themeColorServices.primaryBlue.value,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              child: Text(
+                                languageServices.language.value.resendCode ??
+                                    "-",
+                                style: typographyServices.bodySmallBold.value
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16 * 3),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                          try {
+                            await userRepository.deleteAccount(
+                              otpCode: otpCode.value,
+                            );
+                          } on DioException catch (e) {
+                            SnackbarHelper.showSnackbarError(
+                              text: e.error.toString(),
+                            );
+                            return;
+                          } catch (e) {
+                            SnackbarHelper.showSnackbarError(
+                              text: e.toString(),
+                            );
+                            return;
+                          }
+
+                          await onTapSuccessDeleteAccountDialog();
+
+                          await clearDataLogout();
+                          // print("[DEBUG LOGOUT] ACCOUNT LOGOUT");
+
+                          Get.offAllNamed(Routes.LOGIN_REGISTER);
+                          SnackbarHelper.showSnackbarSuccess(
+                            text:
+                                languageServices
+                                    .language
+                                    .value
+                                    .successDeleteAccount ??
+                                "-",
+                          );
+                        },
+                        child: Text(
+                          languageServices.language.value.otpConfirmation ??
+                              "-",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      LoaderElevatedButton(
+                        buttonColor: Color(0XFFD9D9D9),
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        child: Text(
+                          languageServices.language.value.cancel ?? "-",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      isDismissible: true,
+      isScrollControlled: true,
+    );
+  }
+
+  Future<void> onTapSuccessDeleteAccountDialog() async {
+    Get.dialog(
       Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,108 +856,42 @@ class AccountController extends GetxController {
               child: Material(
                 color: themeColorServices.neutralsColorGrey0.value,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        languageServices.language.value.logoutConfirmation ??
-                            "-",
-                        style: typographyServices.bodyLargeBold.value,
-                        textAlign: TextAlign.center,
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFDDFFE6),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_checkmark_circle.svg",
+                              width: 36,
+                              height: 36,
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 46,
-                              width: Get.width,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                    color: themeColorServices
-                                        .neutralsColorGrey300
-                                        .value,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  Get.close(1);
-                                },
-                                child: Text(
-                                  languageServices.language.value.cancel ?? "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey400
-                                            .value,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  var storage = FlutterSecureStorage();
-                                  await storage.deleteAll();
-                                  await socketServices.closeWebsocket();
-
-                                  Get.offAllNamed(Routes.LOGIN_REGISTER);
-
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      languageServices
-                                              .language
-                                              .value
-                                              .snackbarLogoutSuccess ??
-                                          "-",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: Text(
-                                  languageServices.language.value.logout ?? "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        languageServices
+                                .language
+                                .value
+                                .accountSuccessfullyDeleted ??
+                            "-",
+                        style: typographyServices.bodyLargeBold.value,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        languageServices.language.value.thankyouUsingEvmoto ??
+                            "-",
+                        style: typographyServices.bodySmallRegular.value,
                       ),
                     ],
                   ),
@@ -195,14 +901,17 @@ class AccountController extends GetxController {
           ],
         ),
       ),
+      barrierDismissible: false,
     );
+
+    await Future.delayed(Duration(seconds: 3)).then((value) {
+      Get.close(1);
+    });
   }
 
-  Future<void> onTapRatingAndReviewApp() async {
-    var inAppReview = InAppReview.instance;
-
-    if (await inAppReview.isAvailable()) {
-      await inAppReview.requestReview();
-    }
+  Future<void> onTapCheckUpdate() async {
+    await homeController.checkAppVersioning(
+      isShowVersionNewestConfirmationDialog: true,
+    );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/repositories/google_maps_repository.dart';
+import 'package:new_evmoto_user/app/repositories/advance_booking_repository.dart';
+import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
+import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 
 import '../controllers/ride_order_detail_controller.dart';
@@ -9,8 +11,10 @@ class RideOrderDetailBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<RideOrderDetailController>(
       () => RideOrderDetailController(
-        googleMapsRepository: GoogleMapsRepository(),
         orderRideRepository: OrderRideRepository(),
+        openMapsRepository: OpenMapsRepository(),
+        driverNearbyRepository: DriverNearbyRepository(),
+        advanceBookingRepository: AdvanceBookingRepository(),
       ),
     );
   }

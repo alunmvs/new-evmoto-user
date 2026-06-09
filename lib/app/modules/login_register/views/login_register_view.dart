@@ -1,11 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
-
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import '../controllers/login_register_controller.dart';
 
 class LoginRegisterView extends GetView<LoginRegisterController> {
@@ -15,8 +13,8 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: SvgPicture.asset(
-            "assets/logos/logo_evmoto.svg",
+          title: Image.asset(
+            "assets/logos/logo_evmoto.png",
             height: 27.87,
             width: 90,
           ),
@@ -43,27 +41,37 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
               child: Column(
                 children: [
                   SizedBox(height: 24),
-                  Center(
-                    child: Text(
-                      controller.languageServices.language.value.loginTitle ??
-                          "-",
-                      style:
-                          controller.typographyServices.headingSmallBold.value,
-                      textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Center(
+                      child: Text(
+                        controller.languageServices.language.value.loginTitle ??
+                            "-",
+                        style: controller
+                            .typographyServices
+                            .headingSmallBold
+                            .value,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   SizedBox(height: 8),
-                  Center(
-                    child: Text(
-                      controller
-                              .languageServices
-                              .language
-                              .value
-                              .loginDescription ??
-                          "-",
-                      style:
-                          controller.typographyServices.bodySmallRegular.value,
-                      textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Center(
+                      child: Text(
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .loginDescription ??
+                            "-",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                   SizedBox(height: 22),
@@ -183,17 +191,6 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                           );
                                                         },
                                                 ),
-                                                TextSpan(
-                                                  text:
-                                                      " ${controller.languageServices.language.value.tncPrivacyConfirmation3 ?? "-"}",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .captionLargeRegular
-                                                      .value
-                                                      .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
                                               ],
                                             ),
                                           ),
@@ -269,6 +266,8 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                                 .themeColorServices
                                                 .primaryBlue
                                                 .value,
+                                            autovalidateMode:
+                                                AutovalidateMode.disabled,
                                             decoration: InputDecoration(
                                               counterText: '',
                                               contentPadding:
@@ -377,18 +376,31 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                             },
                                             maxLength: 25,
                                             validator: (value) {
-                                              if (value != null) {
+                                              if (value != null &&
+                                                  value != "") {
                                                 if (value.isNotEmpty) {
                                                   if (value.substring(0, 1) !=
                                                       "8") {
-                                                    return 'Harus diawali dengan angka 8';
+                                                    return controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .mustStartWith8;
                                                   }
                                                 }
                                                 if (value.length < 8) {
-                                                  return 'Minimal nomor handphone 8 angka';
+                                                  return controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .min8DigitMobilePhone;
                                                 }
                                                 if (value.length > 15) {
-                                                  return 'Maksimal nomor handphone 15 angka';
+                                                  return controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .max15DigitMobilePhone;
                                                 }
                                               }
                                               return null;
@@ -399,151 +411,137 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                             ],
                                           ),
                                           SizedBox(height: 16),
-                                          SizedBox(
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            height: 46,
-                                            child: ElevatedButton(
-                                              onPressed:
+                                          LoaderElevatedButton(
+                                            onPressed:
+                                                controller.isFormValid.value
+                                                ? () async {
+                                                    await controller
+                                                        .onTapSubmit();
+                                                  }
+                                                : null,
+                                            buttonColor:
+                                                controller.isFormValid.value
+                                                ? controller
+                                                      .themeColorServices
+                                                      .primaryBlue
+                                                      .value
+                                                : controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey300
+                                                      .value,
+                                            borderSide: BorderSide(
+                                              color:
                                                   controller.isFormValid.value
-                                                  ? () async {
-                                                      await controller
-                                                          .onTapSubmit();
-                                                    }
-                                                  : null,
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    controller.isFormValid.value
-                                                    ? controller
-                                                          .themeColorServices
-                                                          .primaryBlue
-                                                          .value
-                                                    : controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey300
-                                                          .value,
-
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(16),
-                                                  side: BorderSide(
-                                                    color:
-                                                        controller
-                                                            .isFormValid
-                                                            .value
-                                                        ? controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue200
-                                                              .value
-                                                        : controller
-                                                              .themeColorServices
-                                                              .neutralsColorGrey200
-                                                              .value,
-                                                    width: 2,
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                controller
-                                                        .languageServices
-                                                        .language
+                                                  ? controller
+                                                        .themeColorServices
+                                                        .sematicColorBlue200
                                                         .value
-                                                        .loginButton ??
-                                                    "-",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodyLargeBold
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey0
-                                                          .value,
-                                                    ),
-                                              ),
+                                                  : controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey200
+                                                        .value,
+                                              width: 2,
+                                            ),
+                                            child: Text(
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .loginButton ??
+                                                  "-",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey0
+                                                        .value,
+                                                  ),
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 16),
-                                    Center(
-                                      child: Text(
-                                        controller
-                                                .languageServices
-                                                .language
-                                                .value
-                                                .loginOr ??
-                                            "-",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey500
-                                                  .value,
-                                            ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 16),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            height: 48,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: SvgPicture.asset(
-                                                "assets/logos/logo_facebook.svg",
-                                                height: 24,
-                                                width: 24,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: 16),
-                                        Expanded(
-                                          child: Container(
-                                            width: MediaQuery.of(
-                                              context,
-                                            ).size.width,
-                                            height: 48,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Center(
-                                              child: SvgPicture.asset(
-                                                "assets/logos/logo_google.svg",
-                                                height: 24,
-                                                width: 24,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    // SizedBox(height: 16),
+                                    // Center(
+                                    //   child: Text(
+                                    //     controller
+                                    //             .languageServices
+                                    //             .language
+                                    //             .value
+                                    //             .loginOr ??
+                                    //         "-",
+                                    //     style: controller
+                                    //         .typographyServices
+                                    //         .bodySmallRegular
+                                    //         .value
+                                    //         .copyWith(
+                                    //           color: controller
+                                    //               .themeColorServices
+                                    //               .neutralsColorGrey500
+                                    //               .value,
+                                    //         ),
+                                    //   ),
+                                    // ),
+
+                                    // SizedBox(height: 16),
+                                    // Row(
+                                    //   children: [
+                                    //     Expanded(
+                                    //       child: Container(
+                                    //         width: MediaQuery.of(
+                                    //           context,
+                                    //         ).size.width,
+                                    //         height: 48,
+                                    //         decoration: BoxDecoration(
+                                    //           border: Border.all(
+                                    //             color: controller
+                                    //                 .themeColorServices
+                                    //                 .neutralsColorGrey200
+                                    //                 .value,
+                                    //           ),
+                                    //           borderRadius:
+                                    //               BorderRadius.circular(12),
+                                    //         ),
+                                    //         child: Center(
+                                    //           child: SvgPicture.asset(
+                                    //             "assets/logos/logo_facebook.svg",
+                                    //             height: 24,
+                                    //             width: 24,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //     SizedBox(width: 16),
+                                    //     Expanded(
+                                    //       child: Container(
+                                    //         width: MediaQuery.of(
+                                    //           context,
+                                    //         ).size.width,
+                                    //         height: 48,
+                                    //         decoration: BoxDecoration(
+                                    //           border: Border.all(
+                                    //             color: controller
+                                    //                 .themeColorServices
+                                    //                 .neutralsColorGrey200
+                                    //                 .value,
+                                    //           ),
+                                    //           borderRadius:
+                                    //               BorderRadius.circular(12),
+                                    //         ),
+                                    //         child: Center(
+                                    //           child: SvgPicture.asset(
+                                    //             "assets/logos/logo_google.svg",
+                                    //             height: 24,
+                                    //             width: 24,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
                               ),

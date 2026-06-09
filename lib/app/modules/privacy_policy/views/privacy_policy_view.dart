@@ -36,7 +36,9 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
             : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Html(data: controller.agreement.value.content),
+                  child: controller.agreement.value.content == null
+                      ? Container()
+                      : Html(data: controller.agreement.value.content),
                 ),
               ),
       ),

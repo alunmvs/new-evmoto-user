@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/add_edit_address_controller.dart';
@@ -84,7 +85,7 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                           .languageServices
                                           .language
                                           .value
-                                          .name ??
+                                          .locationName ??
                                       "-",
                                   style: controller
                                       .typographyServices
@@ -168,6 +169,15 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                         .value,
                                   ),
                                 ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: controller
@@ -187,6 +197,27 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[A-Za-z0-9 ]'),
+                                ),
+                              ],
+                              validationMessages: {
+                                ValidationMessage.required: (error) =>
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .requiredFields ??
+                                    "-",
+                                ValidationMessage.maxLength: (error) =>
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .maxCharacter50 ??
+                                    "-",
+                              },
                             ),
                             SizedBox(height: 16),
                             Row(
@@ -196,7 +227,7 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                                           .languageServices
                                           .language
                                           .value
-                                          .address ??
+                                          .enterLocation ??
                                       "-",
                                   style: controller
                                       .typographyServices
@@ -220,124 +251,151 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
                               ],
                             ),
                             SizedBox(height: 4),
-                            ReactiveTextField(
-                              readOnly: true,
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value,
-                              cursorErrorColor: controller
-                                  .themeColorServices
-                                  .primaryBlue
-                                  .value,
-                              formControlName: 'address_detail',
-                              onTap: (control) async {
-                                var googlePlaceTextSearch = await Get.toNamed(
-                                  Routes.SEARCH_ADDRESS,
-                                );
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      var geocodingPlace = await Get.toNamed(
+                                        Routes.SEARCH_ADDRESS,
+                                        preventDuplicates: false,
+                                        arguments: {
+                                          "tag": DateTime.now()
+                                              .millisecondsSinceEpoch
+                                              .toString(),
+                                        },
+                                      );
 
-                                if (googlePlaceTextSearch != null) {
-                                  controller.googlePlaceTextSearch.value =
-                                      googlePlaceTextSearch;
+                                      if (geocodingPlace != null) {
+                                        controller.geocodingPlace.value =
+                                            geocodingPlace;
 
-                                  controller.formGroup
+                                        controller.formGroup
+                                                .control("address_detail")
+                                                .value =
+                                            geocodingPlace.address;
+                                      }
+                                    },
+                                    child: Text(
+                                      controller.formGroup
                                           .control("address_detail")
-                                          .value =
-                                      googlePlaceTextSearch.formattedAddress;
-                                }
-                              },
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
-                                hintText:
-                                    controller
-                                        .languageServices
-                                        .language
-                                        .value
-                                        .enterYourAddress ??
-                                    "-",
-                                hintStyle: controller
-                                    .typographyServices
-                                    .bodySmallRegular
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey400
+                                          .value,
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
                                           .value,
                                     ),
-                                errorStyle: controller
-                                    .typographyServices
-                                    .bodySmallRegular
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .sematicColorRed500
-                                          .value,
-                                    ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed500
-                                        .value,
                                   ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed500
+                                  SizedBox(height: 8),
+                                  ReactiveTextField(
+                                    readOnly: false,
+                                    style: controller
+                                        .typographyServices
+                                        .captionLargeRegular
                                         .value,
-                                  ),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey400
-                                        .value,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: controller
+                                    cursorErrorColor: controller
                                         .themeColorServices
                                         .primaryBlue
                                         .value,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_circle.svg",
-                                            width: 12.6,
-                                            height: 12.6,
+                                    formControlName: 'address_notes',
+                                    onTap: (control) async {},
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 12,
+                                      ),
+                                      hintText: controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .addBenchmark,
+                                      hintStyle: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey400
+                                                .value,
                                           ),
-                                        ],
+                                      errorStyle: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .sematicColorRed500
+                                                .value,
+                                          ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        borderSide: BorderSide(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        borderSide: BorderSide(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: controller
+                                              .themeColorServices
+                                              .primaryBlue
+                                              .value,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                    validationMessages: {
+                                      ValidationMessage.required: (error) =>
+                                          controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .requiredFields ??
+                                          "-",
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -361,30 +419,14 @@ class AddEditAddressView extends GetView<AddEditAddressController> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 46,
-              width: MediaQuery.of(context).size.width,
-              child: ElevatedButton(
-                onPressed: () async {
-                  await controller.onTapSaveAddress();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      controller.themeColorServices.primaryBlue.value,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: Text(
-                  controller
-                          .languageServices
-                          .language
-                          .value
-                          .snackbarAddressAddSuccess ??
-                      "-",
-                  style: controller.typographyServices.bodyLargeBold.value
-                      .copyWith(color: Colors.white),
-                ),
+            LoaderElevatedButton(
+              onPressed: () async {
+                await controller.onTapSaveAddress();
+              },
+              child: Text(
+                controller.languageServices.language.value.saveAddress ?? "-",
+                style: controller.typographyServices.bodyLargeBold.value
+                    .copyWith(color: Colors.white),
               ),
             ),
           ],

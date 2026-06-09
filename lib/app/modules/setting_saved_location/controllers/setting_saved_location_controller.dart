@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,8 @@ import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -44,8 +47,14 @@ class SettingSavedLocationController extends GetxController {
   }
 
   Future<void> getSavedAddressList() async {
-    savedAddressList.value = (await savedAddressRepository
-        .getSavedAddressList());
+    try {
+      savedAddressList.value = (await savedAddressRepository
+          .getSavedAddressList());
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+    }
   }
 
   Future<void> onTapMoreOptions({required SavedAddress savedAddress}) async {
@@ -68,7 +77,7 @@ class SettingSavedLocationController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Menu Lainnya",
+                          languageServices.language.value.otherMenu ?? "-",
                           style: typographyServices.bodyLargeBold.value,
                         ),
                         GestureDetector(
@@ -106,10 +115,17 @@ class SettingSavedLocationController extends GetxController {
                         GestureDetector(
                           onTap: () {
                             Get.close(1);
-                            Get.toNamed(
-                              Routes.ADD_EDIT_ADDRESS,
-                              arguments: {"saved_address": savedAddress},
-                            );
+                            if (savedAddress.addressType == 3) {
+                              Get.toNamed(
+                                Routes.ADD_EDIT_ADDRESS_OTHER,
+                                arguments: {"saved_address": savedAddress},
+                              );
+                            } else {
+                              Get.toNamed(
+                                Routes.ADD_EDIT_ADDRESS,
+                                arguments: {"saved_address": savedAddress},
+                              );
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.all(12),
@@ -129,13 +145,17 @@ class SettingSavedLocationController extends GetxController {
                                   "assets/icons/icon_edit.svg",
                                   width: 16,
                                   height: 16,
-                                  color: themeColorServices
-                                      .neutralsColorGrey700
-                                      .value,
+                                  colorFilter: ColorFilter.mode(
+                                    themeColorServices
+                                        .neutralsColorGrey700
+                                        .value,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  "Edit Alamat",
+                                  languageServices.language.value.editAddress ??
+                                      "-",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -175,13 +195,18 @@ class SettingSavedLocationController extends GetxController {
                                   "assets/icons/icon_delete.svg",
                                   width: 16,
                                   height: 16,
-                                  color: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
+                                  colorFilter: ColorFilter.mode(
+                                    themeColorServices.sematicColorRed400.value,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  "Hapus Alamat",
+                                  languageServices
+                                          .language
+                                          .value
+                                          .deleteAddress ??
+                                      "-",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -205,6 +230,7 @@ class SettingSavedLocationController extends GetxController {
           ),
         ],
       ),
+      isScrollControlled: true,
     );
   }
 
@@ -270,7 +296,11 @@ class SettingSavedLocationController extends GetxController {
 
                             await Get.toNamed(
                               Routes.SEARCH_ADDRESS,
-                              arguments: {"address_type": 1},
+                              arguments: {
+                                "address_type": 1,
+                                "tag": DateTime.now().millisecondsSinceEpoch
+                                    .toString(),
+                              },
                             );
                           },
                           child: Container(
@@ -314,7 +344,11 @@ class SettingSavedLocationController extends GetxController {
 
                             await Get.toNamed(
                               Routes.SEARCH_ADDRESS,
-                              arguments: {"address_type": 2},
+                              arguments: {
+                                "address_type": 2,
+                                "tag": DateTime.now().millisecondsSinceEpoch
+                                    .toString(),
+                              },
                             );
                           },
                           child: Container(
@@ -357,8 +391,12 @@ class SettingSavedLocationController extends GetxController {
                             Get.close(1);
 
                             await Get.toNamed(
-                              Routes.SEARCH_ADDRESS,
-                              arguments: {"address_type": 3},
+                              Routes.ADD_EDIT_ADDRESS_OTHER,
+                              arguments: {
+                                "address_type": 3,
+                                "tag": DateTime.now().millisecondsSinceEpoch
+                                    .toString(),
+                              },
                             );
                           },
                           child: Container(
@@ -405,6 +443,7 @@ class SettingSavedLocationController extends GetxController {
           ),
         ],
       ),
+      isScrollControlled: true,
     );
   }
 
@@ -457,7 +496,7 @@ class SettingSavedLocationController extends GetxController {
                                   Get.close(1);
                                 },
                                 child: Text(
-                                  "Batal",
+                                  languageServices.language.value.cancel ?? "-",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color: themeColorServices
@@ -470,81 +509,42 @@ class SettingSavedLocationController extends GetxController {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  try {
-                                    await savedAddressRepository
-                                        .deleteSavedAddress(
-                                          id: savedAddress.id!,
-                                        );
-                                    Get.close(1);
-                                    var snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorGreen400
-                                          .value,
-                                      content: Text(
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                try {
+                                  await savedAddressRepository
+                                      .deleteSavedAddress(id: savedAddress.id!);
+                                  Get.close(1);
+                                  SnackbarHelper.showSnackbarSuccess(
+                                    text:
                                         languageServices
-                                                .language
-                                                .value
-                                                .snackbarDeleteAddressSuccess ??
-                                            "-",
-                                        style: typographyServices
-                                            .bodySmallRegular
+                                            .language
                                             .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
+                                            .snackbarDeleteAddressSuccess ??
+                                        "-",
+                                  );
 
-                                    await getSavedAddressList();
-                                  } catch (e) {
-                                    var snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorRed400
+                                  await getSavedAddressList();
+                                } on DioException catch (e) {
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.error.toString(),
+                                  );
+                                } catch (e) {
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.toString(),
+                                  );
+                                }
+                              },
+                              buttonColor:
+                                  themeColorServices.sematicColorRed400.value,
+                              child: Text(
+                                languageServices.language.value.delete ?? "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
                                           .value,
-                                      content: Text(
-                                        e.toString(),
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: Text(
-                                  languageServices.language.value.delete ?? "-",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
+                                    ),
                               ),
                             ),
                           ),

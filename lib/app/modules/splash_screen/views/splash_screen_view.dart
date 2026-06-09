@@ -1,8 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:get/get.dart';
-
+import 'package:new_evmoto_user/app/widgets/global_body_handler.dart';
 import '../controllers/splash_screen_controller.dart';
 
 class SplashScreenView extends GetView<SplashScreenController> {
@@ -11,31 +10,42 @@ class SplashScreenView extends GetView<SplashScreenController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        body: controller.isFetch.value
-            ? Container()
-            : Stack(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0XFFFFFFFF), Color(0XFFCDE2F8)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
-                      ),
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        body: GlobalBodyHandler(
+          isFetch: controller.isFetch.value,
+          isCriticalError: controller.isCriticalError.value,
+          onInit: () async {
+            await controller.onInit();
+          },
+          body: controller.isFetch.value
+              ? Center(
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: controller.themeColorServices.primaryBlue.value,
                     ),
                   ),
-                  Center(
-                    child: SvgPicture.asset(
-                      "assets/logos/logo_evmoto.svg",
-                      height: 49,
-                      width: 160,
+                )
+              : controller.splashScreenQueryImage.value.url == null
+              ? Center(
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: controller.themeColorServices.primaryBlue.value,
                     ),
                   ),
-                ],
-              ),
+                )
+              : SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: CachedNetworkImage(
+                    imageUrl: controller.splashScreenQueryImage.value.url!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+        ),
       ),
     );
   }

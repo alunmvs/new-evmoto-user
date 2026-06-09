@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -18,7 +20,9 @@ class RideOrderCancelController extends GetxController {
 
   final formGroup = FormGroup({
     "reason": FormControl<String>(validators: <Validator>[Validators.required]),
-    "remark": FormControl<String>(validators: <Validator>[]),
+    "remark": FormControl<String>(
+      validators: <Validator>[Validators.maxLength(150)],
+    ),
   });
 
   final orderId = "".obs;
@@ -51,17 +55,9 @@ class RideOrderCancelController extends GetxController {
     formGroup.markAllAsTouched();
 
     if (formGroup.valid == false) {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarError(
+        text: languageServices.language.value.snackbarRequiredNotSuccess ?? "-",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
@@ -76,30 +72,13 @@ class RideOrderCancelController extends GetxController {
 
       Get.back();
       Get.back();
-
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorGreen400.value,
-        content: Text(
-          languageServices.language.value.snackbarCancelOrderSuccess ?? "-",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarSuccess(
+        text: languageServices.language.value.snackbarCancelOrderSuccess ?? "-",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
     } catch (e) {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

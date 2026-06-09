@@ -7,6 +7,9 @@ class FirebaseRemoteConfigServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
+  }
+
+  Future<void> manualOnInit() async {
     await remoteConfig.setConfigSettings(
       RemoteConfigSettings(
         fetchTimeout: Duration(seconds: 30),
@@ -15,8 +18,8 @@ class FirebaseRemoteConfigServices extends GetxService {
     );
 
     await remoteConfig.setDefaults({
-      "user_base_url": "https://api-dev.evmotoapp.com",
       "customer_cs_whatsapp": "6285167020937",
+      "sendbird_app_id": "E3B73B26-53A0-4460-894F-AF6E3D6AD40F",
     });
 
     await remoteConfig.fetchAndActivate();

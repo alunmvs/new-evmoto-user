@@ -6,6 +6,7 @@ import 'package:get/get.dart' hide MultipartFile, FormData;
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class UploadImageRepository {
   final apiServices = Get.find<ApiServices>();
@@ -13,8 +14,7 @@ class UploadImageRepository {
 
   Future<String> uploadImage({required XFile file}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/account/base/driver/img/upload";
+      var url = "$baseUrl/account/base/driver/img/upload";
 
       var formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(file.path, filename: file.name),
@@ -25,17 +25,17 @@ class UploadImageRepository {
 
       return response.data["url"];
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
-  Future<String?> uploadCall({
+  Future<String?> uploadUserAvatar({
     required File file,
     required String fileName,
   }) async {
     try {
       final storageRef = FirebaseStorage.instance.ref().child(
-        'evmoto_calls/$fileName',
+        'evmoto_user_avatar/$fileName',
       );
 
       await storageRef.putFile(file);

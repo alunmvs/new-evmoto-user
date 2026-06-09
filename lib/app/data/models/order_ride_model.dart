@@ -11,10 +11,10 @@ class OrderRide {
   String? arriveTime;
   double? startLon;
   double? startLat;
-  String? startAddress;
-  String? startCity;
   double? endLon;
   double? endLat;
+  String? startAddress;
+  String? startCity;
   String? endAddress;
   String? endCity;
   int? driverId;
@@ -24,7 +24,7 @@ class OrderRide {
   String? brand;
   String? carColor;
   double? score;
-  int? orderNum;
+  String? orderNum;
   int? historyNum;
   String? driverPhone;
   double? cancelPayMoney;
@@ -76,8 +76,19 @@ class OrderRide {
   int? userId;
   String? userHeadImg;
   int? weight;
+  int? payType;
+  String? content;
+  List? ratingLabels;
+  String? startAddressName;
+  String? endAddressName;
+  int? freeWaitMinutes;
+  String? driverArrivedOriginAt;
+  String? driverConfirmFeesAt;
+
+  String? actorType;
 
   OrderRide({
+    this.actorType,
     this.orderId,
     this.orderType,
     this.type,
@@ -155,9 +166,18 @@ class OrderRide {
     this.userId,
     this.userHeadImg,
     this.weight,
+    this.payType,
+    this.content,
+    this.ratingLabels,
+    this.startAddressName,
+    this.endAddressName,
+    this.freeWaitMinutes,
+    this.driverArrivedOriginAt,
+    this.driverConfirmFeesAt,
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
+    actorType = json['actorType'];
     orderId = json['orderId'];
     orderType = json['orderType'];
     type = json['type'];
@@ -235,12 +255,21 @@ class OrderRide {
     userId = json['userId'];
     userHeadImg = json['userHeadImg'];
     weight = json['weight'];
+    payType = json['payType'];
+    content = json['content'];
+    ratingLabels = json['ratingLabels'];
+    startAddressName = json['startAddressName'];
+    endAddressName = json['endAddressName'];
+    freeWaitMinutes = json['freeWaitMinutes'];
+    driverArrivedOriginAt = json['driverArrivedOriginAt'];
+    driverConfirmFeesAt = json['driverConfirmFeesAt'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['orderId'] = this.orderId;
     data['orderType'] = this.orderType;
+    data['freeWaitMinutes'] = this.freeWaitMinutes;
     data['type'] = this.type;
     data['state'] = this.state;
     data['insertTime'] = this.insertTime;
@@ -316,6 +345,13 @@ class OrderRide {
     data['userId'] = this.userId;
     data['userHeadImg'] = this.userHeadImg;
     data['weight'] = this.weight;
+    data['payType'] = this.payType;
+    data['content'] = this.content;
+    data['ratingLabels'] = this.ratingLabels;
+    data['startAddressName'] = this.startAddressName;
+    data['endAddressName'] = this.endAddressName;
+    data['driverArrivedOriginAt'] = this.driverArrivedOriginAt;
+    data['driverConfirmFeesAt'] = this.driverConfirmFeesAt;
     return data;
   }
 }

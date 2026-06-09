@@ -36,4 +36,6 @@ class ThemeColorServices extends GetxService {
   final neutralsColorSlate800 = Color(0XFF1A1F28).obs;
   final overlayDark100 = Color(0XFF000000).obs;
   final overlayDark200 = Color(0XFF000000).obs;
+
+  final redColor = Color(0XFFE11C0B).obs;
 }

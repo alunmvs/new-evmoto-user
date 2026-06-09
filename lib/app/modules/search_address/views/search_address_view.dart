@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-
 import '../controllers/search_address_controller.dart';
 
-class SearchAddressView extends GetView<SearchAddressController> {
-  const SearchAddressView({super.key});
+class SearchAddressView extends StatelessWidget {
+  SearchAddressView({super.key});
+
+  final controller = Get.find<SearchAddressController>(
+    tag: Get.arguments['tag'],
+  );
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -20,7 +22,8 @@ class SearchAddressView extends GetView<SearchAddressController> {
             controller.isFetch.value
                 ? ""
                 : controller.addressType.value == 1
-                ? controller.languageServices.language.value.addHome ?? "-"
+                ? controller.languageServices.language.value.addLocationHome ??
+                      "-"
                 : controller.addressType.value == 2
                 ? controller
                           .languageServices
@@ -28,7 +31,7 @@ class SearchAddressView extends GetView<SearchAddressController> {
                           .value
                           .addLocationOffice ??
                       "-"
-                : controller.languageServices.language.value.addOtherAddress ??
+                : controller.languageServices.language.value.addLocationOther ??
                       "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
@@ -145,18 +148,29 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                 .typographyServices
                                 .bodySmallRegular
                                 .value,
+
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                 vertical: 12,
                                 horizontal: 12,
                               ),
-                              hintText:
-                                  controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .enterYourAddress ??
-                                  "-",
+                              hintText: controller.addressType.value == 1
+                                  ? controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterLocationHomeAddress
+                                  : controller.addressType.value == 2
+                                  ? controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterLocationOfficeAddress
+                                  : controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterLocationOtherAddress,
                               hintStyle: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -190,11 +204,6 @@ class SearchAddressView extends GetView<SearchAddressController> {
                           ),
                         ],
                       ),
-                    ).animate().slide(
-                      begin: Offset(0, -1),
-                      end: Offset(0, 0),
-                      curve: Curves.easeInOut,
-                      duration: 500.ms,
                     ),
                   ],
                   Expanded(
@@ -205,7 +214,8 @@ class SearchAddressView extends GetView<SearchAddressController> {
                           .neutralsColorGrey0
                           .value,
                       onRefresh: () async {
-                        await controller.requestLocation();
+                        await controller.locationServices
+                            .requestLocationSplashScreen();
                         await controller.getPlaceLocationList(
                           keyword: controller.keyword.value,
                         );
@@ -264,10 +274,13 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                 : "assets/icons/icon_pinpoint.svg",
                                             width: 18,
                                             height: 18,
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
+                                            colorFilter: ColorFilter.mode(
+                                              controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -330,12 +343,24 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                             horizontal: 12,
                                           ),
                                           hintText:
-                                              controller
-                                                  .languageServices
-                                                  .language
-                                                  .value
-                                                  .enterYourAddress ??
-                                              "-",
+                                              controller.addressType.value == 1
+                                              ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterLocationHomeAddress
+                                              : controller.addressType.value ==
+                                                    2
+                                              ? controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterLocationOfficeAddress
+                                              : controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .enterLocationOtherAddress,
                                           hintStyle: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -392,25 +417,95 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 2),
-                                      for (var googlePlaceTextSearch
-                                          in controller
-                                              .googlePlaceTextSearchList) ...[
+                                      if (controller
+                                              .geocodingPlaceList
+                                              .isEmpty &&
+                                          controller.keyword.value != '' &&
+                                          controller
+                                                  .isFetchAddressSearch
+                                                  .value ==
+                                              false) ...[
+                                        Container(
+                                          padding: EdgeInsets.all(16),
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
+                                          child: Column(
+                                            children: [
+                                              Image.asset(
+                                                "assets/images/img_location_not_found.png",
+                                                width: 72,
+                                                height: 72,
+                                              ),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .locationNotFound ??
+                                                    "-",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value
+                                                    .copyWith(),
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .makesureAddressCorrect ??
+                                                    '-',
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                      for (var geocodingPlace
+                                          in controller.geocodingPlaceList) ...[
                                         GestureDetector(
                                           onTap: () {
                                             if (controller.isEdit.value ==
                                                 true) {
-                                              Get.back(
-                                                result: googlePlaceTextSearch,
-                                              );
+                                              Get.back(result: geocodingPlace);
                                             } else {
+                                              // var isInsideserviceArea =
+                                              //     isLatLngInsideServiceArea(
+                                              //       latitude:
+                                              //           geocodingPlace.lat!,
+                                              //       longitude:
+                                              //           geocodingPlace.lng!,
+                                              //     );
+                                              // if (isInsideserviceArea ==
+                                              //     false) {
+                                              //   SnackbarHelper.showSnackbarError(
+                                              //     text:
+                                              //         controller
+                                              //             .languageServices
+                                              //             .language
+                                              //             .value
+                                              //             .addressOutsideService ??
+                                              //         "-",
+                                              //   );
+                                              //   return;
+                                              // }
                                               Get.toNamed(
                                                 Routes.ADD_EDIT_ADDRESS,
                                                 arguments: {
                                                   "address_type": controller
                                                       .addressType
                                                       .value,
-                                                  "google_place_text_search":
-                                                      googlePlaceTextSearch,
+                                                  "geocoding_place":
+                                                      geocodingPlace,
                                                 },
                                               );
                                             }
@@ -452,10 +547,14 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                         "assets/icons/icon_pinpoint.svg",
                                                         width: 13.5,
                                                         height: 15.75,
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .primaryBlue
-                                                            .value,
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                              controller
+                                                                  .themeColorServices
+                                                                  .primaryBlue
+                                                                  .value,
+                                                              BlendMode.srcIn,
+                                                            ),
                                                       ),
                                                     ],
                                                   ),
@@ -469,7 +568,7 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                     children: [
                                                       TextHighlight(
                                                         text:
-                                                            googlePlaceTextSearch
+                                                            geocodingPlace
                                                                 .name ??
                                                             "-",
                                                         words: controller
@@ -484,7 +583,12 @@ class SearchAddressView extends GetView<SearchAddressController> {
                                                       SizedBox(height: 4),
                                                       TextHighlight(
                                                         text:
-                                                            "${controller.getDistanceString(googlePlaceTextSearch: googlePlaceTextSearch)} ⬩ ${googlePlaceTextSearch.formattedAddress}",
+                                                            geocodingPlace
+                                                                    .customDistanceM !=
+                                                                null
+                                                            ? "${controller.getDistanceString(geocodingPlace: geocodingPlace)} ⬩ ${geocodingPlace.address}"
+                                                            : geocodingPlace
+                                                                  .address!,
                                                         words: controller
                                                             .highlightedWordAddress,
                                                         textStyle: controller

@@ -1,10 +1,10 @@
-import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
-
 class HistoryOrder {
   int? orderId;
   String? orderTime;
   String? time;
+  String? startAddressName;
   String? startAddress;
+  String? endAddressName;
   String? endAddress;
   int? num;
   int? driverId;
@@ -19,13 +19,21 @@ class HistoryOrder {
   String? orderName;
   int? orderType;
   int? insertTime;
-  OrderRide? orderRide;
+  double? collectionFees;
+  String? startLon;
+  String? startLat;
+  String? endLon;
+  String? endLat;
+  int? orderScore;
+  int? reservation;
 
   HistoryOrder({
     this.orderId,
     this.orderTime,
     this.time,
+    this.startAddressName,
     this.startAddress,
+    this.endAddressName,
     this.endAddress,
     this.num,
     this.driverId,
@@ -40,15 +48,24 @@ class HistoryOrder {
     this.orderName,
     this.orderType,
     this.insertTime,
-    this.orderRide,
+    this.collectionFees,
+    this.startLon,
+    this.startLat,
+    this.endLon,
+    this.endLat,
+    this.orderScore,
+    this.reservation,
   });
 
   HistoryOrder.fromJson(Map<String, dynamic> json) {
+    reservation = json['reservation'];
     orderId = json['orderId'];
     orderTime = json['orderTime'];
     time = json['time'];
     startAddress = json['startAddress'];
+    startAddressName = json['startAddressName'];
     endAddress = json['endAddress'];
+    endAddressName = json['endAddressName'];
     num = json['num'];
     driverId = json['driverId'];
     state = json['state'];
@@ -62,10 +79,17 @@ class HistoryOrder {
     orderName = json['orderName'];
     orderType = json['orderType'];
     insertTime = json['insertTime'];
+    collectionFees = json['collectionFees'];
+    startLon = json['startLon'];
+    startLat = json['startLat'];
+    endLon = json['endLon'];
+    endLat = json['endLat'];
+    orderScore = json['orderScore'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['reservation'] = this.reservation;
     data['orderId'] = this.orderId;
     data['orderTime'] = this.orderTime;
     data['time'] = this.time;
@@ -84,6 +108,12 @@ class HistoryOrder {
     data['orderName'] = this.orderName;
     data['orderType'] = this.orderType;
     data['insertTime'] = this.insertTime;
+    data['collectionFees'] = this.collectionFees;
+    data['startLon'] = this.startLon;
+    data['startLat'] = this.startLat;
+    data['endLon'] = this.endLon;
+    data['endLat'] = this.endLat;
+    data['orderScore'] = this.orderScore;
     return data;
   }
 }

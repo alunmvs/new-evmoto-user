@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class CouponRepository {
   final apiServices = Get.find<ApiServices>();
@@ -14,16 +15,19 @@ class CouponRepository {
     int? language,
     int? size,
     int? state,
+    double? amount,
+    required String? priceNo,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/activity/api/coupon/queryMyCoupons";
+      var url = "$baseUrl/activity/api/coupon/queryMyCoupons";
 
       var formData = FormData.fromMap({
         "pageNum": pageNum,
         "size": size,
         "state": state,
         "language": language,
+        "priceNo": priceNo,
+        "amount": amount,
       });
 
       var storage = FlutterSecureStorage();
@@ -41,13 +45,19 @@ class CouponRepository {
         options: Options(headers: headers),
       );
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       var couponList = <Coupon>[];
       for (var coupon in response.data['data']) {
         couponList.add(Coupon.fromJson(coupon));
       }
 
       return couponList;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -61,8 +71,7 @@ class CouponRepository {
     int? state,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/activity/api/taxi/queryCoupon";
+      var url = "$baseUrl/activity/api/taxi/queryCoupon";
 
       var formData = FormData.fromMap({
         "orderId": orderId,
@@ -75,13 +84,19 @@ class CouponRepository {
       var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
       var couponList = <Coupon>[];
       for (var coupon in response.data['coupon']) {
         couponList.add(Coupon.fromJson(coupon));
       }
 
       return couponList;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

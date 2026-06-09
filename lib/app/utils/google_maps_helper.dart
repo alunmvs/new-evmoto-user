@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:turf/nearest_point_on_line.dart';
@@ -30,6 +28,10 @@ Map<String, dynamic> getClosestPointIndex(
 }
 
 double getDistanceFromRoute(LatLng driver, List<LatLng> routePoints) {
+  if (routePoints.length < 2) {
+    return 0.0;
+  }
+
   var lineString = turf.LineString(
     coordinates: [
       for (var p in routePoints) turf.Position(p.longitude, p.latitude),
@@ -46,39 +48,19 @@ double getDistanceFromRoute(LatLng driver, List<LatLng> routePoints) {
   return distance.toDouble();
 }
 
-double calculateTotalDistance(List<LatLng> polylineList) {
-  double totalDistance = 0.0;
-
-  for (int i = 0; i < polylineList.length - 1; i++) {
-    totalDistance += _calculateDistance(
-      polylineList[i].latitude,
-      polylineList[i].longitude,
-      polylineList[i + 1].latitude,
-      polylineList[i + 1].longitude,
-    );
+LatLngBounds getBoundsFromLatLngList(List<LatLng> list) {
+  assert(list.isNotEmpty);
+  double? x0, x1, y0, y1;
+  for (LatLng latLng in list) {
+    if (x0 == null) {
+      x0 = x1 = latLng.latitude;
+      y0 = y1 = latLng.longitude;
+    } else {
+      if (latLng.latitude > x1!) x1 = latLng.latitude;
+      if (latLng.latitude < x0) x0 = latLng.latitude;
+      if (latLng.longitude > y1!) y1 = latLng.longitude;
+      if (latLng.longitude < y0!) y0 = latLng.longitude;
+    }
   }
-
-  return totalDistance;
-}
-
-double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-  const double earthRadius = 6371;
-
-  double dLat = _degToRad(lat2 - lat1);
-  double dLon = _degToRad(lon2 - lon1);
-
-  double a =
-      sin(dLat / 2) * sin(dLat / 2) +
-      cos(_degToRad(lat1)) *
-          cos(_degToRad(lat2)) *
-          sin(dLon / 2) *
-          sin(dLon / 2);
-
-  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-
-  return earthRadius * c;
-}
-
-double _degToRad(double degree) {
-  return degree * (pi / 180);
+  return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
 }

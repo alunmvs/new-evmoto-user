@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 class OtpRepository {
   final apiServices = Get.find<ApiServices>();
@@ -9,8 +10,7 @@ class OtpRepository {
 
   Future<void> requestOTP({String? phone, int? language, int? type}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("user_base_url")}/account/base/queryCaptcha";
+      var url = "$baseUrl/account/base/queryCaptcha";
 
       var formData = FormData.fromMap({
         "phone": phone,
@@ -21,10 +21,12 @@ class OtpRepository {
       var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
       }
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

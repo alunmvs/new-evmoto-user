@@ -8,6 +8,7 @@ class OrderRidePricing {
   double? duration;
   double? discountMoney;
   int? type;
+  String? priceNo;
 
   OrderRidePricing({
     this.id,
@@ -19,6 +20,7 @@ class OrderRidePricing {
     this.duration,
     this.discountMoney,
     this.type,
+    this.priceNo,
   });
 
   OrderRidePricing.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class OrderRidePricing {
     duration = json['duration'];
     discountMoney = json['discountMoney'];
     type = json['type'];
+    priceNo = json['priceNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +47,7 @@ class OrderRidePricing {
     data['duration'] = this.duration;
     data['discountMoney'] = this.discountMoney;
     data['type'] = this.type;
+    data['priceNo'] = this.priceNo;
     return data;
   }
 }

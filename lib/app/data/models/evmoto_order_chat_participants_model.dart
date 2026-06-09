@@ -1,20 +1,32 @@
 class EvmotoOrderChatParticipants {
-  int? driverId;
+  String? docId;
+  String? driverId;
   String? driverName;
   bool? driverIsOnline;
   DateTime? driverLastSeen;
   bool? driverIsOnChatScreen;
   DateTime? driverChatScreenLastSeen;
   DateTime? driverJoinedAt;
-  int? userId;
+  String? userId;
   String? userName;
   bool? userIsOnline;
   DateTime? userLastSeen;
   bool? userIsOnChatScreen;
   DateTime? userChatScreenLastSeen;
   DateTime? userJoinedAt;
+  String? orderId;
+  String? lastMessage;
+  DateTime? lastMessageAt;
+  String? driverProfileUrl;
+  String? userProfileUrl;
+  int? totalUnreadChatDriver;
+  int? totalUnreadChatUser;
 
   EvmotoOrderChatParticipants({
+    this.docId,
+    this.driverProfileUrl,
+    this.userProfileUrl,
+    this.orderId,
     this.driverId,
     this.driverName,
     this.driverIsOnline,
@@ -27,9 +39,19 @@ class EvmotoOrderChatParticipants {
     this.userIsOnChatScreen,
     this.userLastSeen,
     this.userJoinedAt,
+    this.lastMessage,
+    this.lastMessageAt,
+    this.totalUnreadChatDriver,
+    this.totalUnreadChatUser,
   });
 
   EvmotoOrderChatParticipants.fromJson(Map<String, dynamic> json) {
+    totalUnreadChatDriver = json['totalUnreadChatDriver'];
+    totalUnreadChatUser = json['totalUnreadChatUser'];
+    docId = json['docId'];
+    driverProfileUrl = json['driverProfileUrl'];
+    userProfileUrl = json['userProfileUrl'];
+    orderId = json['orderId'].toString();
     driverId = json['driverId'];
     driverName = json['driverName'];
     driverIsOnline = json['driverIsOnline'];
@@ -56,10 +78,15 @@ class EvmotoOrderChatParticipants {
     if (json['userJoinedAt'] != null) {
       userJoinedAt = json['userJoinedAt'].toDate();
     }
+    lastMessage = json['lastMessage'];
+    if (json['lastMessageAt'] != null) {
+      lastMessageAt = json['lastMessageAt'].toDate();
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['orderId'] = this.orderId;
     data['driverId'] = this.driverId;
     data['driverName'] = this.driverName;
     data['driverIsOnline'] = this.driverIsOnline;
