@@ -40,6 +40,8 @@ abstract class Routes {
   static const ADVANCED_BOOKING_SEARCHING_DRIVER =
       _Paths.ADVANCED_BOOKING_SEARCHING_DRIVER;
   static const ADD_EDIT_ADDRESS_OTHER = _Paths.ADD_EDIT_ADDRESS_OTHER;
+  static const RIDE_CHECKOUT_SELECT_PAYMENT_METHOD =
+      _Paths.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD;
 }
 
 abstract class _Paths {
@@ -79,4 +81,6 @@ abstract class _Paths {
   static const ADVANCED_BOOKING_SEARCHING_DRIVER =
       '/advanced-booking-searching-driver';
   static const ADD_EDIT_ADDRESS_OTHER = '/add-edit-address-other';
+  static const RIDE_CHECKOUT_SELECT_PAYMENT_METHOD =
+      '/ride-checkout-select-payment-method';
 }
