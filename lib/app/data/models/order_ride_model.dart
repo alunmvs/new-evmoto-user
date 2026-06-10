@@ -86,8 +86,10 @@ class OrderRide {
   String? driverConfirmFeesAt;
 
   String? actorType;
+  double? freeWaitTime;
 
   OrderRide({
+    this.freeWaitTime,
     this.actorType,
     this.orderId,
     this.orderType,
@@ -177,6 +179,7 @@ class OrderRide {
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
+    freeWaitTime = json['freeWaitTime'];
     actorType = json['actorType'];
     orderId = json['orderId'];
     orderType = json['orderType'];
@@ -267,6 +270,7 @@ class OrderRide {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['freeWaitTime'] = this.freeWaitTime;
     data['orderId'] = this.orderId;
     data['orderType'] = this.orderType;
     data['freeWaitMinutes'] = this.freeWaitMinutes;

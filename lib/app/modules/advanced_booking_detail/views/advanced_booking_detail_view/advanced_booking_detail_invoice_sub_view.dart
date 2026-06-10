@@ -164,6 +164,78 @@ class AdvancedBookingDetailInvoiceSubView
                       ],
                       SizedBox(height: 12),
                     ],
+                    if (controller.orderRideDetail.value.state != 10) ...[
+                      SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .waitingTimeFeeTitle ??
+                                    "-",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey700
+                                          .value,
+                                    ),
+                              ),
+                              if ((controller.orderRideDetail.value.waitMoney ??
+                                      0.0) >
+                                  0) ...[
+                                Text(
+                                  (controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .waitingTimeFeeDescription ??
+                                          "-")
+                                      .replaceAll(
+                                        "{time}",
+                                        "${(controller.orderRideDetail.value.wait ?? 0.0).round()} ${controller.languageServices.language.value.minute}",
+                                      ),
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(color: Color(0XFFB3B3B3)),
+                                ),
+                              ],
+                            ],
+                          ),
+                          Text(
+                            NumberFormat.currency(
+                              locale: 'id_ID',
+                              symbol: 'Rp',
+                              decimalDigits: 0,
+                            ).format(
+                              controller.orderRideDetail.value.waitMoney,
+                            ),
+                            style: controller
+                                .typographyServices
+                                .bodySmallBold
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey700
+                                      .value,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
