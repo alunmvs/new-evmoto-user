@@ -26,8 +26,8 @@ class HomeMapSubView extends GetView<HomeController> {
                     mapId: controller.googleMapController.future.then<int>(
                       (value) => value.mapId,
                     ),
-                    duration: const Duration(milliseconds: 2400),
-                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.linear,
                     markers: Set<Marker>.from(controller.markers.values),
                     shouldAnimateCamera: false,
                     useRotation: true,
