@@ -627,7 +627,7 @@ class AdvancedBookingDetailView
                                                 ),
                                           ),
                                           Text(
-                                            "${formatDoubleToString((controller.orderRideDetail.value.mileage ?? 0.0) + (controller.orderRideDetail.value.startMileage ?? 0.0))} ${controller.languageServices.language.value.km!.toLowerCase()}",
+                                            "${formatDoubleToString((controller.orderRideDetail.value.mileage ?? 0.0))} ${controller.languageServices.language.value.km!.toLowerCase()}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular

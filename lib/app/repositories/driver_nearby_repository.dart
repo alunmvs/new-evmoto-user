@@ -38,9 +38,11 @@ class DriverNearbyRepository {
 
       var result = <DriverNearby>[];
 
-      for (var driverNearby in response.data['data']) {
-        result.add(DriverNearby.fromJson(driverNearby));
-      }
+      try {
+        for (var driverNearby in response.data['data']) {
+          result.add(DriverNearby.fromJson(driverNearby));
+        }
+      } catch (e) {}
 
       return result;
     } on DioException {
