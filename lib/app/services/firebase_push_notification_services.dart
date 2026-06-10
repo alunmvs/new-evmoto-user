@@ -188,6 +188,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     return;
   }
 
+  if (message.data['notification_type'] == 'ORDER_STATE_CHANGES') {
+    if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL ||
+        Get.currentRoute == Routes.CHAT_DETAIL) {
+      Get.find<RideOrderDetailController>().handleSocketOrderStatus();
+    }
+    return;
+  }
+
   flutterLocalNotificationsPlugin.show(
     DateTime.now().millisecondsSinceEpoch ~/ 1000,
     message.data['title'],
@@ -433,6 +441,14 @@ class FirebasePushNotificationServices extends GetxService {
         }
       }
 
+      if (message.data['notification_type'] == 'ORDER_STATE_CHANGES') {
+        if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL ||
+            Get.currentRoute == Routes.CHAT_DETAIL) {
+          Get.find<RideOrderDetailController>().handleSocketOrderStatus();
+        }
+        return;
+      }
+
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
         message.data['title'],
@@ -448,9 +464,6 @@ class FirebasePushNotificationServices extends GetxService {
             color: const Color(0XFF0060C6),
             sound: RawResourceAndroidNotificationSound(''),
           ),
-          // iOS: DarwinNotificationDetails(
-          //   sound:
-          // ),
         ),
       );
     });
