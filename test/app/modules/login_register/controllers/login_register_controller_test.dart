@@ -6,9 +6,7 @@ import 'package:new_evmoto_user/app/modules/login_register/controllers/login_reg
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
-import 'package:new_evmoto_user/app/services/typography_services.dart';
-
-class FakeTypographyServices extends Fake implements TypographyServices {}
+import '../../../../helpers/test_typography_services.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +28,8 @@ void main() {
         max15DigitMobilePhone: 'Maximum 15 digits',
       );
       Get.put<LanguageServices>(languageServices);
+
+      registerTestTypographyServices();
     }
 
     Future<void> pumpLoginForm(
@@ -54,11 +54,7 @@ void main() {
 
     setUp(() {
       registerDependencies();
-      controller = LoginRegisterController(
-        themeColorServices: themeColorServices,
-        typographyServices: FakeTypographyServices(),
-        languageServices: languageServices,
-      );
+      controller = LoginRegisterController();
       controller.onInit();
     });
 
