@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:native_flutter_proxy/native_flutter_proxy.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
@@ -30,8 +32,26 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+Future<void> applyProxy(ProxySetting settings) async {
+  if (!settings.enabled || settings.host == null) {
+    HttpOverrides.global = null;
+    return;
+  }
+
+  CustomProxy(ipAddress: settings.host!, port: settings.port).enable();
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    final settings = await NativeProxyReader.proxySetting;
+    await applyProxy(settings);
+  } catch (e) {}
+
+  NativeProxyReader.setProxyChangedCallback((settings) async {
+    await applyProxy(settings);
+  });
 
   await initializeDateFormatting('id_ID', null);
 
@@ -143,7 +163,7 @@ Future<void> main() async {
                               padding: EdgeInsets.all(8),
                               margin: EdgeInsets.only(right: 16),
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Obx(

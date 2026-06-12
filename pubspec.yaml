@@ -84,6 +84,7 @@ dependencies:
   marquee: ^2.3.0
   cloud_firestore: ^6.1.1
   flutter_animarker: ^3.4.0-beta.1
+  native_flutter_proxy: ^0.3.1
 
   # flutter_animarker:
   #   git:
@@ -109,6 +110,7 @@ dev_dependencies:
   unused_assets_removal:
     git:
       url: https://github.com/3boodev/unused_assets_removal
+  mocktail: ^1.0.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
