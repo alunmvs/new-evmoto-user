@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -6,6 +5,7 @@ import 'package:new_evmoto_user/app/modules/account/controllers/account_controll
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
@@ -108,6 +108,7 @@ Future<void> clearDataLogout() async {
     }
   } catch (e) {}
 
+  final apiServices = Get.find<ApiServices>();
   final socketServices = Get.find<SocketServices>();
   final firebasePushNotificationServices =
       Get.find<FirebasePushNotificationServices>();
@@ -121,20 +122,27 @@ Future<void> clearDataLogout() async {
       );
     }
 
+    // Unsubscribe FCM while token is still available.
+    try {
+      await firebasePushNotificationServices.onUnsubscribe();
+    } catch (e) {}
+
+    apiServices.beginLogout();
+
     await Future.wait([
       // sendbirdServices.clearLogout(),
       // sendbirdChatServices.clearLogout(),
-      firebasePushNotificationServices.onUnsubscribe(),
       storage.delete(key: 'token'),
       socketServices.closeWebsocket(),
       prefs.clear(),
     ], eagerError: false);
     userServices.clearUserInfo();
-  } on DioException catch (e) {
-    SnackbarHelper.showSnackbarError(text: e.error.toString());
-  } catch (e) {
-    SnackbarHelper.showSnackbarError(text: e.toString());
-  }
+  } catch (e) {}
+}
+
+void finishLogoutSession() {
+  Get.offAllNamed(Routes.LOGIN_REGISTER);
+  Get.find<ApiServices>().endLogout();
 }
 
 Future<void> logout() async {
@@ -143,8 +151,7 @@ Future<void> logout() async {
   final languageServices = Get.find<LanguageServices>();
 
   await clearDataLogout();
-
-  Get.offAllNamed(Routes.LOGIN_REGISTER);
+  finishLogoutSession();
 
   SnackbarHelper.showSnackbarSuccess(
     text: languageServices.language.value.snackbarLogoutSuccess ?? "-",

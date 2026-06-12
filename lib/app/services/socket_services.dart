@@ -125,7 +125,7 @@ class SocketServices extends GetxService {
                   // print("[DEBUG LOGOUT] SOCKET OFFLINE");
                   var languageServices = Get.find<LanguageServices>();
                   await clearDataLogout();
-                  Get.offAllNamed(Routes.LOGIN_REGISTER);
+                  finishLogoutSession();
                   SnackbarHelper.showSnackbarError(
                     text: languageServices.language.value.offlineText ?? "-",
                   );

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class SnackbarHelper {
@@ -49,6 +50,11 @@ class SnackbarHelper {
   }
 
   static showSnackbarError({required String text}) {
+    if (Get.isRegistered<ApiServices>() &&
+        Get.find<ApiServices>().isLoggingOut) {
+      return;
+    }
+
     // final themeColorServices = Get.find<ThemeColorServices>();
     final typographyServices = Get.find<TypographyServices>();
 

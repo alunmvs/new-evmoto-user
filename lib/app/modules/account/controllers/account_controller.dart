@@ -6,7 +6,6 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
@@ -796,7 +795,7 @@ class AccountController extends GetxController {
                           await clearDataLogout();
                           // print("[DEBUG LOGOUT] ACCOUNT LOGOUT");
 
-                          Get.offAllNamed(Routes.LOGIN_REGISTER);
+                          finishLogoutSession();
                           SnackbarHelper.showSnackbarSuccess(
                             text:
                                 languageServices
