@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
-import 'package:marker_widget/marker_widget.dart';
 import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_messages_model.dart';
@@ -33,9 +32,7 @@ import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
-import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_user/main.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'dart:async';
 
@@ -1230,13 +1227,13 @@ class RideOrderDetailController extends GetxController {
 
     for (var driverNearby in driverNearbyList) {
       var markerId = MarkerId("driver_nearby_${driverNearby.driverId}");
-      var widgetBitmapDescriptor =
-          await DriverNearbyPositionWidget(
-            driverNearby: driverNearby,
-          ).toMarkerBitmap(
-            navigatorKey.currentContext!,
-            logicalSize: Size(64, 106),
-          );
+      // var widgetBitmapDescriptor =
+      //     await DriverNearbyPositionWidget(
+      //       driverNearby: driverNearby,
+      //     ).toMarkerBitmap(
+      //       navigatorKey.currentContext!,
+      //       logicalSize: Size(64, 106),
+      //     );
       var markerDriverNearby = Marker(
         markerId: markerId,
         position: LatLng(driverNearby.lat!, driverNearby.lon!),
@@ -1271,24 +1268,24 @@ class RideOrderDetailController extends GetxController {
       }
 
       if (isExist == false) {
-        var widgetBitmapDescriptor =
-            await DriverNearbyPositionWidget(
-              driverNearby: DriverNearby(),
-            ).toMarkerBitmap(
-              navigatorKey.currentContext!,
-              logicalSize: Size(64, 106),
-            );
-        var markerDriverNearby = Marker(
-          markerId: markerId,
-          position: LatLng(0.0, 0.0),
-          // icon: widgetBitmapDescriptor,
-          icon: await BitmapDescriptor.asset(
-            ImageConfiguration(size: Size(64, 106)),
-            'assets/icons/icon_driver.png',
-          ),
-          anchor: Offset(0.5, 0.5),
-          visible: false,
-        );
+        // var widgetBitmapDescriptor =
+        //     await DriverNearbyPositionWidget(
+        //       driverNearby: DriverNearby(),
+        //     ).toMarkerBitmap(
+        //       navigatorKey.currentContext!,
+        //       logicalSize: Size(64, 106),
+        //     );
+        // var markerDriverNearby = Marker(
+        //   markerId: markerId,
+        //   position: LatLng(0.0, 0.0),
+        //   // icon: widgetBitmapDescriptor,
+        //   icon: await BitmapDescriptor.asset(
+        //     ImageConfiguration(size: Size(64, 106)),
+        //     'assets/icons/icon_driver.png',
+        //   ),
+        //   anchor: Offset(0.5, 0.5),
+        //   visible: false,
+        // );
         removedMarkerIdList.add(markerId);
         // markers[markerId] = markerDriverNearby;
       }

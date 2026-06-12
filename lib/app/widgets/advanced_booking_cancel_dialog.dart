@@ -5,7 +5,6 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_user/main.dart';
 
 class AdvancedBookingCancelDialog extends StatelessWidget {
   final Function onTapConfirm;

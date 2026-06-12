@@ -10,7 +10,6 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_user/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class SettingSavedLocationController extends GetxController {

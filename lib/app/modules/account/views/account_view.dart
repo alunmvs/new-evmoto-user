@@ -4,9 +4,6 @@ import 'package:new_evmoto_user/app/modules/account/views/account_view/account_l
 import 'package:new_evmoto_user/app/modules/account/views/account_view/account_menu_section_1_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/account/views/account_view/account_menu_section_2_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/account/views/account_view/account_user_info_sub_view.dart';
-import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
-import 'package:new_evmoto_user/app/widgets/advanced_booking_expired_dialog.dart';
 import '../controllers/account_controller.dart';
 
 class AccountView extends GetView<AccountController> {

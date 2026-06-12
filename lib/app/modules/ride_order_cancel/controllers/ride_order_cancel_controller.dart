@@ -1,12 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class RideOrderCancelController extends GetxController {

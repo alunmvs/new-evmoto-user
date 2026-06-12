@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/controllers/account_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
-import 'package:new_evmoto_user/app/widgets/driver_cancel_dialog.dart';
 
 class AccountUserInfoSubView extends GetView<AccountController> {
   const AccountUserInfoSubView({super.key});

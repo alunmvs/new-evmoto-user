@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:marker_widget/marker_widget.dart';
 import 'package:new_evmoto_user/app/data/models/coupon_model.dart';
 import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_pricing_model.dart';
@@ -25,10 +24,8 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_user/app/widgets/driver_nearby_position_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
-import 'package:new_evmoto_user/main.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateOrderRideCheckoutController extends GetxController {
@@ -249,13 +246,13 @@ class CreateOrderRideCheckoutController extends GetxController {
       var markerId = MarkerId(
         "driver_nearby_${driverNearby.driverId}_${idPinpoint.value}",
       );
-      var widgetBitmapDescriptor =
-          await DriverNearbyPositionWidget(
-            driverNearby: driverNearby,
-          ).toMarkerBitmap(
-            navigatorKey.currentContext!,
-            logicalSize: Size(64, 106),
-          );
+      // var widgetBitmapDescriptor =
+      //     await DriverNearbyPositionWidget(
+      //       driverNearby: driverNearby,
+      //     ).toMarkerBitmap(
+      //       navigatorKey.currentContext!,
+      //       logicalSize: Size(64, 106),
+      //     );
       var markerDriverNearby = Marker(
         markerId: markerId,
         position: LatLng(driverNearby.lat!, driverNearby.lon!),
@@ -285,24 +282,24 @@ class CreateOrderRideCheckoutController extends GetxController {
       }
 
       if (isExist == false) {
-        var widgetBitmapDescriptor =
-            await DriverNearbyPositionWidget(
-              driverNearby: DriverNearby(),
-            ).toMarkerBitmap(
-              navigatorKey.currentContext!,
-              logicalSize: Size(64, 106),
-            );
-        var markerDriverNearby = Marker(
-          markerId: markerId,
-          position: LatLng(0.0, 0.0),
-          // icon: widgetBitmapDescriptor,
-          icon: await BitmapDescriptor.asset(
-            ImageConfiguration(size: Size(64, 106)),
-            'assets/icons/icon_driver.png',
-          ),
-          anchor: Offset(0.5, 0.5),
-          visible: false,
-        );
+        // var widgetBitmapDescriptor =
+        //     await DriverNearbyPositionWidget(
+        //       driverNearby: DriverNearby(),
+        //     ).toMarkerBitmap(
+        //       navigatorKey.currentContext!,
+        //       logicalSize: Size(64, 106),
+        //     );
+        // var markerDriverNearby = Marker(
+        //   markerId: markerId,
+        //   position: LatLng(0.0, 0.0),
+        //   // icon: widgetBitmapDescriptor,
+        //   icon: await BitmapDescriptor.asset(
+        //     ImageConfiguration(size: Size(64, 106)),
+        //     'assets/icons/icon_driver.png',
+        //   ),
+        //   anchor: Offset(0.5, 0.5),
+        //   visible: false,
+        // );
         // markers[markerId] = markerDriverNearby;
         removedMarkerIdList.add(markerId);
       }

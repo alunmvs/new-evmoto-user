@@ -16,7 +16,6 @@ import 'package:new_evmoto_user/app/utils/common_helper.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_user/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';

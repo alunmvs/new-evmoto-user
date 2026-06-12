@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/controllers/advanced_booking_detail_controller.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advanced_booking_detail_driver_information_sub_view.dart';
-import 'package:new_evmoto_user/app/utils/general_helper.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class AdvancedBookingDetailMapOriginDestinationInformationSubView

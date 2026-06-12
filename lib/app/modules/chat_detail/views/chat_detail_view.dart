@@ -565,10 +565,13 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                               "assets/icons/icon_add_square.svg",
                                               width: 12,
                                               height: 12,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
+                                              colorFilter: ColorFilter.mode(
+                                                controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey0
+                                                    .value,
+                                                BlendMode.srcIn,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -667,10 +670,13 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                               "assets/icons/icon_send_message.svg",
                                               width: 16,
                                               height: 16,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
+                                              colorFilter: ColorFilter.mode(
+                                                controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey0
+                                                    .value,
+                                                BlendMode.srcIn,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -742,10 +748,14 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                           "assets/icons/icon_gallery.svg",
                                                           width: 24,
                                                           height: 24,
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue500
-                                                              .value,
+                                                          colorFilter:
+                                                              ColorFilter.mode(
+                                                            controller
+                                                                .themeColorServices
+                                                                .sematicColorBlue500
+                                                                .value,
+                                                            BlendMode.srcIn,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -820,10 +830,14 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                               24.079988479614258,
                                                           height:
                                                               20.717695236206055,
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .sematicColorBlue500
-                                                              .value,
+                                                          colorFilter:
+                                                              ColorFilter.mode(
+                                                            controller
+                                                                .themeColorServices
+                                                                .sematicColorBlue500
+                                                                .value,
+                                                            BlendMode.srcIn,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
