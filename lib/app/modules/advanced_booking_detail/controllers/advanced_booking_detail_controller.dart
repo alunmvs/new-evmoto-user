@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -139,9 +138,9 @@ class AdvancedBookingDetailController extends GetxController {
     if (isClosed) return;
     polylines.clear();
 
-    markers.value = markers
-        .where((m) => m.markerId != MarkerId('appointment_origin'))
-        .toSet();
+    markers.assignAll(
+      markers.where((m) => m.markerId != MarkerId('appointment_origin')),
+    );
 
     var markerId = MarkerId("origin");
     var newMarker = Marker(
@@ -268,9 +267,9 @@ class AdvancedBookingDetailController extends GetxController {
     var isNewMarkerExists = markers.any((m) => m.markerId == markerId);
 
     if (isNewMarkerExists) {
-      markers.value = markers
-          .map((m) => m.markerId == markerId ? newMarker : m)
-          .toSet();
+      markers.assignAll(
+        markers.map((m) => m.markerId == markerId ? newMarker : m),
+      );
     } else {
       markers.add(newMarker);
     }

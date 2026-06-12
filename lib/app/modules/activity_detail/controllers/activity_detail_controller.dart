@@ -16,7 +16,6 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_user/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -158,9 +157,9 @@ class ActivityDetailController extends GetxController {
     if (isClosed) return;
     polylines.clear();
 
-    markers.value = markers
-        .where((m) => m.markerId != MarkerId('appointment_origin'))
-        .toSet();
+    markers.assignAll(
+      markers.where((m) => m.markerId != MarkerId('appointment_origin')),
+    );
 
     var markerId = MarkerId("origin");
     var newMarker = Marker(
@@ -287,9 +286,9 @@ class ActivityDetailController extends GetxController {
     var isNewMarkerExists = markers.any((m) => m.markerId == markerId);
 
     if (isNewMarkerExists) {
-      markers.value = markers
-          .map((m) => m.markerId == markerId ? newMarker : m)
-          .toSet();
+      markers.assignAll(
+        markers.map((m) => m.markerId == markerId ? newMarker : m),
+      );
     } else {
       markers.add(newMarker);
     }

@@ -6,7 +6,6 @@ import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
 import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_origin_destination_sub_view.dart';
-import 'package:new_evmoto_user/app/modules/activity/views/activity_view/activity_history_order_card_sub_view/activity_card_status_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/activity/views/activity_view/advanced_booking_history_card/advanced_booking_action_sub_view.dart';
 
 class AdvancedBookingHistoryCardSubView extends GetView<ActivityController> {

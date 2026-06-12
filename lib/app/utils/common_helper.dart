@@ -11,10 +11,9 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
-import 'package:new_evmoto_user/app/services/typography_services.dart';
+// import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_user/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 DateTime parseTime(String time) {
@@ -139,8 +138,8 @@ Future<void> clearDataLogout() async {
 }
 
 Future<void> logout() async {
-  final themeColorServices = Get.find<ThemeColorServices>();
-  final typographyServices = Get.find<TypographyServices>();
+  // final themeColorServices = Get.find<ThemeColorServices>();
+  // final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
 
   await clearDataLogout();

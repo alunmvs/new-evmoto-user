@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 

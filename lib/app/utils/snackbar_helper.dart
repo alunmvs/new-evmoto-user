@@ -1,5 +1,5 @@
 import 'package:flutter_svg/svg.dart';
-import 'package:new_evmoto_user/app/services/theme_color_services.dart';
+// import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +7,7 @@ import 'package:new_evmoto_user/main.dart';
 
 class SnackbarHelper {
   static showSnackbarSuccess({required String text}) {
-    final themeColorServices = Get.find<ThemeColorServices>();
+    // final themeColorServices = Get.find<ThemeColorServices>();
     final typographyServices = Get.find<TypographyServices>();
 
     var snackBar = SnackBar(
@@ -49,7 +49,7 @@ class SnackbarHelper {
   }
 
   static showSnackbarError({required String text}) {
-    final themeColorServices = Get.find<ThemeColorServices>();
+    // final themeColorServices = Get.find<ThemeColorServices>();
     final typographyServices = Get.find<TypographyServices>();
 
     var snackBar = SnackBar(
