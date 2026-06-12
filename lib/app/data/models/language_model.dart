@@ -399,7 +399,12 @@ class Language {
 
   String? cancelByDriver;
 
+  String? waitingTimeFeeTitle;
+  String? waitingTimeFeeDescription;
+
   Language({
+    this.waitingTimeFeeTitle,
+    this.waitingTimeFeeDescription,
     this.cancelByDriver,
     this.activityCategoryNormal,
     this.activityCategoryBooking,
@@ -784,6 +789,11 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    waitingTimeFeeTitle =
+        json['waiting_time_fee_title'] ?? "(Translate Not Found)";
+    waitingTimeFeeDescription =
+        json['waiting_time_fee_description'] ?? "(Translate Not Found)";
+
     cancelByDriver = json['cancel_by_driver'] ?? "(Translate Not Found)";
     activityCategoryNormal =
         json['activity_category_normal'] ?? "(Translate Not Found)";
@@ -1391,6 +1401,9 @@ class Language {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['waiting_time_fee_title'] = waitingTimeFeeTitle;
+    data['waiting_time_fee_description'] = waitingTimeFeeDescription;
+
     data['order_expired_text'] = orderExpiredText;
     data['offline_text'] = offlineText;
     data['enter_name_user'] = enterNameUser;

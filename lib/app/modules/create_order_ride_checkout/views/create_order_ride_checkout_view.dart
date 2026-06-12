@@ -27,7 +27,7 @@ class CreateOrderRideCheckoutView
                     ),
                     markers: Set<Marker>.from(controller.markers.values),
                     shouldAnimateCamera: false,
-                    duration: const Duration(milliseconds: 4800),
+                    duration: const Duration(milliseconds: 2400),
                     curve: Curves.linear,
                     child: GoogleMap(
                       mapType: MapType.normal,

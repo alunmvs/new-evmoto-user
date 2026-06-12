@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -309,6 +310,7 @@ class CreateOrderRideCheckoutController extends GetxController {
       idPinpoint.value = "";
       markers.clear();
       await refreshMarkerDriverNearby();
+      await setLatitudeLongitudeMarker();
     }
 
     markers.refresh();
@@ -419,12 +421,42 @@ class CreateOrderRideCheckoutController extends GetxController {
 
     if (isClosed) return;
     if (movementDirection == MovementDirection.vertical) {
+      var padding = 0.0;
+
+      var distanceInMeters = Geolocator.distanceBetween(
+        originLatitude,
+        originLongitude,
+        destinationLatitude,
+        destinationLongitude,
+      );
+
+      if (distanceInMeters <= 1000) {
+        padding = 80.0 * 2;
+      } else {
+        padding = 50.0 * 3.5;
+      }
+
       await (await googleMapController.future).animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+        CameraUpdate.newLatLngBounds(bounds, padding),
       );
     } else {
+      var padding = 0.0;
+
+      var distanceInMeters = Geolocator.distanceBetween(
+        originLatitude,
+        originLongitude,
+        destinationLatitude,
+        destinationLongitude,
+      );
+
+      if (distanceInMeters <= 1000) {
+        padding = 80.0;
+      } else {
+        padding = 50.0;
+      }
+
       await (await googleMapController.future).animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        CameraUpdate.newLatLngBounds(bounds, padding),
       );
     }
   }
@@ -460,8 +492,8 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   Future<void> setLatitudeLongitudeMarker() async {
-    markers[MarkerId("origin")] = Marker(
-      markerId: MarkerId("origin"),
+    markers[MarkerId("origin_${idPinpoint.value}")] = Marker(
+      markerId: MarkerId("origin_${idPinpoint.value}"),
       position: LatLng(
         double.parse(originLatitude.value!),
         double.parse(originLongitude.value!),
@@ -473,8 +505,8 @@ class CreateOrderRideCheckoutController extends GetxController {
       anchor: Offset(0.5, 0.5),
     );
 
-    markers[MarkerId("destination")] = Marker(
-      markerId: MarkerId("destination"),
+    markers[MarkerId("destination_${idPinpoint.value}")] = Marker(
+      markerId: MarkerId("destination_${idPinpoint.value}"),
       position: LatLng(
         double.parse(destinationLatitude.value!),
         double.parse(destinationLongitude.value!),

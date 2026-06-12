@@ -1360,6 +1360,11 @@ class HomeController extends GetxController {
               )) ??
               GeocodingAddress();
           currentAddress.value = currentGeocodingAddress.value.address;
+
+          initialCameraPosition.value = CameraPosition(
+            target: LatLng(latitude, longitude),
+            zoom: 14,
+          );
         } on DioException catch (e) {
           SnackbarHelper.showSnackbarError(text: e.error.toString());
         } catch (e) {

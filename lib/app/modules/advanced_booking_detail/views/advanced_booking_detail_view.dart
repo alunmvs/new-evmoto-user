@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
-import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/activity_detail_invoice_sub_view.dart';
+import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advanced_booking_detail_invoice_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advanced_booking_detail_map_origin_destination_information_sub_view.dart';
 import 'package:new_evmoto_user/app/utils/general_helper.dart';
 import 'package:new_evmoto_user/app/widgets/global_body_handler.dart';
@@ -627,7 +627,7 @@ class AdvancedBookingDetailView
                                                 ),
                                           ),
                                           Text(
-                                            "${formatDoubleToString(controller.orderRideDetail.value.mileage ?? 0.0)} ${controller.languageServices.language.value.km!.toLowerCase()}",
+                                            "${formatDoubleToString((controller.orderRideDetail.value.mileage ?? 0.0))} ${controller.languageServices.language.value.km!.toLowerCase()}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular

@@ -25,8 +25,8 @@ class HomeMapSubView extends GetView<HomeController> {
                     mapId: controller.googleMapController.future.then<int>(
                       (value) => value.mapId,
                     ),
-                    duration: const Duration(milliseconds: 4800),
-                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.linear,
                     markers: Set<Marker>.from(controller.markers.values),
                     shouldAnimateCamera: false,
                     useRotation: true,
@@ -42,18 +42,10 @@ class HomeMapSubView extends GetView<HomeController> {
                           // controller.markersSet.refresh();
                           // controller.markers.refresh();
 
-                          await controller.getCurrentAddress(
+                          controller.getCurrentAddress(
                             latitude: position.target.latitude,
                             longitude: position.target.longitude,
                           );
-                          controller.initialCameraPosition.value =
-                              CameraPosition(
-                                target: LatLng(
-                                  position.target.latitude,
-                                  position.target.longitude,
-                                ),
-                                zoom: 14,
-                              );
                         }
                       },
                       zoomControlsEnabled: false,

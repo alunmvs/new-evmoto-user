@@ -354,7 +354,7 @@ class ActivityDetailController extends GetxController {
     var travelFare = 0.0;
 
     travelFare += orderRideDetail.value.startMoney ?? 0.0;
-    travelFare += orderRideDetail.value.waitMoney ?? 0.0;
+    // travelFare += orderRideDetail.value.waitMoney ?? 0.0;
     travelFare += orderRideDetail.value.mileageMoney ?? 0.0;
     travelFare += orderRideDetail.value.durationMoney ?? 0.0;
     travelFare += orderRideDetail.value.longDistanceMoney ?? 0.0;
