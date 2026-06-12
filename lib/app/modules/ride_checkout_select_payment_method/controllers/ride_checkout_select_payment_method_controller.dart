@@ -8,6 +8,8 @@ class RideCheckoutSelectPaymentMethodController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
 
+  final selectedPayType = Rx<int?>(null);
+
   final isFetch = false.obs;
 
   @override
