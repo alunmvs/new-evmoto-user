@@ -165,7 +165,6 @@ class AdvancedBookingDetailInvoiceSubView
                       SizedBox(height: 12),
                     ],
                     if (controller.orderRideDetail.value.state != 10) ...[
-                      SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -220,7 +219,7 @@ class AdvancedBookingDetailInvoiceSubView
                               symbol: 'Rp',
                               decimalDigits: 0,
                             ).format(
-                              controller.orderRideDetail.value.waitMoney,
+                              controller.orderRideDetail.value.waitMoney ?? 0,
                             ),
                             style: controller
                                 .typographyServices
@@ -235,6 +234,7 @@ class AdvancedBookingDetailInvoiceSubView
                           ),
                         ],
                       ),
+                      SizedBox(height: 12),
                     ],
                   ],
                   Row(
