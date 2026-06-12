@@ -2,10 +2,16 @@ import 'package:get/get.dart';
 
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
+import '../modules/account_payment_method/bindings/account_payment_method_binding.dart';
+import '../modules/account_payment_method/views/account_payment_method_view.dart';
+import '../modules/account_payment_method_gopay_detail/bindings/account_payment_method_gopay_detail_binding.dart';
+import '../modules/account_payment_method_gopay_detail/views/account_payment_method_gopay_detail_view.dart';
 import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
 import '../modules/activity_detail/bindings/activity_detail_binding.dart';
 import '../modules/activity_detail/views/activity_detail_view.dart';
+import '../modules/add_account_payment_method/bindings/add_account_payment_method_binding.dart';
+import '../modules/add_account_payment_method/views/add_account_payment_method_view.dart';
 import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
 import '../modules/add_edit_address_other/bindings/add_edit_address_other_binding.dart';
@@ -248,6 +254,21 @@ class AppPages {
       name: _Paths.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD,
       page: () => const RideCheckoutSelectPaymentMethodView(),
       binding: RideCheckoutSelectPaymentMethodBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_PAYMENT_METHOD,
+      page: () => const AccountPaymentMethodView(),
+      binding: AccountPaymentMethodBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_ACCOUNT_PAYMENT_METHOD,
+      page: () => const AddAccountPaymentMethodView(),
+      binding: AddAccountPaymentMethodBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL,
+      page: () => const AccountPaymentMethodGopayDetailView(),
+      binding: AccountPaymentMethodGopayDetailBinding(),
     ),
   ];
 }

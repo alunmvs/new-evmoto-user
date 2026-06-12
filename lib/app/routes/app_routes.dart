@@ -42,6 +42,10 @@ abstract class Routes {
   static const ADD_EDIT_ADDRESS_OTHER = _Paths.ADD_EDIT_ADDRESS_OTHER;
   static const RIDE_CHECKOUT_SELECT_PAYMENT_METHOD =
       _Paths.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD;
+  static const ACCOUNT_PAYMENT_METHOD = _Paths.ACCOUNT_PAYMENT_METHOD;
+  static const ADD_ACCOUNT_PAYMENT_METHOD = _Paths.ADD_ACCOUNT_PAYMENT_METHOD;
+  static const ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL =
+      _Paths.ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL;
 }
 
 abstract class _Paths {
@@ -83,4 +87,8 @@ abstract class _Paths {
   static const ADD_EDIT_ADDRESS_OTHER = '/add-edit-address-other';
   static const RIDE_CHECKOUT_SELECT_PAYMENT_METHOD =
       '/ride-checkout-select-payment-method';
+  static const ACCOUNT_PAYMENT_METHOD = '/account-payment-method';
+  static const ADD_ACCOUNT_PAYMENT_METHOD = '/add-account-payment-method';
+  static const ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL =
+      '/account-payment-method-gopay-detail';
 }
