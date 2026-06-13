@@ -901,175 +901,9 @@ class RideOrderDetailController extends GetxController {
 
   Future<void> onTapRefocus() async {
     if (isClosed) return;
+    await updateCameraAutoFocus();
     if (orderRideDetail.value.state == 1) {
-      if (isClosed) return;
-      await (await googleMapController.future).animateCamera(
-        CameraUpdate.newLatLngZoom(
-          LatLng(
-            orderRideDetail.value.startLat!,
-            orderRideDetail.value.startLon!,
-          ),
-          16,
-        ),
-      );
       isPinLocationWaitingForDriverHide.value = false;
-    } else if (orderRideDetail.value.state == 2 ||
-        orderRideDetail.value.state == 3) {
-      LatLngBounds bounds;
-
-      var originLatitude = double.parse(driverLatitude.value);
-      var originLongitude = double.parse(driverLongitude.value);
-      var destinationLatitude = this.orderRideDetail.value.startLat!;
-      var destinationLongitude = this.orderRideDetail.value.startLon!;
-
-      if (originLatitude > destinationLatitude &&
-          originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, destinationLongitude),
-          northeast: LatLng(originLatitude, originLongitude),
-        );
-      } else if (originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, destinationLongitude),
-          northeast: LatLng(destinationLatitude, originLongitude),
-        );
-      } else if (originLatitude > destinationLatitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, originLongitude),
-          northeast: LatLng(originLatitude, destinationLongitude),
-        );
-      } else {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, originLongitude),
-          northeast: LatLng(destinationLatitude, destinationLongitude),
-        );
-      }
-
-      var movementDirection = compareLatLng(
-        originLat: originLatitude,
-        originLng: originLongitude,
-        destLat: destinationLatitude,
-        destLng: destinationLongitude,
-      );
-
-      if (isClosed) return;
-      if (movementDirection == MovementDirection.vertical) {
-        var padding = 0.0;
-
-        var distanceInMeters = Geolocator.distanceBetween(
-          originLatitude,
-          originLongitude,
-          destinationLatitude,
-          destinationLongitude,
-        );
-
-        if (distanceInMeters <= 1000) {
-          padding = 80.0 * 2;
-        } else {
-          padding = 50.0 * 3.5;
-        }
-
-        await (await googleMapController.future).animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, padding),
-        );
-      } else {
-        var padding = 0.0;
-
-        var distanceInMeters = Geolocator.distanceBetween(
-          originLatitude,
-          originLongitude,
-          destinationLatitude,
-          destinationLongitude,
-        );
-
-        if (distanceInMeters <= 1000) {
-          padding = 80.0;
-        } else {
-          padding = 50.0;
-        }
-
-        await (await googleMapController.future).animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, padding),
-        );
-      }
-    } else {
-      LatLngBounds bounds;
-
-      var originLatitude = double.parse(driverLatitude.value);
-      var originLongitude = double.parse(driverLongitude.value);
-      var destinationLatitude = this.orderRideDetail.value.endLat!;
-      var destinationLongitude = this.orderRideDetail.value.endLon!;
-
-      if (originLatitude > destinationLatitude &&
-          originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, destinationLongitude),
-          northeast: LatLng(originLatitude, originLongitude),
-        );
-      } else if (originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, destinationLongitude),
-          northeast: LatLng(destinationLatitude, originLongitude),
-        );
-      } else if (originLatitude > destinationLatitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, originLongitude),
-          northeast: LatLng(originLatitude, destinationLongitude),
-        );
-      } else {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, originLongitude),
-          northeast: LatLng(destinationLatitude, destinationLongitude),
-        );
-      }
-
-      var movementDirection = compareLatLng(
-        originLat: originLatitude,
-        originLng: originLongitude,
-        destLat: destinationLatitude,
-        destLng: destinationLongitude,
-      );
-
-      if (isClosed) return;
-      if (movementDirection == MovementDirection.vertical) {
-        var padding = 0.0;
-
-        var distanceInMeters = Geolocator.distanceBetween(
-          originLatitude,
-          originLongitude,
-          destinationLatitude,
-          destinationLongitude,
-        );
-
-        if (distanceInMeters <= 1000) {
-          padding = 80.0 * 2;
-        } else {
-          padding = 50.0 * 3.5;
-        }
-
-        await (await googleMapController.future).animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, padding),
-        );
-      } else {
-        var padding = 0.0;
-
-        var distanceInMeters = Geolocator.distanceBetween(
-          originLatitude,
-          originLongitude,
-          destinationLatitude,
-          destinationLongitude,
-        );
-
-        if (distanceInMeters <= 1000) {
-          padding = 80.0;
-        } else {
-          padding = 50.0;
-        }
-
-        await (await googleMapController.future).animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, padding),
-        );
-      }
     }
   }
 
@@ -1650,270 +1484,101 @@ class RideOrderDetailController extends GetxController {
     }
   }
 
-  // (await googleMapController.future)
+  Future<void> ensureGoogleMapReady() async {
+    if (isGoogleMapControllerCreated.value) return;
+
+    try {
+      await googleMapController.future.timeout(const Duration(seconds: 5));
+    } catch (_) {}
+  }
+
+  LatLng? _driverPositionForCamera() {
+    final driverLat = double.tryParse(driverLatitude.value);
+    final driverLng = double.tryParse(driverLongitude.value);
+
+    if (driverLat == null ||
+        driverLng == null ||
+        driverLat == 0 ||
+        driverLng == 0) {
+      return null;
+    }
+
+    return LatLng(driverLat, driverLng);
+  }
+
+  LatLng _destinationForCurrentState() {
+    if ([1, 2, 3, 4].contains(state.value)) {
+      return LatLng(
+        orderRideDetail.value.startLat!,
+        orderRideDetail.value.startLon!,
+      );
+    }
+
+    return LatLng(
+      orderRideDetail.value.endLat!,
+      orderRideDetail.value.endLon!,
+    );
+  }
+
   Future<void> updateCameraAutoFocus() async {
-    // waiting driver accept
-    if ([1].contains(state.value)) {
-      if (isClosed) return;
-      await (await googleMapController.future).animateCamera(
-        CameraUpdate.newLatLngZoom(
+    if (isClosed) return;
+
+    await ensureGoogleMapReady();
+    if (isClosed) return;
+
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (isClosed) return;
+
+    final orderState = state.value;
+    if (![1, 2, 3, 4, 5, 6, 7, 8].contains(orderState)) return;
+
+    final mapController = await googleMapController.future;
+    if (isClosed) return;
+
+    final driver = _driverPositionForCamera();
+    if (driver == null) {
+      await animateMapToFitPoints(
+        mapController,
+        [
           LatLng(
             orderRideDetail.value.startLat!,
             orderRideDetail.value.startLon!,
           ),
-          16,
+          LatLng(
+            orderRideDetail.value.endLat!,
+            orderRideDetail.value.endLon!,
+          ),
+        ],
+      );
+      return;
+    }
+
+    final routePoints = polylinesCoordinate.toList();
+    if (routePoints.isEmpty) {
+      final destination = _destinationForCurrentState();
+      final distanceToDestination = Geolocator.distanceBetween(
+        driver.latitude,
+        driver.longitude,
+        destination.latitude,
+        destination.longitude,
+      );
+
+      await animateMapToDriverWithRoute(
+        mapController,
+        driver: driver,
+        routePoints: const [],
+        defaultZoom: zoomLevelForRouteLookAhead(
+          distanceToDestination.clamp(150, 2000),
         ),
       );
+      return;
     }
 
-    var driverLatitude = (double.tryParse(this.driverLatitude.value) ?? 0.0)
-        .toInt();
-    var driverLongitude = (double.tryParse(this.driverLongitude.value) ?? 0.0)
-        .toInt();
-
-    if (driverLatitude != 0 && driverLongitude != 0) {
-      // driver to origin
-      if ([2, 3, 4].contains(state.value)) {
-        LatLngBounds bounds;
-
-        var originLatitude = double.parse(this.driverLatitude.value);
-        var originLongitude = double.parse(this.driverLongitude.value);
-        var destinationLatitude = orderRideDetail.value.startLat!;
-        var destinationLongitude = orderRideDetail.value.startLon!;
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-
-        var movementDirection = compareLatLng(
-          originLat: originLatitude,
-          originLng: originLongitude,
-          destLat: destinationLatitude,
-          destLng: destinationLongitude,
-        );
-
-        if (isClosed) return;
-        if (movementDirection == MovementDirection.vertical) {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0 * 2;
-          } else {
-            padding = 50.0 * 3.5;
-          }
-
-          await (await googleMapController.future).animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        } else {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0;
-          } else {
-            padding = 50.0;
-          }
-
-          await (await googleMapController.future).animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        }
-      }
-
-      // driver to destination
-      if ([5, 6, 7, 8].contains(state.value)) {
-        LatLngBounds bounds;
-
-        var originLatitude = double.parse(this.driverLatitude.value);
-        var originLongitude = double.parse(this.driverLongitude.value);
-        var destinationLatitude = orderRideDetail.value.endLat!;
-        var destinationLongitude = orderRideDetail.value.endLon!;
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-
-        var movementDirection = compareLatLng(
-          originLat: originLatitude,
-          originLng: originLongitude,
-          destLat: destinationLatitude,
-          destLng: destinationLongitude,
-        );
-
-        if (isClosed) return;
-        if (movementDirection == MovementDirection.vertical) {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0 * 2;
-          } else {
-            padding = 50.0 * 3.5;
-          }
-
-          await (await googleMapController.future).animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        } else {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0;
-          } else {
-            padding = 50.0;
-          }
-
-          await (await googleMapController.future).animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        }
-      }
-    } else {
-      if ([2, 3, 4, 5, 6, 7, 8].contains(state.value)) {
-        LatLngBounds bounds;
-
-        var originLatitude = orderRideDetail.value.startLat!;
-        var originLongitude = orderRideDetail.value.startLon!;
-        var destinationLatitude = orderRideDetail.value.endLat!;
-        var destinationLongitude = orderRideDetail.value.endLon!;
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-
-        var movementDirection = compareLatLng(
-          originLat: originLatitude,
-          originLng: originLongitude,
-          destLat: destinationLatitude,
-          destLng: destinationLongitude,
-        );
-
-        if (isClosed) return;
-        if (movementDirection == MovementDirection.vertical) {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0 * 2;
-          } else {
-            padding = 50.0 * 3.5;
-          }
-
-          await (await googleMapController.future).animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        } else {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0;
-          } else {
-            padding = 50.0;
-          }
-
-          await (await googleMapController.future).animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        }
-      }
-    }
+    await animateMapToDriverWithRoute(
+      mapController,
+      driver: driver,
+      routePoints: routePoints,
+    );
   }
 
   // polylines & polylinesCoordinate
