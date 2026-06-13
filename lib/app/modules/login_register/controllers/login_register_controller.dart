@@ -19,23 +19,22 @@ class LoginRegisterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    mobilePhone.value = "";
+    isFormValid.value = false;
+    mobileNumberTextEditingController.clear();
     mobileNumberTextEditingController.addListener(validateForm);
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
+    mobileNumberTextEditingController.removeListener(validateForm);
+    mobileNumberTextEditingController.dispose();
     super.onClose();
   }
 
   void validateForm() {
-    isFormValid.value =
-        loginRegisterFormKey.currentState!.validate() &&
-        mobilePhone.value != "";
+    final isValid = loginRegisterFormKey.currentState?.validate() ?? false;
+    isFormValid.value = isValid && mobilePhone.value != "";
   }
 
   Future<void> onTapSubmit() async {

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/controllers/account_controller.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/modules/login_register/controllers/login_register_controller.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
@@ -141,6 +142,9 @@ Future<void> clearDataLogout() async {
 }
 
 void finishLogoutSession() {
+  if (Get.isRegistered<LoginRegisterController>()) {
+    Get.delete<LoginRegisterController>(force: true);
+  }
   Get.offAllNamed(Routes.LOGIN_REGISTER);
   Get.find<ApiServices>().endLogout();
 }

@@ -7,6 +7,7 @@ class LoginRegisterBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<LoginRegisterController>(
       () => LoginRegisterController(),
+      fenix: true,
     );
   }
 }
