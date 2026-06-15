@@ -15,7 +15,6 @@ class GopayPaymentRepository {
   Future<GopayLinkData> linkGopay({
     required String phoneNumber,
     required String countryCode,
-    required String redirectUrl,
   }) async {
     try {
       var url = "$baseUrl/account/api/gopay/link";
@@ -23,7 +22,6 @@ class GopayPaymentRepository {
       var data = {
         "phoneNumber": phoneNumber,
         "countryCode": countryCode,
-        "redirectUrl": redirectUrl,
       };
 
       var storage = FlutterSecureStorage();

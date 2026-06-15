@@ -34,6 +34,8 @@ import '../modules/create_order_ride_map_select/bindings/create_order_ride_map_s
 import '../modules/create_order_ride_map_select/views/create_order_ride_map_select_view.dart';
 import '../modules/create_order_ride_promo/bindings/create_order_ride_promo_binding.dart';
 import '../modules/create_order_ride_promo/views/create_order_ride_promo_view.dart';
+import '../modules/gopay_activation_webview/bindings/gopay_activation_webview_binding.dart';
+import '../modules/gopay_activation_webview/views/gopay_activation_webview_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login_register/bindings/login_register_binding.dart';
@@ -269,6 +271,11 @@ class AppPages {
       name: _Paths.ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL,
       page: () => const AccountPaymentMethodGopayDetailView(),
       binding: AccountPaymentMethodGopayDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.GOPAY_ACTIVATION_WEBVIEW,
+      page: () => const GopayActivationWebviewView(),
+      binding: GopayActivationWebviewBinding(),
     ),
   ];
 }

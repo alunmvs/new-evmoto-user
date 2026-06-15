@@ -46,6 +46,7 @@ abstract class Routes {
   static const ADD_ACCOUNT_PAYMENT_METHOD = _Paths.ADD_ACCOUNT_PAYMENT_METHOD;
   static const ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL =
       _Paths.ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL;
+  static const GOPAY_ACTIVATION_WEBVIEW = _Paths.GOPAY_ACTIVATION_WEBVIEW;
 }
 
 abstract class _Paths {
@@ -91,4 +92,5 @@ abstract class _Paths {
   static const ADD_ACCOUNT_PAYMENT_METHOD = '/add-account-payment-method';
   static const ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL =
       '/account-payment-method-gopay-detail';
+  static const GOPAY_ACTIVATION_WEBVIEW = '/gopay-activation-webview';
 }

@@ -14,6 +14,8 @@ class PaymentMethodGopaySuccessBindDialog extends StatelessWidget {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
 
+  Future<void> _dismiss() async => Get.close(1);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,9 +49,7 @@ class PaymentMethodGopaySuccessBindDialog extends StatelessWidget {
                             style: typographyServices.bodyLargeBold.value,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Get.close(1);
-                            },
+                            onTap: _dismiss,
                             child: Container(
                               color: Colors.transparent,
                               width: 24,
@@ -86,7 +86,7 @@ class PaymentMethodGopaySuccessBindDialog extends StatelessWidget {
                       SizedBox(height: 16),
                       LoaderElevatedButton(
                         buttonColor: themeColorServices.primaryBlue.value,
-                        onPressed: () async {},
+                        onPressed: _dismiss,
                         child: Text(
                           "Lanjutkan",
                           style: typographyServices.bodyLargeBold.value

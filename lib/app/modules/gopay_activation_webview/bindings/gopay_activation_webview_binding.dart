@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/repositories/gopay_payment_repository.dart';
 
-import '../controllers/add_account_payment_method_controller.dart';
+import '../controllers/gopay_activation_webview_controller.dart';
 
-class AddAccountPaymentMethodBinding extends Bindings {
+class GopayActivationWebviewBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AddAccountPaymentMethodController>(
-      () => AddAccountPaymentMethodController(
+    Get.lazyPut<GopayActivationWebviewController>(
+      () => GopayActivationWebviewController(
         gopayPaymentRepository: GopayPaymentRepository(),
       ),
     );

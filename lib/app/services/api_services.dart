@@ -71,7 +71,7 @@ class ApiServices extends GetxService {
     //     };
 
     dio.interceptors.add(
-      CurlLoggingInterceptor(showRequestLog: false, showResponseLog: false),
+      CurlLoggingInterceptor(showRequestLog: true, showResponseLog: true),
     );
 
     dio.interceptors.add(

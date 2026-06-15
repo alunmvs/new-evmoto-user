@@ -25,14 +25,38 @@ class CheckoutPaymentAndPromoSubView
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD);
+                    onTap: () async {
+                      final result = await Get.toNamed(
+                        Routes.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD,
+                        arguments: {
+                          "pay_type": controller.payType.value,
+                        },
+                      );
+
+                      if (result != null) {
+                        controller.payType.value = result;
+                      }
                     },
                     child: Container(
                       color: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       child: Row(
                         children: [
+                          if (controller.payType.value == 2) ...[
+                            Image.asset(
+                              "assets/icons/icon_payment_method_gopay.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "GoPay",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallBold
+                                  .value,
+                            ),
+                          ],
                           if (controller.payType.value == 3) ...[
                             SizedBox(
                               width: 20,

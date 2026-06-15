@@ -8,7 +8,12 @@ import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
 
 class PaymentMethodGopayUnbindConfirmationDialog extends StatelessWidget {
-  PaymentMethodGopayUnbindConfirmationDialog({super.key});
+  final Future<void> Function() onTapConfirm;
+
+  PaymentMethodGopayUnbindConfirmationDialog({
+    super.key,
+    required this.onTapConfirm,
+  });
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
@@ -130,7 +135,9 @@ class PaymentMethodGopayUnbindConfirmationDialog extends StatelessWidget {
                       SizedBox(height: 16),
                       LoaderElevatedButton(
                         buttonColor: themeColorServices.redColor.value,
-                        onPressed: () async {},
+                        onPressed: () async {
+                          await onTapConfirm();
+                        },
                         child: Text(
                           "Ya, Batalkan",
                           style: typographyServices.bodyLargeBold.value

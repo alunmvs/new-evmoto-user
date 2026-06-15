@@ -38,61 +38,151 @@ class AddAccountPaymentMethodView
                 ),
               ),
             ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 16),
-                    Text(
-                      "Dompet Digital",
-                      style:
-                          controller.typographyServices.bodySmallRegular.value,
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey0
+            if (controller.isFetch.value)
+              Center(
+                child: SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    color: controller.themeColorServices.primaryBlue.value,
+                  ),
+                ),
+              )
+            else if (controller.isGopayLinked)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/img_payment_method_empty.png",
+                        width: 86,
+                        height: 86,
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        "Metode Pembayaran Belum Tersedia",
+                        style:
+                            controller.typographyServices.bodyLargeBold.value,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 297 / 375,
+                        child: Text(
+                          "Nantikan berbagai pilihan metode pembayaran untuk mendukung transaksi yang lebih mudah dan praktis.",
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 16),
+                      Text(
+                        "Dompet Digital",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
                             .value,
                       ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "assets/icons/icon_payment_method_gopay.png",
-                            width: 24,
-                            height: 24,
-                          ),
-                          SizedBox(width: 6),
-                          Expanded(
-                            child: Text(
-                              "GoPay",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallBold
-                                  .value,
+                      SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey0
+                              .value,
+                        ),
+                        child: GestureDetector(
+                          onTap: () async {
+                            await controller.onTapGopay();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(16),
+                            color: Colors.transparent,
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/icons/icon_payment_method_gopay.png",
+                                  width: 24,
+                                  height: 24,
+                                ),
+                                SizedBox(width: 6),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "GoPay",
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallBold
+                                            .value,
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        controller.displayPhoneNumber,
+                                        style: controller
+                                            .typographyServices
+                                            .captionLargeRegular
+                                            .value
+                                            .copyWith(
+                                              color: controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_arrow_right.svg",
+                                      width: 8,
+                                      height: 14,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/icon_arrow_right.svg",
-                                width: 8,
-                                height: 14,
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
+            if (controller.isLinkingGopay.value)
+              Container(
+                color: Colors.black.withValues(alpha: 0.1),
+                child: Center(
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: controller.themeColorServices.primaryBlue.value,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
