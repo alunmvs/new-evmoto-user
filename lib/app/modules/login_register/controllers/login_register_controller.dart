@@ -6,19 +6,9 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 class LoginRegisterController extends GetxController {
-  final ThemeColorServices themeColorServices;
-  final TypographyServices typographyServices;
-  final LanguageServices languageServices;
-
-  LoginRegisterController({
-    ThemeColorServices? themeColorServices,
-    TypographyServices? typographyServices,
-    LanguageServices? languageServices,
-  }) : themeColorServices =
-           themeColorServices ?? Get.find<ThemeColorServices>(),
-       typographyServices =
-           typographyServices ?? Get.find<TypographyServices>(),
-       languageServices = languageServices ?? Get.find<LanguageServices>();
+  final themeColorServices = Get.find<ThemeColorServices>();
+  final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final loginRegisterFormKey = GlobalKey<FormState>();
   final mobileNumberTextEditingController = TextEditingController();

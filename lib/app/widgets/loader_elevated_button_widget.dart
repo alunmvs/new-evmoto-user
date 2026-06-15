@@ -10,7 +10,6 @@ class LoaderElevatedButton extends StatelessWidget {
   final bool? isWidthFitToContent;
   final EdgeInsetsGeometry? padding;
   final bool? isShowLoading;
-  final BorderRadiusGeometry? borderRadius;
 
   LoaderElevatedButton({
     super.key,
@@ -21,7 +20,6 @@ class LoaderElevatedButton extends StatelessWidget {
     this.isWidthFitToContent,
     this.padding,
     this.isShowLoading,
-    this.borderRadius,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -58,14 +56,10 @@ class LoaderElevatedButton extends StatelessWidget {
                   buttonColor ?? themeColorServices.primaryBlue.value,
               shape: RoundedRectangleBorder(
                 borderRadius: isShowLoading == false
-                    ? (borderRadius != null
-                          ? borderRadius!
-                          : BorderRadius.circular(16))
+                    ? BorderRadius.circular(16)
                     : isLoading.value
                     ? BorderRadius.circular(9999)
-                    : (borderRadius != null
-                          ? borderRadius!
-                          : BorderRadius.circular(16)),
+                    : BorderRadius.circular(16),
                 side: borderSide ?? BorderSide.none,
               ),
               padding: isShowLoading == false

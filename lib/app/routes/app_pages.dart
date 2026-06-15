@@ -1,21 +1,15 @@
 import 'package:get/get.dart';
 
+import '../modules/add_edit_address_other/bindings/add_edit_address_other_binding.dart';
+import '../modules/add_edit_address_other/views/add_edit_address_other_view.dart';
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
-import '../modules/account_payment_method/bindings/account_payment_method_binding.dart';
-import '../modules/account_payment_method/views/account_payment_method_view.dart';
-import '../modules/account_payment_method_gopay_detail/bindings/account_payment_method_gopay_detail_binding.dart';
-import '../modules/account_payment_method_gopay_detail/views/account_payment_method_gopay_detail_view.dart';
 import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
 import '../modules/activity_detail/bindings/activity_detail_binding.dart';
 import '../modules/activity_detail/views/activity_detail_view.dart';
-import '../modules/add_account_payment_method/bindings/add_account_payment_method_binding.dart';
-import '../modules/add_account_payment_method/views/add_account_payment_method_view.dart';
 import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
-import '../modules/add_edit_address_other/bindings/add_edit_address_other_binding.dart';
-import '../modules/add_edit_address_other/views/add_edit_address_other_view.dart';
 import '../modules/add_edit_user_information/bindings/add_edit_user_information_binding.dart';
 import '../modules/add_edit_user_information/views/add_edit_user_information_view.dart';
 import '../modules/advanced_booking_detail/bindings/advanced_booking_detail_binding.dart';
@@ -34,8 +28,6 @@ import '../modules/create_order_ride_map_select/bindings/create_order_ride_map_s
 import '../modules/create_order_ride_map_select/views/create_order_ride_map_select_view.dart';
 import '../modules/create_order_ride_promo/bindings/create_order_ride_promo_binding.dart';
 import '../modules/create_order_ride_promo/views/create_order_ride_promo_view.dart';
-import '../modules/gopay_activation_webview/bindings/gopay_activation_webview_binding.dart';
-import '../modules/gopay_activation_webview/views/gopay_activation_webview_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login_register/bindings/login_register_binding.dart';
@@ -52,8 +44,6 @@ import '../modules/ride_call_sendbird/bindings/ride_call_sendbird_binding.dart';
 import '../modules/ride_call_sendbird/views/ride_call_sendbird_view.dart';
 import '../modules/ride_chat_sendbird/bindings/ride_chat_sendbird_binding.dart';
 import '../modules/ride_chat_sendbird/views/ride_chat_sendbird_view.dart';
-import '../modules/ride_checkout_select_payment_method/bindings/ride_checkout_select_payment_method_binding.dart';
-import '../modules/ride_checkout_select_payment_method/views/ride_checkout_select_payment_method_view.dart';
 import '../modules/ride_order_cancel/bindings/ride_order_cancel_binding.dart';
 import '../modules/ride_order_cancel/views/ride_order_cancel_view.dart';
 import '../modules/ride_order_detail/bindings/ride_order_detail_binding.dart';
@@ -251,31 +241,6 @@ class AppPages {
       name: _Paths.ADD_EDIT_ADDRESS_OTHER,
       page: () => const AddEditAddressOtherView(),
       binding: AddEditAddressOtherBinding(),
-    ),
-    GetPage(
-      name: _Paths.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD,
-      page: () => const RideCheckoutSelectPaymentMethodView(),
-      binding: RideCheckoutSelectPaymentMethodBinding(),
-    ),
-    GetPage(
-      name: _Paths.ACCOUNT_PAYMENT_METHOD,
-      page: () => const AccountPaymentMethodView(),
-      binding: AccountPaymentMethodBinding(),
-    ),
-    GetPage(
-      name: _Paths.ADD_ACCOUNT_PAYMENT_METHOD,
-      page: () => const AddAccountPaymentMethodView(),
-      binding: AddAccountPaymentMethodBinding(),
-    ),
-    GetPage(
-      name: _Paths.ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL,
-      page: () => const AccountPaymentMethodGopayDetailView(),
-      binding: AccountPaymentMethodGopayDetailBinding(),
-    ),
-    GetPage(
-      name: _Paths.GOPAY_ACTIVATION_WEBVIEW,
-      page: () => const GopayActivationWebviewView(),
-      binding: GopayActivationWebviewBinding(),
     ),
   ];
 }

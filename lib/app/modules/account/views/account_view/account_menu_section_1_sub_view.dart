@@ -112,63 +112,6 @@ class AccountMenuSection1SubView extends GetView<AccountController> {
             ),
             InkWell(
               onTap: () {
-                Get.toNamed(Routes.ACCOUNT_PAYMENT_METHOD);
-              },
-              child: Container(
-                padding: EdgeInsets.all(16),
-                color: Colors.transparent,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: controller
-                            .themeColorServices
-                            .sematicColorBlue100
-                            .value,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/icon_wallet.svg",
-                            width: 16,
-                            height: 11.44 + 3.11,
-                            colorFilter: ColorFilter.mode(
-                              controller
-                                  .themeColorServices
-                                  .sematicColorBlue500
-                                  .value,
-                              BlendMode.srcIn,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      "Pengaturan Pembayaran",
-                      style: controller.typographyServices.bodySmallBold.value,
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/icon_arrow_right.svg",
-                          width: 6,
-                          height: 12,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
                 Get.toNamed(Routes.VOUCHER_LIST);
               },
               child: Container(
