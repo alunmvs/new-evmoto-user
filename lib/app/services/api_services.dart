@@ -29,6 +29,30 @@ class ApiServices extends GetxService {
   final packageVersion = "".obs;
   final buildNumber = "".obs;
 
+  bool isLoggingOut = false;
+  final _pendingCancelTokens = <CancelToken>[];
+
+  void beginLogout() {
+    if (isLoggingOut) return;
+    isLoggingOut = true;
+    for (final token in List<CancelToken>.from(_pendingCancelTokens)) {
+      if (!token.isCancelled) {
+        token.cancel('logout');
+      }
+    }
+    _pendingCancelTokens.clear();
+  }
+
+  void endLogout() {
+    isLoggingOut = false;
+  }
+
+  void _removeCancelToken(CancelToken? token) {
+    if (token != null) {
+      _pendingCancelTokens.remove(token);
+    }
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -65,9 +89,25 @@ class ApiServices extends GetxService {
           options.headers['role'] = "user";
           options.headers['nonce'] = generateMd5Timestamp();
 
+          final cancelToken = CancelToken();
+          options.cancelToken = cancelToken;
+          _pendingCancelTokens.add(cancelToken);
+
           return handler.next(options);
         },
         onError: (error, handler) {
+          _removeCancelToken(error.requestOptions.cancelToken);
+
+          if (isLoggingOut) {
+            return handler.next(
+              DioException(
+                requestOptions: error.requestOptions,
+                response: error.response,
+                type: DioExceptionType.cancel,
+                error: '',
+              ),
+            );
+          }
           // Debug Error
           // print("request API base URL ${error.requestOptions.uri.path}");
 
@@ -155,13 +195,15 @@ class ApiServices extends GetxService {
           handler.next(customError);
         },
         onResponse: (response, handler) async {
+          _removeCancelToken(response.requestOptions.cancelToken);
+
           if (response.data != null) {
             if (response.data is Map<String, dynamic>) {
-              if (response.data['code'] == 600) {
+              if (response.data['code'] == 600 && !isLoggingOut) {
                 if (Get.currentRoute != Routes.LOGIN_REGISTER) {
                   // print("[DEBUG LOGOUT] API 600 ${response.realUri}");
                   await clearDataLogout();
-                  Get.offAllNamed(Routes.LOGIN_REGISTER);
+                  finishLogoutSession();
                   SnackbarHelper.showSnackbarError(
                     text: languageServices.language.value.offlineText ?? "-",
                   );

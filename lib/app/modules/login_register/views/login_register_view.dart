@@ -10,8 +10,7 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
   const LoginRegisterView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Image.asset(
             "assets/logos/logo_evmoto.png",
@@ -411,54 +410,58 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                                             ],
                                           ),
                                           SizedBox(height: 16),
-                                          LoaderElevatedButton(
-                                            onPressed:
-                                                controller.isFormValid.value
-                                                ? () async {
-                                                    await controller
-                                                        .onTapSubmit();
-                                                  }
-                                                : null,
-                                            buttonColor:
-                                                controller.isFormValid.value
-                                                ? controller
-                                                      .themeColorServices
-                                                      .primaryBlue
-                                                      .value
-                                                : controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey300
-                                                      .value,
-                                            borderSide: BorderSide(
-                                              color:
+                                          Obx(
+                                            () => LoaderElevatedButton(
+                                              onPressed:
+                                                  controller.isFormValid.value
+                                                  ? () async {
+                                                      await controller
+                                                          .onTapSubmit();
+                                                    }
+                                                  : null,
+                                              buttonColor:
                                                   controller.isFormValid.value
                                                   ? controller
                                                         .themeColorServices
-                                                        .sematicColorBlue200
+                                                        .primaryBlue
                                                         .value
                                                   : controller
                                                         .themeColorServices
-                                                        .neutralsColorGrey200
+                                                        .neutralsColorGrey300
                                                         .value,
-                                              width: 2,
-                                            ),
-                                            child: Text(
-                                              controller
-                                                      .languageServices
-                                                      .language
-                                                      .value
-                                                      .loginButton ??
-                                                  "-",
-                                              style: controller
-                                                  .typographyServices
-                                                  .bodyLargeBold
-                                                  .value
-                                                  .copyWith(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey0
-                                                        .value,
-                                                  ),
+                                              borderSide: BorderSide(
+                                                color:
+                                                    controller
+                                                        .isFormValid
+                                                        .value
+                                                    ? controller
+                                                          .themeColorServices
+                                                          .sematicColorBlue200
+                                                          .value
+                                                    : controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey200
+                                                          .value,
+                                                width: 2,
+                                              ),
+                                              child: Text(
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .loginButton ??
+                                                    "-",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodyLargeBold
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey0
+                                                          .value,
+                                                    ),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -557,7 +560,6 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
