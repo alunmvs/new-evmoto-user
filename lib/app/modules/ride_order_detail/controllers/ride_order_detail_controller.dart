@@ -1535,6 +1535,11 @@ class RideOrderDetailController extends GetxController {
     final mapController = await googleMapController.future;
     if (isClosed) return;
 
+    if (orderState == 1) {
+      await setupMapWaitingForDriver();
+      return;
+    }
+
     final driver = _driverPositionForCamera();
     if (driver == null) {
       await animateMapToFitPoints(
