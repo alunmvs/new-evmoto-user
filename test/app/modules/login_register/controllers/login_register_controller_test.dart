@@ -60,7 +60,6 @@ void main() {
 
     tearDown(() {
       controller.onClose();
-      controller.mobileNumberTextEditingController.dispose();
       Get.reset();
     });
 
@@ -194,7 +193,9 @@ void main() {
     test(
       'should clean up controller without error when onClose is called',
       () {
-        expect(() => controller.onClose(), returnsNormally);
+        final testController = LoginRegisterController();
+        testController.onInit();
+        expect(() => testController.onClose(), returnsNormally);
       },
     );
   });
