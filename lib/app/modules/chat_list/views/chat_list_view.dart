@@ -155,6 +155,7 @@ class ChatListView extends GetView<ChatListController> {
                                     Routes.CHAT_DETAIL,
                                     arguments: {"doc_id": room.docId},
                                   );
+                                  await controller.getChatList();
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
