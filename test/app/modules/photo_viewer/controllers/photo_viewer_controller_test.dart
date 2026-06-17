@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/photo_viewer/controllers/photo_viewer_controller.dart';
 
+import '../../../../helpers/test_dependencies.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -10,6 +12,7 @@ void main() {
     late PhotoViewerController controller;
 
     setUp(() {
+      registerCoreTestServices();
       controller = PhotoViewerController();
     });
 
