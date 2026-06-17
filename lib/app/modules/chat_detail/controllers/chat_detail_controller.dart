@@ -132,12 +132,49 @@ class ChatDetailController extends GetxController {
     }
 
     await batch.commit();
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(docId.value)
+        .set({
+          'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
+          'totalUnreadChatUser': await getTotalUnreadChatUser(),
+        }, SetOptions(merge: true));
+
+    unawaited(homeController.getTotalUnreadFirebaseChat());
+  }
+
+  Future<int> getTotalUnreadChatDriver() async {
+    var data = await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_messages')
+        .where('evmotoOrderChatParticipantsDocumentId', isEqualTo: docId.value)
+        .where('senderType', isEqualTo: 'driver')
+        .where('isRead', isEqualTo: false)
+        .orderBy('createdAt', descending: true)
+        .get();
+
+    return data.docs.length;
+  }
+
+  Future<int> getTotalUnreadChatUser() async {
+    var data = await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_messages')
+        .where('evmotoOrderChatParticipantsDocumentId', isEqualTo: docId.value)
+        .where('senderType', isEqualTo: 'user')
+        .where('isRead', isEqualTo: false)
+        .orderBy('createdAt', descending: true)
+        .get();
+
+    return data.docs.length;
   }
 
   Future<void> sendMessage() async {
     if ((message.value != "" && textEditingController.text.trim() != "") ||
         attachmentUrl.value != "") {
-      var data = {
+      final lastMessageText =
+          message.value != "" ? message.value : "Attachment";
+
+      final data = {
         "evmotoOrderChatParticipantsDocumentId": docId.value,
         "senderAttachmentUrl": attachmentUrl.value,
         "senderId": evmotoOrderChatParticipants.value.driverId,
@@ -148,11 +185,14 @@ class ChatDetailController extends GetxController {
         "createdAt": FieldValue.serverTimestamp(),
       };
 
+      textEditingController.clear();
+      message.value = "";
+      attachmentUrl.value = "";
+      isAttachmentOptionOpen.value = false;
+
       await FirebaseFirestore.instance
           .collection('evmoto_order_chat_messages')
           .add(data);
-
-      textEditingController.clear();
 
       await FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
@@ -160,13 +200,9 @@ class ChatDetailController extends GetxController {
           .set({
             'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
             'totalUnreadChatUser': await getTotalUnreadChatUser(),
-            'lastMessage': message.value != "" ? message.value : "Attachment",
+            'lastMessage': lastMessageText,
             'lastMessageAt': FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
-
-      message.value = "";
-      attachmentUrl.value = "";
-      isAttachmentOptionOpen.value = false;
     }
   }
 
@@ -202,30 +238,6 @@ class ChatDetailController extends GetxController {
       );
       DialogHelper.dismiss(DialogTags.loading);
     }
-  }
-
-  Future<int> getTotalUnreadChatDriver() async {
-    var data = await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_messages')
-        .where('evmotoOrderChatParticipantsDocumentId', isEqualTo: docId.value)
-        .where('senderType', isEqualTo: 'driver')
-        .where('isRead', isEqualTo: false)
-        .orderBy('createdAt', descending: true)
-        .get();
-
-    return data.docs.length;
-  }
-
-  Future<int> getTotalUnreadChatUser() async {
-    var data = await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_messages')
-        .where('evmotoOrderChatParticipantsDocumentId', isEqualTo: docId.value)
-        .where('senderType', isEqualTo: 'user')
-        .where('isRead', isEqualTo: false)
-        .orderBy('createdAt', descending: true)
-        .get();
-
-    return data.docs.length;
   }
 
   Future<void> checkIfTripHasEnded() async {

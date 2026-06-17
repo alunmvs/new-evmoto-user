@@ -1556,7 +1556,7 @@ class HomeController extends GetxController {
       var evmotoOrderChatParticipants = await FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
           .where(
-            'driverId',
+            'userId',
             isEqualTo: userServices.userInfo.value.id.toString(),
           )
           .where('totalUnreadChatDriver', isGreaterThan: 0)
