@@ -19,6 +19,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class AccountController extends GetxController {
   final OtpRepository otpRepository;
@@ -842,8 +844,9 @@ class AccountController extends GetxController {
   }
 
   Future<void> onTapSuccessDeleteAccountDialog() async {
-    Get.dialog(
-      Padding(
+    DialogHelper.show(
+      tag: DialogTags.accountDeletedSuccess,
+      widget: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -898,12 +901,11 @@ class AccountController extends GetxController {
             ),
           ],
         ),
-      ),
-      barrierDismissible: false,
+      ), barrierDismissible: false, backDismiss: false,
     );
 
     await Future.delayed(Duration(seconds: 3)).then((value) {
-      Get.close(1);
+      DialogHelper.dismiss(DialogTags.accountDeletedSuccess);
     });
   }
 

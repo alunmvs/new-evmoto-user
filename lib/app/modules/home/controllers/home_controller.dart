@@ -51,6 +51,8 @@ import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class HomeController extends GetxController {
   final UserRepository userRepository;
@@ -382,8 +384,9 @@ class HomeController extends GetxController {
       }
 
       if (isInServiceTimeSchedule == false) {
-        Get.dialog(
-          Column(
+        DialogHelper.show(
+          tag: DialogTags.serviceTimeValidation,
+          widget: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -456,7 +459,7 @@ class HomeController extends GetxController {
                                         ),
                                   ),
                                   onPressed: () async {
-                                    Get.close(1);
+                                    DialogHelper.dismiss(DialogTags.serviceTimeValidation);
                                   },
                                 ),
                               ],
@@ -466,7 +469,7 @@ class HomeController extends GetxController {
                               right: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.serviceTimeValidation);
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -698,7 +701,7 @@ class HomeController extends GetxController {
         // }
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
-        Get.close(1);
+        DialogHelper.dismissIfExists(DialogTags.loading);
       } catch (e) {
         SnackbarHelper.showSnackbarError(text: e.toString());
       }
@@ -753,7 +756,7 @@ class HomeController extends GetxController {
         );
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
-        Get.close(1);
+        DialogHelper.dismissIfExists(DialogTags.loading);
       } catch (e) {
         SnackbarHelper.showSnackbarError(text: e.toString());
       }
@@ -821,8 +824,9 @@ class HomeController extends GetxController {
 
       if (versioningServer.value.version == null) {
         if (isShowVersionNewestConfirmationDialog == true) {
-          Get.dialog(
-            Padding(
+          DialogHelper.show(
+            tag: DialogTags.appVersionNewest,
+            widget: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -874,7 +878,7 @@ class HomeController extends GetxController {
                                     .copyWith(color: Colors.white),
                               ),
                               onPressed: () async {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.appVersionNewest);
                               },
                             ),
                             SizedBox(height: 16),
@@ -924,8 +928,9 @@ class HomeController extends GetxController {
           }
 
           if (isShow == true) {
-            await Get.dialog(
-              PopScope(
+            await DialogHelper.show(
+              tag: DialogTags.appVersionUpdate,
+              widget: PopScope(
                 canPop: false,
                 child: Padding(
                   padding: const EdgeInsets.all(32),
@@ -1006,7 +1011,7 @@ class HomeController extends GetxController {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        Get.close(1);
+                                        DialogHelper.dismiss(DialogTags.appVersionUpdate);
 
                                         var prefs =
                                             await SharedPreferences.getInstance();
@@ -1039,17 +1044,17 @@ class HomeController extends GetxController {
                     ],
                   ),
                 ),
-              ),
-              barrierDismissible: false,
+              ), barrierDismissible: false, backDismiss: false,
             );
           }
         } else {
           if (isShowVersionNewestConfirmationDialog == true) {
-            Get.dialog(
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            DialogHelper.show(
+                tag: DialogTags.appVersionNewest,
+                widget: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -1098,7 +1103,7 @@ class HomeController extends GetxController {
                                       .copyWith(color: Colors.white),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.appVersionNewest);
                                 },
                               ),
                               SizedBox(height: 16),
@@ -1160,8 +1165,9 @@ class HomeController extends GetxController {
   Future<void> showDialogSoftUpdate({
     required bool isSoftUpdateWithContent,
   }) async {
-    await Get.dialog(
-      Padding(
+    await DialogHelper.show(
+      tag: DialogTags.appSoftUpdate,
+      widget: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1231,7 +1237,7 @@ class HomeController extends GetxController {
                         right: 0,
                         child: GestureDetector(
                           onTap: () {
-                            Get.close(1);
+                            DialogHelper.dismiss(DialogTags.appSoftUpdate);
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -1263,8 +1269,9 @@ class HomeController extends GetxController {
   }
 
   Future<void> showDialogForceUpdate() async {
-    await Get.dialog(
-      PopScope(
+    await DialogHelper.show(
+      tag: DialogTags.appForceUpdate,
+      widget: PopScope(
         canPop: false,
         child: Material(
           color: themeColorServices.neutralsColorGrey0.value,
@@ -1321,8 +1328,7 @@ class HomeController extends GetxController {
             ),
           ),
         ),
-      ),
-      barrierDismissible: false,
+      ), barrierDismissible: false, backDismiss: false,
     );
   }
 
@@ -1422,8 +1428,9 @@ class HomeController extends GetxController {
   }
 
   Future<void> showRequiredAccessPermission() async {
-    Get.dialog(
-      Padding(
+    DialogHelper.show(
+      tag: DialogTags.locationPermission,
+      widget: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1455,7 +1462,7 @@ class HomeController extends GetxController {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.locationPermission);
                             },
                             child: Container(
                               width: 24,

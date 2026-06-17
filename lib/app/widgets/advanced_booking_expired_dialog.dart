@@ -6,6 +6,8 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_user/main.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class AdvancedBookingExpiredDialog extends StatelessWidget {
   final Function onTapConfirm;
@@ -60,7 +62,7 @@ class AdvancedBookingExpiredDialog extends StatelessWidget {
                             alignment: Alignment.topRight,
                             child: GestureDetector(
                               onTap: () {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.advancedBookingExpired);
                               },
                               child: Container(
                                 color: Colors.transparent,
@@ -116,7 +118,7 @@ class AdvancedBookingExpiredDialog extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () async {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.advancedBookingExpired);
                               },
                               child: Text(
                                 languageServices

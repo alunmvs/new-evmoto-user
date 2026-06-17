@@ -5,6 +5,8 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class AdvancedBookingCancelDialog extends StatelessWidget {
   final Function onTapConfirm;
@@ -55,7 +57,7 @@ class AdvancedBookingCancelDialog extends StatelessWidget {
                             alignment: Alignment.topRight,
                             child: GestureDetector(
                               onTap: () {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.advancedBookingCancel);
                               },
                               child: Container(
                                 color: Colors.transparent,
@@ -111,7 +113,7 @@ class AdvancedBookingCancelDialog extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () async {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.advancedBookingCancel);
                               },
                               child: Text(
                                 languageServices

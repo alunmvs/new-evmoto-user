@@ -11,6 +11,8 @@ import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class OnboardingRegistrationFormController extends GetxController {
   final UserRepository userRepository;
@@ -56,8 +58,9 @@ class OnboardingRegistrationFormController extends GetxController {
   }
 
   Future<void> onTapLogout() async {
-    await Get.dialog(
-      Padding(
+    await DialogHelper.show(
+      tag: DialogTags.logoutConfirmation,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +101,7 @@ class OnboardingRegistrationFormController extends GetxController {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.logoutConfirmation);
                                 },
                                 child: Text(
                                   languageServices.language.value.cancel ?? "-",

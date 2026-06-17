@@ -21,6 +21,8 @@ import 'package:new_evmoto_user/app/utils/socket_helper.dart';
 import 'package:new_evmoto_user/app/widgets/driver_cancel_dialog.dart';
 import 'package:new_evmoto_user/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class SocketServices extends GetxService {
   late Socket? socket;
@@ -135,7 +137,7 @@ class SocketServices extends GetxService {
                   break;
                 case 'END_PUSH':
                   // if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                  //   Get.dialog(
+                  //   DialogHelper.show(widget: 
                   //     EndPushDialog(
                   //       orderId: dataJson['data']['orderId'],
                   //       orderType: dataJson['data']['orderType'],
@@ -155,10 +157,11 @@ class SocketServices extends GetxService {
                         EvmotoOrderChatParticipants();
                     rideOrderDetailController.isUnreadChatExist.value = false;
 
-                    await Get.dialog(
-                      DriverCancelDialog(
+                    await DialogHelper.show(
+                      tag: DialogTags.driverCancel,
+                      widget: DriverCancelDialog(
                         onTapCancel: () async {
-                          Get.close(1);
+                          DialogHelper.dismiss(DialogTags.driverCancel);
 
                           var orderRideRepository = OrderRideRepository();
                           var rideOrderDetailController =
@@ -195,14 +198,14 @@ class SocketServices extends GetxService {
                             await rideOrderDetailController
                                 .handleSocketOrderStatus();
 
-                            Get.close(1);
+                            DialogHelper.dismiss(DialogTags.driverCancel);
                           } on DioException catch (e) {
                             SnackbarHelper.showSnackbarError(
                               text: e.error.toString(),
                             );
                           } on Exception catch (e) {
                             if (['expired'].contains(e.toString())) {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.driverCancel);
                               Get.back();
                               SnackbarHelper.showSnackbarError(
                                 text:
@@ -219,7 +222,7 @@ class SocketServices extends GetxService {
                             );
                           } catch (e) {
                             if (['expired'].contains(e.toString())) {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.driverCancel);
                               Get.back();
                               SnackbarHelper.showSnackbarError(
                                 text:
@@ -239,10 +242,11 @@ class SocketServices extends GetxService {
                       ),
                     );
                   } else {
-                    await Get.dialog(
-                      DriverCancelDialog(
+                    await DialogHelper.show(
+                      tag: DialogTags.driverCancel,
+                      widget: DriverCancelDialog(
                         onTapCancel: () async {
-                          Get.close(1);
+                          DialogHelper.dismiss(DialogTags.driverCancel);
 
                           var orderRideRepository = OrderRideRepository();
                           var homeController = Get.find<HomeController>();
@@ -278,7 +282,7 @@ class SocketServices extends GetxService {
                             );
                           } on Exception catch (e) {
                             if (['expired'].contains(e.toString())) {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.driverCancel);
                               Get.back();
                               SnackbarHelper.showSnackbarError(
                                 text:
@@ -295,7 +299,7 @@ class SocketServices extends GetxService {
                             );
                           } catch (e) {
                             if (['expired'].contains(e.toString())) {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.driverCancel);
                               Get.back();
                               SnackbarHelper.showSnackbarError(
                                 text:

@@ -18,6 +18,8 @@ import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import '../../../routes/app_pages.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class CreateOrderRideController extends GetxController {
   final GeocodingRepository geocodingRepository;
@@ -813,8 +815,9 @@ class CreateOrderRideController extends GetxController {
 
     if (validateLocationResponse.code == 500) {
       if (validateLocationResponse.data == "outside_service_area") {
-        Get.dialog(
-          Padding(
+        DialogHelper.show(
+          tag: DialogTags.outsideServiceArea,
+          widget: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -841,7 +844,7 @@ class CreateOrderRideController extends GetxController {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.outsideServiceArea);
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -886,7 +889,7 @@ class CreateOrderRideController extends GetxController {
                           SizedBox(height: 16),
                           LoaderElevatedButton(
                             onPressed: () async {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.outsideServiceArea);
                             },
                             child: Text(
                               languageServices.language.value.changeLocation ??
@@ -910,8 +913,9 @@ class CreateOrderRideController extends GetxController {
         );
       }
       if (validateLocationResponse.data == "city_invalid") {
-        Get.dialog(
-          Padding(
+        DialogHelper.show(
+          tag: DialogTags.outsideServiceArea,
+          widget: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -942,7 +946,7 @@ class CreateOrderRideController extends GetxController {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.outsideServiceArea);
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -987,7 +991,7 @@ class CreateOrderRideController extends GetxController {
                           SizedBox(height: 16),
                           LoaderElevatedButton(
                             onPressed: () async {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.outsideServiceArea);
                             },
                             child: Text(
                               languageServices.language.value.changeLocation ??
@@ -1011,8 +1015,9 @@ class CreateOrderRideController extends GetxController {
         );
       }
       if (validateLocationResponse.data == "distance_exceeds_limit") {
-        Get.dialog(
-          Padding(
+        DialogHelper.show(
+          tag: DialogTags.outsideServiceArea,
+          widget: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -1043,7 +1048,7 @@ class CreateOrderRideController extends GetxController {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.outsideServiceArea);
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -1088,7 +1093,7 @@ class CreateOrderRideController extends GetxController {
                           SizedBox(height: 16),
                           LoaderElevatedButton(
                             onPressed: () async {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.outsideServiceArea);
                             },
                             child: Text(
                               languageServices.language.value.changeLocation ??

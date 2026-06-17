@@ -12,6 +12,8 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class ChatDetailController extends GetxController {
   final UploadImageRepository uploadImageRepository;
@@ -181,7 +183,7 @@ class ChatDetailController extends GetxController {
       attachmentUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
-      Get.close(1);
+      DialogHelper.dismiss(DialogTags.loading);
     }
   }
 
@@ -198,7 +200,7 @@ class ChatDetailController extends GetxController {
       attachmentUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
-      Get.close(1);
+      DialogHelper.dismiss(DialogTags.loading);
     }
   }
 

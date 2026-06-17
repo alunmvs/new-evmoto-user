@@ -22,6 +22,8 @@ import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/widgets/advanced_booking_expired_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -423,8 +425,9 @@ class FirebasePushNotificationServices extends GetxService {
         if (Get.currentRoute == Routes.ADVANCED_BOOKING_DETAIL) {
           Get.find<AdvancedBookingDetailController>().refreshAll();
         }
-        Get.dialog(
-          AdvancedBookingExpiredDialog(
+        DialogHelper.show(
+          tag: DialogTags.advancedBookingExpired,
+          widget: AdvancedBookingExpiredDialog(
             onTapConfirm: () async {
               Get.until((route) => Get.currentRoute == Routes.HOME);
               Get.find<HomeController>().indexNavigationBar.value = 0;

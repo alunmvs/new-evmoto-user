@@ -38,6 +38,8 @@ import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class RideOrderDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -924,8 +926,9 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> onTapOrderRideCancelBeforeDriver() async {
-    await Get.dialog(
-      Padding(
+    await DialogHelper.show(
+      tag: DialogTags.cancelOrderBeforeDriver,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -969,7 +972,7 @@ class RideOrderDetailController extends GetxController {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
                                 },
                                 child: Text(
                                   languageServices.language.value.close ?? "-",
@@ -1013,7 +1016,7 @@ class RideOrderDetailController extends GetxController {
                                     );
                                   }
 
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
                                   Get.back();
                                   SnackbarHelper.showSnackbarSuccess(
                                     text:
@@ -1734,8 +1737,8 @@ class RideOrderDetailController extends GetxController {
   Future<void> checkOrderHasBeenCancelled() async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (orderRideDetail.value.state == 10) {
-        if (Get.isDialogOpen ?? false) {
-          Get.back();
+        if (DialogHelper.exists(DialogTags.cancelOrderBeforeDriver)) {
+          DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
         }
         Get.back();
         SnackbarHelper.showSnackbarError(

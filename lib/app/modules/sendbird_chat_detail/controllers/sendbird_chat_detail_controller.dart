@@ -9,12 +9,13 @@ import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../routes/app_pages.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class MyGroupChannelHandler extends GroupChannelHandler {
   @override
@@ -210,12 +211,12 @@ class SendbirdChatDetailController extends GetxController {
         },
         progressHandler: (sentBytes, totalBytes) {
           if (sentBytes < totalBytes) {
-            if (Get.isDialogOpen == false) {
-              Get.dialog(LoadingDialog(), barrierDismissible: false);
+            if (!DialogHelper.exists(DialogTags.loading)) {
+              DialogHelper.showLoading();
             }
           } else {
-            if (Get.isDialogOpen == true) {
-              Get.close(1);
+            if (DialogHelper.exists(DialogTags.loading)) {
+              DialogHelper.dismiss(DialogTags.loading);
             }
           }
         },
@@ -235,7 +236,7 @@ class SendbirdChatDetailController extends GetxController {
     );
 
     if (image != null) {
-      Get.dialog(LoadingDialog(), barrierDismissible: false);
+      DialogHelper.showLoading();
 
       var fileMessageCreateParams = FileMessageCreateParams.withFile(
         File(image.path),
@@ -248,12 +249,12 @@ class SendbirdChatDetailController extends GetxController {
         },
         progressHandler: (sentBytes, totalBytes) {
           if (sentBytes < totalBytes) {
-            if (Get.isDialogOpen == false) {
-              Get.dialog(LoadingDialog(), barrierDismissible: false);
+            if (!DialogHelper.exists(DialogTags.loading)) {
+              DialogHelper.showLoading();
             }
           } else {
-            if (Get.isDialogOpen == true) {
-              Get.close(1);
+            if (DialogHelper.exists(DialogTags.loading)) {
+              DialogHelper.dismiss(DialogTags.loading);
             }
           }
         },
@@ -263,7 +264,7 @@ class SendbirdChatDetailController extends GetxController {
       isAttachmentOptionOpen.value = false;
       textEditingController.clear();
 
-      Get.close(1);
+      DialogHelper.dismiss(DialogTags.loading);
     }
   }
 

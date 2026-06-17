@@ -11,6 +11,8 @@ import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class SettingSavedLocationController extends GetxController {
   final SavedAddressRepository savedAddressRepository;
@@ -447,8 +449,9 @@ class SettingSavedLocationController extends GetxController {
   }
 
   Future<void> onTapDeleteAddress({required SavedAddress savedAddress}) async {
-    await Get.dialog(
-      Padding(
+    await DialogHelper.show(
+      tag: DialogTags.deleteAddressConfirmation,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -492,7 +495,7 @@ class SettingSavedLocationController extends GetxController {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.deleteAddressConfirmation);
                                 },
                                 child: Text(
                                   languageServices.language.value.cancel ?? "-",
@@ -513,7 +516,7 @@ class SettingSavedLocationController extends GetxController {
                                 try {
                                   await savedAddressRepository
                                       .deleteSavedAddress(id: savedAddress.id!);
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.deleteAddressConfirmation);
                                   SnackbarHelper.showSnackbarSuccess(
                                     text:
                                         languageServices

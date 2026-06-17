@@ -26,8 +26,9 @@ import 'package:new_evmoto_user/app/services/typography_services.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_user/app/widgets/loading_dialog.dart';
 import 'package:uuid/uuid.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
 class CreateOrderRideCheckoutController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -538,7 +539,7 @@ class CreateOrderRideCheckoutController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
-    Get.dialog(LoadingDialog(), barrierDismissible: false);
+    DialogHelper.showLoading();
     await locationServices.requestLocation();
     if (locationServices.isPermissionLocationAllow.value == true) {
       if (isAdvanceOrderEnable.value == false) {
@@ -571,7 +572,7 @@ class CreateOrderRideCheckoutController extends GetxController {
             startAddressName: originAddressName.value,
             endAddressName: destinationAddressName.value,
           );
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
 
           Get.back();
           Get.back();
@@ -580,13 +581,13 @@ class CreateOrderRideCheckoutController extends GetxController {
             arguments: {"order_id": result.id.toString(), "order_type": 1},
           );
         } on DioException catch (e) {
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
           SnackbarHelper.showSnackbarError(text: e.error.toString());
         } on Exception catch (e) {
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
           SnackbarHelper.showSnackbarError(text: e.toString());
         } catch (e) {
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
 
           await Future.delayed(Duration(milliseconds: 100));
 
@@ -721,7 +722,7 @@ class CreateOrderRideCheckoutController extends GetxController {
                 endAddressName: destinationAddressName.value,
                 orderType: 1, // 1 = normal, 2 = appointment
               );
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
 
           Get.back();
           Get.back();
@@ -730,13 +731,13 @@ class CreateOrderRideCheckoutController extends GetxController {
             arguments: {"id": advanceBookingId},
           );
         } on DioException catch (e) {
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
           SnackbarHelper.showSnackbarError(text: e.error.toString());
         } on Exception catch (e) {
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
           SnackbarHelper.showSnackbarError(text: e.toString());
         } catch (e) {
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.loading);
 
           await Future.delayed(Duration(milliseconds: 100));
 
@@ -845,7 +846,7 @@ class CreateOrderRideCheckoutController extends GetxController {
         }
       }
     } else {
-      Get.close(1);
+      DialogHelper.dismiss(DialogTags.loading);
     }
   }
 

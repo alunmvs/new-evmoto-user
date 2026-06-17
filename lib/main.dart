@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'package:get/get.dart';
 import 'package:native_flutter_proxy/native_flutter_proxy.dart';
@@ -99,6 +100,7 @@ Future<void> main() async {
   runApp(
     GetMaterialApp(
       navigatorKey: navigatorKey,
+      navigatorObservers: [FlutterSmartDialog.observer],
       title: "Evmoto",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
@@ -132,8 +134,9 @@ Future<void> main() async {
           userServices.isLoadingRefreshHome.value = false;
         }
       },
-      builder: (context, child) {
-        return env == "dev"
+      builder: FlutterSmartDialog.init(
+        builder: (context, child) {
+          return env == "dev"
             ? Banner(
                 message: "Dev",
                 location: BannerLocation.topEnd,
@@ -224,7 +227,8 @@ Future<void> main() async {
                   child: child!,
                 ),
               );
-      },
+        },
+      ),
     ),
   );
 }

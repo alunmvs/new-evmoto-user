@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/controllers/account_controller.dart';
@@ -11,9 +10,9 @@ import 'package:new_evmoto_user/app/services/firebase_push_notification_services
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/socket_services.dart';
 
-import 'package:new_evmoto_user/app/services/theme_color_services.dart';
-// import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/services/user_services.dart';
+import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -163,41 +162,5 @@ Future<void> logout() async {
 }
 
 void showLoadingDialog() {
-  var themeColorServices = Get.find<ThemeColorServices>();
-
-  Get.dialog(
-    PopScope(
-      canPop: false,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Material(
-              color: themeColorServices.neutralsColorGrey0.value,
-              child: SizedBox(
-                width: 70,
-                height: 70,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: CircularProgressIndicator(
-                        color: themeColorServices.primaryBlue.value,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-    barrierDismissible: false,
-  );
+  DialogHelper.showLoading(tag: DialogTags.loading);
 }
