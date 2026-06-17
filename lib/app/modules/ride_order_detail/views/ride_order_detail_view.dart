@@ -57,6 +57,10 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                             child: GoogleMap(
                               mapType: MapType.normal,
                               zoomControlsEnabled: false,
+                              myLocationButtonEnabled: false,
+                              compassEnabled: false,
+                              mapToolbarEnabled: false,
+                              indoorViewEnabled: false,
                               initialCameraPosition:
                                   controller.initialCameraPosition.value,
                               onMapCreated:

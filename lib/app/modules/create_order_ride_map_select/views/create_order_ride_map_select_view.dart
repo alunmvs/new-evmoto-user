@@ -35,6 +35,10 @@ class CreateOrderRideMapSelectView
                         child: GoogleMap(
                           mapType: MapType.normal,
                           zoomControlsEnabled: false,
+                          myLocationButtonEnabled: false,
+                          compassEnabled: false,
+                          mapToolbarEnabled: false,
+                          indoorViewEnabled: false,
                           onCameraMove: (position) async {
                             controller.latitude.value = position.target.latitude
                                 .toString();

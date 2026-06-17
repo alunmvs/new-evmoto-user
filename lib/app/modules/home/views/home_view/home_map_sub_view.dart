@@ -49,6 +49,10 @@ class HomeMapSubView extends GetView<HomeController> {
                         }
                       },
                       zoomControlsEnabled: false,
+                      myLocationButtonEnabled: false,
+                      compassEnabled: false,
+                      mapToolbarEnabled: false,
+                      indoorViewEnabled: false,
                       initialCameraPosition:
                           controller.initialCameraPosition.value,
                       onMapCreated:

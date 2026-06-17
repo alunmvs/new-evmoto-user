@@ -35,6 +35,10 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                 rotateGesturesEnabled: false,
                 scrollGesturesEnabled: false,
                 zoomControlsEnabled: false,
+                myLocationButtonEnabled: false,
+                compassEnabled: false,
+                mapToolbarEnabled: false,
+                indoorViewEnabled: false,
                 cameraTargetBounds: CameraTargetBounds(
                   LatLngBounds(
                     southwest: LatLng(-11.0, 95.0),
