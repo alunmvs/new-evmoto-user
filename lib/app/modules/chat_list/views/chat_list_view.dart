@@ -79,6 +79,75 @@ class ChatListView extends GetView<ChatListController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (controller.roomList.isEmpty) ...[
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                            147 /
+                                            812,
+                                      ),
+                                      Image.asset(
+                                        "assets/images/img_chat_empty.png",
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                            176 /
+                                            375,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .noMessageYet ??
+                                            "-",
+                                        style: controller
+                                            .typographyServices
+                                            .bodyLargeBold
+                                            .value,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 8),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                            297 /
+                                            375,
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .conversationWillAppear ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey600
+                                                    .value,
+                                              ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                             for (var room in controller.roomList) ...[
                               GestureDetector(
                                 onTap: () async {

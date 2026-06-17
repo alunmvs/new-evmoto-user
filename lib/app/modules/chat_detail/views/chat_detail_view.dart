@@ -772,6 +772,7 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                         .typographyServices
                                                         .bodySmallRegular
                                                         .value,
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ],
                                               ),
@@ -854,6 +855,7 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                         .typographyServices
                                                         .bodySmallRegular
                                                         .value,
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ],
                                               ),
