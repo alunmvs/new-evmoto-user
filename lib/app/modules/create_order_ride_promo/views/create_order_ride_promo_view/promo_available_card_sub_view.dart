@@ -14,15 +14,7 @@ class PromoAvailableCardSubView
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: () {
-          if (controller.selectedCouponId.value == coupon.id) {
-            controller.selectedCouponId.value = null;
-            controller.selectedCoupon.value = Coupon();
-          } else {
-            controller.selectedCouponId.value = coupon.id;
-            controller.selectedCoupon.value = coupon;
-          }
-        },
+        onTap: () => controller.onTapCoupon(coupon),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
           decoration: BoxDecoration(
@@ -136,27 +128,11 @@ class PromoAvailableCardSubView
               ),
               SizedBox(width: 4),
               GestureDetector(
-                onTap: () {
-                  if (controller.selectedCouponId.value == coupon.id) {
-                    controller.selectedCouponId.value = null;
-                    controller.selectedCoupon.value = Coupon();
-                  } else {
-                    controller.selectedCouponId.value = coupon.id;
-                    controller.selectedCoupon.value = coupon;
-                  }
-                },
+                onTap: () => controller.onTapCoupon(coupon),
                 child: AbsorbPointer(
                   child: RadioGroup(
                     groupValue: controller.selectedCouponId.value,
-                    onChanged: (value) {
-                      if (controller.selectedCouponId.value == coupon.id) {
-                        controller.selectedCouponId.value = null;
-                        controller.selectedCoupon.value = Coupon();
-                      } else {
-                        controller.selectedCouponId.value = coupon.id;
-                        controller.selectedCoupon.value = coupon;
-                      }
-                    },
+                    onChanged: (_) => controller.onTapCoupon(coupon),
                     child: Radio(
                       value: int.parse(coupon.id.toString()),
                       activeColor:

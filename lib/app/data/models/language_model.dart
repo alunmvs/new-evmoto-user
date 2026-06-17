@@ -144,6 +144,7 @@ class Language {
   String? snackbarCompleteOrderSuccess;
   String? snackbarChangeLanguageSuccess;
   String? snackbarDeleteAddressSuccess;
+  String? snackbarCouponSelectSuccess;
   String? delete;
   String? deleteAddressConfirmation;
   String? addOtherAddress;
@@ -591,6 +592,7 @@ class Language {
     this.snackbarCompleteOrderSuccess,
     this.snackbarChangeLanguageSuccess,
     this.snackbarDeleteAddressSuccess,
+    this.snackbarCouponSelectSuccess,
     this.delete,
     this.deleteAddressConfirmation,
     this.addOtherAddress,
@@ -1105,6 +1107,8 @@ class Language {
         json['snackbar_change_language_success'] ?? "(Translate Not Found)";
     snackbarDeleteAddressSuccess =
         json['snackbar_delete_address_success'] ?? "(Translate Not Found)";
+    snackbarCouponSelectSuccess =
+        json['snackbar_coupon_select_success'] ?? "(Translate Not Found)";
     delete = json['delete'] ?? "(Translate Not Found)";
     deleteAddressConfirmation =
         json['delete_address_confirmation'] ?? "(Translate Not Found)";
@@ -1560,6 +1564,7 @@ class Language {
     data['snackbar_change_language_success'] =
         this.snackbarChangeLanguageSuccess;
     data['snackbar_delete_address_success'] = this.snackbarDeleteAddressSuccess;
+    data['snackbar_coupon_select_success'] = this.snackbarCouponSelectSuccess;
     data['delete'] = this.delete;
     data['delete_address_confirmation'] = this.deleteAddressConfirmation;
     data['add_other_address'] = this.addOtherAddress;

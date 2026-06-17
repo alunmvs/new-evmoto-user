@@ -5,6 +5,7 @@ import 'package:new_evmoto_user/app/repositories/coupon_repository.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class CreateOrderRidePromoController extends GetxController {
@@ -68,6 +69,20 @@ class CreateOrderRidePromoController extends GetxController {
     );
 
     isSeeMoreCouponList.value = couponList.isNotEmpty;
+  }
+
+  void onTapCoupon(Coupon coupon) {
+    if (selectedCouponId.value == coupon.id) {
+      selectedCouponId.value = null;
+      selectedCoupon.value = Coupon();
+      return;
+    }
+
+    selectedCouponId.value = coupon.id;
+    selectedCoupon.value = coupon;
+    SnackbarHelper.showSnackbarSuccess(
+      text: languageServices.language.value.snackbarCouponSelectSuccess ?? "-",
+    );
   }
 
   Future<void> seeMoreCouponList() async {
