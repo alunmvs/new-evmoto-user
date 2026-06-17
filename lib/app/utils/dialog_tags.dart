@@ -20,6 +20,8 @@ class DialogTags {
   static const advancedBookingCancel = 'dialog.advanced_booking_cancel';
   static const advancedBookingExpired = 'dialog.advanced_booking_expired';
   static const driverCancel = 'dialog.driver_cancel';
+  static const driverNotAvailable = 'dialog.driver_not_available';
+  static const driverBusy = 'dialog.driver_busy';
 
   static const outsideServiceArea = 'dialog.outside_service_area';
 

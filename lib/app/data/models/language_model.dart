@@ -361,6 +361,10 @@ class Language {
   String? driverCancelTitle;
   String? driverCancelDescription;
   String? driverCancelButton;
+  String? driverNotAvailableTitle;
+  String? driverNotAvailableDescription;
+  String? driverBusyTitle;
+  String? driverBusyDescription;
   String? nearestDriverAvailable1;
   String? nearestDriverAvailable2;
   String? nearestDriverNotAvailable;
@@ -447,6 +451,10 @@ class Language {
     this.driverCancelTitle,
     this.driverCancelDescription,
     this.driverCancelButton,
+    this.driverNotAvailableTitle,
+    this.driverNotAvailableDescription,
+    this.driverBusyTitle,
+    this.driverBusyDescription,
     this.serviceTimeValidationTitle,
     this.serviceTimeValidationDescription,
     this.serviceTimeValidationButton,
@@ -895,6 +903,14 @@ class Language {
         json['driver_cancel_description'] ?? "(Translate Not Found)";
     driverCancelButton =
         json['driver_cancel_button'] ?? "(Translate Not Found)";
+    driverNotAvailableTitle =
+        json['driver_not_available_title'] ?? "(Translate Not Found)";
+    driverNotAvailableDescription =
+        json['driver_not_available_description'] ?? "(Translate Not Found)";
+    driverBusyTitle =
+        json['driver_busy_title'] ?? "(Translate Not Found)";
+    driverBusyDescription =
+        json['driver_busy_description'] ?? "(Translate Not Found)";
     serviceTimeValidationTitle =
         json['service_time_validation_title'] ?? "(Translate Not Found)";
     serviceTimeValidationDescription =
