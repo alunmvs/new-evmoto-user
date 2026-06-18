@@ -12,7 +12,6 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
-import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -135,8 +134,8 @@ class SocketServices extends GetxService {
 
                     Get.find<RideOrderDetailController>()
                         .handleSocketDispatchPopupActive(
-                      dispatchPopupActive: dispatchPopupActiveData,
-                    );
+                          dispatchPopupActive: dispatchPopupActiveData,
+                        );
                   }
                   break;
                 case 'DISPATCH_EXPIRED':
@@ -148,24 +147,20 @@ class SocketServices extends GetxService {
 
                     Get.find<RideOrderDetailController>()
                         .handleSocketDispatchExpired(
-                      dispatchExpired: dispatchExpiredData,
-                    );
+                          dispatchExpired: dispatchExpiredData,
+                        );
                   }
                   break;
                 case 'OFFLINE':
-                  // print("[DEBUG LOGOUT] SOCKET OFFLINE");
-                  if (Get.find<ApiServices>().isLoggingOut) break;
-                  if (Get.currentRoute == Routes.LOGIN_REGISTER) break;
                   var languageServices = Get.find<LanguageServices>();
-                  await clearDataLogout();
-                  finishLogoutSession();
-                  SnackbarHelper.showSnackbarError(
-                    text: languageServices.language.value.offlineText ?? "-",
+                  await handleSessionExpired(
+                    snackbarText:
+                        languageServices.language.value.offlineText ?? "-",
                   );
                   break;
                 case 'END_PUSH':
                   // if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                  //   DialogHelper.show(widget: 
+                  //   DialogHelper.show(widget:
                   //     EndPushDialog(
                   //       orderId: dataJson['data']['orderId'],
                   //       orderType: dataJson['data']['orderType'],

@@ -7,10 +7,8 @@ import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
-import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
-import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 
@@ -199,15 +197,11 @@ class ApiServices extends GetxService {
 
           if (response.data != null) {
             if (response.data is Map<String, dynamic>) {
-              if (response.data['code'] == 600 && !isLoggingOut) {
-                if (Get.currentRoute != Routes.LOGIN_REGISTER) {
-                  // print("[DEBUG LOGOUT] API 600 ${response.realUri}");
-                  await clearDataLogout();
-                  finishLogoutSession();
-                  SnackbarHelper.showSnackbarError(
-                    text: languageServices.language.value.offlineText ?? "-",
-                  );
-                }
+              if (response.data['code'] == 600) {
+                await handleSessionExpired(
+                  snackbarText:
+                      languageServices.language.value.offlineText ?? "-",
+                );
               }
             }
           }

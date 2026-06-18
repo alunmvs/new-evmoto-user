@@ -16,6 +16,36 @@ import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+bool isUnauthenticatedRoute() {
+  final route = Get.currentRoute;
+  return route == Routes.LOGIN_REGISTER ||
+      route == Routes.LOGIN_REGISTER_VERIFICATION_OTP ||
+      route == Routes.SPLASH_SCREEN;
+}
+
+Future<bool> shouldTriggerAutoLogout() async {
+  final apiServices = Get.find<ApiServices>();
+  if (apiServices.isLoggingOut) return false;
+  if (isUnauthenticatedRoute()) return false;
+
+  final storage = FlutterSecureStorage();
+  final token = await storage.read(key: 'token');
+  if (token == null || token.isEmpty) return false;
+
+  return true;
+}
+
+Future<void> handleSessionExpired({required String snackbarText}) async {
+  if (!await shouldTriggerAutoLogout()) return;
+
+  final apiServices = Get.find<ApiServices>();
+  apiServices.beginLogout();
+
+  await clearDataLogout();
+  finishLogoutSession();
+  SnackbarHelper.showSnackbarError(text: snackbarText);
+}
+
 DateTime parseTime(String time) {
   final parts = time.split(':');
   final now = DateTime.now();
