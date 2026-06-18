@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/active_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_expired_model.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_popup_active_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_review_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
@@ -521,6 +523,84 @@ class OrderRideRepository {
       }
 
       return OrderReview.fromJson(response.data['data']);
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<DispatchPopupActive> queryDispatchPopupActive({
+    required String orderId,
+    required int orderType,
+  }) async {
+    try {
+      var url = "$baseUrl/pushSingle/api/netty/queryDispatchPopupActive";
+
+      var queryParameters = {
+        "orderId": orderId,
+        "orderType": orderType,
+      };
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return DispatchPopupActive.fromJson(response.data['data']);
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<DispatchExpired> queryDispatchExpired({
+    required String orderId,
+    required int orderType,
+  }) async {
+    try {
+      var url = "$baseUrl/pushSingle/api/netty/queryDispatchExpired";
+
+      var queryParameters = {
+        "orderId": orderId,
+        "orderType": orderType,
+      };
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return DispatchExpired.fromJson(response.data['data']);
     } on DioException {
       rethrow;
     }
