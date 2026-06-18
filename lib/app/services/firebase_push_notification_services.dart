@@ -13,6 +13,8 @@ import 'package:flutter_callkit_incoming/entities/notification_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_expired_model.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_popup_active_model.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/controllers/advanced_booking_detail_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
@@ -194,6 +196,24 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL ||
         Get.currentRoute == Routes.CHAT_DETAIL) {
       Get.find<RideOrderDetailController>().handleSocketOrderStatus();
+    }
+    return;
+  }
+
+  if (message.data['notification_type'] == 'DISPATCH_POPUP_ACTIVE') {
+    if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+      Get.find<RideOrderDetailController>().handleSocketDispatchPopupActive(
+        dispatchPopupActive: DispatchPopupActive.fromJson(message.data),
+      );
+    }
+    return;
+  }
+
+  if (message.data['notification_type'] == 'DISPATCH_EXPIRED') {
+    if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+      Get.find<RideOrderDetailController>().handleSocketDispatchExpired(
+        dispatchExpired: DispatchExpired.fromJson(message.data),
+      );
     }
     return;
   }
@@ -448,6 +468,24 @@ class FirebasePushNotificationServices extends GetxService {
         if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL ||
             Get.currentRoute == Routes.CHAT_DETAIL) {
           Get.find<RideOrderDetailController>().handleSocketOrderStatus();
+        }
+        return;
+      }
+
+      if (message.data['notification_type'] == 'DISPATCH_POPUP_ACTIVE') {
+        if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+          Get.find<RideOrderDetailController>().handleSocketDispatchPopupActive(
+            dispatchPopupActive: DispatchPopupActive.fromJson(message.data),
+          );
+        }
+        return;
+      }
+
+      if (message.data['notification_type'] == 'DISPATCH_EXPIRED') {
+        if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+          Get.find<RideOrderDetailController>().handleSocketDispatchExpired(
+            dispatchExpired: DispatchExpired.fromJson(message.data),
+          );
         }
         return;
       }

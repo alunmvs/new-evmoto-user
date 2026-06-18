@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_expired_model.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_popup_active_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_user/app/data/models/socket_driver_position_data_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
@@ -122,6 +124,32 @@ class SocketServices extends GetxService {
 
                     await Get.find<RideOrderDetailController>()
                         .handleSocketOrderStatus();
+                  }
+                  break;
+                case 'DISPATCH_POPUP_ACTIVE':
+                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                    var dispatchPopupActiveData = DispatchPopupActive.fromJson(
+                      dataJson['data'],
+                    );
+                    dispatchPopupActiveData.method = method;
+
+                    Get.find<RideOrderDetailController>()
+                        .handleSocketDispatchPopupActive(
+                      dispatchPopupActive: dispatchPopupActiveData,
+                    );
+                  }
+                  break;
+                case 'DISPATCH_EXPIRED':
+                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
+                    var dispatchExpiredData = DispatchExpired.fromJson(
+                      dataJson['data'],
+                    );
+                    dispatchExpiredData.method = method;
+
+                    Get.find<RideOrderDetailController>()
+                        .handleSocketDispatchExpired(
+                      dispatchExpired: dispatchExpiredData,
+                    );
                   }
                   break;
                 case 'OFFLINE':
