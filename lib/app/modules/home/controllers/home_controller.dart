@@ -141,7 +141,7 @@ class HomeController extends GetxController {
   final isFetchTotalUnreadMessageCount = false.obs;
 
   // sendbird SDK
-  final isSendbirdInit = false.obs;
+  // final isSendbirdInit = false.obs;
 
   // advertisement
   final advertisementList = <Advertisement>[].obs;
@@ -199,8 +199,9 @@ class HomeController extends GetxController {
       //     sendbirdChatServices.initialize(),
       //   ]),
       // );
-      await getTotalUnreadFirebaseChat();
-      isSendbirdInit.value = true;
+      // await userServices.getUserInfo();
+      // await getTotalUnreadFirebaseChat();
+      // isSendbirdInit.value = true;
       await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);
 
       if ((userServices.userInfo.value.name == "" ||
@@ -328,10 +329,14 @@ class HomeController extends GetxController {
         await locationServices.requestLocationSplashScreen();
         await Future.wait([
           userServices.getUserInfo(),
-          getTotalUnreadFirebaseChat(),
           getAdvertisementList(),
           refreshMarkerDriverNearby(),
         ], eagerError: false);
+
+        await getTotalUnreadFirebaseChat();
+      } else {
+        await Future.wait([userServices.getUserInfo()], eagerError: false);
+        await getTotalUnreadFirebaseChat();
       }
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
@@ -459,7 +464,9 @@ class HomeController extends GetxController {
                                         ),
                                   ),
                                   onPressed: () async {
-                                    DialogHelper.dismiss(DialogTags.serviceTimeValidation);
+                                    DialogHelper.dismiss(
+                                      DialogTags.serviceTimeValidation,
+                                    );
                                   },
                                 ),
                               ],
@@ -469,7 +476,9 @@ class HomeController extends GetxController {
                               right: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  DialogHelper.dismiss(DialogTags.serviceTimeValidation);
+                                  DialogHelper.dismiss(
+                                    DialogTags.serviceTimeValidation,
+                                  );
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -878,7 +887,9 @@ class HomeController extends GetxController {
                                     .copyWith(color: Colors.white),
                               ),
                               onPressed: () async {
-                                DialogHelper.dismiss(DialogTags.appVersionNewest);
+                                DialogHelper.dismiss(
+                                  DialogTags.appVersionNewest,
+                                );
                               },
                             ),
                             SizedBox(height: 16),
@@ -1011,7 +1022,9 @@ class HomeController extends GetxController {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        DialogHelper.dismiss(DialogTags.appVersionUpdate);
+                                        DialogHelper.dismiss(
+                                          DialogTags.appVersionUpdate,
+                                        );
 
                                         var prefs =
                                             await SharedPreferences.getInstance();
@@ -1044,17 +1057,19 @@ class HomeController extends GetxController {
                     ],
                   ),
                 ),
-              ), barrierDismissible: false, backDismiss: false,
+              ),
+              barrierDismissible: false,
+              backDismiss: false,
             );
           }
         } else {
           if (isShowVersionNewestConfirmationDialog == true) {
             DialogHelper.show(
-                tag: DialogTags.appVersionNewest,
-                widget: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              tag: DialogTags.appVersionNewest,
+              widget: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -1103,7 +1118,9 @@ class HomeController extends GetxController {
                                       .copyWith(color: Colors.white),
                                 ),
                                 onPressed: () async {
-                                  DialogHelper.dismiss(DialogTags.appVersionNewest);
+                                  DialogHelper.dismiss(
+                                    DialogTags.appVersionNewest,
+                                  );
                                 },
                               ),
                               SizedBox(height: 16),
@@ -1328,7 +1345,9 @@ class HomeController extends GetxController {
             ),
           ),
         ),
-      ), barrierDismissible: false, backDismiss: false,
+      ),
+      barrierDismissible: false,
+      backDismiss: false,
     );
   }
 
@@ -1462,7 +1481,9 @@ class HomeController extends GetxController {
                           ),
                           GestureDetector(
                             onTap: () {
-                              DialogHelper.dismiss(DialogTags.locationPermission);
+                              DialogHelper.dismiss(
+                                DialogTags.locationPermission,
+                              );
                             },
                             child: Container(
                               width: 24,
@@ -1527,27 +1548,27 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> getTotalUnreadSendbirdChat() async {
-    totalUnreadMessageCount.value = 0;
-    if (sendbirdChatServices.isSuccessInitialize.value == true) {
-      if (isFetchTotalUnreadMessageCount.value == false) {
-        isFetchTotalUnreadMessageCount.value = true;
-        try {
-          var query = GroupChannelListQuery();
-          var channelList = await query.next();
+  // Future<void> getTotalUnreadSendbirdChat() async {
+  //   totalUnreadMessageCount.value = 0;
+  //   if (sendbirdChatServices.isSuccessInitialize.value == true) {
+  //     if (isFetchTotalUnreadMessageCount.value == false) {
+  //       isFetchTotalUnreadMessageCount.value = true;
+  //       try {
+  //         var query = GroupChannelListQuery();
+  //         var channelList = await query.next();
 
-          for (var channel in channelList) {
-            for (var member in channel.members) {
-              if (member.userId == "user_${userServices.userInfo.value.id}") {
-                totalUnreadMessageCount.value += channel.unreadMessageCount;
-              }
-            }
-          }
-        } catch (e) {}
-        isFetchTotalUnreadMessageCount.value = false;
-      }
-    }
-  }
+  //         for (var channel in channelList) {
+  //           for (var member in channel.members) {
+  //             if (member.userId == "user_${userServices.userInfo.value.id}") {
+  //               totalUnreadMessageCount.value += channel.unreadMessageCount;
+  //             }
+  //           }
+  //         }
+  //       } catch (e) {}
+  //       isFetchTotalUnreadMessageCount.value = false;
+  //     }
+  //   }
+  // }
 
   Future<void> getTotalUnreadFirebaseChat() async {
     if (isFetchTotalUnreadMessageCount.value == false) {
@@ -1555,12 +1576,8 @@ class HomeController extends GetxController {
       totalUnreadMessageCount.value = 0;
       var evmotoOrderChatParticipants = await FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
-          .where(
-            'userId',
-            isEqualTo: userServices.userInfo.value.id.toString(),
-          )
+          .where('userId', isEqualTo: userServices.userInfo.value.id.toString())
           .where('totalUnreadChatDriver', isGreaterThan: 0)
-          .orderBy('lastMessageAt', descending: true)
           .get();
 
       for (var doc in evmotoOrderChatParticipants.docs) {

@@ -62,9 +62,12 @@ class HomeAppBarSubView extends GetView<HomeController>
                     },
                     child: Badge(
                       isLabelVisible:
-                          controller.isSendbirdInit.value == false ||
+                          controller.isFetchTotalUnreadMessageCount.value ==
+                              false &&
                           controller.totalUnreadMessageCount.value > 0,
-                      label: controller.isSendbirdInit.value == false
+                      label:
+                          controller.isFetchTotalUnreadMessageCount.value ==
+                              true
                           ? LoadingAnimationWidget.staggeredDotsWave(
                               color: Colors.white,
                               size: 8,
