@@ -181,6 +181,7 @@ class Language {
   String? prepareTheExactAmountOfMoney;
   String? km;
   String? evMotorcycleDriverSearch;
+  String? evMotorcycleWaitingDriverConfirmation;
   String? passenger;
   String? noMessagesYet;
   String? yourEstimateToYourDestination;
@@ -637,6 +638,7 @@ class Language {
     this.prepareTheExactAmountOfMoney,
     this.km,
     this.evMotorcycleDriverSearch,
+    this.evMotorcycleWaitingDriverConfirmation,
     this.passenger,
     this.noMessagesYet,
     this.yourEstimateToYourDestination,
@@ -1176,6 +1178,9 @@ class Language {
     km = json['km'] ?? "(Translate Not Found)";
     evMotorcycleDriverSearch =
         json['ev_motorcycle_driver_search'] ?? "(Translate Not Found)";
+    evMotorcycleWaitingDriverConfirmation =
+        json['ev_motorcycle_waiting_driver_confirmation'] ??
+            "(Translate Not Found)";
     passenger = json['passenger'] ?? "(Translate Not Found)";
     noMessagesYet = json['no_messages_yet'] ?? "(Translate Not Found)";
     yourEstimateToYourDestination =
@@ -1620,6 +1625,8 @@ class Language {
         this.prepareTheExactAmountOfMoney;
     data['km'] = this.km;
     data['ev_motorcycle_driver_search'] = this.evMotorcycleDriverSearch;
+    data['ev_motorcycle_waiting_driver_confirmation'] =
+        this.evMotorcycleWaitingDriverConfirmation;
     data['passenger'] = this.passenger;
     data['no_messages_yet'] = this.noMessagesYet;
     data['your_estimate_to_your_destination'] =

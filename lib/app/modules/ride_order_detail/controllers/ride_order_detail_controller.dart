@@ -9,6 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_expired_model.dart';
+import 'package:new_evmoto_user/app/data/models/dispatch_popup_active_model.dart';
 import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_messages_model.dart';
 import 'package:new_evmoto_user/app/data/models/evmoto_order_chat_participants_model.dart';
@@ -38,8 +40,11 @@ import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
+import 'package:new_evmoto_user/app/widgets/driver_busy_dialog.dart';
+import 'package:new_evmoto_user/app/widgets/driver_not_available_dialog.dart';
 
 class RideOrderDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -78,6 +83,8 @@ class RideOrderDetailController extends GetxController {
 
   final orderRideDetail = OrderRide().obs;
   final orderRideServerDetail = OrderRideServer().obs;
+  final dispatchPopupActive = DispatchPopupActive().obs;
+  final dispatchExpired = DispatchExpired().obs;
   final orderId = "".obs;
   final orderType = 0.obs;
 
@@ -1216,6 +1223,15 @@ class RideOrderDetailController extends GetxController {
     state.value = orderRideDetail.value.state ?? 0;
     await updateVisibility();
 
+    if (state.value == 1) {
+      await Future.wait([
+        getDispatchPopupActive(),
+        getDispatchExpired(),
+      ]);
+    } else if (state.value == 10) {
+      await getDispatchExpired();
+    }
+
     if (orderRideDetail.value.driverArrivedOriginAt != null) {
       driverArrivedOriginAt.value = DateTime.parse(
         orderRideDetail.value.driverArrivedOriginAt!.replaceFirst(' ', 'T'),
@@ -1269,6 +1285,43 @@ class RideOrderDetailController extends GetxController {
         await streamExistingChatList();
       }
     }
+  }
+
+  Future<void> getDispatchPopupActive() async {
+    dispatchPopupActive.value =
+        await orderRideRepository.queryDispatchPopupActive(
+      orderId: orderId.value,
+      orderType: orderType.value,
+    );
+  }
+
+  void handleSocketDispatchPopupActive({
+    required DispatchPopupActive dispatchPopupActive,
+  }) {
+    if (dispatchPopupActive.orderId.toString() != orderId.value ||
+        dispatchPopupActive.orderType != orderType.value) {
+      return;
+    }
+
+    this.dispatchPopupActive.value = dispatchPopupActive;
+  }
+
+  void handleSocketDispatchExpired({
+    required DispatchExpired dispatchExpired,
+  }) {
+    if (dispatchExpired.orderId.toString() != orderId.value ||
+        dispatchExpired.orderType != orderType.value) {
+      return;
+    }
+
+    this.dispatchExpired.value = dispatchExpired;
+  }
+
+  Future<void> getDispatchExpired() async {
+    dispatchExpired.value = await orderRideRepository.queryDispatchExpired(
+      orderId: orderId.value,
+      orderType: orderType.value,
+    );
   }
 
   // orderRideServerDetail
@@ -1735,17 +1788,71 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> checkOrderHasBeenCancelled() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (orderRideDetail.value.state == 10) {
-        if (DialogHelper.exists(DialogTags.cancelOrderBeforeDriver)) {
-          DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
-        }
-        Get.back();
-        SnackbarHelper.showSnackbarError(
-          text: languageServices.language.value.orderHasBeenCancelled ?? "-",
-        );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (orderRideDetail.value.state != 10) return;
+
+      await getDispatchExpired();
+
+      if (DialogHelper.exists(DialogTags.cancelOrderBeforeDriver)) {
+        DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
       }
+
+      final hadPopup = dispatchExpired.value.hadPopup ?? 0;
+      final orderAgainArgs = {
+        "origin_address_name": orderRideDetail.value.startAddressName,
+        "origin_address": orderRideDetail.value.startAddress,
+        "origin_latitude": orderRideDetail.value.startLat.toString(),
+        "origin_longitude": orderRideDetail.value.startLon.toString(),
+        "destination_address_name": orderRideDetail.value.endAddressName,
+        "destination_address": orderRideDetail.value.endAddress,
+        "destination_latitude": orderRideDetail.value.endLat.toString(),
+        "destination_longitude": orderRideDetail.value.endLon.toString(),
+      };
+
+      Get.back();
+      _showDispatchExpiredDialog(
+        hadPopup: hadPopup,
+        orderAgainArgs: orderAgainArgs,
+      );
     });
+  }
+
+  void _showDispatchExpiredDialog({
+    required int hadPopup,
+    required Map<String, dynamic> orderAgainArgs,
+  }) {
+    Future<void> onTapOrderAgain() async {
+      final homeController = Get.find<HomeController>();
+      await homeController.getActiveOrderList();
+
+      if (homeController.isActiveOrderListNotEmpty.value) {
+        SnackbarHelper.showSnackbarError(
+          text: languageServices.language.value.snackbarOrderNotSuccess ?? "-",
+        );
+        return;
+      }
+
+      DialogHelper.dismissIfExists(DialogTags.driverNotAvailable);
+      DialogHelper.dismissIfExists(DialogTags.driverBusy);
+
+      await Get.toNamed(
+        Routes.CREATE_ORDER_RIDE,
+        arguments: orderAgainArgs,
+      );
+    }
+
+    if (hadPopup >= 1) {
+      DialogHelper.show(
+        tag: DialogTags.driverBusy,
+        widget: DriverBusyDialog(onTapOrderAgain: onTapOrderAgain),
+      );
+      return;
+    }
+
+    DialogHelper.show(
+      tag: DialogTags.driverNotAvailable,
+      widget: DriverNotAvailableDialog(onTapOrderAgain: onTapOrderAgain),
+    );
   }
 
   Future<void> checkNumberOfPushRoundsHasExceeded() async {

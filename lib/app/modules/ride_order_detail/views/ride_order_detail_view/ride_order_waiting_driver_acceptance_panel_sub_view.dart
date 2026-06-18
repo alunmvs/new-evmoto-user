@@ -269,11 +269,21 @@ class RideOrderWaitingDriverAcceptancePanelSubView
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              controller
-                                                      .languageServices
-                                                      .language
-                                                      .value
-                                                      .evMotorcycleDriverSearch ??
+                                              (controller
+                                                              .dispatchPopupActive
+                                                              .value
+                                                              .active ==
+                                                          1
+                                                      ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .evMotorcycleWaitingDriverConfirmation
+                                                      : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .evMotorcycleDriverSearch) ??
                                                   "-",
                                               style: controller
                                                   .typographyServices
