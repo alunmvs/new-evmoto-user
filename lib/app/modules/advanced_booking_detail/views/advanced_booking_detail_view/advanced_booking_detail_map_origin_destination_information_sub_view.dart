@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/constants/advanced_booking_state_const.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/controllers/advanced_booking_detail_controller.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advanced_booking_detail_driver_information_sub_view.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:timelines_plus/timelines_plus.dart';
 
 class AdvancedBookingDetailMapOriginDestinationInformationSubView
@@ -27,6 +30,46 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                 initialCameraPosition: controller.initialCameraPosition.value,
                 onMapCreated: (GoogleMapController googleMapController) async {
                   controller.googleMapController = googleMapController;
+                  controller.isFetch.value = true;
+                  controller.isCriticalError.value = false;
+                  controller.id.value = Get.arguments['id'];
+                  try {
+                    await Future.wait([controller.getAdvancedBookingDetail()]);
+                    await Future.wait([controller.getOrderRideDetail()]);
+                    await controller.getRatingLabelList(
+                      rating:
+                          controller.orderRideDetail.value.orderScore == 0 ||
+                              controller.orderRideDetail.value.orderScore ==
+                                  null
+                          ? 0
+                          : controller.orderRideDetail.value.orderScore!,
+                    );
+
+                    await controller.setupGoogleMapOriginToDestination();
+
+                    controller.isFetch.value = false;
+                  } on DioException catch (e) {
+                    SnackbarHelper.showSnackbarError(text: e.error.toString());
+                    controller.isCriticalError.value = true;
+                    controller.isFetch.value = false;
+                  } catch (e) {
+                    if (e.toString().contains("GoogleMapController") == false) {
+                      SnackbarHelper.showSnackbarError(text: e.toString());
+                      controller.isCriticalError.value = true;
+                      controller.isFetch.value = false;
+                    }
+                  }
+
+                  // WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  //   await setupGoogleMapOriginToDestination();
+                  // });
+
+                  if (!controller.isCriticalError.value &&
+                      AdvancedBookingState.ACTIVE_STATE_LIST.contains(
+                        controller.advancedBooking.value.state,
+                      )) {
+                    await controller.enableRefreshAdvancedBookingTimer();
+                  }
                 },
                 markers: controller.markers,
                 polylines: controller.polylines,
@@ -61,7 +104,7 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
               ),
               child: Center(
                 child: Text(
-                  controller.orderRideDetail.value.orderNum.toString(),
+                  controller.orderRideDetail.value.orderNum!,
                   style: controller.typographyServices.bodySmallRegular.value
                       .copyWith(
                         color: controller

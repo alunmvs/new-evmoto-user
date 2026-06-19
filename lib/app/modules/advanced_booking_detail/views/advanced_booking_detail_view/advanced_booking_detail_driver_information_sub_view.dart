@@ -33,13 +33,13 @@ class AdvancedBookingDetailDriverInformationSubView
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "${controller.orderRideDetail.value.brand} · ${controller.orderRideDetail.value.carColor}",
+                    "${controller.orderRideDetail.value.brand ?? '-'} · ${controller.orderRideDetail.value.carColor ?? '-'}",
                     style: controller.typographyServices.bodySmallRegular.value
                         .copyWith(color: Color(0XFF7D7D7D)),
                   ),
                   if (controller.advancedBooking.value.state != 9) ...[
                     Text(
-                      "${controller.orderRideDetail.value.driverName}",
+                      controller.orderRideDetail.value.driverName ?? "-",
                       style: controller
                           .typographyServices
                           .bodySmallRegular

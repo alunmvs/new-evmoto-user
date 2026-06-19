@@ -69,7 +69,11 @@ class AdvancedBookingDetailInvoiceSubView
                           ),
                         ],
                       ),
-                      if (controller.orderRideDetail.value.additionalCharge !=
+                      if ((controller
+                                  .orderRideDetail
+                                  .value
+                                  .additionalCharge ??
+                              0) !=
                           0) ...[
                         SizedBox(height: 12),
                         Row(
@@ -202,7 +206,7 @@ class AdvancedBookingDetailInvoiceSubView
                                           "-")
                                       .replaceAll(
                                         "{time}",
-                                        "${(controller.orderRideDetail.value.wait ?? 0.0).round()} ${controller.languageServices.language.value.minute}",
+                                        "${(controller.orderRideDetail.value.wait ?? 0.0).round()} ${controller.languageServices.language.value.minute ?? ''}",
                                       ),
                                   style: controller
                                       .typographyServices
@@ -350,7 +354,8 @@ class AdvancedBookingDetailInvoiceSubView
                           decimalDigits: 0,
                         ).format(
                           controller.orderRideDetail.value.orderId == null
-                              ? controller.advancedBooking.value.orderMoney
+                              ? (controller.advancedBooking.value.orderMoney ??
+                                    0.0)
                               : controller.orderRideDetail.value.state == 10
                               ? 0
                               : (controller.orderRideDetail.value.payMoney ??

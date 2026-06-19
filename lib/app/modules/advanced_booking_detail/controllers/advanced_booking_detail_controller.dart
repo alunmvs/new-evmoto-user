@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_user/app/data/constants/advanced_booking_state_const.dart';
 import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
 import 'package:new_evmoto_user/app/data/models/advanced_booking_model.dart';
 import 'package:new_evmoto_user/app/data/models/open_map_direction_model.dart'
@@ -65,38 +67,11 @@ class AdvancedBookingDetailController extends GetxController {
   final isCriticalError = false.obs;
   final isFetch = false.obs;
 
+  Timer? refreshAdvancedBookingTimer;
+
   @override
   Future<void> onInit() async {
     super.onInit();
-    isFetch.value = true;
-    isCriticalError.value = false;
-    id.value = Get.arguments['id'];
-    try {
-      await Future.wait([getAdvancedBookingDetail()]);
-      await Future.wait([getOrderRideDetail()]);
-      await getRatingLabelList(
-        rating:
-            orderRideDetail.value.orderScore == 0 ||
-                orderRideDetail.value.orderScore == null
-            ? 0
-            : orderRideDetail.value.orderScore!,
-      );
-      isFetch.value = false;
-    } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(text: e.error.toString());
-      isCriticalError.value = true;
-      isFetch.value = false;
-    } catch (e) {
-      if (e.toString().contains("GoogleMapController") == false) {
-        SnackbarHelper.showSnackbarError(text: e.toString());
-        isCriticalError.value = true;
-        isFetch.value = false;
-      }
-    }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await setupGoogleMapOriginToDestination();
-    });
   }
 
   @override
@@ -106,6 +81,7 @@ class AdvancedBookingDetailController extends GetxController {
 
   @override
   void onClose() {
+    disableRefreshAdvancedBookingTimer();
     super.onClose();
   }
 
@@ -119,6 +95,45 @@ class AdvancedBookingDetailController extends GetxController {
           ? 0
           : orderRideDetail.value.orderScore!,
     );
+  }
+
+  Future<void> enableRefreshAdvancedBookingTimer() async {
+    refreshAdvancedBookingTimer?.cancel();
+    refreshAdvancedBookingTimer = Timer.periodic(Duration(seconds: 5), (
+      timer,
+    ) async {
+      print("ini refresh-1");
+      if (isClosed) {
+        timer.cancel();
+        return;
+      }
+      print("ini refresh-2 ${advancedBooking.value.state}");
+
+      if (!AdvancedBookingState.ACTIVE_STATE_LIST.contains(
+        advancedBooking.value.state,
+      )) {
+        print("ini refresh-3");
+        disableRefreshAdvancedBookingTimer();
+        return;
+      }
+      print("ini refresh-4");
+
+      await refreshAll();
+      print("ini refresh-5 ${advancedBooking.value.state}");
+
+      if (!AdvancedBookingState.ACTIVE_STATE_LIST.contains(
+        advancedBooking.value.state,
+      )) {
+        print("ini refresh-6");
+        disableRefreshAdvancedBookingTimer();
+      }
+      print("ini refresh-7");
+    });
+  }
+
+  void disableRefreshAdvancedBookingTimer() {
+    refreshAdvancedBookingTimer?.cancel();
+    refreshAdvancedBookingTimer = null;
   }
 
   Future<void> getAdvancedBookingDetail() async {
@@ -356,8 +371,10 @@ class AdvancedBookingDetailController extends GetxController {
                   : orderRideDetail.value.orderScore!,
             );
           } on DioException catch (e) {
+            DialogHelper.dismiss(DialogTags.advancedBookingCancel);
             SnackbarHelper.showSnackbarError(text: e.error.toString());
           } catch (e) {
+            DialogHelper.dismiss(DialogTags.advancedBookingCancel);
             if (e.toString().contains("GoogleMapController") == false) {
               SnackbarHelper.showSnackbarError(text: e.toString());
             }
