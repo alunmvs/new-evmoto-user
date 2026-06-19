@@ -55,6 +55,9 @@ LatLngBounds latLngBoundsFromPoints(
   );
 }
 
+const double kDriverMapFarDistanceMeters = 3000.0;
+const double kDriverMapNearDistanceMeters = 80.0;
+
 double zoomLevelForSpanMeters(double distanceMeters) {
   if (distanceMeters <= 50) return 16;
   if (distanceMeters <= 200) return 15;
@@ -65,114 +68,41 @@ double zoomLevelForSpanMeters(double distanceMeters) {
   return 10;
 }
 
-double zoomLevelForRouteLookAhead(double lookAheadMeters) {
-  if (lookAheadMeters <= 150) return 17.5;
-  if (lookAheadMeters <= 300) return 17;
-  if (lookAheadMeters <= 450) return 16.5;
-  if (lookAheadMeters <= 600) return 16;
-  if (lookAheadMeters <= 900) return 15.5;
-  return 15;
+/// Minimum map span used when fitting driver + destination.
+/// Closer points use a tighter span so the camera auto-zooms in.
+double minSpanMetersForDriverDestinationDistance(
+  double distanceMeters, {
+  double nearDistanceMeters = kDriverMapNearDistanceMeters,
+  double farDistanceMeters = kDriverMapFarDistanceMeters,
+}) {
+  return distanceMeters.clamp(nearDistanceMeters, farDistanceMeters);
 }
 
-double getRouteLookAheadMeters(
-  LatLng driver,
-  List<LatLng> route, {
-  double maxLookAheadMeters = 1200,
-  double minLookAheadMeters = 400,
-}) {
-  if (route.isEmpty) return minLookAheadMeters;
-
-  final closest = getClosestPointIndex(driver, route);
-  final startIndex = closest['index'] as int;
-
-  var cumulative = Geolocator.distanceBetween(
-    driver.latitude,
-    driver.longitude,
-    route[startIndex].latitude,
-    route[startIndex].longitude,
-  );
-
-  for (var i = startIndex + 1; i < route.length; i++) {
-    cumulative += Geolocator.distanceBetween(
-      route[i - 1].latitude,
-      route[i - 1].longitude,
-      route[i].latitude,
-      route[i].longitude,
-    );
-    if (cumulative >= maxLookAheadMeters) {
-      return maxLookAheadMeters;
-    }
-  }
-
-  return cumulative.clamp(minLookAheadMeters, maxLookAheadMeters);
-}
-
-double? bearingAlongRoute(
-  LatLng driver,
-  List<LatLng> route, {
-  double bearingLookAheadMeters = 80,
-}) {
-  if (route.length < 2) return null;
-
-  final closest = getClosestPointIndex(driver, route);
-  final startIndex = closest['index'] as int;
-  var traveled = 0.0;
-
-  for (var i = startIndex + 1; i < route.length; i++) {
-    traveled += Geolocator.distanceBetween(
-      route[i - 1].latitude,
-      route[i - 1].longitude,
-      route[i].latitude,
-      route[i].longitude,
-    );
-    if (traveled >= bearingLookAheadMeters) {
-      return Geolocator.bearingBetween(
-        driver.latitude,
-        driver.longitude,
-        route[i].latitude,
-        route[i].longitude,
-      );
-    }
-  }
-
-  final destination = route.last;
-  return Geolocator.bearingBetween(
+/// Fits the map to show both [driver] and [destination].
+/// Zoom adjusts automatically as the driver approaches the destination.
+Future<void> animateMapToDriverAndDestination(
+  GoogleMapController controller, {
+  required LatLng driver,
+  required LatLng destination,
+  double edgePadding = 48,
+  double nearDistanceMeters = kDriverMapNearDistanceMeters,
+  double farDistanceMeters = kDriverMapFarDistanceMeters,
+}) async {
+  final distanceMeters = Geolocator.distanceBetween(
     driver.latitude,
     driver.longitude,
     destination.latitude,
     destination.longitude,
   );
-}
 
-Future<void> animateMapToDriverWithRoute(
-  GoogleMapController controller, {
-  required LatLng driver,
-  required List<LatLng> routePoints,
-  double maxLookAheadMeters = 500,
-  double minLookAheadMeters = 200,
-  double defaultZoom = 17,
-}) async {
-  final lookAheadMeters = routePoints.isEmpty
-      ? minLookAheadMeters
-      : getRouteLookAheadMeters(
-          driver,
-          routePoints,
-          maxLookAheadMeters: maxLookAheadMeters,
-          minLookAheadMeters: minLookAheadMeters,
-        );
-
-  final zoom = routePoints.isEmpty
-      ? defaultZoom
-      : zoomLevelForRouteLookAhead(lookAheadMeters);
-  final bearing = bearingAlongRoute(driver, routePoints);
-
-  await controller.animateCamera(
-    CameraUpdate.newCameraPosition(
-      CameraPosition(
-        target: driver,
-        zoom: zoom,
-        bearing: bearing ?? 0,
-      ),
+  await animateMapToFitPoints(
+    controller,
+    [driver, destination],
+    edgePadding: edgePadding,
+    minSpanMeters: minSpanMetersForDriverDestinationDistance(
+      distanceMeters,
+      nearDistanceMeters: nearDistanceMeters,
+      farDistanceMeters: farDistanceMeters,
     ),
   );
 }

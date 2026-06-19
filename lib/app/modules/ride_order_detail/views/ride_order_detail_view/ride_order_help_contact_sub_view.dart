@@ -18,15 +18,11 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
         children: [
           GestureDetector(
             onTap: () async {
-              final Uri url = Uri(scheme: 'tel', path: '112');
-
               try {
-                await launchUrl(url);
+                await controller.onTapOpenGoogleMaps();
               } catch (e) {
                 SnackbarHelper.showSnackbarError(
-                  text:
-                      controller.languageServices.language.value.cantMakeCall ??
-                      "-",
+                  text: 'Could not open Google Maps.',
                 );
               }
             },
@@ -47,60 +43,116 @@ class RideOrderHelpContactSubView extends GetView<RideOrderDetailController> {
                 backgroundColor: Colors.white,
                 radius: 42 / 2,
                 child: SvgPicture.asset(
-                  "assets/icons/icon_bell.svg",
-                  width: 19,
-                  height: 16,
+                  "assets/icons/icon_route.svg",
+                  width: 18,
+                  height: 18,
                 ),
               ),
             ),
           ),
           SizedBox(height: 16),
-          GestureDetector(
-            onTap: () async {
-              var customerCsWhatsapp = controller
-                  .firebaseRemoteConfigServices
-                  .remoteConfig
-                  .getString("customer_cs_whatsapp");
-              final Uri url = Uri.parse("https://wa.me/$customerCsWhatsapp");
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  var customerCsWhatsapp = controller
+                      .firebaseRemoteConfigServices
+                      .remoteConfig
+                      .getString("customer_cs_whatsapp");
+                  final Uri url = Uri.parse(
+                    "https://wa.me/$customerCsWhatsapp",
+                  );
 
-              try {
-                await launchUrl(url, mode: LaunchMode.externalApplication);
-              } catch (e) {
-                SnackbarHelper.showSnackbarSuccess(
-                  text:
-                      controller
-                          .languageServices
-                          .language
-                          .value
-                          .unableOpenWhatsapp ??
-                      "-",
-                );
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9999),
-                boxShadow: [
-                  BoxShadow(
-                    color: controller.themeColorServices.overlayDark200.value
-                        .withValues(alpha: 0.05),
-                    blurRadius: 4,
-                    spreadRadius: 0,
-                    offset: Offset(0, 4),
+                  try {
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  } catch (e) {
+                    SnackbarHelper.showSnackbarSuccess(
+                      text:
+                          controller
+                              .languageServices
+                              .language
+                              .value
+                              .unableOpenWhatsapp ??
+                          "-",
+                    );
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(9999),
+                    boxShadow: [
+                      BoxShadow(
+                        color: controller
+                            .themeColorServices
+                            .overlayDark200
+                            .value
+                            .withValues(alpha: 0.05),
+                        blurRadius: 4,
+                        spreadRadius: 0,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 42 / 2,
-                child: SvgPicture.asset(
-                  "assets/icons/icon_microphone.svg",
-                  width: 16.67,
-                  height: 17.38,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 42 / 2,
+                    child: SvgPicture.asset(
+                      "assets/icons/icon_microphone.svg",
+                      width: 16.67,
+                      height: 17.38,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              GestureDetector(
+                onTap: () async {
+                  final Uri url = Uri(scheme: 'tel', path: '112');
+
+                  try {
+                    await launchUrl(url);
+                  } catch (e) {
+                    SnackbarHelper.showSnackbarError(
+                      text:
+                          controller
+                              .languageServices
+                              .language
+                              .value
+                              .cantMakeCall ??
+                          "-",
+                    );
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(9999),
+                    boxShadow: [
+                      BoxShadow(
+                        color: controller
+                            .themeColorServices
+                            .overlayDark200
+                            .value
+                            .withValues(alpha: 0.05),
+                        blurRadius: 4,
+                        spreadRadius: 0,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 42 / 2,
+                    child: Image.asset(
+                      "assets/icons/icon_alert.png",
+                      width: 18.92,
+                      height: 18.92,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
+          SizedBox(height: 21.66),
         ],
       ),
     );

@@ -20,7 +20,7 @@ class RideOrderDriverReadyToGoDestinationPanelSubView
   Widget build(BuildContext context) {
     return SlidingUpPanel(
       minHeight: 262 + 132,
-      maxHeight: MediaQuery.of(context).size.height * 0.7561,
+      maxHeight: MediaQuery.of(context).size.height * (528 / 812),
       padding: EdgeInsets.all(0),
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(16),
@@ -35,7 +35,6 @@ class RideOrderDriverReadyToGoDestinationPanelSubView
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RideOrderHelpContactSubView(),
-              SizedBox(height: 32),
               Expanded(
                 child: Container(
                   width: MediaQuery.of(context).size.width,

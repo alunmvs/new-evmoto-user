@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -24,6 +23,7 @@ import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/active_order_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_chat_services.dart';
@@ -40,11 +40,9 @@ import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
-import 'package:new_evmoto_user/app/widgets/driver_busy_dialog.dart';
-import 'package:new_evmoto_user/app/widgets/driver_not_available_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RideOrderDetailController extends GetxController {
   final OrderRideRepository orderRideRepository;
@@ -979,7 +977,9 @@ class RideOrderDetailController extends GetxController {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
+                                  DialogHelper.dismiss(
+                                    DialogTags.cancelOrderBeforeDriver,
+                                  );
                                 },
                                 child: Text(
                                   languageServices.language.value.close ?? "-",
@@ -1023,7 +1023,9 @@ class RideOrderDetailController extends GetxController {
                                     );
                                   }
 
-                                  DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
+                                  DialogHelper.dismiss(
+                                    DialogTags.cancelOrderBeforeDriver,
+                                  );
                                   Get.back();
                                   SnackbarHelper.showSnackbarSuccess(
                                     text:
@@ -1224,10 +1226,7 @@ class RideOrderDetailController extends GetxController {
     await updateVisibility();
 
     if (state.value == 1) {
-      await Future.wait([
-        getDispatchPopupActive(),
-        getDispatchExpired(),
-      ]);
+      await Future.wait([getDispatchPopupActive(), getDispatchExpired()]);
     } else if (state.value == 10) {
       await getDispatchExpired();
     }
@@ -1288,11 +1287,11 @@ class RideOrderDetailController extends GetxController {
   }
 
   Future<void> getDispatchPopupActive() async {
-    dispatchPopupActive.value =
-        await orderRideRepository.queryDispatchPopupActive(
-      orderId: orderId.value,
-      orderType: orderType.value,
-    );
+    dispatchPopupActive.value = await orderRideRepository
+        .queryDispatchPopupActive(
+          orderId: orderId.value,
+          orderType: orderType.value,
+        );
   }
 
   void handleSocketDispatchPopupActive({
@@ -1306,9 +1305,7 @@ class RideOrderDetailController extends GetxController {
     this.dispatchPopupActive.value = dispatchPopupActive;
   }
 
-  void handleSocketDispatchExpired({
-    required DispatchExpired dispatchExpired,
-  }) {
+  void handleSocketDispatchExpired({required DispatchExpired dispatchExpired}) {
     if (dispatchExpired.orderId.toString() != orderId.value ||
         dispatchExpired.orderType != orderType.value) {
       return;
@@ -1570,10 +1567,7 @@ class RideOrderDetailController extends GetxController {
       );
     }
 
-    return LatLng(
-      orderRideDetail.value.endLat!,
-      orderRideDetail.value.endLon!,
-    );
+    return LatLng(orderRideDetail.value.endLat!, orderRideDetail.value.endLon!);
   }
 
   Future<void> updateCameraAutoFocus() async {
@@ -1598,47 +1592,21 @@ class RideOrderDetailController extends GetxController {
 
     final driver = _driverPositionForCamera();
     if (driver == null) {
-      await animateMapToFitPoints(
-        mapController,
-        [
-          LatLng(
-            orderRideDetail.value.startLat!,
-            orderRideDetail.value.startLon!,
-          ),
-          LatLng(
-            orderRideDetail.value.endLat!,
-            orderRideDetail.value.endLon!,
-          ),
-        ],
-      );
-      return;
-    }
-
-    final routePoints = polylinesCoordinate.toList();
-    if (routePoints.isEmpty) {
-      final destination = _destinationForCurrentState();
-      final distanceToDestination = Geolocator.distanceBetween(
-        driver.latitude,
-        driver.longitude,
-        destination.latitude,
-        destination.longitude,
-      );
-
-      await animateMapToDriverWithRoute(
-        mapController,
-        driver: driver,
-        routePoints: const [],
-        defaultZoom: zoomLevelForRouteLookAhead(
-          distanceToDestination.clamp(150, 2000),
+      await animateMapToFitPoints(mapController, [
+        LatLng(
+          orderRideDetail.value.startLat!,
+          orderRideDetail.value.startLon!,
         ),
-      );
+        LatLng(orderRideDetail.value.endLat!, orderRideDetail.value.endLon!),
+      ]);
       return;
     }
 
-    await animateMapToDriverWithRoute(
+    await animateMapToDriverAndDestination(
       mapController,
       driver: driver,
-      routePoints: routePoints,
+      destination: _destinationForCurrentState(),
+      edgePadding: Get.width * 0.25,
     );
   }
 
@@ -1797,62 +1765,11 @@ class RideOrderDetailController extends GetxController {
         DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
       }
 
-      final hadPopup = dispatchExpired.value.hadPopup ?? 0;
-      final orderAgainArgs = {
-        "origin_address_name": orderRideDetail.value.startAddressName,
-        "origin_address": orderRideDetail.value.startAddress,
-        "origin_latitude": orderRideDetail.value.startLat.toString(),
-        "origin_longitude": orderRideDetail.value.startLon.toString(),
-        "destination_address_name": orderRideDetail.value.endAddressName,
-        "destination_address": orderRideDetail.value.endAddress,
-        "destination_latitude": orderRideDetail.value.endLat.toString(),
-        "destination_longitude": orderRideDetail.value.endLon.toString(),
-      };
-
-      Get.back();
-      _showDispatchExpiredDialog(
-        hadPopup: hadPopup,
-        orderAgainArgs: orderAgainArgs,
+      await Get.find<ActiveOrderServices>().handleDispatchExpired(
+        dispatchExpired: dispatchExpired.value,
+        orderRide: orderRideDetail.value,
       );
     });
-  }
-
-  void _showDispatchExpiredDialog({
-    required int hadPopup,
-    required Map<String, dynamic> orderAgainArgs,
-  }) {
-    Future<void> onTapOrderAgain() async {
-      final homeController = Get.find<HomeController>();
-      await homeController.getActiveOrderList();
-
-      if (homeController.isActiveOrderListNotEmpty.value) {
-        SnackbarHelper.showSnackbarError(
-          text: languageServices.language.value.snackbarOrderNotSuccess ?? "-",
-        );
-        return;
-      }
-
-      DialogHelper.dismissIfExists(DialogTags.driverNotAvailable);
-      DialogHelper.dismissIfExists(DialogTags.driverBusy);
-
-      await Get.toNamed(
-        Routes.CREATE_ORDER_RIDE,
-        arguments: orderAgainArgs,
-      );
-    }
-
-    if (hadPopup >= 1) {
-      DialogHelper.show(
-        tag: DialogTags.driverBusy,
-        widget: DriverBusyDialog(onTapOrderAgain: onTapOrderAgain),
-      );
-      return;
-    }
-
-    DialogHelper.show(
-      tag: DialogTags.driverNotAvailable,
-      widget: DriverNotAvailableDialog(onTapOrderAgain: onTapOrderAgain),
-    );
   }
 
   Future<void> checkNumberOfPushRoundsHasExceeded() async {
@@ -2162,6 +2079,26 @@ class RideOrderDetailController extends GetxController {
   Future<AdvancedBooking?> getActiveAdvanceBooking() async {
     var advanceBooking = advanceBookingRepository.getActiveAdvanceBooking();
     return advanceBooking;
+  }
+
+  Future<void> onTapOpenGoogleMaps() async {
+    final isOriginPhase = [1, 2, 3, 4].contains(orderRideDetail.value.state);
+    final lat = isOriginPhase
+        ? orderRideDetail.value.startLat
+        : orderRideDetail.value.endLat;
+    final lon = isOriginPhase
+        ? orderRideDetail.value.startLon
+        : orderRideDetail.value.endLon;
+
+    final Uri googleMapsUrl = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$lat,$lon',
+    );
+
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not open Google Maps.';
+    }
   }
 }
 

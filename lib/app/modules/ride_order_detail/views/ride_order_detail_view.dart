@@ -343,7 +343,8 @@ class RideOrderDetailView extends GetView<RideOrderDetailController> {
                     ],
                   ),
                 ),
-                if (controller.orderRideDetail.value.state == 1 ||
+                if ((controller.orderRideDetail.value.state == 1 ||
+                        controller.orderRideDetail.value.state == 10) ||
                     (controller.state.value == 11 &&
                         controller.previousState.value == 1)) ...[
                   RideOrderWaitingDriverAcceptancePanelSubView(),
