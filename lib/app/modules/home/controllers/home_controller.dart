@@ -443,7 +443,7 @@ class HomeController extends GetxController {
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
-                                      .copyWith(color: Color(0XFFB3B3B3)),
+                                      .copyWith(),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(height: 16),
