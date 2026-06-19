@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
+import 'package:new_evmoto_user/app/data/models/recommendation_access_point_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -87,6 +88,40 @@ class GeocodingRepository {
       }
 
       return geocodingPlaceList;
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<RecommendationAccessPoint?> getRecommendAccessPoint({
+    required double? latitude,
+    required double? longitude,
+  }) async {
+    try {
+      var url = "$baseUrl/businessProcess/api/geocoding/recommend-access-point";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(
+        url,
+        options: Options(headers: headers),
+        queryParameters: {"lat": latitude, "lng": longitude},
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return RecommendationAccessPoint.fromJson(response.data['data']);
     } on DioException {
       rethrow;
     }

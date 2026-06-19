@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
+import 'package:new_evmoto_user/app/data/models/recommendation_access_point_model.dart';
 import 'package:new_evmoto_user/app/data/models/recommendation_location_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
@@ -1119,17 +1120,56 @@ class CreateOrderRideController extends GetxController {
       return;
     }
 
+    RecommendationAccessPoint? originRecommendAccessPoint;
+    RecommendationAccessPoint? destinationRecommendAccessPoint;
+
+    try {
+      final recommendAccessPointResults = await Future.wait([
+        geocodingRepository.getRecommendAccessPoint(
+          latitude: double.tryParse(originLatitude.value),
+          longitude: double.tryParse(originLongitude.value),
+        ),
+        geocodingRepository.getRecommendAccessPoint(
+          latitude: double.tryParse(destinationLatitude.value),
+          longitude: double.tryParse(destinationLongitude.value),
+        ),
+      ]);
+
+      originRecommendAccessPoint = recommendAccessPointResults[0];
+      destinationRecommendAccessPoint = recommendAccessPointResults[1];
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+      return;
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+      return;
+    }
+
     Get.toNamed(
       Routes.CREATE_ORDER_RIDE_CHECKOUT,
       arguments: {
-        "origin_address_name": originAddressName.value,
-        "origin_address": originAddress.value,
-        "origin_latitude": originLatitude.value,
-        "origin_longitude": originLongitude.value,
-        "destination_address_name": destinationAddressName.value,
-        "destination_address": destinationAddress.value,
-        "destination_latitude": destinationLatitude.value,
-        "destination_longitude": destinationLongitude.value,
+        "origin_address_name":
+            originRecommendAccessPoint?.name ?? originAddressName.value,
+        "origin_address":
+            originRecommendAccessPoint?.roadName ?? originAddress.value,
+        "origin_latitude":
+            originRecommendAccessPoint?.recommendedLat?.toString() ??
+            originLatitude.value,
+        "origin_longitude":
+            originRecommendAccessPoint?.recommendedLng?.toString() ??
+            originLongitude.value,
+        "destination_address_name":
+            destinationRecommendAccessPoint?.name ??
+            destinationAddressName.value,
+        "destination_address":
+            destinationRecommendAccessPoint?.roadName ??
+            destinationAddress.value,
+        "destination_latitude":
+            destinationRecommendAccessPoint?.recommendedLat?.toString() ??
+            destinationLatitude.value,
+        "destination_longitude":
+            destinationRecommendAccessPoint?.recommendedLng?.toString() ??
+            destinationLongitude.value,
       },
     );
   }
