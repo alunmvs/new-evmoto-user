@@ -19,8 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 bool isUnauthenticatedRoute() {
   final route = Get.currentRoute;
   return route == Routes.LOGIN_REGISTER ||
-      route == Routes.LOGIN_REGISTER_VERIFICATION_OTP ||
-      route == Routes.SPLASH_SCREEN;
+      route == Routes.LOGIN_REGISTER_VERIFICATION_OTP;
 }
 
 Future<bool> shouldTriggerAutoLogout() async {
