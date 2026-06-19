@@ -20,6 +20,7 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/notification_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/active_order_services.dart';
 import 'package:new_evmoto_user/app/services/sendbird_services.dart';
 import 'package:new_evmoto_user/app/widgets/advanced_booking_expired_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -210,9 +211,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 
   if (message.data['notification_type'] == 'DISPATCH_EXPIRED') {
-    if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-      Get.find<RideOrderDetailController>().handleSocketDispatchExpired(
-        dispatchExpired: DispatchExpired.fromJson(message.data),
+    final dispatchExpired = DispatchExpired.fromJson(message.data);
+
+    if (Get.isRegistered<ActiveOrderServices>()) {
+      if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL &&
+          Get.isRegistered<RideOrderDetailController>()) {
+        Get.find<RideOrderDetailController>().handleSocketDispatchExpired(
+          dispatchExpired: dispatchExpired,
+        );
+      }
+
+      await Get.find<ActiveOrderServices>().handleDispatchExpired(
+        dispatchExpired: dispatchExpired,
       );
     }
     return;
@@ -329,7 +339,7 @@ class FirebasePushNotificationServices extends GetxService {
         .onError((err) {});
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // print("[DEBUG NOTIFICATION] ${message.data}");
+      print("[DEBUG NOTIFICATION] ${message.data}");
       var isSendbirdCall = message.data.keys.contains('sendbird_call');
       if (isSendbirdCall) {
         var data = message.data;
@@ -441,20 +451,20 @@ class FirebasePushNotificationServices extends GetxService {
         return;
       }
 
-      if (message.data['notification_type'] == 'ADVANCE_ORDER_EXPIRED') {
-        if (Get.currentRoute == Routes.ADVANCED_BOOKING_DETAIL) {
-          Get.find<AdvancedBookingDetailController>().refreshAll();
-        }
-        DialogHelper.show(
-          tag: DialogTags.advancedBookingExpired,
-          widget: AdvancedBookingExpiredDialog(
-            onTapConfirm: () async {
-              Get.until((route) => Get.currentRoute == Routes.HOME);
-              Get.find<HomeController>().indexNavigationBar.value = 0;
-            },
-          ),
-        );
-      }
+      // if (message.data['notification_type'] == 'ADVANCE_ORDER_EXPIRED') {
+      //   if (Get.currentRoute == Routes.ADVANCED_BOOKING_DETAIL) {
+      //     Get.find<AdvancedBookingDetailController>().refreshAll();
+      //   }
+      //   DialogHelper.show(
+      //     tag: DialogTags.advancedBookingExpired,
+      //     widget: AdvancedBookingExpiredDialog(
+      //       onTapConfirm: () async {
+      //         Get.until((route) => Get.currentRoute == Routes.HOME);
+      //         Get.find<HomeController>().indexNavigationBar.value = 0;
+      //       },
+      //     ),
+      //   );
+      // }
 
       if ([
         'ADVANCE_ORDER_DRIVER_FOUND',
@@ -482,11 +492,18 @@ class FirebasePushNotificationServices extends GetxService {
       }
 
       if (message.data['notification_type'] == 'DISPATCH_EXPIRED') {
+        final dispatchExpired = DispatchExpired.fromJson(message.data);
+
         if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
           Get.find<RideOrderDetailController>().handleSocketDispatchExpired(
-            dispatchExpired: DispatchExpired.fromJson(message.data),
+            dispatchExpired: dispatchExpired,
           );
+          return;
         }
+
+        Get.find<ActiveOrderServices>().handleDispatchExpired(
+          dispatchExpired: dispatchExpired,
+        );
         return;
       }
 

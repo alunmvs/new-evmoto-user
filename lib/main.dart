@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:native_flutter_proxy/native_flutter_proxy.dart';
 import 'package:new_evmoto_user/app/modules/activity/controllers/activity_controller.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_user/app/services/active_order_services.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/deep_link_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
@@ -89,6 +90,7 @@ Future<void> main() async {
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
   await Get.find<LanguageServices>().manualOnInit();
+  Get.put(ActiveOrderServices(), permanent: true);
   Get.put(FirebasePushNotificationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
   Get.put(SendbirdServices(), permanent: true);

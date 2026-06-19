@@ -12,6 +12,7 @@ import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dar
 import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
+import 'package:new_evmoto_user/app/services/active_order_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
@@ -77,7 +78,7 @@ class SocketServices extends GetxService {
             var dataJson = convertBytesToJson(bytes: data);
             if (dataJson != null) {
               var method = dataJson['method'] ?? "";
-              // print("[DEBUG SOCKET] $dataJson");
+              print("[DEBUG SOCKET] $dataJson");
 
               switch (method) {
                 case 'DRIVER_POSITION':
@@ -139,17 +140,22 @@ class SocketServices extends GetxService {
                   }
                   break;
                 case 'DISPATCH_EXPIRED':
-                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
-                    var dispatchExpiredData = DispatchExpired.fromJson(
-                      dataJson['data'],
-                    );
-                    dispatchExpiredData.method = method;
+                  var dispatchExpiredData = DispatchExpired.fromJson(
+                    dataJson['data'],
+                  );
+                  dispatchExpiredData.method = method;
 
+                  if (Get.currentRoute == Routes.RIDE_ORDER_DETAIL) {
                     Get.find<RideOrderDetailController>()
                         .handleSocketDispatchExpired(
                           dispatchExpired: dispatchExpiredData,
                         );
+                    return;
                   }
+
+                  await Get.find<ActiveOrderServices>().handleDispatchExpired(
+                    dispatchExpired: dispatchExpiredData,
+                  );
                   break;
                 case 'OFFLINE':
                   var languageServices = Get.find<LanguageServices>();
