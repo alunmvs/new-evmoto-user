@@ -97,6 +97,9 @@ dependencies:
 
   # Need Refactor
   flutter_local_notifications: ^19.5.0
+  dio_cache_interceptor: ^4.0.6
+  http_cache_file_store: ^2.0.1
+  path_provider: ^2.1.6
 
 dependency_overrides:
   http: ^1.1.2
