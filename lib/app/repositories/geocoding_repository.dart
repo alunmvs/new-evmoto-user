@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
@@ -8,6 +9,7 @@ import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
+import 'package:new_evmoto_user/app/utils/geocoding_cache_options.dart';
 import 'package:new_evmoto_user/environment.dart';
 
 class GeocodingRepository {
@@ -34,8 +36,15 @@ class GeocodingRepository {
       var dio = apiServices.dio;
       var response = await dio.get(
         url,
-        options: Options(headers: headers),
-        queryParameters: {"lat": latitude, "lng": longitude},
+        options: apiServices.geocodingReverseCacheOptions.toOptions().copyWith(
+          headers: headers,
+        ),
+        queryParameters: {
+          // "lat": GeocodingCacheOptions.quantizeCoordinate(latitude),
+          // "lng": GeocodingCacheOptions.quantizeCoordinate(longitude),
+          "lat": latitude,
+          "lng": longitude,
+        },
       );
 
       return GeocodingAddress.fromJson(response.data['data']);
@@ -61,16 +70,28 @@ class GeocodingRepository {
         'Authorization': "Bearer $token",
       };
 
+      var normalizedQuery = GeocodingCacheOptions.normalizeQuery(query);
+      var requestOptions =
+          GeocodingCacheOptions.shouldCachePlacesQuery(normalizedQuery)
+          ? apiServices.geocodingPlacesCacheOptions.toOptions().copyWith(
+              headers: headers,
+            )
+          : Options(headers: headers);
+
       var response = await dio.get(
         url,
+        options: requestOptions,
         queryParameters: {
-          "query": query,
+          "query": normalizedQuery,
           "limit": limit,
-          "lat": locationServices.currentLatitude.value,
-          "lng": locationServices.currentLongitude.value,
+          "lat": GeocodingCacheOptions.quantizeCoordinate(
+            locationServices.currentLatitude.value,
+          ),
+          "lng": GeocodingCacheOptions.quantizeCoordinate(
+            locationServices.currentLongitude.value,
+          ),
           "language": languageServices.languageGeocoding.value,
         },
-        options: Options(headers: headers),
       );
 
       if (response.data['code'] != null && response.data['code'] != 200) {

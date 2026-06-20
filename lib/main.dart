@@ -90,6 +90,7 @@ Future<void> main() async {
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
   await Get.find<LanguageServices>().manualOnInit();
+  await Get.find<ApiServices>().manualOnInit();
   Get.put(ActiveOrderServices(), permanent: true);
   Get.put(FirebasePushNotificationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);

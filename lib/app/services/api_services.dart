@@ -3,13 +3,17 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
+import 'package:http_cache_file_store/http_cache_file_store.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
+import 'package:new_evmoto_user/app/utils/geocoding_cache_options.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ApiServices extends GetxService {
@@ -21,6 +25,10 @@ class ApiServices extends GetxService {
     ),
   );
 
+  late final CacheStore cacheStore;
+  late final CacheOptions geocodingReverseCacheOptions;
+  late final CacheOptions geocodingPlacesCacheOptions;
+
   final languageServices = Get.find<LanguageServices>();
 
   final deviceId = "".obs;
@@ -28,6 +36,7 @@ class ApiServices extends GetxService {
   final buildNumber = "".obs;
 
   bool isLoggingOut = false;
+  bool _isInitialized = false;
   final _pendingCancelTokens = <CancelToken>[];
 
   void beginLogout() {
@@ -54,7 +63,28 @@ class ApiServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
-    await Future.wait([getPackageInfo(), getDeviceId()]);
+    await manualOnInit();
+  }
+
+  Future<void> manualOnInit() async {
+    if (_isInitialized) return;
+    _isInitialized = true;
+
+    await Future.wait([getPackageInfo(), getDeviceId(), _initCacheStore()]);
+
+    geocodingReverseCacheOptions = GeocodingCacheOptions.reverseGeocoding(
+      cacheStore,
+    );
+    geocodingPlacesCacheOptions = GeocodingCacheOptions.placesSearch(
+      cacheStore,
+    );
+
+    dio.interceptors.insert(
+      0,
+      DioCacheInterceptor(
+        options: CacheOptions(store: cacheStore, policy: CachePolicy.noCache),
+      ),
+    );
 
     // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     //     (client) {
@@ -210,6 +240,11 @@ class ApiServices extends GetxService {
         },
       ),
     );
+  }
+
+  Future<void> _initCacheStore() async {
+    final directory = await getApplicationCacheDirectory();
+    cacheStore = FileCacheStore('${directory.path}/geocoding_api_cache');
   }
 
   Future<void> getPackageInfo() async {

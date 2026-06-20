@@ -26,7 +26,9 @@ import 'package:new_evmoto_user/app/repositories/saved_address_repository.dart';
 import 'package:new_evmoto_user/app/repositories/upload_image_repository.dart';
 import 'package:new_evmoto_user/app/repositories/user_repository.dart';
 import 'package:new_evmoto_user/app/repositories/versioning_server_repository.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
+import 'package:new_evmoto_user/app/utils/geocoding_cache_options.dart';
 import 'package:new_evmoto_user/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -200,8 +202,19 @@ class FakeSendbirdServices extends SendbirdServices {
 }
 
 class TestApiServices extends ApiServices {
+  TestApiServices() {
+    cacheStore = MemCacheStore();
+    geocodingReverseCacheOptions = GeocodingCacheOptions.reverseGeocoding(
+      cacheStore,
+    );
+    geocodingPlacesCacheOptions = GeocodingCacheOptions.placesSearch(cacheStore);
+  }
+
   @override
   Future<void> onInit() async {}
+
+  @override
+  Future<void> manualOnInit() async {}
 }
 
 class TestSocketServices extends SocketServices {
