@@ -78,7 +78,7 @@ class SocketServices extends GetxService {
             var dataJson = convertBytesToJson(bytes: data);
             if (dataJson != null) {
               var method = dataJson['method'] ?? "";
-              print("[DEBUG SOCKET] $dataJson");
+              // print("[DEBUG SOCKET] $dataJson");
 
               switch (method) {
                 case 'DRIVER_POSITION':
@@ -124,6 +124,7 @@ class SocketServices extends GetxService {
 
                     await Get.find<RideOrderDetailController>()
                         .handleSocketOrderStatus();
+                    await Get.find<HomeController>().getActiveOrderList();
                   }
                   break;
                 case 'DISPATCH_POPUP_ACTIVE':
