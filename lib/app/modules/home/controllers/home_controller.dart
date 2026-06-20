@@ -1374,31 +1374,31 @@ class HomeController extends GetxController {
     currentAddressIsLoading.value = true;
     currentLatitude.value = latitude;
     currentLongitude.value = longitude;
-    Future.delayed(Duration(seconds: 1), () async {
-      if (currentLatitude.value == latitude &&
-          currentLongitude.value == longitude) {
-        try {
-          currentGeocodingAddress.value =
-              (await geocodingRepository.getAddressByLatitudeLongitude(
-                latitude: latitude,
-                longitude: longitude,
-              )) ??
-              GeocodingAddress();
-          currentAddress.value = currentGeocodingAddress.value.address;
+    // Future.delayed(Duration(seconds: 1), () async {
+    //   if (currentLatitude.value == latitude &&
+    //       currentLongitude.value == longitude) {
+    //     try {
+    //       currentGeocodingAddress.value =
+    //           (await geocodingRepository.getAddressByLatitudeLongitude(
+    //             latitude: latitude,
+    //             longitude: longitude,
+    //           )) ??
+    //           GeocodingAddress();
+    //       currentAddress.value = currentGeocodingAddress.value.address;
 
-          initialCameraPosition.value = CameraPosition(
-            target: LatLng(latitude, longitude),
-            zoom: 14,
-          );
-        } on DioException catch (e) {
-          SnackbarHelper.showSnackbarError(text: e.error.toString());
-        } catch (e) {
-          SnackbarHelper.showSnackbarError(text: e.toString());
-        }
-        await refreshMarkerDriverNearby();
-        currentAddressIsLoading.value = false;
-      }
-    });
+    //       initialCameraPosition.value = CameraPosition(
+    //         target: LatLng(latitude, longitude),
+    //         zoom: 14,
+    //       );
+    //     } on DioException catch (e) {
+    //       SnackbarHelper.showSnackbarError(text: e.error.toString());
+    //     } catch (e) {
+    //       SnackbarHelper.showSnackbarError(text: e.toString());
+    //     }
+    //     await refreshMarkerDriverNearby();
+    //     currentAddressIsLoading.value = false;
+    //   }
+    // });
   }
 
   Future<void> getCurrentAddressInitialize({

@@ -32,21 +32,35 @@ class HomeMapSubView extends GetView<HomeController> {
                     useRotation: true,
                     child: GoogleMap(
                       mapType: MapType.normal,
-                      onCameraMove: (position) async {
-                        if (controller.isCurrentAddressIsInit.value == true &&
-                            controller.isFetch.value == false) {
-                          // controller.markersSet.value = {};
-                          // controller.markers.value = {};
-                          // controller.markersSet.clear();
-                          // controller.markers.clear();
-                          // controller.markersSet.refresh();
-                          // controller.markers.refresh();
+                      onCameraMove: (position) {
+                        // if (controller.isCurrentAddressIsInit.value == false ||
+                        //     controller.isFetch.value == true) {
+                        //   return;
+                        // }
 
-                          controller.getCurrentAddress(
-                            latitude: position.target.latitude,
-                            longitude: position.target.longitude,
-                          );
+                        if (controller.isFetch.value == true) {
+                          return;
                         }
+
+                        controller.currentLatitude.value =
+                            position.target.latitude;
+                        controller.currentLongitude.value =
+                            position.target.longitude;
+
+                        // if (controller.isCurrentAddressIsInit.value == true &&
+                        //     controller.isFetch.value == false) {
+                        //   // controller.markersSet.value = {};
+                        //   // controller.markers.value = {};
+                        //   // controller.markersSet.clear();
+                        //   // controller.markers.clear();
+                        //   // controller.markersSet.refresh();
+                        //   // controller.markers.refresh();
+
+                        //   // controller.getCurrentAddress(
+                        //   //   latitude: position.target.latitude,
+                        //   //   longitude: position.target.longitude,
+                        //   // );
+                        // }
                       },
                       zoomControlsEnabled: false,
                       myLocationButtonEnabled: false,
@@ -55,15 +69,20 @@ class HomeMapSubView extends GetView<HomeController> {
                       indoorViewEnabled: false,
                       initialCameraPosition:
                           controller.initialCameraPosition.value,
-                      onMapCreated:
-                          (GoogleMapController googleMapController) async {
-                            controller.googleMapController.complete(
-                              googleMapController,
-                            );
+                      onMapCreated: (GoogleMapController googleMapController) async {
+                        // print(
+                        //   "[DEBUG MAP] moveGoogleMapCameraToCurrentLocation- -1",
+                        // );
+                        controller.googleMapController.complete(
+                          googleMapController,
+                        );
 
-                            await controller
-                                .moveGoogleMapCameraToCurrentLocation();
-                          },
+                        // print(
+                        //   "[DEBUG MAP] moveGoogleMapCameraToCurrentLocation-0",
+                        // );
+
+                        await controller.moveGoogleMapCameraToCurrentLocation();
+                      },
                     ),
                   ),
                 ),
@@ -90,147 +109,147 @@ class HomeMapSubView extends GetView<HomeController> {
                             ),
                           ),
                         ),
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          child: GestureDetector(
-                            onTap: () async {
-                              await controller.onTapWhereAreYouGoingToday();
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: controller
-                                        .themeColorServices
-                                        .primaryBlue
-                                        .value,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(6),
-                                      topRight: Radius.circular(6),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .pickupPoint ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .captionLargeRegular
-                                        .value
-                                        .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                ),
-                                Container(
-                                  constraints: BoxConstraints(maxWidth: 200),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 5,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffffffff),
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(6),
-                                      bottomRight: Radius.circular(6),
-                                      bottomLeft: Radius.circular(6),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (controller
-                                                  .currentAddressIsLoading
-                                                  .value ==
-                                              true ||
-                                          controller
-                                                  .isCurrentAddressIsInit
-                                                  .value ==
-                                              false) ...[
-                                        Shimmer.fromColors(
-                                          baseColor: Colors.grey.shade300,
-                                          highlightColor: Colors.white,
-                                          child: Container(
-                                            height: 18,
-                                            width: 150,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                          ),
-                                        ),
-                                      ] else ...[
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Container(
-                                              constraints: BoxConstraints(
-                                                maxWidth: 175 - 11,
-                                              ),
-                                              child: Text(
-                                                controller
-                                                        .currentGeocodingAddress
-                                                        .value
-                                                        .name ??
-                                                    "-",
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            SizedBox(width: 4),
-                                            SizedBox(
-                                              width: 16,
-                                              height: 16,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "assets/icons/icon_arrow_right.svg",
-                                                    width: 4.76,
-                                                    height: 8.65,
-                                                    colorFilter:
-                                                        ColorFilter.mode(
-                                                          Color(0XFF272727),
-                                                          BlendMode.srcIn,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Positioned(
+                        //   top: 0,
+                        //   left: 0,
+                        //   child: GestureDetector(
+                        //     onTap: () async {
+                        //       await controller.onTapWhereAreYouGoingToday();
+                        //     },
+                        //     child: Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         Container(
+                        //           padding: EdgeInsets.symmetric(
+                        //             horizontal: 8,
+                        //             vertical: 4,
+                        //           ),
+                        //           decoration: BoxDecoration(
+                        //             color: controller
+                        //                 .themeColorServices
+                        //                 .primaryBlue
+                        //                 .value,
+                        //             borderRadius: BorderRadius.only(
+                        //               topLeft: Radius.circular(6),
+                        //               topRight: Radius.circular(6),
+                        //             ),
+                        //           ),
+                        //           child: Text(
+                        //             controller
+                        //                     .languageServices
+                        //                     .language
+                        //                     .value
+                        //                     .pickupPoint ??
+                        //                 "-",
+                        //             style: controller
+                        //                 .typographyServices
+                        //                 .captionLargeRegular
+                        //                 .value
+                        //                 .copyWith(
+                        //                   color: Colors.white,
+                        //                   fontWeight: FontWeight.w600,
+                        //                 ),
+                        //           ),
+                        //         ),
+                        //         Container(
+                        //           constraints: BoxConstraints(maxWidth: 200),
+                        //           padding: EdgeInsets.symmetric(
+                        //             horizontal: 8,
+                        //             vertical: 5,
+                        //           ),
+                        //           decoration: BoxDecoration(
+                        //             color: Color(0xffffffff),
+                        //             borderRadius: BorderRadius.only(
+                        //               topRight: Radius.circular(6),
+                        //               bottomRight: Radius.circular(6),
+                        //               bottomLeft: Radius.circular(6),
+                        //             ),
+                        //           ),
+                        //           child: Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             children: [
+                        //               if (controller
+                        //                           .currentAddressIsLoading
+                        //                           .value ==
+                        //                       true ||
+                        //                   controller
+                        //                           .isCurrentAddressIsInit
+                        //                           .value ==
+                        //                       false) ...[
+                        //                 Shimmer.fromColors(
+                        //                   baseColor: Colors.grey.shade300,
+                        //                   highlightColor: Colors.white,
+                        //                   child: Container(
+                        //                     height: 18,
+                        //                     width: 150,
+                        //                     decoration: BoxDecoration(
+                        //                       color: Colors.grey.shade300,
+                        //                       borderRadius:
+                        //                           BorderRadius.circular(8),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ] else ...[
+                        //                 Row(
+                        //                   mainAxisSize: MainAxisSize.min,
+                        //                   children: [
+                        //                     Container(
+                        //                       constraints: BoxConstraints(
+                        //                         maxWidth: 175 - 11,
+                        //                       ),
+                        //                       child: Text(
+                        //                         controller
+                        //                                 .currentGeocodingAddress
+                        //                                 .value
+                        //                                 .name ??
+                        //                             "-",
+                        //                         style: controller
+                        //                             .typographyServices
+                        //                             .captionLargeRegular
+                        //                             .value
+                        //                             .copyWith(
+                        //                               fontWeight:
+                        //                                   FontWeight.w600,
+                        //                             ),
+                        //                         maxLines: 1,
+                        //                         overflow: TextOverflow.ellipsis,
+                        //                       ),
+                        //                     ),
+                        //                     SizedBox(width: 4),
+                        //                     SizedBox(
+                        //                       width: 16,
+                        //                       height: 16,
+                        //                       child: Row(
+                        //                         mainAxisAlignment:
+                        //                             MainAxisAlignment.center,
+                        //                         crossAxisAlignment:
+                        //                             CrossAxisAlignment.center,
+                        //                         mainAxisSize: MainAxisSize.min,
+                        //                         children: [
+                        //                           SvgPicture.asset(
+                        //                             "assets/icons/icon_arrow_right.svg",
+                        //                             width: 4.76,
+                        //                             height: 8.65,
+                        //                             colorFilter:
+                        //                                 ColorFilter.mode(
+                        //                                   Color(0XFF272727),
+                        //                                   BlendMode.srcIn,
+                        //                                 ),
+                        //                           ),
+                        //                         ],
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ],
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
