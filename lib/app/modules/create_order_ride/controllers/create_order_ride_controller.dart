@@ -112,8 +112,8 @@ class CreateOrderRideController extends GetxController {
       isDestinationHasPrimaryFocus.refresh();
     });
 
-    isFetch.value = false;
     await fillForm();
+    isFetch.value = false;
   }
 
   @override
@@ -130,10 +130,30 @@ class CreateOrderRideController extends GetxController {
     // fill origin
     var isOriginFilled = false;
     var isOriginAutoSelect = Get.arguments?['is_origin_auto_select'] ?? false;
-    originAddressName.value = Get.arguments?['origin_address_name'] ?? "";
-    originAddress.value = Get.arguments?['origin_address'] ?? "";
     originLatitude.value = Get.arguments?['origin_latitude'] ?? "";
     originLongitude.value = Get.arguments?['origin_longitude'] ?? "";
+    originAddressName.value = "";
+    originAddress.value = "";
+
+    if (originLatitude.value != "" && originLongitude.value != "") {
+      final latitude = double.tryParse(originLatitude.value);
+      final longitude = double.tryParse(originLongitude.value);
+      if (latitude != null && longitude != null) {
+        try {
+          final searchedAddress = await geocodingRepository
+              .getAddressByLatitudeLongitude(
+                latitude: latitude,
+                longitude: longitude,
+              );
+          originAddress.value = searchedAddress?.address ?? "";
+          originAddressName.value = searchedAddress?.name ?? "";
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.toString());
+        }
+      }
+    }
 
     if (originAddress.value != '' && originAddressName.value == '') {
       originAddressName.value = originAddress.value;
