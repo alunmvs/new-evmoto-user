@@ -102,32 +102,25 @@ class AdvancedBookingDetailController extends GetxController {
     refreshAdvancedBookingTimer = Timer.periodic(Duration(seconds: 5), (
       timer,
     ) async {
-      print("ini refresh-1");
       if (isClosed) {
         timer.cancel();
         return;
       }
-      print("ini refresh-2 ${advancedBooking.value.state}");
 
       if (!AdvancedBookingState.ACTIVE_STATE_LIST.contains(
         advancedBooking.value.state,
       )) {
-        print("ini refresh-3");
         disableRefreshAdvancedBookingTimer();
         return;
       }
-      print("ini refresh-4");
 
       await refreshAll();
-      print("ini refresh-5 ${advancedBooking.value.state}");
 
       if (!AdvancedBookingState.ACTIVE_STATE_LIST.contains(
         advancedBooking.value.state,
       )) {
-        print("ini refresh-6");
         disableRefreshAdvancedBookingTimer();
       }
-      print("ini refresh-7");
     });
   }
 

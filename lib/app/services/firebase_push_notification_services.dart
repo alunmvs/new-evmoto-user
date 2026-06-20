@@ -339,7 +339,7 @@ class FirebasePushNotificationServices extends GetxService {
         .onError((err) {});
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("[DEBUG NOTIFICATION] ${message.data}");
+      // print("[DEBUG NOTIFICATION] ${message.data}");
       var isSendbirdCall = message.data.keys.contains('sendbird_call');
       if (isSendbirdCall) {
         var data = message.data;
