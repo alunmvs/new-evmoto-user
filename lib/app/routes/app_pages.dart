@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 
-import '../modules/add_edit_address_other/bindings/add_edit_address_other_binding.dart';
-import '../modules/add_edit_address_other/views/add_edit_address_other_view.dart';
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
 import '../modules/activity/bindings/activity_binding.dart';
@@ -10,6 +8,8 @@ import '../modules/activity_detail/bindings/activity_detail_binding.dart';
 import '../modules/activity_detail/views/activity_detail_view.dart';
 import '../modules/add_edit_address/bindings/add_edit_address_binding.dart';
 import '../modules/add_edit_address/views/add_edit_address_view.dart';
+import '../modules/add_edit_address_other/bindings/add_edit_address_other_binding.dart';
+import '../modules/add_edit_address_other/views/add_edit_address_other_view.dart';
 import '../modules/add_edit_user_information/bindings/add_edit_user_information_binding.dart';
 import '../modules/add_edit_user_information/views/add_edit_user_information_view.dart';
 import '../modules/advanced_booking_detail/bindings/advanced_booking_detail_binding.dart';
@@ -28,6 +28,8 @@ import '../modules/create_order_ride_map_select/bindings/create_order_ride_map_s
 import '../modules/create_order_ride_map_select/views/create_order_ride_map_select_view.dart';
 import '../modules/create_order_ride_promo/bindings/create_order_ride_promo_binding.dart';
 import '../modules/create_order_ride_promo/views/create_order_ride_promo_view.dart';
+import '../modules/create_order_ride_recommendation_pickup_location/bindings/create_order_ride_recommendation_pickup_location_binding.dart';
+import '../modules/create_order_ride_recommendation_pickup_location/views/create_order_ride_recommendation_pickup_location_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login_register/bindings/login_register_binding.dart';
@@ -241,6 +243,11 @@ class AppPages {
       name: _Paths.ADD_EDIT_ADDRESS_OTHER,
       page: () => const AddEditAddressOtherView(),
       binding: AddEditAddressOtherBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION,
+      page: () => const CreateOrderRideRecommendationPickupLocationView(),
+      binding: CreateOrderRideRecommendationPickupLocationBinding(),
     ),
   ];
 }

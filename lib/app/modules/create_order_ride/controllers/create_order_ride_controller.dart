@@ -1152,7 +1152,7 @@ class CreateOrderRideController extends GetxController {
     }
 
     Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_CHECKOUT,
+      Routes.CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION,
       arguments: {
         "origin_address_name": originAddressName.value,
         "origin_address": originAddress.value,

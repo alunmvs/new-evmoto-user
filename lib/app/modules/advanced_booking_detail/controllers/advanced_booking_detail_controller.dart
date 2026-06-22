@@ -86,6 +86,7 @@ class AdvancedBookingDetailController extends GetxController {
   }
 
   Future<void> refreshAll() async {
+    // print("[DEBUG REFRESH] Refresh All");
     await Future.wait([getAdvancedBookingDetail()]);
     await Future.wait([getOrderRideDetail()]);
     await getRatingLabelList(
