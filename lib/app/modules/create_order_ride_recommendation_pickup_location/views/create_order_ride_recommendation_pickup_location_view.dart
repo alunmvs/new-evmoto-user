@@ -3,6 +3,7 @@ import 'package:flutter_animarker/widgets/animarker.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride_recommendation_pickup_location/views/create_order_ride_recommendation_pickup_location_view/recommendation_pickup_location_footer_sub_view.dart';
+import 'package:new_evmoto_user/app/modules/create_order_ride_recommendation_pickup_location/views/create_order_ride_recommendation_pickup_location_view/recommendation_pickup_location_header_sub_view.dart';
 
 import '../controllers/create_order_ride_recommendation_pickup_location_controller.dart';
 
@@ -48,11 +49,30 @@ class CreateOrderRideRecommendationPickupLocationView
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * (380 / 812),
+                  height: MediaQuery.of(context).size.height * (150 / 812),
                 ),
               ],
             ),
+            RecommendationPickupLocationHeaderSubView(),
             RecommendationPickupLocationFooterSubView(),
+            if (controller.isFetch.value == true) ...[
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: controller.themeColorServices.neutralsColorGrey0.value,
+                ),
+                child: Center(
+                  child: SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: CircularProgressIndicator(
+                      color: controller.themeColorServices.primaryBlue.value,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

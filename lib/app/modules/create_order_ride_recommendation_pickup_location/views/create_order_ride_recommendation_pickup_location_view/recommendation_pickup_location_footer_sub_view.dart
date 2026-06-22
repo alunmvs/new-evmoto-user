@@ -21,10 +21,115 @@ class _RecommendationPickupLocationFooterSubViewState
   final noteTextEditingController = TextEditingController();
   int selectedLocationIndex = 1;
 
+  static const _pickupLocations = [
+    (
+      name: 'ECGO EV Moto Wijaya',
+      address: 'Jl. Wijaya I No.67, RT.6/RW.4, Petogogan, Kec. Kby...',
+    ),
+    (
+      name: 'Wisma PMI',
+      address: 'Jl. Wijaya I No.63, RT.8/RW.1, Petogogan, Kec. Kby...',
+    ),
+    (
+      name: 'Kantor Pos Petogogan',
+      address: 'Jl. Wijaya II No.12, Petogogan, Kec. Kby. Baru...',
+    ),
+    (
+      name: 'Toko Kelontong Sejahtera',
+      address: 'Jl. Wijaya I No.45, RT.3/RW.2, Petogogan, Kec. Kby...',
+    ),
+    (
+      name: 'Masjid Al-Ikhlas',
+      address: 'Jl. Wijaya III No.8, Petogogan, Kec. Kby. Baru...',
+    ),
+  ];
+
   @override
   void dispose() {
     noteTextEditingController.dispose();
     super.dispose();
+  }
+
+  Widget _buildPickupLocationItem(int index) {
+    final location = _pickupLocations[index];
+    final isSelected = selectedLocationIndex == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedLocationIndex = index;
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Color(0XFFF2F8FF)
+              : controller.themeColorServices.neutralsColorGrey0.value,
+          border: Border.all(
+            color: controller.themeColorServices.primaryBlue.value,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 24,
+              height: 24,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/icon_pinpoint_green.svg',
+                    width: 20,
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    location.name,
+                    style: controller.typographyServices.bodySmallBold.value
+                        .copyWith(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorSlate800
+                              .value,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    location.address,
+                    style: controller
+                        .typographyServices
+                        .captionLargeRegular
+                        .value
+                        .copyWith(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorSlate800
+                              .value,
+                        ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -40,9 +145,57 @@ class _RecommendationPickupLocationFooterSubViewState
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          await controller
+                              .moveGoogleMapCameraToCurrentLocation();
+                        },
+                        child: Container(
+                          width: 41,
+                          height: 41,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(99999999),
+                            boxShadow: [
+                              BoxShadow(
+                                color: controller
+                                    .themeColorServices
+                                    .overlayDark200
+                                    .value
+                                    .withValues(alpha: 0.12),
+                                blurRadius: 16,
+                                spreadRadius: 2,
+                                offset: Offset(0, -1),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_current_location.svg",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               if (controller.isFetch.value == false) ...[
+                SizedBox(height: 8),
                 if (controller.driverNearbyList.isEmpty) ...[
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -211,8 +364,10 @@ class _RecommendationPickupLocationFooterSubViewState
                                     .value
                                     .pickupLocation ??
                                 'Lokasi Penjemputan',
-                            style:
-                                controller.typographyServices.bodyLargeBold.value,
+                            style: controller
+                                .typographyServices
+                                .bodyLargeBold
+                                .value,
                           ),
                           GestureDetector(
                             onTap: () {},
@@ -256,187 +411,15 @@ class _RecommendationPickupLocationFooterSubViewState
                       ),
                     ),
                     SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedLocationIndex = 0;
-                          });
+                    SizedBox(
+                      height: 150,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: _pickupLocations.length,
+                        separatorBuilder: (_, __) => SizedBox(height: 8),
+                        itemBuilder: (context, index) {
+                          return _buildPickupLocationItem(index);
                         },
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: selectedLocationIndex == 0
-                                ? Color(0XFFF2F8FF)
-                                : controller
-                                      .themeColorServices
-                                      .neutralsColorGrey0
-                                      .value,
-                            border: Border.all(
-                              color: controller
-                                  .themeColorServices
-                                  .primaryBlue
-                                  .value,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 16,
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/icon_pinpoint_green.svg',
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'ECGO EV Moto Wijaya',
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallBold
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorSlate800
-                                                .value,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(height: 6),
-                                    Text(
-                                      'Jl. Wijaya I No.67, RT.6/RW.4, Petogogan, Kec. Kby...',
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorSlate800
-                                                .value,
-                                          ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedLocationIndex = 1;
-                          });
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: selectedLocationIndex == 1
-                                ? Color(0XFFF2F8FF)
-                                : controller
-                                      .themeColorServices
-                                      .neutralsColorGrey0
-                                      .value,
-                            border: Border.all(
-                              color: controller
-                                  .themeColorServices
-                                  .primaryBlue
-                                  .value,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 16,
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/icon_pinpoint_green.svg',
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Wisma PMI',
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallBold
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorSlate800
-                                                .value,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(height: 6),
-                                    Text(
-                                      'Jl. Wijaya I No.63, RT.8/RW.1, Petogogan, Kec. Kby...',
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .neutralsColorSlate800
-                                                .value,
-                                          ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ),
                     SizedBox(height: 12),
@@ -444,8 +427,10 @@ class _RecommendationPickupLocationFooterSubViewState
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextField(
                         controller: noteTextEditingController,
-                        style:
-                            controller.typographyServices.bodySmallRegular.value,
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value,
                         decoration: InputDecoration(
                           hintText: 'Catatan tambahan (opsional)',
                           hintStyle: controller
@@ -500,14 +485,15 @@ class _RecommendationPickupLocationFooterSubViewState
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: LoaderElevatedButton(
                         isShowLoading: false,
-                        buttonColor: controller
-                            .themeColorServices
-                            .sematicColorGreen400
-                            .value,
+                        buttonColor:
+                            controller.themeColorServices.primaryBlue.value,
                         onPressed: () async {},
                         child: Text(
                           'Pilih Lokasi',
-                          style: controller.typographyServices.bodyLargeBold.value
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
+                              .value
                               .copyWith(color: Colors.white),
                         ),
                       ),

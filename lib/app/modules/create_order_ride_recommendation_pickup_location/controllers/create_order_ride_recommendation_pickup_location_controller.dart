@@ -124,6 +124,10 @@ class CreateOrderRideRecommendationPickupLocationController
     }
   }
 
+  Future<void> moveGoogleMapCameraToCurrentLocation() async {
+    await moveCameraToLocation();
+  }
+
   Future<void> getDriverNearByList() async {
     driverNearbyList.value = await driverNearbyRepository.getDriverNearbyList(
       lat: double.tryParse(originLatitude.value!),
