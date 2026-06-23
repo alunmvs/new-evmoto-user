@@ -158,6 +158,7 @@ class ChatListView extends GetView<ChatListController> {
                                   await controller.getChatList();
                                 },
                                 child: Container(
+                                  color: Colors.transparent,
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 16,
                                     vertical: 16,
