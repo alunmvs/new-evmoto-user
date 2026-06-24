@@ -39,13 +39,6 @@ class GeocodingCacheOptions {
     return normalized != null && normalized.isNotEmpty;
   }
 
-  static double? quantizeCoordinate(double? value) {
-    if (value == null) return null;
-
-    final factor = math.pow(10, coordinatePrecision).toDouble();
-    return (value * factor).round() / factor;
-  }
-
   static String? normalizeQuery(String? query) {
     final trimmed = query?.trim();
     if (trimmed == null || trimmed.isEmpty) return null;
@@ -83,9 +76,10 @@ class GeocodingCacheOptions {
       final rawValue = params[key];
       if (rawValue == null) continue;
 
-      final quantized = quantizeCoordinate(double.tryParse(rawValue));
-      if (quantized != null) {
-        params[key] = quantized.toString();
+      final parsed = double.tryParse(rawValue);
+      if (parsed != null) {
+        final factor = math.pow(10, coordinatePrecision).toDouble();
+        params[key] = ((parsed * factor).round() / factor).toString();
       }
     }
 

@@ -84,12 +84,8 @@ class GeocodingRepository {
         queryParameters: {
           "query": normalizedQuery,
           "limit": limit,
-          "lat": GeocodingCacheOptions.quantizeCoordinate(
-            locationServices.currentLatitude.value,
-          ),
-          "lng": GeocodingCacheOptions.quantizeCoordinate(
-            locationServices.currentLongitude.value,
-          ),
+          "lat": locationServices.currentLatitude.value,
+          "lng": locationServices.currentLongitude.value,
           "language": languageServices.languageGeocoding.value,
         },
       );
