@@ -383,6 +383,10 @@ class Language {
   String? advancedBookingExpiredButtonBack;
   String? advancedBookingExpiredButtonConfirm;
 
+  String? advancedBookingCreatedTitle;
+  String? advancedBookingCreatedDescription;
+  String? advancedBookingCreatedButton;
+
   String? advancedBookingStatusOrderScheduled;
   String? advancedBookingStatusOrderDone;
   String? advancedBookingStatusOrderInService;
@@ -437,6 +441,9 @@ class Language {
     this.advancedBookingExpiredlDescription,
     this.advancedBookingExpiredButtonBack,
     this.advancedBookingExpiredButtonConfirm,
+    this.advancedBookingCreatedTitle,
+    this.advancedBookingCreatedDescription,
+    this.advancedBookingCreatedButton,
     this.advancedBookingCancelTitle,
     this.advancedBookingCancelDescription,
     this.advancedBookingCancelButtonBack,
@@ -871,6 +878,14 @@ class Language {
     advancedBookingExpiredButtonConfirm =
         json['advanced_booking_expired_button_confirm'] ??
         "(Translate Not Found)";
+
+    advancedBookingCreatedTitle =
+        json['advanced_booking_created_title'] ?? "(Translate Not Found)";
+    advancedBookingCreatedDescription =
+        json['advanced_booking_created_description'] ??
+        "(Translate Not Found)";
+    advancedBookingCreatedButton =
+        json['advanced_booking_created_button'] ?? "(Translate Not Found)";
 
     advancedBookingCancelTitle =
         json['advanced_booking_cancel_title'] ?? "(Translate Not Found)";

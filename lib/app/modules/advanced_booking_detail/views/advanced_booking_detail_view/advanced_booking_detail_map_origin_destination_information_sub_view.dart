@@ -48,6 +48,7 @@ class AdvancedBookingDetailMapOriginDestinationInformationSubView
                     await controller.setupGoogleMapOriginToDestination();
 
                     controller.isFetch.value = false;
+                    await controller.showCreatedDialogIfNeeded();
                   } on DioException catch (e) {
                     SnackbarHelper.showSnackbarError(text: e.error.toString());
                     controller.isCriticalError.value = true;

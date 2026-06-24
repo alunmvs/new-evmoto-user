@@ -70,7 +70,7 @@ class AdvancedBookingSearchingDriverController extends GetxController {
       Get.back();
       Get.toNamed(
         Routes.ADVANCED_BOOKING_DETAIL,
-        arguments: {"id": advanceBookingId.value},
+        arguments: {"id": advanceBookingId.value, "show_created_dialog": true},
       );
     });
   }

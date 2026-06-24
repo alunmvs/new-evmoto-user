@@ -23,6 +23,7 @@ import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/advanced_booking_cancel_dialog.dart';
+import 'package:new_evmoto_user/app/widgets/advanced_booking_created_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
@@ -342,6 +343,21 @@ class AdvancedBookingDetailController extends GetxController {
     }
 
     return result;
+  }
+
+  Future<void> showCreatedDialogIfNeeded() async {
+    if (Get.arguments?['show_created_dialog'] != true) {
+      return;
+    }
+
+    await DialogHelper.show(
+      tag: DialogTags.advancedBookingCreated,
+      widget: AdvancedBookingCreatedDialog(
+        onTapConfirm: () async {
+          DialogHelper.dismiss(DialogTags.advancedBookingCreated);
+        },
+      ),
+    );
   }
 
   Future<void> onTapCancel() async {
