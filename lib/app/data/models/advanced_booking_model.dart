@@ -11,7 +11,7 @@ class AdvancedBooking {
   double? endLat;
   String? travelTime;
   double? orderMoney;
-  int? payMoney;
+  double? payMoney;
   int? payType;
   int? payManner;
   int? substitute;
