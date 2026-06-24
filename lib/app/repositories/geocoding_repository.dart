@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_user/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_place_with_points_model.dart';
 import 'package:new_evmoto_user/app/data/models/recommendation_access_point_model.dart';
 import 'package:new_evmoto_user/app/services/api_services.dart';
 import 'package:new_evmoto_user/app/services/firebase_remote_config_services.dart';
@@ -105,6 +106,107 @@ class GeocodingRepository {
       }
 
       return geocodingPlaceList;
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<List<GeocodingPlaceWithPoints>> searchGeocodingPlacesByQuery({
+    String? query,
+  }) async {
+    try {
+      var url = "$baseUrl/businessProcess/api/geocoding/searchWithPoints";
+
+      var dio = apiServices.dio;
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var normalizedQuery = GeocodingCacheOptions.normalizeQuery(query);
+
+      var response = await dio.post(
+        url,
+        options: Options(headers: headers),
+        data: {
+          "query": normalizedQuery,
+          "lat": locationServices.currentLatitude.value,
+          "lng": locationServices.currentLongitude.value,
+        },
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      var geocodingPlaceList = <GeocodingPlaceWithPoints>[];
+      final results = response.data['data']?['results'];
+
+      if (results is Iterable<dynamic>) {
+        for (var geocodingPlace in results) {
+          geocodingPlaceList.add(
+            GeocodingPlaceWithPoints.fromJson(
+              Map<String, dynamic>.from(geocodingPlace),
+            ),
+          );
+        }
+      }
+
+      return geocodingPlaceList;
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<List<GeocodingPlaceWithPoints>>
+  getGeocodingDestinationPointCandidates({
+    required double? latitude,
+    required double? longitude,
+  }) async {
+    try {
+      var url = "$baseUrl/businessProcess/api/geocoding/destinationPoint";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        options: Options(headers: headers),
+        data: {"lat": latitude, "lng": longitude},
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      var candidateList = <GeocodingPlaceWithPoints>[];
+      final candidates = response.data['data']?['candidates'];
+
+      if (candidates is Iterable<dynamic>) {
+        for (var candidate in candidates) {
+          candidateList.add(
+            GeocodingPlaceWithPoints.fromJson(
+              Map<String, dynamic>.from(candidate),
+            ),
+          );
+        }
+      }
+
+      return candidateList;
     } on DioException {
       rethrow;
     }
