@@ -170,14 +170,14 @@ class GeocodingRepository {
     required double? longitude,
   }) async {
     try {
-      var url = "$baseUrl/businessProcess/api/geocoding/destinationPoint";
+      var url = "$baseUrl/businessProcess/api/geocoding/tripPoint";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
       var headers = {
         "Content-Type": "application/json",
-        'Authorization': "Bearer $token",
+        "Authorization": "Bearer $token",
       };
 
       var dio = apiServices.dio;

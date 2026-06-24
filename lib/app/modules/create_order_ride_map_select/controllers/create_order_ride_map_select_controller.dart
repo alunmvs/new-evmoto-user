@@ -1,12 +1,15 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_place_with_points_model.dart';
 import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
+import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
@@ -35,6 +38,7 @@ class CreateOrderRideMapSelectController extends GetxController {
   final nearestDistanceDriverNearby = 0.0.obs;
   final markers = <MarkerId, Marker>{}.obs;
   Timer? driverNearbyTimer;
+  Timer? pickupLocationCandidateDebounceTimer;
 
   final type = Rx<String?>(null);
 
@@ -45,7 +49,10 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   final isPermissionLocationAllow = false.obs;
   final isFetchAddress = false.obs;
+  final isFetchPickupLocationCandidates = false.obs;
   final isFetch = true.obs;
+
+  final pickupLocationCandidateList = <GeocodingPlaceWithPoints>[].obs;
 
   final idPinpoint = "".obs;
 
@@ -61,8 +68,9 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   @override
   void onClose() {
-    super.onClose();
+    pickupLocationCandidateDebounceTimer?.cancel();
     disableDriverNearbyTimer();
+    super.onClose();
   }
 
   // Driver Nearby
@@ -267,6 +275,58 @@ class CreateOrderRideMapSelectController extends GetxController {
           LatLng(double.parse(latitude.value!), double.parse(longitude.value!)),
         ),
       );
+    }
+  }
+
+  void onCameraMove(CameraPosition position) {
+    final lat = position.target.latitude;
+    final lng = position.target.longitude;
+
+    latitude.value = lat.toString();
+    longitude.value = lng.toString();
+
+    updateLocationLatLng(latitude: lat, longitude: lng);
+    _schedulePickupLocationCandidateFetch(latitude: lat, longitude: lng);
+  }
+
+  void _schedulePickupLocationCandidateFetch({
+    required double latitude,
+    required double longitude,
+  }) {
+    pickupLocationCandidateDebounceTimer?.cancel();
+    pickupLocationCandidateDebounceTimer = Timer(
+      const Duration(seconds: 1),
+      () {
+        if (isClosed) {
+          return;
+        }
+
+        getPickupLocationCandidateList(
+          latitude: latitude,
+          longitude: longitude,
+        );
+      },
+    );
+  }
+
+  Future<void> getPickupLocationCandidateList({
+    required double latitude,
+    required double longitude,
+  }) async {
+    isFetchPickupLocationCandidates.value = true;
+
+    try {
+      pickupLocationCandidateList.value = await geocodingRepository
+          .getGeocodingDestinationPointCandidates(
+            latitude: latitude,
+            longitude: longitude,
+          );
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+    } finally {
+      isFetchPickupLocationCandidates.value = false;
     }
   }
 

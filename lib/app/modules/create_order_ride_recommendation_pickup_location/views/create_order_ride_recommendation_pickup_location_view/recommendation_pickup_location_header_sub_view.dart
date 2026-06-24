@@ -31,9 +31,7 @@ class RecommendationPickupLocationHeaderSubView
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
+                    onTap: controller.onTapBackToCreateOrderRide,
                     child: Container(
                       width: 40,
                       height: 40,

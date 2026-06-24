@@ -14,66 +14,81 @@ class CreateOrderRideRecommendationPickupLocationView
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Scaffold(
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                Expanded(
-                  child: Animarker(
-                    mapId: controller.googleMapController.future.then<int>(
-                      (value) => value.mapId,
-                    ),
-                    markers: Set<Marker>.from(controller.markers.values),
-                    shouldAnimateCamera: false,
-                    duration: const Duration(milliseconds: 2400),
-                    curve: Curves.linear,
-                    child: GoogleMap(
-                      mapType: MapType.normal,
-                      zoomControlsEnabled: false,
-                      myLocationButtonEnabled: false,
-                      compassEnabled: false,
-                      mapToolbarEnabled: false,
-                      indoorViewEnabled: false,
-                      initialCameraPosition:
-                          controller.initialCameraPosition.value,
-                      onMapCreated:
-                          (GoogleMapController googleMapController) async {
-                            controller.googleMapController.complete(
-                              googleMapController,
-                            );
-                            await controller.onMapCreated();
-                          },
+      () => PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop == false) {
+            controller.onTapBackToCreateOrderRide();
+          }
+        },
+        child: Scaffold(
+          backgroundColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+          body: Stack(
+            children: [
+              Column(
+                children: [
+                  Expanded(
+                    child: Animarker(
+                      mapId: controller.googleMapController.future.then<int>(
+                        (value) => value.mapId,
+                      ),
+                      markers: Set<Marker>.from(
+                        controller.driverMarkers.values,
+                      ),
+                      shouldAnimateCamera: false,
+                      duration: const Duration(milliseconds: 2400),
+                      curve: Curves.linear,
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        markers: Set<Marker>.from(
+                          controller.pickupMarkers.values,
+                        ),
+                        zoomControlsEnabled: false,
+                        myLocationButtonEnabled: false,
+                        compassEnabled: false,
+                        mapToolbarEnabled: false,
+                        indoorViewEnabled: false,
+                        initialCameraPosition:
+                            controller.initialCameraPosition.value,
+                        onMapCreated:
+                            (GoogleMapController googleMapController) async {
+                              controller.googleMapController.complete(
+                                googleMapController,
+                              );
+                              await controller.onMapCreated();
+                            },
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * (150 / 812),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * (150 / 812),
+                  ),
+                ],
+              ),
+              RecommendationPickupLocationHeaderSubView(),
+              RecommendationPickupLocationFooterSubView(),
+              if (controller.isFetch.value == true) ...[
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color:
+                        controller.themeColorServices.neutralsColorGrey0.value,
+                  ),
+                  child: Center(
+                    child: SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: CircularProgressIndicator(
+                        color: controller.themeColorServices.primaryBlue.value,
+                      ),
+                    ),
+                  ),
                 ),
               ],
-            ),
-            RecommendationPickupLocationHeaderSubView(),
-            RecommendationPickupLocationFooterSubView(),
-            if (controller.isFetch.value == true) ...[
-              Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                ),
-                child: Center(
-                  child: SizedBox(
-                    width: 25,
-                    height: 25,
-                    child: CircularProgressIndicator(
-                      color: controller.themeColorServices.primaryBlue.value,
-                    ),
-                  ),
-                ),
-              ),
             ],
-          ],
+          ),
         ),
       ),
     );

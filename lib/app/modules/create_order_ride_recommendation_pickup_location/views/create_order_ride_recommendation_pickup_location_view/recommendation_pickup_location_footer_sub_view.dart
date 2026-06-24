@@ -19,30 +19,6 @@ class _RecommendationPickupLocationFooterSubViewState
   final controller =
       Get.find<CreateOrderRideRecommendationPickupLocationController>();
   final noteTextEditingController = TextEditingController();
-  int selectedLocationIndex = 1;
-
-  static const _pickupLocations = [
-    (
-      name: 'ECGO EV Moto Wijaya',
-      address: 'Jl. Wijaya I No.67, RT.6/RW.4, Petogogan, Kec. Kby...',
-    ),
-    (
-      name: 'Wisma PMI',
-      address: 'Jl. Wijaya I No.63, RT.8/RW.1, Petogogan, Kec. Kby...',
-    ),
-    (
-      name: 'Kantor Pos Petogogan',
-      address: 'Jl. Wijaya II No.12, Petogogan, Kec. Kby. Baru...',
-    ),
-    (
-      name: 'Toko Kelontong Sejahtera',
-      address: 'Jl. Wijaya I No.45, RT.3/RW.2, Petogogan, Kec. Kby...',
-    ),
-    (
-      name: 'Masjid Al-Ikhlas',
-      address: 'Jl. Wijaya III No.8, Petogogan, Kec. Kby. Baru...',
-    ),
-  ];
 
   @override
   void dispose() {
@@ -51,14 +27,16 @@ class _RecommendationPickupLocationFooterSubViewState
   }
 
   Widget _buildPickupLocationItem(int index) {
-    final location = _pickupLocations[index];
-    final isSelected = selectedLocationIndex == index;
+    final location = controller.pickupLocationCandidateList[index];
+    final isSelected = controller.selectedPickupLocationIndex.value == index;
+    final locationName =
+        location.name ?? location.pointRecommendation?.name ?? '-';
+    final locationAddress =
+        location.address ?? location.pointRecommendation?.address ?? '-';
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedLocationIndex = index;
-        });
+      onTap: () async {
+        await controller.selectPickupLocation(index);
       },
       child: Container(
         width: double.infinity,
@@ -96,7 +74,7 @@ class _RecommendationPickupLocationFooterSubViewState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    location.name,
+                    locationName,
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(
                           color: controller
@@ -109,7 +87,7 @@ class _RecommendationPickupLocationFooterSubViewState
                   ),
                   SizedBox(height: 6),
                   Text(
-                    location.address,
+                    locationAddress,
                     style: controller
                         .typographyServices
                         .captionLargeRegular
@@ -370,7 +348,7 @@ class _RecommendationPickupLocationFooterSubViewState
                                 .value,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: controller.onTapBackToCreateOrderRide,
                             child: Container(
                               color: controller
                                   .themeColorServices
@@ -413,14 +391,32 @@ class _RecommendationPickupLocationFooterSubViewState
                     SizedBox(height: 12),
                     SizedBox(
                       height: 150,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: _pickupLocations.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 8),
-                        itemBuilder: (context, index) {
-                          return _buildPickupLocationItem(index);
-                        },
-                      ),
+                      child: controller.isFetchPickupLocationCandidates.value
+                          ? Center(
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: controller
+                                      .themeColorServices
+                                      .primaryBlue
+                                      .value,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            )
+                          : ListView.separated(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              itemCount:
+                                  controller.pickupLocationCandidateList.length,
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 8),
+                              itemBuilder: (context, index) {
+                                return _buildPickupLocationItem(index);
+                              },
+                            ),
                     ),
                     SizedBox(height: 12),
                     Padding(
@@ -487,7 +483,12 @@ class _RecommendationPickupLocationFooterSubViewState
                         isShowLoading: false,
                         buttonColor:
                             controller.themeColorServices.primaryBlue.value,
-                        onPressed: () async {},
+                        onPressed:
+                            controller.isFetchPickupLocationCandidates.value
+                            ? null
+                            : () async {
+                                controller.onTapSelectPickupLocation();
+                              },
                         child: Text(
                           'Pilih Lokasi',
                           style: controller

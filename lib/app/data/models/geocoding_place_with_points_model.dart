@@ -10,6 +10,8 @@ class GeocodingPlaceWithPoints {
   String? type;
   String? structureType;
   GeocodingPointRecommendation? pointRecommendation;
+  double? customDistanceM;
+  double? customDistanceKm;
 
   GeocodingPlaceWithPoints({
     this.lat,
@@ -21,6 +23,8 @@ class GeocodingPlaceWithPoints {
     this.type,
     this.structureType,
     this.pointRecommendation,
+    this.customDistanceM,
+    this.customDistanceKm,
   });
 
   GeocodingPlaceWithPoints.fromJson(Map<String, dynamic> json) {

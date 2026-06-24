@@ -36,8 +36,7 @@ void main() {
       ).thenAnswer((_) async => []);
 
       when(
-        () => geocodingRepository.getGeocodingPlaceByQuery(
-          limit: any(named: 'limit'),
+        () => geocodingRepository.searchGeocodingPlacesByQuery(
           query: any(named: 'query'),
         ),
       ).thenAnswer((_) async => []);

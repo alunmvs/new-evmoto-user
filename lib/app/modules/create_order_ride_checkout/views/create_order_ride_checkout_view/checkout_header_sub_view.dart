@@ -122,10 +122,6 @@ class CheckoutHeaderSubView extends GetView<CreateOrderRideCheckoutController> {
                                 GestureDetector(
                                   onTap: () {
                                     Get.back();
-                                    controller
-                                        .createOrderRideController
-                                        .focusNodeOrigin
-                                        .requestFocus();
                                   },
                                   child: Container(
                                     color: Colors.transparent,
@@ -188,6 +184,7 @@ class CheckoutHeaderSubView extends GetView<CreateOrderRideCheckoutController> {
                                 ),
                                 GestureDetector(
                                   onTap: () async {
+                                    Get.back();
                                     Get.back();
                                     controller
                                         .createOrderRideController
