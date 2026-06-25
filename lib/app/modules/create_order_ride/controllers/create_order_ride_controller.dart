@@ -20,7 +20,6 @@ import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
 import '../../../routes/app_pages.dart';
-import 'package:new_evmoto_user/app/modules/create_order_ride_recommendation_pickup_location/controllers/create_order_ride_recommendation_pickup_location_controller.dart';
 import 'package:new_evmoto_user/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_user/app/utils/dialog_tags.dart';
 
@@ -1205,7 +1204,7 @@ class CreateOrderRideController extends GetxController {
       return;
     }
 
-    final result = await Get.toNamed(
+    await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION,
       arguments: {
         "origin_address_name": originAddressName.value,
@@ -1218,12 +1217,6 @@ class CreateOrderRideController extends GetxController {
         "destination_longitude": destinationLongitude.value,
       },
     );
-
-    if (result ==
-        CreateOrderRideRecommendationPickupLocationController
-            .backResultFocusDestination) {
-      await requestDestinationFieldFocus();
-    }
   }
 
   Future<void> requestDestinationFieldFocus() async {

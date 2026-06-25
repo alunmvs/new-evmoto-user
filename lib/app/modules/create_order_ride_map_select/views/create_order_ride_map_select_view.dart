@@ -39,17 +39,46 @@ class CreateOrderRideMapSelectView
                           compassEnabled: false,
                           mapToolbarEnabled: false,
                           indoorViewEnabled: false,
+                          onLongPress: (position) {
+                            print("oke-long-press");
+                          },
+                          onTap: (position) {
+                            print("oke-tap");
+                          },
+                          onCameraMoveStarted: () {
+                            // cancel the recommendation location list timer)
+                            controller.isUserMoveMapCamera.value = true;
+                            controller.isMoveCameraFrom.value = "user";
+                          },
+                          onCameraIdle: () {
+                            if (controller.isRecommendationCameraMove.value) {
+                              controller.isRecommendationCameraMove.value = false;
+                              controller.isUserMoveMapCamera.value = false;
+                              controller.isMoveCameraFrom.value = "system";
+                              return;
+                            }
+
+                            if (controller.isMoveCameraFrom.value == "user") {
+                              controller.isUserMoveMapCamera.value = false;
+                            }
+
+                            controller.updateLocationLatLng(
+                              latitude: double.parse(
+                                controller.latitude.value!,
+                              ),
+                              longitude: double.parse(
+                                controller.longitude.value!,
+                              ),
+                            );
+                          },
                           onCameraMove: (position) async {
+                            if (controller.isFetch.value == true) return;
                             controller.latitude.value = position.target.latitude
                                 .toString();
                             controller.longitude.value = position
                                 .target
                                 .longitude
                                 .toString();
-                            controller.updateLocationLatLng(
-                              latitude: position.target.latitude,
-                              longitude: position.target.longitude,
-                            );
                           },
                           initialCameraPosition:
                               controller.initialCameraPosition.value,

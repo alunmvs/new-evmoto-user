@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -9,8 +8,8 @@ import 'package:new_evmoto_user/app/data/models/driver_nearby_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_with_points_model.dart';
 import 'package:new_evmoto_user/app/repositories/driver_nearby_repository.dart';
 import 'package:new_evmoto_user/app/repositories/geocoding_repository.dart';
-import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
+import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
 import 'package:uuid/uuid.dart';
@@ -27,10 +26,11 @@ class CreateOrderRideMapSelectController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final locationServices = Get.find<LocationServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
-    zoom: 14,
+    zoom: 18,
   ).obs;
   final googleMapController = Completer<GoogleMapController>();
 
@@ -38,7 +38,6 @@ class CreateOrderRideMapSelectController extends GetxController {
   final nearestDistanceDriverNearby = 0.0.obs;
   final markers = <MarkerId, Marker>{}.obs;
   Timer? driverNearbyTimer;
-  Timer? pickupLocationCandidateDebounceTimer;
 
   final type = Rx<String?>(null);
 
@@ -49,12 +48,16 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   final isPermissionLocationAllow = false.obs;
   final isFetchAddress = false.obs;
-  final isFetchPickupLocationCandidates = false.obs;
   final isFetch = true.obs;
 
-  final pickupLocationCandidateList = <GeocodingPlaceWithPoints>[].obs;
-
   final idPinpoint = "".obs;
+
+  final recommendationLocationList = <GeocodingPlaceWithPoints>[].obs;
+  final selectedIndexRecommendationLocation = 0.obs;
+
+  final isUserMoveMapCamera = false.obs;
+  final isMoveCameraFrom = "user".obs;
+  final isRecommendationCameraMove = false.obs;
 
   @override
   Future<void> onInit() async {
@@ -68,9 +71,16 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   @override
   void onClose() {
-    pickupLocationCandidateDebounceTimer?.cancel();
-    disableDriverNearbyTimer();
     super.onClose();
+    disableDriverNearbyTimer();
+  }
+
+  Future<void> getRecommendationLocationList() async {
+    recommendationLocationList.value = await geocodingRepository
+        .getGeocodingDestinationPointCandidates(
+          latitude: double.tryParse(latitude.value!),
+          longitude: double.tryParse(longitude.value!),
+        );
   }
 
   // Driver Nearby
@@ -170,6 +180,7 @@ class CreateOrderRideMapSelectController extends GetxController {
         idPinpoint.value = "";
         markers.clear();
         await refreshMarkerDriverNearby();
+        await refreshPickupLocationMarkers();
       }
 
       markers.refresh();
@@ -278,76 +289,108 @@ class CreateOrderRideMapSelectController extends GetxController {
     }
   }
 
-  void onCameraMove(CameraPosition position) {
-    final lat = position.target.latitude;
-    final lng = position.target.longitude;
-
-    latitude.value = lat.toString();
-    longitude.value = lng.toString();
-
-    updateLocationLatLng(latitude: lat, longitude: lng);
-    _schedulePickupLocationCandidateFetch(latitude: lat, longitude: lng);
-  }
-
-  void _schedulePickupLocationCandidateFetch({
-    required double latitude,
-    required double longitude,
-  }) {
-    pickupLocationCandidateDebounceTimer?.cancel();
-    pickupLocationCandidateDebounceTimer = Timer(
-      const Duration(seconds: 1),
-      () {
-        if (isClosed) {
-          return;
-        }
-
-        getPickupLocationCandidateList(
-          latitude: latitude,
-          longitude: longitude,
-        );
-      },
-    );
-  }
-
-  Future<void> getPickupLocationCandidateList({
-    required double latitude,
-    required double longitude,
-  }) async {
-    isFetchPickupLocationCandidates.value = true;
-
-    try {
-      pickupLocationCandidateList.value = await geocodingRepository
-          .getGeocodingDestinationPointCandidates(
-            latitude: latitude,
-            longitude: longitude,
-          );
-    } on DioException catch (e) {
-      SnackbarHelper.showSnackbarError(text: e.error.toString());
-    } catch (e) {
-      SnackbarHelper.showSnackbarError(text: e.toString());
-    } finally {
-      isFetchPickupLocationCandidates.value = false;
-    }
-  }
-
   Future<void> updateLocationLatLng({
     required double? latitude,
     required double? longitude,
   }) async {
     isFetchAddress.value = true;
+
     Future.delayed(Duration(seconds: 1)).whenComplete(() async {
       if (latitude.toString() == this.latitude.value &&
           longitude.toString() == this.longitude.value) {
+        print("oke-1");
         this.latitude.value = latitude.toString();
         this.longitude.value = longitude.toString();
+        print("oke-2");
+
+        if (isUserMoveMapCamera.value == true) {
+          isFetchAddress.value = false;
+          return;
+        }
+
         await Future.wait([
           refreshMarkerDriverNearby(),
           setAddressAndAddressName(latitude: latitude!, longitude: longitude!),
+          getRecommendationLocationList(),
         ]);
+        print("oke-3");
+
+        if (isUserMoveMapCamera.value == true) {
+          isFetchAddress.value = false;
+          return;
+        }
+
+        // get nearest recommendation location based on latitude and longitude
+        var nearestRecommendationLocation =
+            await getNearestRecommendationLocation();
+
+        if (isUserMoveMapCamera.value == true) {
+          isFetchAddress.value = false;
+          return;
+        }
+        print("oke-4");
+
+        var distanceMeter = Geolocator.distanceBetween(
+          latitude,
+          longitude,
+          nearestRecommendationLocation.lat!,
+          nearestRecommendationLocation.lng!,
+        );
+
+        print("oke-5 ${nearestRecommendationLocation.name} $distanceMeter m");
+
+        if (distanceMeter <= 1) {
+          isFetchAddress.value = false;
+          return;
+        }
+
+        isMoveCameraFrom.value = "system";
+        await Future.wait([
+          refreshPickupLocationMarkers(),
+          (await googleMapController.future).moveCamera(
+            CameraUpdate.newLatLng(
+              LatLng(
+                nearestRecommendationLocation.lat!,
+                nearestRecommendationLocation.lng!,
+              ),
+            ),
+          ),
+        ]);
+        print("oke-6");
+
+        if (isUserMoveMapCamera.value == true) {
+          isFetchAddress.value = false;
+          return;
+        }
 
         isFetchAddress.value = false;
       }
     });
+  }
+
+  Future<GeocodingPlaceWithPoints> getNearestRecommendationLocation() async {
+    var nearestRecommendationLocation = recommendationLocationList.first;
+
+    for (var recommendationLocation in recommendationLocationList) {
+      var distanceMeter = Geolocator.distanceBetween(
+        locationServices.currentLatitude.value!,
+        locationServices.currentLongitude.value!,
+        recommendationLocation.lat!,
+        recommendationLocation.lng!,
+      );
+
+      recommendationLocation.customDistanceKm = distanceMeter / 1000;
+      recommendationLocation.customDistanceM = distanceMeter;
+    }
+
+    for (var recommendationLocation in recommendationLocationList) {
+      if (recommendationLocation.distanceMeters! <
+          nearestRecommendationLocation.distanceMeters!) {
+        nearestRecommendationLocation = recommendationLocation;
+      }
+    }
+
+    return nearestRecommendationLocation;
   }
 
   Future<void> setAddressAndAddressName({
@@ -373,5 +416,68 @@ class CreateOrderRideMapSelectController extends GetxController {
         "longitude": longitude.value,
       },
     );
+  }
+
+  Future<void> moveGoogleMapCameraToRecommendationLocation(int index) async {
+    if (index < 0 || index >= recommendationLocationList.length) return;
+    final location = recommendationLocationList[index];
+    if (location.lat == null || location.lng == null) return;
+    if (isClosed) return;
+    isRecommendationCameraMove.value = true;
+    (await googleMapController.future).animateCamera(
+      CameraUpdate.newLatLng(LatLng(location.lat!, location.lng!)),
+    );
+  }
+
+  Future<void> refreshPickupLocationMarkers() async {
+    var recommendationPinpointIcon = await BitmapDescriptor.asset(
+      ImageConfiguration(size: Size(25, 25)),
+      'assets/icons/icon_recommendation_pinpoint.png',
+    );
+
+    markers.removeWhere(
+      (markerId, _) => markerId.value.contains('pickup_location_'),
+    );
+
+    for (var index = 0; index < recommendationLocationList.length; index++) {
+      final location = recommendationLocationList[index];
+      final position = LatLng(location.lat!, location.lng!);
+
+      var uniqueIdMarker = Uuid().v4();
+
+      final markerId = MarkerId('pickup_location_${index}_$uniqueIdMarker');
+      markers[markerId] = Marker(
+        markerId: markerId,
+        position: position,
+        icon: recommendationPinpointIcon,
+        anchor: Offset(0.5, 0.5),
+        zIndexInt: 1,
+        onTap: () async {
+          // if (selectedPickupLocationIndex.value != index) {
+          //   await selectPickupLocation(index);
+          // }
+        },
+      );
+    }
+
+    // final selectedLocation = pickupLocationCandidateList[selectedIndex];
+    // final selectedPosition = _pickupLocationLatLng(selectedLocation);
+    // if (selectedPosition != null) {
+    //   const selectedMarkerId = MarkerId('pickup_location_selected');
+    //   pickupMarkers[selectedMarkerId] = Marker(
+    //     markerId: selectedMarkerId,
+    //     position: selectedPosition,
+    //     icon: selectedRecommendationPinpointIcon!,
+    //     anchor: Offset(0.5, 1.0),
+    //     zIndexInt: 2,
+    //     onTap: () async {
+    //       if (selectedPickupLocationIndex.value != selectedIndex) {
+    //         await selectPickupLocation(selectedIndex);
+    //       }
+    //     },
+    //   );
+    // }
+
+    markers.refresh();
   }
 }
