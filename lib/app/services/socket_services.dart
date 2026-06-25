@@ -376,7 +376,6 @@ class SocketServices extends GetxService {
         await schedulerDataSocket();
       } catch (e) {
         isSocketClose.value = true;
-        // print("[SOCKET DEBUG] Socket did not connect $e");
       }
       isProcessConnect.value = false;
     }
@@ -432,11 +431,9 @@ class SocketServices extends GetxService {
         "msg": "SUCCESS",
       };
       try {
-        // print("[DEBUG SOCKET] PING START");
         socket?.add(convertJsonToPacket(dataUser));
         pingDateTime.value = DateTime.now();
         await socket?.flush();
-        // print("[DEBUG SOCKET] PING END");
       } catch (e) {}
     }
   }

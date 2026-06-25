@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/data/constants/advanced_booking_state_const.dart';
 import 'package:new_evmoto_user/app/data/constants/order_state_const.dart';
+import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advance_booking_detail_status_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advanced_booking_detail_invoice_sub_view.dart';
 import 'package:new_evmoto_user/app/modules/advanced_booking_detail/views/advanced_booking_detail_view/advanced_booking_detail_map_origin_destination_information_sub_view.dart';
 import 'package:new_evmoto_user/app/utils/general_helper.dart';
@@ -44,10 +46,11 @@ class AdvancedBookingDetailView
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  AdvanceBookingDetailStatusSubView(),
                   // Order Completed
-                  if ([2].contains(controller.advancedBooking.value.state) &&
-                      controller.advancedBooking.value.spawnedOrderState ==
-                          9) ...[
+                  if ([
+                    AdvancedBookingState.COMPLETED,
+                  ].contains(controller.advancedBooking.value.state)) ...[
                     SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -1306,16 +1309,12 @@ class AdvancedBookingDetailView
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 32 / 2,
-                                backgroundColor: Color(0XFFD9D9D9),
-                                child: SvgPicture.asset(
-                                  "assets/icons/icon_calendar_schedule_fill.svg",
-                                  width: 15.75,
-                                  height: 15.75,
-                                ),
+                              SvgPicture.asset(
+                                "assets/icons/icon_calendar_1.svg",
+                                width: 16,
+                                height: 17.5,
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: 6),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1367,16 +1366,12 @@ class AdvancedBookingDetailView
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 32 / 2,
-                                backgroundColor: Color(0XFFD9D9D9),
-                                child: SvgPicture.asset(
-                                  "assets/icons/icon_calendar_schedule_fill.svg",
-                                  width: 15.75,
-                                  height: 15.75,
-                                ),
+                              SvgPicture.asset(
+                                "assets/icons/icon_calendar_1.svg",
+                                width: 16,
+                                height: 17.5,
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: 6),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1428,16 +1423,12 @@ class AdvancedBookingDetailView
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 32 / 2,
-                                backgroundColor: Color(0XFFD9D9D9),
-                                child: SvgPicture.asset(
-                                  "assets/icons/icon_advance_order_cancel.svg",
-                                  width: 16.67,
-                                  height: 16.67,
-                                ),
+                              SvgPicture.asset(
+                                "assets/icons/icon_calendar_1.svg",
+                                width: 16,
+                                height: 17.5,
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: 6),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1500,16 +1491,12 @@ class AdvancedBookingDetailView
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 32 / 2,
-                                backgroundColor: Color(0XFFD9D9D9),
-                                child: SvgPicture.asset(
-                                  "assets/icons/icon_advance_order_expired.svg",
-                                  width: 18.33,
-                                  height: 13.33,
-                                ),
+                              SvgPicture.asset(
+                                "assets/icons/icon_calendar_1.svg",
+                                width: 16,
+                                height: 17.5,
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: 6),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

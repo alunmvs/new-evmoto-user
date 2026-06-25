@@ -89,13 +89,17 @@ class CreateOrderRideCheckoutController extends GetxController {
   final minDateTimeAdvanceOrder = Rx<DateTime?>(null);
   final maxDateTimeAdvanceOrder = Rx<DateTime?>(null);
   final dateRecommendationList = <DateTime>[].obs;
-  final timeRecommendationList = <DateTime>[].obs;
+
+  final timeHourRecommendationList = <String>[].obs;
+  final timeMinuteRecommendationList = <String>[].obs;
 
   final selectedDate = Rx<DateTime?>(null);
-  final selectedTime = Rx<DateTime?>(null);
+  final selectedTimeHour = Rx<String?>(null);
+  final selectedTimeMinute = Rx<String?>(null);
 
   final selectedDateIndex = 0.obs;
-  final selectedTimeIndex = 0.obs;
+  final selectedTimeHourIndex = 0.obs;
+  final selectedTimeMinuteIndex = 0.obs;
 
   final isAdvanceOrderEnable = false.obs;
 
@@ -110,11 +114,15 @@ class CreateOrderRideCheckoutController extends GetxController {
     fillForm();
     await generateMinMaxDateTimeAdvanceOrder();
     await generateDateRecommendationList();
-    timeRecommendationList.value = await generateTimeRecommendationList(
+    timeHourRecommendationList.value = await generateTimeHourRecommendationList(
       selectedDate: selectedDate.value!,
     );
-    selectedTime.value = timeRecommendationList.first;
-    selectedTimeIndex.value = 0;
+    timeMinuteRecommendationList.value =
+        await generateTimeMinuteRecommendationList();
+    selectedTimeHour.value = timeHourRecommendationList.first;
+    selectedTimeHourIndex.value = 0;
+    selectedTimeMinute.value = timeMinuteRecommendationList.first;
+    selectedTimeMinuteIndex.value = 0;
   }
 
   @override
@@ -130,6 +138,62 @@ class CreateOrderRideCheckoutController extends GetxController {
   Future<void> generateMinMaxDateTimeAdvanceOrder() async {
     minDateTimeAdvanceOrder.value = DateTime.now().add(Duration(minutes: 30));
     maxDateTimeAdvanceOrder.value = DateTime.now().add(Duration(hours: 18));
+  }
+
+  Future<List<String>> generateTimeMinuteRecommendationList() async {
+    var minutes = List.generate(
+      60,
+      (index) => index.toString().padLeft(2, '0'),
+    );
+
+    return minutes;
+  }
+
+  Future<List<String>> generateTimeHourRecommendationList({
+    required DateTime selectedDate,
+  }) async {
+    final now = DateTime.now();
+
+    final minDateTime = minDateTimeAdvanceOrder.value!;
+    final maxDateTime = maxDateTimeAdvanceOrder.value!;
+
+    final isToday =
+        selectedDate.year == now.year &&
+        selectedDate.month == now.month &&
+        selectedDate.day == now.day;
+
+    DateTime start;
+
+    if (isToday) {
+      start = minDateTime;
+    } else {
+      start = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        0,
+        0,
+      );
+    }
+
+    DateTime endOfDay = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      23,
+      59,
+    );
+
+    final end = (endOfDay.isAfter(maxDateTime) ? maxDateTime : endOfDay);
+
+    List<String> result = [];
+
+    while (!start.isAfter(end)) {
+      result.add(start.hour.toString().padLeft(2, '0'));
+      start = start.add(const Duration(hours: 1));
+    }
+
+    return result;
   }
 
   Future<void> generateDateRecommendationList() async {
@@ -712,7 +776,7 @@ class CreateOrderRideCheckoutController extends GetxController {
                 serverCarModelId: selectedOrderRidePricing.value.id.toString(),
                 substitute: "0", // 0 = no, 1 = yes
                 travelTime:
-                    "${DateFormat('yyyy-MM-dd').format(selectedDate.value!)} ${DateFormat('HH:mm').format(selectedTime.value!)}:00", // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
+                    "${DateFormat('yyyy-MM-dd').format(selectedDate.value!)} ${selectedTimeHour.value}:${selectedTimeMinute.value}:00", // kalau orderType = 1, kalau 2 maka sesuai tanggal dan jamnya
                 orderMoney: selectedOrderRidePricing.value.amount!.round(),
                 payManner: 2,
                 payType: payType.value,
@@ -852,7 +916,8 @@ class CreateOrderRideCheckoutController extends GetxController {
 
   String getAdvanceBookingSelectedDateTime() {
     var selectedDateString = "";
-    var selectedTimeString = "";
+    var selectedTimeHourString = "";
+    var selectedTimeMinuteString = "";
     if (selectedDate.value != null) {
       selectedDateString = DateFormat(
         'EEEE, dd/MM/yyyy',
@@ -860,14 +925,17 @@ class CreateOrderRideCheckoutController extends GetxController {
       ).format(selectedDate.value!);
     }
 
-    if (selectedTime.value != null) {
-      selectedTimeString = DateFormat('HH:mm').format(selectedTime.value!);
+    if (selectedTimeHour.value != null) {
+      selectedTimeHourString = selectedTimeHour.value!;
+    }
+    if (selectedTimeMinute.value != null) {
+      selectedTimeMinuteString = selectedTimeMinute.value!;
     }
 
-    if (selectedDate.value == null || selectedTime.value == null) {
+    if (selectedDate.value == null || selectedTimeHour.value == null) {
       return "-";
     } else {
-      return "$selectedDateString - $selectedTimeString";
+      return "$selectedDateString - $selectedTimeHourString:$selectedTimeMinuteString";
     }
   }
 }

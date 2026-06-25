@@ -303,44 +303,10 @@ class ActivityController extends GetxController
   Future<void> onTapActivityAdvancedBooking({
     required AdvancedBooking advancedBooking,
   }) async {
-    if (OrderState.ACTIVE_STATE_LIST.contains(
-      advancedBooking.spawnedOrderState,
-    )) {
-      try {
-        var isCancelled = await isOrderHasBeenCancelled(
-          orderId: advancedBooking.orderId.toString(),
-          orderType: advancedBooking.orderType!,
-        );
-
-        if (isCancelled == true) {
-          SnackbarHelper.showSnackbarError(
-            text: languageServices.language.value.orderHasBeenCancelled ?? "-",
-          );
-          await refreshAll();
-          return;
-        }
-      } on DioException catch (e) {
-        SnackbarHelper.showSnackbarError(text: e.error.toString());
-      } catch (e) {
-        SnackbarHelper.showSnackbarError(text: e.toString());
-      }
-      await Get.toNamed(
-        Routes.RIDE_ORDER_DETAIL,
-        arguments: {
-          "order_id": advancedBooking.orderId.toString(),
-          "order_type": advancedBooking.orderType,
-        },
-      );
-    } else {
-      await Get.toNamed(
-        Routes.ADVANCED_BOOKING_DETAIL,
-        arguments: {
-          "id": advancedBooking.id,
-          // "order_id": advancedBooking.orderId.toString(),
-          // "order_type": advancedBooking.orderType,
-        },
-      );
-    }
+    await Get.toNamed(
+      Routes.ADVANCED_BOOKING_DETAIL,
+      arguments: {"id": advancedBooking.id},
+    );
 
     await refreshAllAdvancedBooking();
   }
