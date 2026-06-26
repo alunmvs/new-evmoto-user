@@ -5,6 +5,7 @@ import 'package:new_evmoto_user/app/modules/create_order_ride_map_select/control
 import 'package:new_evmoto_user/app/utils/common_helper.dart';
 import 'package:new_evmoto_user/app/widgets/dashed_line.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 // Height of each recommendation card item (including inter-item gap).
 const double _kItemExtent = 88.0;
@@ -98,15 +99,9 @@ class MapSelectFooterSubView
               if (controller.isFetch.value == false) ...[
                 const SizedBox(height: 8),
                 if (controller.driverNearbyList.isEmpty)
-                  _DriverNearbyBadge(
-                    controller: controller,
-                    isEmpty: true,
-                  ),
+                  _DriverNearbyBadge(controller: controller, isEmpty: true),
                 if (controller.driverNearbyList.isNotEmpty)
-                  _DriverNearbyBadge(
-                    controller: controller,
-                    isEmpty: false,
-                  ),
+                  _DriverNearbyBadge(controller: controller, isEmpty: false),
                 const SizedBox(height: 16),
               ],
 
@@ -114,8 +109,7 @@ class MapSelectFooterSubView
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color:
-                      controller.themeColorServices.neutralsColorGrey0.value,
+                  color: controller.themeColorServices.neutralsColorGrey0.value,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16),
@@ -142,21 +136,26 @@ class MapSelectFooterSubView
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            controller.languageServices.language.value
-                                    .pickupLocation ??
-                                'Lokasi Penjemputan',
+                            "Pilih Lokasi",
                             style: controller
-                                .typographyServices.bodyLargeBold.value,
+                                .typographyServices
+                                .bodyLargeBold
+                                .value,
                           ),
                           GestureDetector(
                             onTap: () {},
                             child: Container(
                               color: controller
-                                  .themeColorServices.neutralsColorGrey0.value,
+                                  .themeColorServices
+                                  .neutralsColorGrey0
+                                  .value,
                               child: Row(
                                 children: [
                                   Text(
-                                    controller.languageServices.language.value
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
                                             .changeLocation ??
                                         'Ubah Lokasi',
                                     style: controller
@@ -164,8 +163,10 @@ class MapSelectFooterSubView
                                         .bodySmallRegular
                                         .value
                                         .copyWith(
-                                          color: controller.themeColorServices
-                                              .primaryBlue.value,
+                                          color: controller
+                                              .themeColorServices
+                                              .primaryBlue
+                                              .value,
                                           fontWeight: FontWeight.w500,
                                         ),
                                   ),
@@ -192,6 +193,87 @@ class MapSelectFooterSubView
                       child: Stack(
                         clipBehavior: Clip.hardEdge,
                         children: [
+                          if (controller.isFetchAddress.value)
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              height: _kVisibleHeight,
+                              child: Shimmer.fromColors(
+                                baseColor: const Color(0xFFE8E8E8),
+                                highlightColor: const Color(0xFFF5F5F5),
+                                child: Column(
+                                  children: List.generate(
+                                    3,
+                                    (i) => Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 4,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 10,
+                                      ),
+                                      height: _kItemExtent - 8,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: const Color(0xFFE0E0E0),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  height: 13,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          4,
+                                                        ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Container(
+                                                  height: 11,
+                                                  width: 120,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          4,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           Positioned(
                             top: _kOffsetY,
                             left: 0,
@@ -202,37 +284,40 @@ class MapSelectFooterSubView
                                 : ListWheelScrollView.useDelegate(
                                     controller:
                                         recommendationLocationController,
-                                    physics:
-                                        const FixedExtentScrollPhysics(),
+                                    physics: const FixedExtentScrollPhysics(),
                                     // Near-zero perspective → flat card appearance
                                     perspective: 0.001,
                                     diameterRatio: 99999.0,
                                     itemExtent: _kItemExtent,
                                     onSelectedItemChanged: (int index) {
                                       controller
-                                          .selectedIndexRecommendationLocation
-                                          .value = index;
+                                              .selectedIndexRecommendationLocation
+                                              .value =
+                                          index;
                                       controller
                                           .moveGoogleMapCameraToRecommendationLocation(
-                                        index,
-                                      );
+                                            index,
+                                          );
                                     },
-                                    childDelegate:
-                                        ListWheelChildBuilderDelegate(
+                                    childDelegate: ListWheelChildBuilderDelegate(
                                       childCount: controller
-                                          .recommendationLocationList.length,
+                                          .recommendationLocationList
+                                          .length,
                                       builder: (context, index) {
                                         final loc = controller
                                             .recommendationLocationList[index];
-                                        final name = loc.name ??
+                                        final name =
+                                            loc.name ??
                                             loc.pointRecommendation?.name ??
                                             '-';
-                                        final address = loc.address ??
+                                        final address =
+                                            loc.address ??
                                             loc.pointRecommendation?.address ??
                                             '-';
 
                                         return Obx(() {
-                                          final isSelected = controller
+                                          final isSelected =
+                                              controller
                                                   .selectedIndexRecommendationLocation
                                                   .value ==
                                               index;
@@ -253,13 +338,13 @@ class MapSelectFooterSubView
                                               border: Border.all(
                                                 color: isSelected
                                                     ? controller
-                                                        .themeColorServices
-                                                        .primaryBlue
-                                                        .value
+                                                          .themeColorServices
+                                                          .primaryBlue
+                                                          .value
                                                     : controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey300
-                                                        .value,
+                                                          .themeColorServices
+                                                          .neutralsColorGrey300
+                                                          .value,
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(12),
@@ -292,13 +377,13 @@ class MapSelectFooterSubView
                                                             .copyWith(
                                                               color: isSelected
                                                                   ? controller
-                                                                      .themeColorServices
-                                                                      .neutralsColorSlate800
-                                                                      .value
+                                                                        .themeColorServices
+                                                                        .neutralsColorSlate800
+                                                                        .value
                                                                   : controller
-                                                                      .themeColorServices
-                                                                      .neutralsColorGrey400
-                                                                      .value,
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey400
+                                                                        .value,
                                                             ),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
@@ -314,13 +399,13 @@ class MapSelectFooterSubView
                                                             .copyWith(
                                                               color: isSelected
                                                                   ? controller
-                                                                      .themeColorServices
-                                                                      .neutralsColorGrey500
-                                                                      .value
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey500
+                                                                        .value
                                                                   : controller
-                                                                      .themeColorServices
-                                                                      .neutralsColorGrey300
-                                                                      .value,
+                                                                        .themeColorServices
+                                                                        .neutralsColorGrey300
+                                                                        .value,
                                                             ),
                                                         maxLines: 1,
                                                         overflow: TextOverflow
@@ -349,18 +434,26 @@ class MapSelectFooterSubView
                       child: TextField(
                         controller: noteTextEditingController,
                         style: controller
-                            .typographyServices.bodySmallRegular.value,
+                            .typographyServices
+                            .bodySmallRegular
+                            .value,
                         decoration: InputDecoration(
                           hintText: 'Catatan tambahan (opsional)',
                           hintStyle: controller
-                              .typographyServices.bodySmallRegular.value
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
                               .copyWith(
-                            color: controller
-                                .themeColorServices.neutralsColorGrey400.value,
-                          ),
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
                           filled: true,
                           fillColor: controller
-                              .themeColorServices.neutralsColorGrey100.value,
+                              .themeColorServices
+                              .neutralsColorGrey100
+                              .value,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 14,
@@ -369,14 +462,18 @@ class MapSelectFooterSubView
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
                               color: controller
-                                  .themeColorServices.neutralsColorGrey300.value,
+                                  .themeColorServices
+                                  .neutralsColorGrey300
+                                  .value,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
                               color: controller
-                                  .themeColorServices.primaryBlue.value,
+                                  .themeColorServices
+                                  .primaryBlue
+                                  .value,
                             ),
                           ),
                         ),
@@ -386,7 +483,9 @@ class MapSelectFooterSubView
                     const SizedBox(height: 16),
                     DashedLine(
                       color: controller
-                          .themeColorServices.neutralsColorGrey300.value,
+                          .themeColorServices
+                          .neutralsColorGrey300
+                          .value,
                     ),
                     const SizedBox(height: 16),
 
@@ -402,7 +501,9 @@ class MapSelectFooterSubView
                         },
                         child: Text(
                           'Pilih Lokasi',
-                          style: controller.typographyServices.bodyLargeBold
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
                               .value
                               .copyWith(color: Colors.white),
                         ),
@@ -421,12 +522,8 @@ class MapSelectFooterSubView
   }
 }
 
-class _DriverNearbyBadge
-    extends GetView<CreateOrderRideMapSelectController> {
-  const _DriverNearbyBadge({
-    required this.controller,
-    required this.isEmpty,
-  });
+class _DriverNearbyBadge extends GetView<CreateOrderRideMapSelectController> {
+  const _DriverNearbyBadge({required this.controller, required this.isEmpty});
 
   @override
   final CreateOrderRideMapSelectController controller;
@@ -442,7 +539,9 @@ class _DriverNearbyBadge
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: isEmpty ? const Color(0xFFFFF7ED) : const Color(0xFFF2F8FF),
+              color: isEmpty
+                  ? const Color(0xFFFFF7ED)
+                  : const Color(0xFFF2F8FF),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 color: isEmpty
@@ -474,33 +573,41 @@ class _DriverNearbyBadge
                 RichText(
                   text: TextSpan(
                     text: isEmpty
-                        ? (controller.languageServices.language.value
-                                .nearestDriverNotAvailable ??
-                            "-")
-                        : (controller.languageServices.language.value
-                                .nearestDriverAvailable1 ??
-                            "-"),
+                        ? (controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .nearestDriverNotAvailable ??
+                              "-")
+                        : (controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .nearestDriverAvailable1 ??
+                              "-"),
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(
-                      color: isEmpty
-                          ? const Color(0xFFA65226)
-                          : const Color(0xFF0060C6),
-                    ),
+                          color: isEmpty
+                              ? const Color(0xFFA65226)
+                              : const Color(0xFF0060C6),
+                        ),
                     children: isEmpty
                         ? []
                         : [
                             TextSpan(
                               text: formatDistanceNearestDriver(
+                                controller.nearestDistanceDriverNearby.value,
                                 controller
-                                    .nearestDistanceDriverNearby.value,
-                                controller.languageServices.language.value
+                                    .languageServices
+                                    .language
+                                    .value
                                     .nearestDriverAvailable2,
                               ),
                               style: controller
-                                  .typographyServices.bodySmallBold.value
-                                  .copyWith(
-                                color: const Color(0xFF0060C6),
-                              ),
+                                  .typographyServices
+                                  .bodySmallBold
+                                  .value
+                                  .copyWith(color: const Color(0xFF0060C6)),
                             ),
                           ],
                   ),

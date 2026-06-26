@@ -52,7 +52,8 @@ class CreateOrderRideMapSelectView
                           },
                           onCameraIdle: () {
                             if (controller.isRecommendationCameraMove.value) {
-                              controller.isRecommendationCameraMove.value = false;
+                              controller.isRecommendationCameraMove.value =
+                                  false;
                               controller.isUserMoveMapCamera.value = false;
                               controller.isMoveCameraFrom.value = "system";
                               return;
@@ -96,19 +97,23 @@ class CreateOrderRideMapSelectView
                         ),
                       ),
                       Center(
-                        child: SvgPicture.asset(
-                          controller.type.value == "origin"
-                              ? "assets/icons/icon_pinpoint_map_green.svg"
-                              : "assets/icons/icon_pinpoint_map_red.svg",
-                          width: 22.69,
-                          height: 29.17,
+                        child: Transform.translate(
+                          offset: const Offset(0, -20.4),
+                          child: SvgPicture.asset(
+                            controller.type.value == "origin"
+                                ? "assets/icons/icon_recommendation_location_select_origin.svg"
+                                : "assets/icons/icon_recommendation_location_select_destination.svg",
+                            width: 31,
+                            height: 50.4,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * (150 / 812),
+                  height:
+                      MediaQuery.of(context).size.height * ((812 / 2) / 812),
                 ),
               ],
             ),
