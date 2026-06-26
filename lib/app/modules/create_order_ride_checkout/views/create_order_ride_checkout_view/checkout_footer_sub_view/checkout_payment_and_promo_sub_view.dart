@@ -24,38 +24,79 @@ class CheckoutPaymentAndPromoSubView
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      if (controller.payType.value == 3) ...[
-                        SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/icon_cash_1.svg",
-                                width: 20,
-                                height: 12,
+                  GestureDetector(
+                    onTap: () async {
+                      final result = await Get.toNamed(
+                        Routes.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD,
+                        arguments: {
+                          "pay_type": controller.payType.value,
+                        },
+                      );
+
+                      if (result != null) {
+                        controller.payType.value = result;
+                      }
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Row(
+                        children: [
+                          if (controller.payType.value == 2) ...[
+                            Image.asset(
+                              "assets/icons/icon_payment_method_gopay.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "GoPay",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallBold
+                                  .value,
+                            ),
+                          ],
+                          if (controller.payType.value == 3) ...[
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_cash_1.svg",
+                                    width: 20,
+                                    height: 12,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          controller.languageServices.language.value.cash ??
-                              "-",
-                          style:
-                              controller.typographyServices.bodySmallBold.value,
-                        ),
-                      ],
-                    ],
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              controller.languageServices.language.value.cash ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallBold
+                                  .value,
+                            ),
+                          ],
+                          SizedBox(width: 52),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(width: 52),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: VerticalDivider(width: 0, color: Color(0XFFB9B9B9)),
+                    child: SizedBox(
+                      height: 14.5,
+                      child: VerticalDivider(
+                        width: 0,
+                        color: Color(0XFFB9B9B9),
+                      ),
+                    ),
                   ),
                   SizedBox(width: 38),
                   if (controller.availableCouponList.isEmpty) ...[
@@ -127,6 +168,7 @@ class CheckoutPaymentAndPromoSubView
                           },
                           child: Container(
                             color: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 16),
                             child: Row(
                               children: [
                                 Row(
@@ -200,6 +242,7 @@ class CheckoutPaymentAndPromoSubView
                           },
                           child: Container(
                             color: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 16),
                             child: Row(
                               children: [
                                 Row(
