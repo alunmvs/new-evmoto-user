@@ -39,41 +39,41 @@ class CreateOrderRideMapSelectView
                           compassEnabled: false,
                           mapToolbarEnabled: false,
                           indoorViewEnabled: false,
-                          onLongPress: (position) {
-                            print("oke-long-press");
-                          },
-                          onTap: (position) {
-                            print("oke-tap");
-                          },
+                          onLongPress: (position) {},
+                          onTap: (position) {},
                           onCameraMoveStarted: () {
-                            // cancel the recommendation location list timer)
-                            controller.isUserMoveMapCamera.value = true;
-                            controller.isMoveCameraFrom.value = "user";
+                            if (controller.isRecommendationCameraMove.value) {
+                              return;
+                            }
+                            controller.onUserCameraMoveStarted();
                           },
                           onCameraIdle: () {
                             if (controller.isRecommendationCameraMove.value) {
-                              controller.isRecommendationCameraMove.value =
-                                  false;
-                              controller.isUserMoveMapCamera.value = false;
-                              controller.isMoveCameraFrom.value = "system";
+                              controller.onProgrammaticCameraIdle();
                               return;
                             }
 
-                            if (controller.isMoveCameraFrom.value == "user") {
-                              controller.isUserMoveMapCamera.value = false;
+                            // Only fetch recommendations after the user pans the map.
+                            if (controller.isMoveCameraFrom.value != "user") {
+                              return;
                             }
 
+                            controller.isUserMoveMapCamera.value = false;
+
+                            final lat = controller.latitude.value;
+                            final lng = controller.longitude.value;
+                            if (lat == null || lng == null) return;
+
                             controller.updateLocationLatLng(
-                              latitude: double.parse(
-                                controller.latitude.value!,
-                              ),
-                              longitude: double.parse(
-                                controller.longitude.value!,
-                              ),
+                              latitude: double.parse(lat),
+                              longitude: double.parse(lng),
                             );
                           },
-                          onCameraMove: (position) async {
-                            if (controller.isFetch.value == true) return;
+                          onCameraMove: (position) {
+                            if (controller.isFetch.value) return;
+                            if (controller.isRecommendationCameraMove.value) {
+                              return;
+                            }
                             controller.latitude.value = position.target.latitude
                                 .toString();
                             controller.longitude.value = position
@@ -90,8 +90,10 @@ class CreateOrderRideMapSelectView
                                 );
                                 controller.isFetch.value = true;
                                 await controller.fillForm();
-                                await controller.refreshMarkerDriverNearby();
-                                controller.enableDriverNearbyTimer();
+                                if (controller.type.value == 'origin') {
+                                  await controller.refreshMarkerDriverNearby();
+                                  controller.enableDriverNearbyTimer();
+                                }
                                 controller.isFetch.value = false;
                               },
                         ),
@@ -112,8 +114,10 @@ class CreateOrderRideMapSelectView
                   ),
                 ),
                 SizedBox(
-                  height:
-                      MediaQuery.of(context).size.height * ((812 / 2) / 812),
+                  height: controller.type.value == "origin"
+                      ? MediaQuery.of(context).size.height * ((812 / 2) / 812)
+                      : MediaQuery.of(context).size.height * ((812 / 2) / 812) -
+                            100,
                 ),
               ],
             ),

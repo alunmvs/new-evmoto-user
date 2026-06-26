@@ -74,6 +74,8 @@ class CreateOrderRideController extends GetxController {
   final currentLatitude = Rx<String?>(null);
   final currentLongitude = Rx<String?>(null);
 
+  final pickupNote = Rx<String?>(null);
+
   final isFetch = false.obs;
 
   @override
@@ -833,12 +835,13 @@ class CreateOrderRideController extends GetxController {
     );
 
     if (result != null) {
-      originLatitude.value = result['latitude'];
-      originLongitude.value = result['longitude'];
+      originLatitude.value = result['latitude'].toString();
+      originLongitude.value = result['longitude'].toString();
       originAddressName.value = result['address_name'];
       originAddress.value = result['address'];
       keywordOrigin.value = result['address_name'];
       originTextEditingController.text = result['address_name'];
+      pickupNote.value = result['pickup_note'];
 
       await Future.delayed(Duration(milliseconds: 100));
       focusNodeDestination.requestFocus();
@@ -856,12 +859,13 @@ class CreateOrderRideController extends GetxController {
     );
 
     if (result != null) {
-      destinationLatitude.value = result['latitude'];
-      destinationLongitude.value = result['longitude'];
+      destinationLatitude.value = result['latitude'].toString();
+      destinationLongitude.value = result['longitude'].toString();
       destinationAddressName.value = result['address_name'];
       destinationAddress.value = result['address'];
       keywordDestination.value = result['address_name'];
       destinationTextEditingController.text = result['address_name'];
+
       await getDestinationPlaceLocationList(
         keyword: destinationAddressName.value,
       );
