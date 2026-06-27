@@ -261,102 +261,114 @@ class MapSelectFooterSubView
                                                           .value ==
                                                       index;
 
-                                                  return Container(
-                                                    margin:
-                                                        const EdgeInsets.symmetric(
-                                                          horizontal: 16,
-                                                          vertical: 4,
-                                                        ),
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                          horizontal: 12,
-                                                          vertical: 10,
-                                                        ),
-                                                    decoration: BoxDecoration(
-                                                      color: isSelected
-                                                          ? const Color(
-                                                              0xFFF2F8FF,
-                                                            )
-                                                          : Colors.white,
-                                                      border: Border.all(
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      controller
+                                                              .selectedIndexRecommendationLocation
+                                                              .value =
+                                                          index;
+                                                      controller
+                                                          .moveGoogleMapCameraToRecommendationLocation(
+                                                            index,
+                                                          );
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          const EdgeInsets.symmetric(
+                                                            horizontal: 16,
+                                                            vertical: 4,
+                                                          ),
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            horizontal: 12,
+                                                            vertical: 10,
+                                                          ),
+                                                      decoration: BoxDecoration(
                                                         color: isSelected
-                                                            ? controller
-                                                                  .themeColorServices
-                                                                  .primaryBlue
-                                                                  .value
-                                                            : controller
-                                                                  .themeColorServices
-                                                                  .neutralsColorGrey300
-                                                                  .value,
+                                                            ? const Color(
+                                                                0xFFF2F8FF,
+                                                              )
+                                                            : Colors.white,
+                                                        border: Border.all(
+                                                          color: isSelected
+                                                              ? controller
+                                                                    .themeColorServices
+                                                                    .primaryBlue
+                                                                    .value
+                                                              : controller
+                                                                    .themeColorServices
+                                                                    .neutralsColorGrey300
+                                                                    .value,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              12,
+                                                            ),
                                                       ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            12,
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            'assets/icons/icon_pinpoint_green.svg',
+                                                            width: 20,
+                                                            height: 20,
                                                           ),
-                                                    ),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          'assets/icons/icon_pinpoint_green.svg',
-                                                          width: 20,
-                                                          height: 20,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Expanded(
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                name,
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallBold
-                                                                    .value
-                                                                    .copyWith(
-                                                                      color:
-                                                                          isSelected
-                                                                          ? controller.themeColorServices.neutralsColorSlate800.value
-                                                                          : controller.themeColorServices.neutralsColorGrey400.value,
-                                                                    ),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 4,
-                                                              ),
-                                                              Text(
-                                                                address,
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .captionLargeRegular
-                                                                    .value
-                                                                    .copyWith(
-                                                                      color:
-                                                                          isSelected
-                                                                          ? controller.themeColorServices.neutralsColorGrey500.value
-                                                                          : controller.themeColorServices.neutralsColorGrey300.value,
-                                                                    ),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            ],
+                                                          const SizedBox(
+                                                            width: 10,
                                                           ),
-                                                        ),
-                                                      ],
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(
+                                                                  name,
+                                                                  style: controller
+                                                                      .typographyServices
+                                                                      .bodySmallBold
+                                                                      .value
+                                                                      .copyWith(
+                                                                        color:
+                                                                            isSelected
+                                                                            ? controller.themeColorServices.neutralsColorSlate800.value
+                                                                            : controller.themeColorServices.neutralsColorGrey400.value,
+                                                                      ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 4,
+                                                                ),
+                                                                Text(
+                                                                  address,
+                                                                  style: controller
+                                                                      .typographyServices
+                                                                      .captionLargeRegular
+                                                                      .value
+                                                                      .copyWith(
+                                                                        color:
+                                                                            isSelected
+                                                                            ? controller.themeColorServices.neutralsColorGrey500.value
+                                                                            : controller.themeColorServices.neutralsColorGrey300.value,
+                                                                      ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   );
                                                 });

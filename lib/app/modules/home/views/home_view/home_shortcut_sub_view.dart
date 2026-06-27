@@ -73,7 +73,6 @@ class HomeShortcutSubView extends GetView<HomeController> {
               ),
             ),
           ),
-
           SizedBox(height: 12),
           HomeBookmarkLocationSubview(),
           SizedBox(height: 16),
