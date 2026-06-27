@@ -102,6 +102,8 @@ class CreateOrderRideCheckoutController extends GetxController {
   final isPermissionLocationAllow = false.obs;
   final isFetch = false.obs;
 
+  final pickupNote = Rx<String?>(null);
+
   final idPinpoint = "".obs;
 
   @override
@@ -351,6 +353,7 @@ class CreateOrderRideCheckoutController extends GetxController {
     destinationAddress.value = Get.arguments['destination_address'];
     destinationLatitude.value = Get.arguments['destination_latitude'];
     destinationLongitude.value = Get.arguments['destination_longitude'];
+    pickupNote.value = Get.arguments['pickup_note'];
   }
 
   Future<void> generatePolylinesOpenMapsApi() async {
@@ -571,6 +574,7 @@ class CreateOrderRideCheckoutController extends GetxController {
             priceNo: selectedOrderRidePricing.value.priceNo,
             startAddressName: originAddressName.value,
             endAddressName: destinationAddressName.value,
+            pickupNote: pickupNote.value,
           );
           DialogHelper.dismiss(DialogTags.loading);
 
@@ -721,6 +725,7 @@ class CreateOrderRideCheckoutController extends GetxController {
                 startAddressName: originAddressName.value,
                 endAddressName: destinationAddressName.value,
                 orderType: 1, // 1 = normal, 2 = appointment
+                pickupNote: pickupNote.value,
               );
           DialogHelper.dismiss(DialogTags.loading);
 

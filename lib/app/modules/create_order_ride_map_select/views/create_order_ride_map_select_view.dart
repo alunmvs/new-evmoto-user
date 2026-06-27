@@ -42,12 +42,14 @@ class CreateOrderRideMapSelectView
                           onLongPress: (position) {},
                           onTap: (position) {},
                           onCameraMoveStarted: () {
+                            if (controller.isClosed) return;
                             if (controller.isRecommendationCameraMove.value) {
                               return;
                             }
                             controller.onUserCameraMoveStarted();
                           },
                           onCameraIdle: () {
+                            if (controller.isClosed) return;
                             if (controller.isRecommendationCameraMove.value) {
                               controller.onProgrammaticCameraIdle();
                               return;
@@ -70,6 +72,7 @@ class CreateOrderRideMapSelectView
                             );
                           },
                           onCameraMove: (position) {
+                            if (controller.isClosed) return;
                             if (controller.isFetch.value) return;
                             if (controller.isRecommendationCameraMove.value) {
                               return;

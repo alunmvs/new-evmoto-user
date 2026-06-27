@@ -37,6 +37,7 @@ class AdvancedBooking {
   double? discountMoney;
 
   String? actorType;
+  String? pickupNote;
 
   AdvancedBooking({
     this.actorType,
@@ -75,6 +76,7 @@ class AdvancedBooking {
     this.spawnedOrderState,
     this.driverId,
     this.insertTime,
+    this.pickupNote,
   });
 
   AdvancedBooking.fromJson(Map<String, dynamic> json) {
@@ -120,6 +122,7 @@ class AdvancedBooking {
     fastigiumMoney = json['fastigiumMoney'];
     couponMoney = json['couponMoney'];
     discountMoney = json['discountMoney'];
+    pickupNote = json['pickupNote'];
   }
 
   Map<String, dynamic> toJson() {

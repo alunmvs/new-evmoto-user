@@ -67,6 +67,7 @@ class CreateOrderRideMapSelectController extends GetxController {
 
   final noteTextEditingController = TextEditingController();
   final pickupNote = Rx<String?>(null);
+  final title = Rx<String?>(null);
 
   @override
   Future<void> onInit() async {
@@ -295,6 +296,9 @@ class CreateOrderRideMapSelectController extends GetxController {
     addressName.value = Get.arguments?['address_name'];
     latitude.value = Get.arguments?['latitude'];
     longitude.value = Get.arguments?['longitude'];
+    title.value = Get.arguments?['title'];
+    pickupNote.value = Get.arguments?['pickup_note'];
+    noteTextEditingController.text = pickupNote.value ?? "";
 
     if (latitude.value != null) {
       var searchedAddress = await geocodingRepository

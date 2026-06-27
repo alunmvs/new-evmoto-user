@@ -1208,17 +1208,35 @@ class CreateOrderRideController extends GetxController {
       return;
     }
 
-    await Get.toNamed(
-      Routes.CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION,
+    var result = await Get.toNamed(
+      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
       arguments: {
-        "origin_address_name": originAddressName.value,
-        "origin_address": originAddress.value,
-        "origin_latitude": originLatitude.value,
-        "origin_longitude": originLongitude.value,
+        "type": "origin",
+        "title": "Lokasi Penjemputan",
+        "pickup_note": pickupNote.value,
+        "latitude": originLatitude.value,
+        "longitude": originLongitude.value,
+        "address_name": originAddressName.value,
+        "address": originAddress.value,
+      },
+    );
+
+    if (result == null) {
+      return;
+    }
+
+    await Get.toNamed(
+      Routes.CREATE_ORDER_RIDE_CHECKOUT,
+      arguments: {
+        "origin_address_name": result['address_name'],
+        "origin_address": result['address'],
+        "origin_latitude": result['latitude'].toString(),
+        "origin_longitude": result['longitude'].toString(),
         "destination_address_name": destinationAddressName.value,
         "destination_address": destinationAddress.value,
         "destination_latitude": destinationLatitude.value,
         "destination_longitude": destinationLongitude.value,
+        "pickup_note": result['pickup_note'],
       },
     );
   }

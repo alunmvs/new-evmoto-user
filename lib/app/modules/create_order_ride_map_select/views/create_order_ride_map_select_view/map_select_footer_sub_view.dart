@@ -440,11 +440,13 @@ class MapSelectFooterSubView
                         isShowLoading: false,
                         buttonColor:
                             controller.themeColorServices.primaryBlue.value,
-                        onPressed: () async {
-                          controller.onTapSubmit();
-                        },
+                        onPressed: controller.isFetchAddress.value == true
+                            ? null
+                            : () async {
+                                controller.onTapSubmit();
+                              },
                         child: Text(
-                          'Pilih Lokasi',
+                          controller.title.value ?? 'Pilih Lokasi',
                           style: controller
                               .typographyServices
                               .bodyLargeBold

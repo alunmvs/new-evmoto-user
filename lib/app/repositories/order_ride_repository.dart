@@ -258,6 +258,7 @@ class OrderRideRepository {
     required int? payType,
     required int? couponId,
     required dynamic priceNo,
+    required String? pickupNote,
   }) async {
     try {
       var url =
@@ -288,6 +289,7 @@ class OrderRideRepository {
         "priceNo": priceNo,
         "startAddressName": startAddressName,
         "endAddressName": endAddressName,
+        "pickupNote": pickupNote,
       });
 
       var storage = FlutterSecureStorage();
@@ -535,10 +537,7 @@ class OrderRideRepository {
     try {
       var url = "$baseUrl/pushSingle/api/netty/queryDispatchPopupActive";
 
-      var queryParameters = {
-        "orderId": orderId,
-        "orderType": orderType,
-      };
+      var queryParameters = {"orderId": orderId, "orderType": orderType};
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -574,10 +573,7 @@ class OrderRideRepository {
     try {
       var url = "$baseUrl/pushSingle/api/netty/queryDispatchExpired";
 
-      var queryParameters = {
-        "orderId": orderId,
-        "orderType": orderType,
-      };
+      var queryParameters = {"orderId": orderId, "orderType": orderType};
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

@@ -67,6 +67,7 @@ class AdvanceBookingRepository {
     String? passengers,
     String? tipMoney,
     required int? orderType,
+    required String? pickupNote,
   }) async {
     try {
       var url = "$baseUrl/businessProcess/api/advanceBooking/create";
@@ -93,6 +94,7 @@ class AdvanceBookingRepository {
         "placementLon": placementLon,
         "couponId": couponId,
         "orderType": orderType,
+        "pickupNote": pickupNote,
       };
 
       var storage = FlutterSecureStorage();
