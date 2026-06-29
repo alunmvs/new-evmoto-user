@@ -10,6 +10,7 @@ class LoaderElevatedButton extends StatelessWidget {
   final bool? isWidthFitToContent;
   final EdgeInsetsGeometry? padding;
   final bool? isShowLoading;
+  final BorderRadiusGeometry? borderRadius;
 
   LoaderElevatedButton({
     super.key,
@@ -20,6 +21,7 @@ class LoaderElevatedButton extends StatelessWidget {
     this.isWidthFitToContent,
     this.padding,
     this.isShowLoading,
+    this.borderRadius,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();

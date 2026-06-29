@@ -42,6 +42,13 @@ abstract class Routes {
   static const ADD_EDIT_ADDRESS_OTHER = _Paths.ADD_EDIT_ADDRESS_OTHER;
   static const CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION =
       _Paths.CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION;
+  static const RIDE_CHECKOUT_SELECT_PAYMENT_METHOD =
+      _Paths.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD;
+  static const ACCOUNT_PAYMENT_METHOD = _Paths.ACCOUNT_PAYMENT_METHOD;
+  static const ADD_ACCOUNT_PAYMENT_METHOD = _Paths.ADD_ACCOUNT_PAYMENT_METHOD;
+  static const ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL =
+      _Paths.ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL;
+  static const GOPAY_ACTIVATION_WEBVIEW = _Paths.GOPAY_ACTIVATION_WEBVIEW;
 }
 
 abstract class _Paths {
@@ -83,4 +90,11 @@ abstract class _Paths {
   static const ADD_EDIT_ADDRESS_OTHER = '/add-edit-address-other';
   static const CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION =
       '/create-order-ride-recommendation-pickup-location';
+  static const RIDE_CHECKOUT_SELECT_PAYMENT_METHOD =
+      '/ride-checkout-select-payment-method';
+  static const ACCOUNT_PAYMENT_METHOD = '/account-payment-method';
+  static const ADD_ACCOUNT_PAYMENT_METHOD = '/add-account-payment-method';
+  static const ACCOUNT_PAYMENT_METHOD_GOPAY_DETAIL =
+      '/account-payment-method-gopay-detail';
+  static const GOPAY_ACTIVATION_WEBVIEW = '/gopay-activation-webview';
 }

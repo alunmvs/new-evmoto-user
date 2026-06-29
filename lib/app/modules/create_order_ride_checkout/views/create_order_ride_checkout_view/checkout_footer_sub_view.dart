@@ -195,9 +195,7 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(color: Color(0XFFE8E8E8)),
                         ),
-                        SizedBox(height: 16),
                         CheckoutPaymentAndPromoSubView(),
-                        SizedBox(height: 16),
                         DashedLine(
                           color: controller
                               .themeColorServices
