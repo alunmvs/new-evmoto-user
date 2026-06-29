@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animarker/flutter_map_marker_animation.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,93 +25,195 @@ class HomeMapSubView extends GetView<HomeController> {
               children: [
                 AspectRatio(
                   aspectRatio: 375 / 369,
-                  child: GestureDetector(
-                    onScaleStart: (details) async {
-                      controller.startZoom.value =
-                          await (await controller.googleMapController.future)
-                              .getZoomLevel();
+                  child: Animarker(
+                    mapId: controller.googleMapController.future.then<int>(
+                      (value) => value.mapId,
+                    ),
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.linear,
+                    markers: Set<Marker>.from(controller.markers.values),
+                    shouldAnimateCamera: false,
+                    useRotation: true,
+                    child: GoogleMap(
+                      mapType: MapType.normal,
+                      // onCameraIdle: () {
+                      //   controller.customGestureEnabled.value = true;
+                      // },
+                      onCameraMove: (position) async {
+                        if (controller.isFetch.value == true) {
+                          return;
+                        }
+                        controller.currentLatitude.value =
+                            position.target.latitude;
+                        controller.currentLongitude.value =
+                            position.target.longitude;
+                      },
+                      rotateGesturesEnabled: false,
+                      tiltGesturesEnabled: false,
+                      zoomControlsEnabled: false,
+                      // zoomGesturesEnabled: false,
+                      zoomGesturesEnabled: true,
+                      myLocationButtonEnabled: false,
+                      compassEnabled: false,
+                      mapToolbarEnabled: false,
+                      indoorViewEnabled: false,
+                      // gestureRecognizers:
+                      //     <Factory<OneSequenceGestureRecognizer>>{
+                      //       Factory<ScaleGestureRecognizer>(() {
+                      //         final recognizer = ScaleGestureRecognizer();
+                      //         recognizer.onStart = (_) {
+                      //           /* ... */
+                      //           print("ini scale start");
+                      //         };
+                      //         recognizer.onUpdate = (details) async {
+                      //           print("ini scale update");
+                      //           /* logika zoom */
+                      //           if (details.pointerCount < 2) return;
 
-                      controller.cameraPosition.value =
-                          await (await controller.googleMapController.future)
-                              .getVisibleRegion()
-                              .then((_) {
-                                return CameraPosition(
-                                  target: LatLng(
-                                    controller.currentLatitude.value!,
-                                    controller.currentLongitude.value!,
-                                  ),
-                                  zoom: controller.startZoom.value,
-                                );
-                              });
-                    },
-                    onScaleUpdate: (details) async {
-                      final mapController =
-                          await controller.googleMapController.future;
+                      //           if (!controller.isMapPinching.value) {
+                      //             controller.isMapPinching.value = true;
+                      //             final currentZoom =
+                      //                 controller.updateZoom.value > 0
+                      //                 ? controller.updateZoom.value
+                      //                 : controller
+                      //                       .initialCameraPosition
+                      //                       .value
+                      //                       .zoom;
+                      //             controller.startZoom.value = currentZoom;
+                      //             controller.cameraPosition.value =
+                      //                 CameraPosition(
+                      //                   target: LatLng(
+                      //                     controller.currentLatitude.value!,
+                      //                     controller.currentLongitude.value!,
+                      //                   ),
+                      //                   zoom: currentZoom,
+                      //                 );
+                      //           }
 
-                      if (details.pointerCount == 1) {
-                        mapController.moveCamera(
-                          CameraUpdate.scrollBy(
-                            -details.focalPointDelta.dx,
-                            -details.focalPointDelta.dy,
-                          ),
-                        );
-                      } else {
-                        final zoom =
-                            controller.startZoom.value +
-                            math.log(details.scale) / math.ln2;
+                      //           final zoom =
+                      //               controller.startZoom.value +
+                      //               math.log(details.scale) / math.ln2;
+                      //           controller.updateZoom.value = zoom;
 
-                        mapController.moveCamera(
-                          CameraUpdate.newCameraPosition(
-                            CameraPosition(
-                              target: controller.cameraPosition.value!.target,
-                              zoom: zoom,
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                    child: Animarker(
-                      mapId: controller.googleMapController.future.then<int>(
-                        (value) => value.mapId,
-                      ),
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.linear,
-                      markers: Set<Marker>.from(controller.markers.values),
-                      shouldAnimateCamera: false,
-                      useRotation: true,
-                      child: GoogleMap(
-                        mapType: MapType.normal,
-                        onCameraMove: (position) async {
-                          if (controller.isFetch.value == true) {
-                            return;
-                          }
-                          controller.currentLatitude.value =
-                              position.target.latitude;
-                          controller.currentLongitude.value =
-                              position.target.longitude;
-                        },
-                        rotateGesturesEnabled: false,
-                        tiltGesturesEnabled: false,
-                        zoomControlsEnabled: false,
-                        zoomGesturesEnabled: true,
-                        myLocationButtonEnabled: false,
-                        compassEnabled: false,
-                        mapToolbarEnabled: false,
-                        indoorViewEnabled: false,
-                        initialCameraPosition:
-                            controller.initialCameraPosition.value,
-                        onMapCreated:
-                            (GoogleMapController googleMapController) async {
-                              controller.googleMapController.complete(
-                                googleMapController,
-                              );
-                              await controller
-                                  .moveGoogleMapCameraToCurrentLocation();
-                            },
-                      ),
+                      //           await (await controller
+                      //                   .googleMapController
+                      //                   .future)
+                      //               .moveCamera(
+                      //                 CameraUpdate.newCameraPosition(
+                      //                   CameraPosition(
+                      //                     target: controller
+                      //                         .cameraPosition
+                      //                         .value!
+                      //                         .target,
+                      //                     zoom: zoom,
+                      //                   ),
+                      //                 ),
+                      //               );
+                      //         };
+                      //         recognizer.onEnd = (_) async {
+                      //           print("ini scale end");
+                      //           /* ... */
+                      //           if (!controller.isMapPinching.value) return;
+
+                      //           controller.isMapPinching.value = false;
+                      //           await (await controller
+                      //                   .googleMapController
+                      //                   .future)
+                      //               .moveCamera(
+                      //                 CameraUpdate.newCameraPosition(
+                      //                   CameraPosition(
+                      //                     target: controller
+                      //                         .cameraPosition
+                      //                         .value!
+                      //                         .target,
+                      //                     zoom: controller.updateZoom.value,
+                      //                   ),
+                      //                 ),
+                      //               );
+                      //         };
+                      //         return recognizer;
+                      //       }),
+                      //     },
+                      initialCameraPosition:
+                          controller.initialCameraPosition.value,
+                      onMapCreated:
+                          (GoogleMapController googleMapController) async {
+                            controller.googleMapController.complete(
+                              googleMapController,
+                            );
+                            await controller
+                                .moveGoogleMapCameraToCurrentLocation();
+                          },
                     ),
                   ),
                 ),
+                // if (controller.customGestureEnabled.value == true)
+                //   AspectRatio(
+                //     aspectRatio: 375 / 369,
+                //     child: GestureDetector(
+                //       behavior: HitTestBehavior.opaque,
+                //       onScaleStart: (_) {},
+                //       onLongPress: () {
+                //         print("ini long press move update");
+                //       },
+                //       onScaleUpdate: (details) async {
+                //         print(
+                //           "ini long press move update ${details.pointerCount}",
+                //         );
+                //         // if (details.pointerCount == 1) {
+                //         //   controller.customGestureEnabled.value = false;
+                //         // }
+                //         if (details.pointerCount < 2) return;
+
+                //         if (!controller.isMapPinching.value) {
+                //           controller.isMapPinching.value = true;
+                //           final currentZoom = controller.updateZoom.value > 0
+                //               ? controller.updateZoom.value
+                //               : controller.initialCameraPosition.value.zoom;
+                //           controller.startZoom.value = currentZoom;
+                //           controller.cameraPosition.value = CameraPosition(
+                //             target: LatLng(
+                //               controller.currentLatitude.value!,
+                //               controller.currentLongitude.value!,
+                //             ),
+                //             zoom: currentZoom,
+                //           );
+                //         }
+
+                //         final zoom =
+                //             controller.startZoom.value +
+                //             math.log(details.scale) / math.ln2;
+                //         controller.updateZoom.value = zoom;
+
+                //         await (await controller.googleMapController.future)
+                //             .moveCamera(
+                //               CameraUpdate.newCameraPosition(
+                //                 CameraPosition(
+                //                   target:
+                //                       controller.cameraPosition.value!.target,
+                //                   zoom: zoom,
+                //                 ),
+                //               ),
+                //             );
+                //       },
+                //       onScaleEnd: (details) async {
+                //         if (!controller.isMapPinching.value) return;
+
+                //         controller.isMapPinching.value = false;
+                //         await (await controller.googleMapController.future)
+                //             .moveCamera(
+                //               CameraUpdate.newCameraPosition(
+                //                 CameraPosition(
+                //                   target:
+                //                       controller.cameraPosition.value!.target,
+                //                   zoom: controller.updateZoom.value,
+                //                 ),
+                //               ),
+                //             );
+                //       },
+                //       child: Container(color: Colors.transparent),
+                //     ),
+                //   ),
                 Center(
                   child: SizedBox(
                     width: 64 + 70 + 64,
