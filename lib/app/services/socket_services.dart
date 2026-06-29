@@ -78,7 +78,7 @@ class SocketServices extends GetxService {
             var dataJson = convertBytesToJson(bytes: data);
             if (dataJson != null) {
               var method = dataJson['method'] ?? "";
-              // print("[DEBUG SOCKET] $dataJson");
+              print("[DEBUG SOCKET] $dataJson");
 
               switch (method) {
                 case 'DRIVER_POSITION':

@@ -40,6 +40,8 @@ abstract class Routes {
   static const ADVANCED_BOOKING_SEARCHING_DRIVER =
       _Paths.ADVANCED_BOOKING_SEARCHING_DRIVER;
   static const ADD_EDIT_ADDRESS_OTHER = _Paths.ADD_EDIT_ADDRESS_OTHER;
+  static const CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION =
+      _Paths.CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION;
 }
 
 abstract class _Paths {
@@ -79,4 +81,6 @@ abstract class _Paths {
   static const ADVANCED_BOOKING_SEARCHING_DRIVER =
       '/advanced-booking-searching-driver';
   static const ADD_EDIT_ADDRESS_OTHER = '/add-edit-address-other';
+  static const CREATE_ORDER_RIDE_RECOMMENDATION_PICKUP_LOCATION =
+      '/create-order-ride-recommendation-pickup-location';
 }

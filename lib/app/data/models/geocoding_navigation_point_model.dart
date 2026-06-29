@@ -6,8 +6,8 @@ class GeocodingNavigationPoint {
   double? shiftMeters;
   String? name;
   List<String>? usages;
-  double? distanceUserToOsrmMeters;
-  double? distanceUserToRawMeters;
+  double? customDistanceM;
+  double? customDistanceKm;
 
   GeocodingNavigationPoint({
     this.rawLat,
@@ -17,8 +17,8 @@ class GeocodingNavigationPoint {
     this.shiftMeters,
     this.name,
     this.usages,
-    this.distanceUserToOsrmMeters,
-    this.distanceUserToRawMeters,
+    this.customDistanceM,
+    this.customDistanceKm,
   });
 
   GeocodingNavigationPoint.fromJson(Map<String, dynamic> json) {
@@ -31,8 +31,6 @@ class GeocodingNavigationPoint {
     usages = json['usages'] != null
         ? List<String>.from(json['usages'].map((usage) => usage.toString()))
         : null;
-    distanceUserToOsrmMeters = json['distanceUserToOsrmMeters'];
-    distanceUserToRawMeters = json['distanceUserToRawMeters'];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,8 +42,6 @@ class GeocodingNavigationPoint {
     data['shiftMeters'] = shiftMeters;
     data['name'] = name;
     data['usages'] = usages;
-    data['distanceUserToOsrmMeters'] = distanceUserToOsrmMeters;
-    data['distanceUserToRawMeters'] = distanceUserToRawMeters;
     return data;
   }
 }

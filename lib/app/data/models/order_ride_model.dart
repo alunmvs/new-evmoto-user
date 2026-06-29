@@ -87,6 +87,7 @@ class OrderRide {
 
   String? actorType;
   double? freeWaitTime;
+  String? pickupNote;
 
   OrderRide({
     this.freeWaitTime,
@@ -176,6 +177,7 @@ class OrderRide {
     this.freeWaitMinutes,
     this.driverArrivedOriginAt,
     this.driverConfirmFeesAt,
+    this.pickupNote,
   });
 
   OrderRide.fromJson(Map<String, dynamic> json) {
@@ -266,6 +268,7 @@ class OrderRide {
     freeWaitMinutes = json['freeWaitMinutes'];
     driverArrivedOriginAt = json['driverArrivedOriginAt'];
     driverConfirmFeesAt = json['driverConfirmFeesAt'];
+    pickupNote = json['pickupNote'];
   }
 
   Map<String, dynamic> toJson() {

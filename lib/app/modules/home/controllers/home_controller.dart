@@ -700,12 +700,12 @@ class HomeController extends GetxController {
 
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
-          arguments: {
-            "origin_address_name": currentGeocodingAddress.value.name,
-            "origin_address": currentGeocodingAddress.value.address,
-            "origin_latitude": currentLatitude.value.toString(),
-            "origin_longitude": currentLongitude.value.toString(),
-          },
+          // arguments: {
+          //   "origin_address_name": currentGeocodingAddress.value.name,
+          //   "origin_address": currentGeocodingAddress.value.address,
+          //   "origin_latitude": currentLatitude.value.toString(),
+          //   "origin_longitude": currentLongitude.value.toString(),
+          // },
         );
         // }
       } on DioException catch (e) {
@@ -752,16 +752,15 @@ class HomeController extends GetxController {
           await Future.delayed(Duration(milliseconds: 100));
           return currentAddressIsLoading.value;
         });
-
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
-          arguments: {
-            "is_origin_auto_select": true,
-            "origin_address_name": currentGeocodingAddress.value.name,
-            "origin_address": currentGeocodingAddress.value.address,
-            "origin_latitude": currentLatitude.value.toString(),
-            "origin_longitude": currentLongitude.value.toString(),
-          },
+          // arguments: {
+          //   "is_origin_auto_select": true,
+          //   "origin_address_name": currentGeocodingAddress.value.name,
+          //   "origin_address": currentGeocodingAddress.value.address,
+          //   "origin_latitude": currentLatitude.value.toString(),
+          //   "origin_longitude": currentLongitude.value.toString(),
+          // },
         );
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
@@ -807,12 +806,12 @@ class HomeController extends GetxController {
       if (isFillCurrentLocation == true) {
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
-          arguments: {
-            "origin_address_name": currentGeocodingAddress.value.name,
-            "origin_address": currentGeocodingAddress.value.address,
-            "origin_latitude": currentLatitude.value.toString(),
-            "origin_longitude": currentLongitude.value.toString(),
-          },
+          // arguments: {
+          //   "origin_address_name": currentGeocodingAddress.value.name,
+          //   "origin_address": currentGeocodingAddress.value.address,
+          //   "origin_latitude": currentLatitude.value.toString(),
+          //   "origin_longitude": currentLongitude.value.toString(),
+          // },
         );
       } else {
         await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);

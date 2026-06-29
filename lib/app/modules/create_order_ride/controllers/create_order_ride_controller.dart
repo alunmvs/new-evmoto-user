@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_navigation_point_model.dart';
 import 'package:new_evmoto_user/app/data/models/geocoding_place_model.dart';
+import 'package:new_evmoto_user/app/data/models/geocoding_place_with_points_model.dart';
 import 'package:new_evmoto_user/app/data/models/history_order_model.dart';
 import 'package:new_evmoto_user/app/data/models/recommendation_location_model.dart';
 import 'package:new_evmoto_user/app/data/models/saved_address_model.dart';
@@ -65,12 +67,14 @@ class CreateOrderRideController extends GetxController {
   final recommendationCurrentLocationList = <RecommendationLocation>[].obs;
   final recommendationOriginLocationList = <RecommendationLocation>[].obs;
   final recommendationDestinationLocationList = <RecommendationLocation>[].obs;
-  final originGeocodingPlaceList = <GeocodingPlace>[].obs;
-  final destinationGeocodingPlaceList = <GeocodingPlace>[].obs;
+  final originGeocodingPlaceList = <GeocodingPlaceWithPoints>[].obs;
+  final destinationGeocodingPlaceList = <GeocodingPlaceWithPoints>[].obs;
 
   // My Location
   final currentLatitude = Rx<String?>(null);
   final currentLongitude = Rx<String?>(null);
+
+  final pickupNote = Rx<String?>(null);
 
   final isFetch = false.obs;
 
@@ -365,28 +369,10 @@ class CreateOrderRideController extends GetxController {
             return;
           }
           originGeocodingPlaceList.value = await geocodingRepository
-              .getGeocodingPlaceByQuery(limit: 5, query: keywordOrigin.value);
+              .searchGeocodingPlacesByQuery(query: keywordOrigin.value);
 
-          if (currentLatitude.value != null) {
-            for (var location in originGeocodingPlaceList) {
-              var distanceMeter = Geolocator.distanceBetween(
-                double.parse(currentLatitude.value!),
-                double.parse(currentLongitude.value!),
-                location.lat!,
-                location.lng!,
-              );
-              var distanceKm = (distanceMeter / 1000);
-
-              location.customDistanceKm = distanceKm;
-              location.customDistanceM = distanceMeter;
-            }
-
-            originGeocodingPlaceList.sort(
-              (a, b) => a.customDistanceM!.compareTo(b.customDistanceM!),
-            );
-
-            originGeocodingPlaceList.refresh();
-          }
+          _applyDistanceToGeocodingPlaceList(originGeocodingPlaceList);
+          originGeocodingPlaceList.refresh();
         } on DioException catch (e) {
           SnackbarHelper.showSnackbarError(text: e.error.toString());
         } catch (e) {
@@ -405,31 +391,10 @@ class CreateOrderRideController extends GetxController {
             return;
           }
           destinationGeocodingPlaceList.value = await geocodingRepository
-              .getGeocodingPlaceByQuery(
-                limit: 5,
-                query: keywordDestination.value,
-              );
+              .searchGeocodingPlacesByQuery(query: keywordDestination.value);
 
-          if (currentLatitude.value != null) {
-            for (var location in destinationGeocodingPlaceList) {
-              var distanceMeter = Geolocator.distanceBetween(
-                double.parse(currentLatitude.value!),
-                double.parse(currentLongitude.value!),
-                location.lat!,
-                location.lng!,
-              );
-              var distanceKm = (distanceMeter / 1000);
-
-              location.customDistanceKm = distanceKm;
-              location.customDistanceM = distanceMeter;
-            }
-
-            destinationGeocodingPlaceList.sort(
-              (a, b) => a.customDistanceM!.compareTo(b.customDistanceM!),
-            );
-
-            destinationGeocodingPlaceList.refresh();
-          }
+          _applyDistanceToGeocodingPlaceList(destinationGeocodingPlaceList);
+          destinationGeocodingPlaceList.refresh();
         } on DioException catch (e) {
           SnackbarHelper.showSnackbarError(text: e.error.toString());
         } catch (e) {
@@ -543,9 +508,69 @@ class CreateOrderRideController extends GetxController {
     await getOriginPlaceLocationList(keyword: originAddressName.value);
   }
 
+  void _applyDistanceToGeocodingPlaceList(
+    List<GeocodingPlaceWithPoints> locationList,
+  ) {
+    for (var location in locationList) {
+      if (location.distanceMeters != null) {
+        location.customDistanceM = location.distanceMeters;
+        location.customDistanceKm = location.distanceMeters! / 1000;
+      } else if (currentLatitude.value != null &&
+          location.lat != null &&
+          location.lng != null) {
+        var distanceMeter = Geolocator.distanceBetween(
+          double.parse(currentLatitude.value!),
+          double.parse(currentLongitude.value!),
+          location.lat!,
+          location.lng!,
+        );
+
+        location.customDistanceKm = distanceMeter / 1000;
+        location.customDistanceM = distanceMeter;
+      }
+
+      for (final navigationPoint
+          in location.pointRecommendation?.navigationPoints ?? []) {
+        _applyDistanceToNavigationPoint(navigationPoint);
+      }
+    }
+
+    locationList.sort((a, b) {
+      final distanceA = a.customDistanceM ?? double.infinity;
+      final distanceB = b.customDistanceM ?? double.infinity;
+      return distanceA.compareTo(distanceB);
+    });
+  }
+
+  void _applyDistanceToNavigationPoint(
+    GeocodingNavigationPoint navigationPoint,
+  ) {
+    final latitude = navigationPoint.osrmLat ?? navigationPoint.rawLat;
+    final longitude = navigationPoint.osrmLng ?? navigationPoint.rawLng;
+
+    if (currentLatitude.value != null &&
+        latitude != null &&
+        longitude != null) {
+      final distanceMeter = Geolocator.distanceBetween(
+        double.parse(currentLatitude.value!),
+        double.parse(currentLongitude.value!),
+        latitude,
+        longitude,
+      );
+
+      navigationPoint.customDistanceKm = distanceMeter / 1000;
+      navigationPoint.customDistanceM = distanceMeter;
+    }
+  }
+
   Future<void> onTapOriginSearchedLocation({
-    required GeocodingPlace selectedCurrentLocation,
+    required GeocodingPlaceWithPoints selectedPlace,
+    GeocodingNavigationPoint? selectedNavigationPoint,
   }) async {
+    final selectedCurrentLocation = _resolveSelectedGeocodingPlace(
+      selectedPlace: selectedPlace,
+      selectedNavigationPoint: selectedNavigationPoint,
+    );
     // var isInsideserviceArea = isLatLngInsideServiceArea(
     //   latitude: selectedCurrentLocation.lat!,
     //   longitude: selectedCurrentLocation.lng!,
@@ -683,9 +708,39 @@ class CreateOrderRideController extends GetxController {
     await onTapSubmit();
   }
 
+  GeocodingPlace _resolveSelectedGeocodingPlace({
+    required GeocodingPlaceWithPoints selectedPlace,
+    GeocodingNavigationPoint? selectedNavigationPoint,
+  }) {
+    final latitude =
+        selectedNavigationPoint?.osrmLat ??
+        selectedNavigationPoint?.rawLat ??
+        selectedPlace.lat;
+    final longitude =
+        selectedNavigationPoint?.osrmLng ??
+        selectedNavigationPoint?.rawLng ??
+        selectedPlace.lng;
+    final addressName = selectedNavigationPoint?.name?.isNotEmpty == true
+        ? selectedNavigationPoint!.name
+        : selectedPlace.name;
+
+    return GeocodingPlace(
+      lat: latitude,
+      lng: longitude,
+      name: addressName,
+      address:
+          selectedPlace.pointRecommendation?.address ?? selectedPlace.address,
+    );
+  }
+
   Future<void> onTapDestinationSearchedLocation({
-    required GeocodingPlace selectedCurrentLocation,
+    required GeocodingPlaceWithPoints selectedPlace,
+    GeocodingNavigationPoint? selectedNavigationPoint,
   }) async {
+    final selectedCurrentLocation = _resolveSelectedGeocodingPlace(
+      selectedPlace: selectedPlace,
+      selectedNavigationPoint: selectedNavigationPoint,
+    );
     // var isInsideserviceArea = isLatLngInsideServiceArea(
     //   latitude: selectedCurrentLocation.lat!,
     //   longitude: selectedCurrentLocation.lng!,
@@ -780,12 +835,13 @@ class CreateOrderRideController extends GetxController {
     );
 
     if (result != null) {
-      originLatitude.value = result['latitude'];
-      originLongitude.value = result['longitude'];
+      originLatitude.value = result['latitude'].toString();
+      originLongitude.value = result['longitude'].toString();
       originAddressName.value = result['address_name'];
       originAddress.value = result['address'];
       keywordOrigin.value = result['address_name'];
       originTextEditingController.text = result['address_name'];
+      pickupNote.value = result['pickup_note'];
 
       await Future.delayed(Duration(milliseconds: 100));
       focusNodeDestination.requestFocus();
@@ -803,12 +859,13 @@ class CreateOrderRideController extends GetxController {
     );
 
     if (result != null) {
-      destinationLatitude.value = result['latitude'];
-      destinationLongitude.value = result['longitude'];
+      destinationLatitude.value = result['latitude'].toString();
+      destinationLongitude.value = result['longitude'].toString();
       destinationAddressName.value = result['address_name'];
       destinationAddress.value = result['address'];
       keywordDestination.value = result['address_name'];
       destinationTextEditingController.text = result['address_name'];
+
       await getDestinationPlaceLocationList(
         keyword: destinationAddressName.value,
       );
@@ -1151,19 +1208,44 @@ class CreateOrderRideController extends GetxController {
       return;
     }
 
-    Get.toNamed(
+    var result = await Get.toNamed(
+      Routes.CREATE_ORDER_RIDE_MAP_SELECT,
+      arguments: {
+        "type": "origin",
+        "title": "Lokasi Penjemputan",
+        "pickup_note": pickupNote.value,
+        "latitude": originLatitude.value,
+        "longitude": originLongitude.value,
+        "address_name": originAddressName.value,
+        "address": originAddress.value,
+      },
+    );
+
+    if (result == null) {
+      return;
+    }
+
+    await Get.toNamed(
       Routes.CREATE_ORDER_RIDE_CHECKOUT,
       arguments: {
-        "origin_address_name": originAddressName.value,
-        "origin_address": originAddress.value,
-        "origin_latitude": originLatitude.value,
-        "origin_longitude": originLongitude.value,
+        "origin_address_name": result['address_name'],
+        "origin_address": result['address'],
+        "origin_latitude": result['latitude'].toString(),
+        "origin_longitude": result['longitude'].toString(),
         "destination_address_name": destinationAddressName.value,
         "destination_address": destinationAddress.value,
         "destination_latitude": destinationLatitude.value,
         "destination_longitude": destinationLongitude.value,
+        "pickup_note": result['pickup_note'],
       },
     );
+  }
+
+  Future<void> requestDestinationFieldFocus() async {
+    isOriginHasPrimaryFocus.value = false;
+    isDestinationHasPrimaryFocus.value = true;
+    await Future.delayed(const Duration(milliseconds: 100));
+    focusNodeDestination.requestFocus();
   }
 
   bool isBookmarkHomeIsSet() {
