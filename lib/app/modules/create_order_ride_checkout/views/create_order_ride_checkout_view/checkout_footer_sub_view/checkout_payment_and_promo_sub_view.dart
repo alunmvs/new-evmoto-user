@@ -28,9 +28,7 @@ class CheckoutPaymentAndPromoSubView
                     onTap: () async {
                       final result = await Get.toNamed(
                         Routes.RIDE_CHECKOUT_SELECT_PAYMENT_METHOD,
-                        arguments: {
-                          "pay_type": controller.payType.value,
-                        },
+                        arguments: {"pay_type": controller.payType.value},
                       );
 
                       if (result != null) {
@@ -42,7 +40,7 @@ class CheckoutPaymentAndPromoSubView
                       padding: EdgeInsets.symmetric(vertical: 16),
                       child: Row(
                         children: [
-                          if (controller.payType.value == 2) ...[
+                          if (controller.payType.value == 4) ...[
                             Image.asset(
                               "assets/icons/icon_payment_method_gopay.png",
                               width: 20,
