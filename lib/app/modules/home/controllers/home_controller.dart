@@ -158,6 +158,14 @@ class HomeController extends GetxController {
   final isRefreshAllLoading = false.obs;
   final idPinpoint = "".obs;
 
+  //
+  final startZoom = 0.0.obs;
+  final updateZoom = 0.0.obs;
+  final cameraPosition = Rx<CameraPosition?>(null);
+  final isMapPinching = false.obs;
+  Offset mapPanLastOffset = Offset.zero;
+  final customGestureEnabled = true.obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -700,12 +708,12 @@ class HomeController extends GetxController {
 
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
-          // arguments: {
-          //   "origin_address_name": currentGeocodingAddress.value.name,
-          //   "origin_address": currentGeocodingAddress.value.address,
-          //   "origin_latitude": currentLatitude.value.toString(),
-          //   "origin_longitude": currentLongitude.value.toString(),
-          // },
+          arguments: {
+            "origin_address_name": currentGeocodingAddress.value.name,
+            "origin_address": currentGeocodingAddress.value.address,
+            "origin_latitude": currentLatitude.value.toString(),
+            "origin_longitude": currentLongitude.value.toString(),
+          },
         );
         // }
       } on DioException catch (e) {
@@ -754,13 +762,13 @@ class HomeController extends GetxController {
         });
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
-          // arguments: {
-          //   "is_origin_auto_select": true,
-          //   "origin_address_name": currentGeocodingAddress.value.name,
-          //   "origin_address": currentGeocodingAddress.value.address,
-          //   "origin_latitude": currentLatitude.value.toString(),
-          //   "origin_longitude": currentLongitude.value.toString(),
-          // },
+          arguments: {
+            "is_origin_auto_select": true,
+            "origin_address_name": currentGeocodingAddress.value.name,
+            "origin_address": currentGeocodingAddress.value.address,
+            "origin_latitude": currentLatitude.value.toString(),
+            "origin_longitude": currentLongitude.value.toString(),
+          },
         );
       } on DioException catch (e) {
         SnackbarHelper.showSnackbarError(text: e.error.toString());
@@ -806,12 +814,12 @@ class HomeController extends GetxController {
       if (isFillCurrentLocation == true) {
         await Get.toNamed(
           Routes.CREATE_ORDER_RIDE,
-          // arguments: {
-          //   "origin_address_name": currentGeocodingAddress.value.name,
-          //   "origin_address": currentGeocodingAddress.value.address,
-          //   "origin_latitude": currentLatitude.value.toString(),
-          //   "origin_longitude": currentLongitude.value.toString(),
-          // },
+          arguments: {
+            "origin_address_name": currentGeocodingAddress.value.name,
+            "origin_address": currentGeocodingAddress.value.address,
+            "origin_latitude": currentLatitude.value.toString(),
+            "origin_longitude": currentLongitude.value.toString(),
+          },
         );
       } else {
         await Get.toNamed(Routes.CREATE_ORDER_RIDE, arguments: arguments);
@@ -1373,31 +1381,31 @@ class HomeController extends GetxController {
     currentAddressIsLoading.value = true;
     currentLatitude.value = latitude;
     currentLongitude.value = longitude;
-    // Future.delayed(Duration(seconds: 1), () async {
-    //   if (currentLatitude.value == latitude &&
-    //       currentLongitude.value == longitude) {
-    //     try {
-    //       currentGeocodingAddress.value =
-    //           (await geocodingRepository.getAddressByLatitudeLongitude(
-    //             latitude: latitude,
-    //             longitude: longitude,
-    //           )) ??
-    //           GeocodingAddress();
-    //       currentAddress.value = currentGeocodingAddress.value.address;
+    Future.delayed(Duration(seconds: 1), () async {
+      if (currentLatitude.value == latitude &&
+          currentLongitude.value == longitude) {
+        try {
+          currentGeocodingAddress.value =
+              (await geocodingRepository.getAddressByLatitudeLongitude(
+                latitude: latitude,
+                longitude: longitude,
+              )) ??
+              GeocodingAddress();
+          currentAddress.value = currentGeocodingAddress.value.address;
 
-    //       initialCameraPosition.value = CameraPosition(
-    //         target: LatLng(latitude, longitude),
-    //         zoom: 14,
-    //       );
-    //     } on DioException catch (e) {
-    //       SnackbarHelper.showSnackbarError(text: e.error.toString());
-    //     } catch (e) {
-    //       SnackbarHelper.showSnackbarError(text: e.toString());
-    //     }
-    //     await refreshMarkerDriverNearby();
-    //     currentAddressIsLoading.value = false;
-    //   }
-    // });
+          initialCameraPosition.value = CameraPosition(
+            target: LatLng(latitude, longitude),
+            zoom: 14,
+          );
+        } on DioException catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.error.toString());
+        } catch (e) {
+          SnackbarHelper.showSnackbarError(text: e.toString());
+        }
+        await refreshMarkerDriverNearby();
+        currentAddressIsLoading.value = false;
+      }
+    });
   }
 
   Future<void> getCurrentAddressInitialize({
