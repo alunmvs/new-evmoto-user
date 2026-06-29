@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/create_order_ride/views/create_order_ride_view/create_order_ride_current_location_sub_view.dart';
@@ -110,52 +111,65 @@ class CreateOrderRideView extends GetView<CreateOrderRideController> {
                         .value,
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (controller.isOriginHasPrimaryFocus.value ==
-                              true) ...[
-                            if (controller.keywordOrigin.value == '' &&
-                                controller
-                                    .recommendationCurrentLocationList
-                                    .isNotEmpty) ...[
-                              CreateOrderRideCurrentLocationSubView(),
-                            ] else ...[
-                              CreateOrderRideSearchedLocationSubView(),
-                            ],
-                          ],
-                          if (controller.isDestinationHasPrimaryFocus.value ==
-                              true) ...[
-                            if (controller.keywordDestination.value == '' &&
-                                controller
-                                    .recommendationCurrentLocationList
-                                    .isNotEmpty) ...[
-                              CreateOrderRideCurrentLocationSubView(),
-                            ] else ...[
-                              CreateOrderRideSearchedLocationSubView(),
-                            ],
-                          ],
-                          if ((controller.isOriginHasPrimaryFocus.value ==
-                                      true &&
+                    child: Listener(
+                      behavior: HitTestBehavior.translucent,
+                      onPointerDown: (_) {
+                        SystemChannels.textInput.invokeMethod('TextInput.hide');
+                      },
+                      onPointerMove: (_) {
+                        SystemChannels.textInput.invokeMethod('TextInput.hide');
+                      },
+                      child: SingleChildScrollView(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.manual,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (controller.isOriginHasPrimaryFocus.value ==
+                                true) ...[
+                              if (controller.keywordOrigin.value == '' &&
                                   controller
-                                      .recommendationOriginLocationList
-                                      .isNotEmpty) ||
-                              (controller.isDestinationHasPrimaryFocus.value ==
-                                      true &&
+                                      .recommendationCurrentLocationList
+                                      .isNotEmpty) ...[
+                                CreateOrderRideCurrentLocationSubView(),
+                              ] else ...[
+                                CreateOrderRideSearchedLocationSubView(),
+                              ],
+                            ],
+                            if (controller.isDestinationHasPrimaryFocus.value ==
+                                true) ...[
+                              if (controller.keywordDestination.value == '' &&
                                   controller
-                                      .recommendationDestinationLocationList
-                                      .isNotEmpty)) ...[
-                            Container(
-                              height: 6,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Color(0XFFE8E8E8),
+                                      .recommendationCurrentLocationList
+                                      .isNotEmpty) ...[
+                                CreateOrderRideCurrentLocationSubView(),
+                              ] else ...[
+                                CreateOrderRideSearchedLocationSubView(),
+                              ],
+                            ],
+                            if ((controller.isOriginHasPrimaryFocus.value ==
+                                        true &&
+                                    controller
+                                        .recommendationOriginLocationList
+                                        .isNotEmpty) ||
+                                (controller
+                                            .isDestinationHasPrimaryFocus
+                                            .value ==
+                                        true &&
+                                    controller
+                                        .recommendationDestinationLocationList
+                                        .isNotEmpty)) ...[
+                              Container(
+                                height: 6,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Color(0XFFE8E8E8),
+                                ),
                               ),
-                            ),
-                            CreateOrderRideLatestOrderLocationSubView(),
+                              CreateOrderRideLatestOrderLocationSubView(),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                     ),
                   ),
