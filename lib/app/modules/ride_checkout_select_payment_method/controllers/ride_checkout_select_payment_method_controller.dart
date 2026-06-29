@@ -13,7 +13,7 @@ import 'package:new_evmoto_user/app/services/user_services.dart';
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 
 class RideCheckoutSelectPaymentMethodController extends GetxController {
-  static const payTypeGopay = 2;
+  static const payTypeGopay = 4;
   static const payTypeCash = 3;
 
   final PaymentMethodRepository paymentMethodRepository;
