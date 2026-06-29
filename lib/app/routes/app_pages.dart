@@ -50,6 +50,8 @@ import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
+import '../modules/register/bindings/register_binding.dart';
+import '../modules/register/views/register_view.dart';
 import '../modules/ride_call_sendbird/bindings/ride_call_sendbird_binding.dart';
 import '../modules/ride_call_sendbird/views/ride_call_sendbird_view.dart';
 import '../modules/ride_chat_sendbird/bindings/ride_chat_sendbird_binding.dart';
@@ -283,6 +285,11 @@ class AppPages {
       name: _Paths.GOPAY_ACTIVATION_WEBVIEW,
       page: () => const GopayActivationWebviewView(),
       binding: GopayActivationWebviewBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
     ),
   ];
 }
