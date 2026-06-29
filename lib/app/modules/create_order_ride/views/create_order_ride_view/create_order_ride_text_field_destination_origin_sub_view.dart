@@ -40,6 +40,9 @@ class CreateOrderRideTextFieldDestinationOriginSubView
                             .sematicColorBlue600
                             .value,
                       ),
+                  onSubmitted: (value) {
+                    controller.focusNodeOrigin.requestFocus();
+                  },
                   onChanged: (value) {
                     controller.keywordOrigin.value = value;
                     controller.getOriginPlaceLocationList(keyword: value);
@@ -190,6 +193,9 @@ class CreateOrderRideTextFieldDestinationOriginSubView
                   canRequestFocus: controller.isLatLngOriginFilled(),
                   focusNode: controller.focusNodeDestination,
                   controller: controller.destinationTextEditingController,
+                  onSubmitted: (value) {
+                    controller.focusNodeDestination.requestFocus();
+                  },
                   style: controller.typographyServices.captionLargeRegular.value
                       .copyWith(
                         color: controller
