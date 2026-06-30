@@ -121,10 +121,13 @@ class CreateOrderRideCheckoutController extends GetxController {
     timeHourRecommendationList.value = await generateTimeHourRecommendationList(
       selectedDate: selectedDate.value!,
     );
-    timeMinuteRecommendationList.value =
-        await generateTimeMinuteRecommendationList();
     selectedTimeHour.value = timeHourRecommendationList.first;
     selectedTimeHourIndex.value = 0;
+    timeMinuteRecommendationList.value =
+        await generateTimeMinuteRecommendationList(
+          selectedDate: selectedDate.value!,
+          selectedHour: selectedTimeHour.value!,
+        );
     selectedTimeMinute.value = timeMinuteRecommendationList.first;
     selectedTimeMinuteIndex.value = 0;
   }
@@ -144,13 +147,42 @@ class CreateOrderRideCheckoutController extends GetxController {
     maxDateTimeAdvanceOrder.value = DateTime.now().add(Duration(hours: 18));
   }
 
-  Future<List<String>> generateTimeMinuteRecommendationList() async {
-    var minutes = List.generate(
-      60,
-      (index) => index.toString().padLeft(2, '0'),
-    );
+  Future<List<String>> generateTimeMinuteRecommendationList({
+    required DateTime selectedDate,
+    required String selectedHour,
+  }) async {
+    final minDateTime = minDateTimeAdvanceOrder.value!;
+    final maxDateTime = maxDateTimeAdvanceOrder.value!;
+    final hour = int.parse(selectedHour);
 
-    return minutes;
+    final isMinDate =
+        selectedDate.year == minDateTime.year &&
+        selectedDate.month == minDateTime.month &&
+        selectedDate.day == minDateTime.day;
+
+    final isMaxDate =
+        selectedDate.year == maxDateTime.year &&
+        selectedDate.month == maxDateTime.month &&
+        selectedDate.day == maxDateTime.day;
+
+    int minMinute = 0;
+    if (isMinDate && hour == minDateTime.hour) {
+      minMinute = minDateTime.minute;
+    }
+
+    int maxMinute = 59;
+    if (isMaxDate && hour == maxDateTime.hour) {
+      maxMinute = maxDateTime.minute;
+    }
+
+    if (minMinute > maxMinute) {
+      return [];
+    }
+
+    return List.generate(
+      maxMinute - minMinute + 1,
+      (index) => (minMinute + index).toString().padLeft(2, '0'),
+    );
   }
 
   Future<List<String>> generateTimeHourRecommendationList({

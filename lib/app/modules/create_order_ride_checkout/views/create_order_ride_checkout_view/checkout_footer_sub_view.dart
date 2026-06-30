@@ -272,20 +272,35 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                             .generateTimeHourRecommendationList(
                                               selectedDate: selectedDate.value!,
                                             );
-                                    timeMinuteRecommendationList
-                                        .value = await controller
-                                        .generateTimeMinuteRecommendationList();
 
                                     selectedTimeHour.value =
-                                        controller.selectedTimeHour.value;
-                                    selectedTimeMinute.value =
-                                        controller.selectedTimeMinute.value;
-
+                                        controller.selectedTimeHour.value ??
+                                        timeHourRecommendationList.first;
                                     selectedTimeHourIndex.value =
                                         controller.selectedTimeHourIndex.value;
-                                    selectedTimeMinuteIndex.value = controller
-                                        .selectedTimeMinuteIndex
-                                        .value;
+
+                                    timeMinuteRecommendationList.value =
+                                        await controller
+                                            .generateTimeMinuteRecommendationList(
+                                              selectedDate: selectedDate.value!,
+                                              selectedHour:
+                                                  selectedTimeHour.value!,
+                                            );
+
+                                    selectedTimeMinute.value =
+                                        controller.selectedTimeMinute.value;
+                                    if (!timeMinuteRecommendationList.contains(
+                                      selectedTimeMinute.value,
+                                    )) {
+                                      selectedTimeMinute.value =
+                                          timeMinuteRecommendationList.first;
+                                      selectedTimeMinuteIndex.value = 0;
+                                    } else {
+                                      selectedTimeMinuteIndex.value =
+                                          timeMinuteRecommendationList.indexOf(
+                                            selectedTimeMinute.value!,
+                                          );
+                                    }
 
                                     await Get.bottomSheet(
                                       Obx(
@@ -419,8 +434,6 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                                                             timeHourRecommendationList.value = await controller.generateTimeHourRecommendationList(
                                                                               selectedDate: selectedDate.value!,
                                                                             );
-                                                                            timeMinuteRecommendationList.value =
-                                                                                await controller.generateTimeMinuteRecommendationList();
 
                                                                             selectedTimeHour.value =
                                                                                 timeHourRecommendationList.first;
@@ -430,6 +443,12 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                                                               0,
                                                                             );
                                                                             timeHourRecommendationList.refresh();
+
+                                                                            timeMinuteRecommendationList.value =
+                                                                                await controller.generateTimeMinuteRecommendationList(
+                                                                                  selectedDate: selectedDate.value!,
+                                                                                  selectedHour: selectedTimeHour.value!,
+                                                                                );
 
                                                                             selectedTimeMinute.value =
                                                                                 timeMinuteRecommendationList.first;
@@ -509,114 +528,6 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                                             ),
                                                           ),
                                                           SizedBox(width: 16),
-                                                          // Expanded(
-                                                          //   flex: 5,
-                                                          //   child: SizedBox(
-                                                          //     height: 218,
-                                                          //     width:
-                                                          //         MediaQuery.of(
-                                                          //           context,
-                                                          //         ).size.width,
-                                                          //     child: Column(
-                                                          //       mainAxisAlignment:
-                                                          //           MainAxisAlignment
-                                                          //               .start,
-                                                          //       crossAxisAlignment:
-                                                          //           CrossAxisAlignment
-                                                          //               .start,
-                                                          //       mainAxisSize:
-                                                          //           MainAxisSize
-                                                          //               .min,
-                                                          //       children: [
-                                                          //         Expanded(
-                                                          //           child: ListWheelScrollView.useDelegate(
-                                                          //             controller:
-                                                          //                 timeRecommendationController,
-                                                          //             physics:
-                                                          //                 const FixedExtentScrollPhysics(),
-                                                          //             perspective:
-                                                          //                 0.005,
-                                                          //             diameterRatio:
-                                                          //                 2.0,
-                                                          //             itemExtent:
-                                                          //                 32.0 +
-                                                          //                 24.0,
-                                                          //             onSelectedItemChanged:
-                                                          //                 (
-                                                          //                   int
-                                                          //                   index,
-                                                          //                 ) {
-                                                          //                   selectedTime.value =
-                                                          //                       timeRecommendationList[index];
-                                                          //                   selectedTimeIndex.value =
-                                                          //                       index;
-                                                          //                 },
-
-                                                          //             childDelegate: ListWheelChildBuilderDelegate(
-                                                          //               childCount:
-                                                          //                   timeRecommendationList.length,
-                                                          //               builder:
-                                                          //                   (
-                                                          //                     context,
-                                                          //                     index,
-                                                          //                   ) {
-                                                          //                     return Obx(
-                                                          //                       () => Container(
-                                                          //                         padding: EdgeInsets.symmetric(
-                                                          //                           horizontal: 16,
-                                                          //                           vertical: 12,
-                                                          //                         ),
-                                                          //                         decoration:
-                                                          //                             selectedTime.value ==
-                                                          //                                 timeRecommendationList[index]
-                                                          //                             ? BoxDecoration(
-                                                          //                                 color: Color(
-                                                          //                                   0XFFF6F6F6,
-                                                          //                                 ),
-                                                          //                                 border: Border.all(
-                                                          //                                   color: controller.themeColorServices.primaryBlue.value,
-                                                          //                                 ),
-                                                          //                                 borderRadius: BorderRadius.circular(
-                                                          //                                   12,
-                                                          //                                 ),
-                                                          //                               )
-                                                          //                             : null,
-                                                          //                         child: Align(
-                                                          //                           alignment: Alignment.center,
-                                                          //                           child: Text(
-                                                          //                             DateFormat(
-                                                          //                               'HH : mm',
-                                                          //                             ).format(
-                                                          //                               timeRecommendationList[index],
-                                                          //                             ),
-                                                          //                             style: controller.typographyServices.bodyLargeRegular.value.copyWith(
-                                                          //                               color:
-                                                          //                                   selectedTime.value ==
-                                                          //                                       timeRecommendationList[index]
-                                                          //                                   ? controller.themeColorServices.primaryBlue.value
-                                                          //                                   : Color(
-                                                          //                                       0XFFB3B3B3,
-                                                          //                                     ),
-                                                          //                               fontWeight:
-                                                          //                                   selectedTime.value ==
-                                                          //                                       timeRecommendationList[index]
-                                                          //                                   ? FontWeight.w700
-                                                          //                                   : FontWeight.w400,
-                                                          //                             ),
-                                                          //                             maxLines: 1,
-                                                          //                             overflow: TextOverflow.ellipsis,
-                                                          //                           ),
-                                                          //                         ),
-                                                          //                       ),
-                                                          //                     );
-                                                          //                   },
-                                                          //             ),
-                                                          //           ),
-                                                          //         ),
-                                                          //       ],
-                                                          //     ),
-                                                          //   ),
-                                                          // ),
                                                           Expanded(
                                                             flex: 2,
                                                             child: SizedBox(
@@ -653,11 +564,38 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                                                           (
                                                                             int
                                                                             index,
-                                                                          ) {
+                                                                          ) async {
                                                                             selectedTimeHour.value =
                                                                                 timeHourRecommendationList[index];
                                                                             selectedTimeHourIndex.value =
                                                                                 index;
+
+                                                                            timeMinuteRecommendationList.value =
+                                                                                await controller.generateTimeMinuteRecommendationList(
+                                                                                  selectedDate: selectedDate.value!,
+                                                                                  selectedHour: timeHourRecommendationList[index],
+                                                                                );
+
+                                                                            if (!timeMinuteRecommendationList.contains(
+                                                                              selectedTimeMinute.value,
+                                                                            )) {
+                                                                              selectedTimeMinute.value =
+                                                                                  timeMinuteRecommendationList.first;
+                                                                              selectedTimeMinuteIndex.value =
+                                                                                  0;
+                                                                              timeMinuteRecommendationController.jumpToItem(
+                                                                                0,
+                                                                              );
+                                                                            } else {
+                                                                              selectedTimeMinuteIndex.value =
+                                                                                  timeMinuteRecommendationList.indexOf(
+                                                                                    selectedTimeMinute.value!,
+                                                                                  );
+                                                                              timeMinuteRecommendationController.jumpToItem(
+                                                                                selectedTimeMinuteIndex.value,
+                                                                              );
+                                                                            }
+                                                                            timeMinuteRecommendationList.refresh();
                                                                           },
 
                                                                       childDelegate: ListWheelChildBuilderDelegate(
@@ -896,20 +834,27 @@ class CheckoutFooterSubView extends GetView<CreateOrderRideCheckoutController> {
                                                                     .value = await controller
                                                                     .generateTimeHourRecommendationList(
                                                                       selectedDate:
-                                                                          selectedDate
-                                                                              .value!,
+                                                                          controller
+                                                                              .dateRecommendationList
+                                                                              .first,
                                                                     );
-                                                                controller
-                                                                        .timeMinuteRecommendationList
-                                                                        .value =
-                                                                    await controller
-                                                                        .generateTimeMinuteRecommendationList();
-
                                                                 controller
                                                                     .selectedTimeHour
                                                                     .value = controller
                                                                     .timeHourRecommendationList
                                                                     .first;
+                                                                controller
+                                                                        .timeMinuteRecommendationList
+                                                                        .value =
+                                                                    await controller
+                                                                        .generateTimeMinuteRecommendationList(
+                                                                          selectedDate: controller
+                                                                              .dateRecommendationList
+                                                                              .first,
+                                                                          selectedHour: controller
+                                                                              .selectedTimeHour
+                                                                              .value!,
+                                                                        );
                                                                 controller
                                                                     .selectedTimeMinute
                                                                     .value = controller
