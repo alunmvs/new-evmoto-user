@@ -544,52 +544,52 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
               ],
             ),
           ),
-          // Positioned(
-          //   bottom: 0,
-          //   left: 0,
-          //   right: 0,
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Get.toNamed(Routes.REGISTER);
-          //     },
-          //     child: Container(
-          //       height: 54,
-          //       width: MediaQuery.of(context).size.width,
-          //       decoration: BoxDecoration(
-          //         color: controller.themeColorServices.neutralsColorGrey0.value,
-          //         boxShadow: [
-          //           BoxShadow(
-          //             color: controller.themeColorServices.overlayDark100.value
-          //                 .withValues(alpha: 0.07),
-          //             blurRadius: 25,
-          //             spreadRadius: 0,
-          //             offset: Offset(0, 0),
-          //           ),
-          //         ],
-          //       ),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         children: [
-          //           SvgPicture.asset(
-          //             "assets/icons/icon_user_add.svg",
-          //             width: 24,
-          //             height: 24,
-          //           ),
-          //           SizedBox(width: 5),
-          //           Text(
-          //             "Daftar sebagai Pengguna Baru",
-          //             style: controller.typographyServices.bodySmallBold.value
-          //                 .copyWith(
-          //                   color:
-          //                       controller.themeColorServices.primaryBlue.value,
-          //                 ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.REGISTER);
+              },
+              child: Container(
+                height: 54,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: controller.themeColorServices.neutralsColorGrey0.value,
+                  boxShadow: [
+                    BoxShadow(
+                      color: controller.themeColorServices.overlayDark100.value
+                          .withValues(alpha: 0.07),
+                      blurRadius: 25,
+                      spreadRadius: 0,
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/icon_user_add.svg",
+                      width: 24,
+                      height: 24,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Daftar sebagai Pengguna Baru",
+                      style: controller.typographyServices.bodySmallBold.value
+                          .copyWith(
+                            color:
+                                controller.themeColorServices.primaryBlue.value,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

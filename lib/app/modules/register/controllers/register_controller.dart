@@ -1,9 +1,22 @@
 import 'package:get/get.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class RegisterController extends GetxController {
-  //TODO: Implement RegisterController
+  final formGroup = FormGroup({
+    "mobile_number": FormControl<String>(
+      validators: <Validator>[Validators.required],
+    ),
+    "full_name": FormControl<String>(
+      validators: <Validator>[Validators.required],
+    ),
+    "otp_code": FormControl<String>(
+      validators: <Validator>[Validators.required],
+    ),
+    "referral_code": FormControl<String>(validators: <Validator>[]),
+  });
 
-  final count = 0.obs;
+  final isFetch = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +32,9 @@ class RegisterController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  Future<void> onTapRequestOTP() async {}
+
+  Future<void> onTapResendOTP() async {}
+
+  Future<void> onTapSubmit() async {}
 }
