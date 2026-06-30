@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/data/models/dispatch_expired_model.dart';
 import 'package:new_evmoto_user/app/data/models/order_ride_model.dart';
 import 'package:new_evmoto_user/app/modules/home/controllers/home_controller.dart';
-import 'package:new_evmoto_user/app/modules/ride_order_detail/controllers/ride_order_detail_controller.dart';
 import 'package:new_evmoto_user/app/repositories/order_ride_repository.dart';
 import 'package:new_evmoto_user/app/routes/app_pages.dart';
 import 'package:new_evmoto_user/app/services/language_services.dart';
@@ -14,13 +13,26 @@ import 'package:new_evmoto_user/app/widgets/driver_busy_dialog.dart';
 import 'package:new_evmoto_user/app/widgets/driver_not_available_dialog.dart';
 
 class ActiveOrderServices extends GetxService {
-  static const _debugTag = '[DEBUG ACTIVE_ORDER]';
-
   final orderRideRepository = OrderRideRepository();
   final languageServices = Get.find<LanguageServices>();
 
   String? _lastDispatchExpiredDialogKey;
   bool _isHandlingDispatchExpired = false;
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
 
   Future<void> handleDispatchExpired({
     required DispatchExpired dispatchExpired,
@@ -50,14 +62,9 @@ class ActiveOrderServices extends GetxService {
             return;
           }
 
-          await _navigateBackFromOrderScreensIfNeeded(
-            orderId: orderId,
-            orderType: orderType,
-          );
+          await navigateToHomeBeforeDispatchExpiredDialog();
 
-          if (DialogHelper.exists(DialogTags.cancelOrderBeforeDriver)) {
-            DialogHelper.dismiss(DialogTags.cancelOrderBeforeDriver);
-          }
+          DialogHelper.dismissIfExists(DialogTags.cancelOrderBeforeDriver);
 
           final hadPopup = await _resolveHadPopup(
             orderId: orderId,
@@ -70,9 +77,6 @@ class ActiveOrderServices extends GetxService {
             orderType: orderType,
             orderRide: orderRide,
           );
-          if (orderAgainArgs == null) {
-            return;
-          }
 
           _showDispatchExpiredDialog(
             hadPopup: hadPopup,
@@ -84,9 +88,34 @@ class ActiveOrderServices extends GetxService {
           _isHandlingDispatchExpired = false;
         }
       });
-    } catch (e) {
+    } catch (_) {
       _isHandlingDispatchExpired = false;
     }
+  }
+
+  Future<void> navigateToHomeBeforeDispatchExpiredDialog() async {
+    var currentRoute = Get.currentRoute;
+
+    if (currentRoute == Routes.CREATE_ORDER_RIDE) {
+      await Future.delayed(const Duration(seconds: 3));
+      currentRoute = Get.currentRoute;
+    }
+
+    if (currentRoute == Routes.ADVANCED_BOOKING_SEARCHING_DRIVER) {
+      await Future.delayed(const Duration(seconds: 8));
+      currentRoute = Get.currentRoute;
+    }
+
+    if (currentRoute == Routes.HOME) {
+      _selectHomeTab();
+      return;
+    }
+
+    if (Get.key.currentState?.canPop() ?? false) {
+      Get.until((route) => Get.currentRoute == Routes.HOME);
+    }
+
+    _selectHomeTab();
   }
 
   bool _isDispatchExpiredDialogAlreadyHandled(String dialogKey) {
@@ -99,38 +128,11 @@ class ActiveOrderServices extends GetxService {
         DialogHelper.exists(DialogTags.driverNotAvailable);
   }
 
-  Future<void> _navigateBackFromOrderScreensIfNeeded({
-    required String orderId,
-    required int orderType,
-  }) async {
-    var currentRoute = Get.currentRoute;
-
-    if (currentRoute == Routes.CREATE_ORDER_RIDE) {
-      await Future.delayed(Duration(seconds: 3));
-      currentRoute = Get.currentRoute;
-    }
-
-    if (currentRoute == Routes.ADVANCED_BOOKING_SEARCHING_DRIVER) {
-      await Future.delayed(Duration(seconds: 5 + 3));
-      currentRoute = Get.currentRoute;
-    }
-
-    if (currentRoute != Routes.RIDE_ORDER_DETAIL &&
-        currentRoute != Routes.CHAT_DETAIL) {
+  void _selectHomeTab() {
+    if (!Get.isRegistered<HomeController>()) {
       return;
     }
-
-    if (!Get.isRegistered<RideOrderDetailController>()) {
-      return;
-    }
-
-    final rideOrderDetailController = Get.find<RideOrderDetailController>();
-    if (rideOrderDetailController.orderId.value != orderId ||
-        rideOrderDetailController.orderType.value != orderType) {
-      return;
-    }
-
-    Get.back();
+    Get.find<HomeController>().indexNavigationBar.value = 0;
   }
 
   Future<int> _resolveHadPopup({
@@ -147,11 +149,10 @@ class ActiveOrderServices extends GetxService {
       orderType: orderType,
     );
 
-    final hadPopup = expiredData.hadPopup ?? 0;
-    return hadPopup;
+    return expiredData.hadPopup ?? 0;
   }
 
-  Future<Map<String, dynamic>?> _buildOrderAgainArgs({
+  Future<Map<String, dynamic>> _buildOrderAgainArgs({
     required String orderId,
     required int orderType,
     OrderRide? orderRide,
@@ -164,14 +165,14 @@ class ActiveOrderServices extends GetxService {
         );
 
     return {
-      "origin_address_name": order.startAddressName,
-      "origin_address": order.startAddress,
-      "origin_latitude": order.startLat.toString(),
-      "origin_longitude": order.startLon.toString(),
-      "destination_address_name": order.endAddressName,
-      "destination_address": order.endAddress,
-      "destination_latitude": order.endLat.toString(),
-      "destination_longitude": order.endLon.toString(),
+      'origin_address_name': order.startAddressName,
+      'origin_address': order.startAddress,
+      'origin_latitude': order.startLat.toString(),
+      'origin_longitude': order.startLon.toString(),
+      'destination_address_name': order.endAddressName,
+      'destination_address': order.endAddress,
+      'destination_latitude': order.endLat.toString(),
+      'destination_longitude': order.endLon.toString(),
     };
   }
 
@@ -186,7 +187,7 @@ class ActiveOrderServices extends GetxService {
 
       if (activeOrderList.isNotEmpty) {
         SnackbarHelper.showSnackbarError(
-          text: languageServices.language.value.snackbarOrderNotSuccess ?? "-",
+          text: languageServices.language.value.snackbarOrderNotSuccess ?? '-',
         );
         return;
       }
