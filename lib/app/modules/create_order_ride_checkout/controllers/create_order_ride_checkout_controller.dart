@@ -23,6 +23,7 @@ import 'package:new_evmoto_user/app/services/language_services.dart';
 import 'package:new_evmoto_user/app/services/location_services.dart';
 import 'package:new_evmoto_user/app/services/theme_color_services.dart';
 import 'package:new_evmoto_user/app/services/typography_services.dart';
+import 'package:new_evmoto_user/app/services/user_services.dart';
 
 import 'package:new_evmoto_user/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_user/app/widgets/loader_elevated_button_widget.dart';
@@ -53,6 +54,7 @@ class CreateOrderRideCheckoutController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
   final locationServices = Get.find<LocationServices>();
+  final userServices = Get.find<UserServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -418,6 +420,8 @@ class CreateOrderRideCheckoutController extends GetxController {
     destinationLatitude.value = Get.arguments['destination_latitude'];
     destinationLongitude.value = Get.arguments['destination_longitude'];
     pickupNote.value = Get.arguments['pickup_note'];
+
+    payType.value = userServices.userInfo.value.defaultPayType ?? 3;
   }
 
   Future<void> generatePolylinesOpenMapsApi() async {

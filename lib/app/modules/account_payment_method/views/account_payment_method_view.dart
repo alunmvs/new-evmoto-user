@@ -132,32 +132,40 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                                       .bodySmallBold
                                                       .value,
                                                 ),
-                                                SizedBox(height: 4),
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 4,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0XFFE4F0FD),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          8,
-                                                        ),
-                                                  ),
-                                                  child: Text(
-                                                    "Metode Utama",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallRegular
+                                                if (controller
+                                                        .userServices
+                                                        .userInfo
                                                         .value
-                                                        .copyWith(
-                                                          color: Color(
-                                                            0XFF0060C6,
-                                                          ),
+                                                        .defaultPayType ==
+                                                    3) ...[
+                                                  SizedBox(height: 4),
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4,
                                                         ),
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0XFFE4F0FD),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            8,
+                                                          ),
+                                                    ),
+                                                    child: Text(
+                                                      "Metode Utama",
+                                                      style: controller
+                                                          .typographyServices
+                                                          .bodySmallRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: Color(
+                                                              0XFF0060C6,
+                                                            ),
+                                                          ),
+                                                    ),
                                                   ),
-                                                ),
+                                                ],
                                               ],
                                             ),
                                           ),
@@ -230,35 +238,43 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                                                 .value,
                                                           ),
                                                     ),
-                                                    SizedBox(height: 4),
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                            horizontal: 8,
-                                                            vertical: 4,
-                                                          ),
-                                                      decoration: BoxDecoration(
-                                                        color: Color(
-                                                          0XFFE4F0FD,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
-                                                      ),
-                                                      child: Text(
-                                                        "Metode Utama",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodySmallRegular
+
+                                                    if (controller
+                                                            .userServices
+                                                            .userInfo
                                                             .value
-                                                            .copyWith(
-                                                              color: Color(
-                                                                0XFF0060C6,
-                                                              ),
+                                                            .defaultPayType ==
+                                                        4) ...[
+                                                      SizedBox(height: 4),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                              horizontal: 8,
+                                                              vertical: 4,
                                                             ),
+                                                        decoration: BoxDecoration(
+                                                          color: Color(
+                                                            0XFFE4F0FD,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                8,
+                                                              ),
+                                                        ),
+                                                        child: Text(
+                                                          "Metode Utama",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodySmallRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: Color(
+                                                                  0XFF0060C6,
+                                                                ),
+                                                              ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ],
                                                 ),
                                               ),

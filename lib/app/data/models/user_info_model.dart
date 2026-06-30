@@ -16,6 +16,7 @@ class UserInfo {
   int? language;
   String? emergencyContact;
   String? emergencyContactNumber;
+  int? defaultPayType;
 
   UserInfo({
     this.id,
@@ -35,6 +36,7 @@ class UserInfo {
     this.language,
     this.emergencyContact,
     this.emergencyContactNumber,
+    this.defaultPayType,
   });
 
   UserInfo.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,7 @@ class UserInfo {
     language = json['language'];
     emergencyContact = json['emergencyContact'];
     emergencyContactNumber = json['emergencyContactNumber'];
+    defaultPayType = json['defaultPayType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +79,7 @@ class UserInfo {
     data['language'] = this.language;
     data['emergencyContact'] = this.emergencyContact;
     data['emergencyContactNumber'] = this.emergencyContactNumber;
+    data['defaultPayType'] = this.defaultPayType;
     return data;
   }
 }
