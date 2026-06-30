@@ -48,7 +48,10 @@ class CreateOrderRideCheckoutView
                             controller.isFetch.value = true;
                             try {
                               await controller.getOrderRidePricingList();
+                              if (controller.isClosed) return;
+
                               await controller.getAvailableCouponList();
+                              if (controller.isClosed) return;
 
                               await Future.wait([
                                 controller.generatePolylinesOpenMapsApi(),
@@ -57,19 +60,25 @@ class CreateOrderRideCheckoutView
                                 controller.setLatitudeLongitudeMarker(),
                                 controller.refreshMarkerDriverNearby(),
                               ]);
+                              if (controller.isClosed) return;
+
                               controller.enableDriverNearbyTimer();
                             } on DioException catch (e) {
-                              Get.back();
-
-                              SnackbarHelper.showSnackbarError(
-                                text: e.error.toString(),
-                              );
+                              if (!controller.isClosed) {
+                                SnackbarHelper.showSnackbarError(
+                                  text: e.error.toString(),
+                                );
+                              }
                             } catch (e) {
-                              SnackbarHelper.showSnackbarError(
-                                text: e.toString(),
-                              );
+                              if (!controller.isClosed) {
+                                SnackbarHelper.showSnackbarError(
+                                  text: e.toString(),
+                                );
+                              }
                             }
-                            controller.isFetch.value = false;
+                            if (!controller.isClosed) {
+                              controller.isFetch.value = false;
+                            }
                           },
                     ),
                   ),

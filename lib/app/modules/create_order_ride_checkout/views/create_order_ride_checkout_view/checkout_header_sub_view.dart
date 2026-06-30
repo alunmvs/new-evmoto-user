@@ -183,11 +183,11 @@ class CheckoutHeaderSubView extends GetView<CreateOrderRideCheckoutController> {
                                       .value,
                                 ),
                                 GestureDetector(
-                                  onTap: () async {
+                                  onTap: () {
+                                    final createOrderRideController =
+                                        controller.createOrderRideController;
                                     Get.back();
-                                    Get.back();
-                                    controller
-                                        .createOrderRideController
+                                    createOrderRideController
                                         .focusNodeDestination
                                         .requestFocus();
                                   },

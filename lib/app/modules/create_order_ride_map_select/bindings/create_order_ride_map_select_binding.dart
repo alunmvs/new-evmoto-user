@@ -12,6 +12,7 @@ class CreateOrderRideMapSelectBinding extends Bindings {
         geocodingRepository: GeocodingRepository(),
         driverNearbyRepository: DriverNearbyRepository(),
       ),
+      fenix: true,
     );
   }
 }

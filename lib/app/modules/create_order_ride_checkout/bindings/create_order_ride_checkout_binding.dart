@@ -20,6 +20,7 @@ class CreateOrderRideCheckoutBinding extends Bindings {
         driverNearbyRepository: DriverNearbyRepository(),
         advanceBookingRepository: AdvanceBookingRepository(),
       ),
+      fenix: true,
     );
   }
 }

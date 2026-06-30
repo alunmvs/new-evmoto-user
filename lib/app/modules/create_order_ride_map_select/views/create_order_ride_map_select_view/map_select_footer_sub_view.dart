@@ -386,6 +386,7 @@ class MapSelectFooterSubView
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: TextField(
                           controller: controller.noteTextEditingController,
+                          autofocus: false,
                           style: controller
                               .typographyServices
                               .bodySmallRegular

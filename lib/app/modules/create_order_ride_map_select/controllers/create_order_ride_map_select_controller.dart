@@ -306,17 +306,22 @@ class CreateOrderRideMapSelectController extends GetxController {
             latitude: double.parse(latitude.value!),
             longitude: double.parse(longitude.value!),
           );
+      if (isClosed) return;
+
       address.value = searchedAddress?.address ?? "-";
       addressName.value = searchedAddress?.name ?? "-";
       await moveGoogleMapCameraToFillLocation();
     } else {
       await moveGoogleMapCameraToCurrentLocation();
+      if (isClosed) return;
 
       var searchedAddress = await geocodingRepository
           .getAddressByLatitudeLongitude(
             latitude: double.parse(latitude.value!),
             longitude: double.parse(longitude.value!),
           );
+      if (isClosed) return;
+
       address.value = searchedAddress?.address ?? "-";
       addressName.value = searchedAddress?.name ?? "-";
     }

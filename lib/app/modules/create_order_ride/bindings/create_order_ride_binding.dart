@@ -14,6 +14,7 @@ class CreateOrderRideBinding extends Bindings {
         orderRideRepository: OrderRideRepository(),
         savedAddressRepository: SavedAddressRepository(),
       ),
+      fenix: true,
     );
   }
 }

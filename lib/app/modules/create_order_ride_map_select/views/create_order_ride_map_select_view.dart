@@ -93,11 +93,17 @@ class CreateOrderRideMapSelectView
                                 );
                                 controller.isFetch.value = true;
                                 await controller.fillForm();
+                                if (controller.isClosed) return;
+
                                 if (controller.type.value == 'origin') {
                                   await controller.refreshMarkerDriverNearby();
+                                  if (controller.isClosed) return;
+
                                   controller.enableDriverNearbyTimer();
                                 }
-                                controller.isFetch.value = false;
+                                if (!controller.isClosed) {
+                                  controller.isFetch.value = false;
+                                }
                               },
                         ),
                       ),
