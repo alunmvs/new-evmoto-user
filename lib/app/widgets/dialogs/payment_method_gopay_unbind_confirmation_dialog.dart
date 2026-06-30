@@ -48,7 +48,11 @@ class PaymentMethodGopayUnbindConfirmationDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Batalkan Pembayaran GoPay",
+                            languageServices
+                                    .language
+                                    .value
+                                    .gopayUnbindConfirmationTitle ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value,
                           ),
                           GestureDetector(
@@ -83,7 +87,11 @@ class PaymentMethodGopayUnbindConfirmationDialog extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        "Jika dibatalkan, Metode Pembayaran GoPay tidak dapat digunakan. Aktifkan kembali jika digunakan sebagai metode utama.",
+                        languageServices
+                                .language
+                                .value
+                                .gopayUnbindConfirmationDescription1 ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value
                             .copyWith(color: Color(0XFFB3B3B3)),
                         textAlign: TextAlign.left,
@@ -122,7 +130,11 @@ class PaymentMethodGopayUnbindConfirmationDialog extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                "Setelah dibatalkan, metode pembayaran tidak dapat digunakan kembali.",
+                                languageServices
+                                        .language
+                                        .value
+                                        .gopayUnbindConfirmationDescription2 ??
+                                    "-",
                                 style: typographyServices
                                     .captionLargeRegular
                                     .value
@@ -139,7 +151,11 @@ class PaymentMethodGopayUnbindConfirmationDialog extends StatelessWidget {
                           await onTapConfirm();
                         },
                         child: Text(
-                          "Ya, Batalkan",
+                          languageServices
+                                  .language
+                                  .value
+                                  .gopayUnbindConfirmationButton1 ??
+                              "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(
                                 color:
@@ -162,7 +178,11 @@ class PaymentMethodGopayUnbindConfirmationDialog extends StatelessWidget {
                             Get.close(1);
                           },
                           child: Text(
-                            "Kembali",
+                            languageServices
+                                    .language
+                                    .value
+                                    .gopayUnbindConfirmationButton2 ??
+                                "-",
                             style: typographyServices.bodyLargeRegular.value
                                 .copyWith(color: Color(0XFFDFDFDF)),
                           ),

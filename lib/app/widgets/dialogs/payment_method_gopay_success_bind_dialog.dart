@@ -45,7 +45,11 @@ class PaymentMethodGopaySuccessBindDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "GoPay Berhasil Ditambahkan",
+                            languageServices
+                                    .language
+                                    .value
+                                    .gopaySuccessBindTitle ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value,
                           ),
                           GestureDetector(
@@ -78,7 +82,11 @@ class PaymentMethodGopaySuccessBindDialog extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        "GoPay berhasil ditambahkan dari metode pembayaran Anda.",
+                        languageServices
+                                .language
+                                .value
+                                .gopaySuccessBindDescription ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value
                             .copyWith(color: Color(0XFFB3B3B3)),
                         textAlign: TextAlign.left,
@@ -88,7 +96,11 @@ class PaymentMethodGopaySuccessBindDialog extends StatelessWidget {
                         buttonColor: themeColorServices.primaryBlue.value,
                         onPressed: _dismiss,
                         child: Text(
-                          "Lanjutkan",
+                          languageServices
+                                  .language
+                                  .value
+                                  .gopaySuccessBindButton ??
+                              "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(
                                 color:

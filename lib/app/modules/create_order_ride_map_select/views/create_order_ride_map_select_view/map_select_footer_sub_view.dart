@@ -141,7 +141,19 @@ class MapSelectFooterSubView
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Pilih Lokasi",
+                            controller.type.value == "origin"
+                                ? controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .mapSelectPickup ??
+                                      "-"
+                                : controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .mapSelectDestination ??
+                                      "",
                             style: controller
                                 .typographyServices
                                 .bodyLargeBold

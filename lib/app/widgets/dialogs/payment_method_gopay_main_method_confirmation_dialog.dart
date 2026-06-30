@@ -43,7 +43,11 @@ class PaymentMethodGopayMainMethodConfirmationDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Persetujuan Metode Utama",
+                            languageServices
+                                    .language
+                                    .value
+                                    .paymentMethodDefaultConfirmationTitle ??
+                                "-",
                             style: typographyServices.bodyLargeBold.value,
                           ),
                           GestureDetector(
@@ -78,7 +82,11 @@ class PaymentMethodGopayMainMethodConfirmationDialog extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        "Metode pembayaran ini akan digunakan secara otomatis untuk transaksi berikutnya.",
+                        languageServices
+                                .language
+                                .value
+                                .paymentMethodDefaultConfirmationDescription ??
+                            "-",
                         style: typographyServices.bodySmallRegular.value
                             .copyWith(color: Color(0XFFB3B3B3)),
                         textAlign: TextAlign.left,
@@ -88,7 +96,11 @@ class PaymentMethodGopayMainMethodConfirmationDialog extends StatelessWidget {
                         buttonColor: themeColorServices.primaryBlue.value,
                         onPressed: () async {},
                         child: Text(
-                          "Setuju",
+                          languageServices
+                                  .language
+                                  .value
+                                  .paymentMethodDefaultConfirmationButton1 ??
+                              "-",
                           style: typographyServices.bodyLargeBold.value
                               .copyWith(
                                 color:
@@ -111,7 +123,11 @@ class PaymentMethodGopayMainMethodConfirmationDialog extends StatelessWidget {
                             Get.close(1);
                           },
                           child: Text(
-                            "Kembali",
+                            languageServices
+                                    .language
+                                    .value
+                                    .paymentMethodDefaultConfirmationButton2 ??
+                                "-",
                             style: typographyServices.bodyLargeRegular.value
                                 .copyWith(color: Color(0XFFDFDFDF)),
                           ),

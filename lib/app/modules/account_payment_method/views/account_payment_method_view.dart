@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_user/app/data/models/language_model.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../controllers/account_payment_method_controller.dart';
@@ -14,7 +15,12 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pengaturan Pembayaran",
+            controller
+                    .languageServices
+                    .language
+                    .value
+                    .accountPaymentMethodTitle ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -86,7 +92,12 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                           children: [
                             SizedBox(height: 16),
                             Text(
-                              "Pilih Metode",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .accountPaymentMethodSelectMethodSectionTitle ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -153,7 +164,12 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                                           ),
                                                     ),
                                                     child: Text(
-                                                      "Metode Utama",
+                                                      controller
+                                                              .languageServices
+                                                              .language
+                                                              .value
+                                                              .accountPaymentMethodDefaultMethod ??
+                                                          "-",
                                                       style: controller
                                                           .typographyServices
                                                           .bodySmallRegular
@@ -171,7 +187,12 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                           ),
                                           Center(
                                             child: Text(
-                                              "Terhubung",
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .accountPaymentMethodConnected ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .captionLargeRegular
@@ -226,7 +247,7 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                                     ),
                                                     SizedBox(height: 4),
                                                     Text(
-                                                      "Saldo: ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(controller.gopayBalance.value.balance ?? 0)}",
+                                                      "${controller.languageServices.language.value.accountPaymentMethodAmount ?? "-"}: ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(controller.gopayBalance.value.balance ?? 0)}",
                                                       style: controller
                                                           .typographyServices
                                                           .captionLargeRegular
@@ -262,7 +283,12 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                                               ),
                                                         ),
                                                         child: Text(
-                                                          "Metode Utama",
+                                                          controller
+                                                                  .languageServices
+                                                                  .language
+                                                                  .value
+                                                                  .accountPaymentMethodDefaultMethod ??
+                                                              "-",
                                                           style: controller
                                                               .typographyServices
                                                               .bodySmallRegular
@@ -280,7 +306,12 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                               ),
                                               Center(
                                                 child: Text(
-                                                  "Terhubung",
+                                                  controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .accountPaymentMethodConnected ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeRegular
@@ -342,7 +373,12 @@ class AccountPaymentMethodView extends GetView<AccountPaymentMethodController> {
                                     ),
                                     SizedBox(width: 8),
                                     Text(
-                                      "Tambahkan Metode Lainnya",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .accountPaymentMethodAddOtherMethodButton ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold

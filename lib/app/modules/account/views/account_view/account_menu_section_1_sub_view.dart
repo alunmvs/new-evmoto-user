@@ -150,7 +150,12 @@ class AccountMenuSection1SubView extends GetView<AccountController> {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      "Pengaturan Pembayaran",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .accountPaymentSetting ??
+                          "-",
                       style: controller.typographyServices.bodySmallBold.value,
                     ),
                     Spacer(),

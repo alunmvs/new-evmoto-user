@@ -88,7 +88,11 @@ class RideCheckoutSelectPaymentMethodController extends GetxController {
     if (payType == payTypeGopay && !isGopayLinked) {
       SnackbarHelper.showSnackbarError(
         text:
-            "GoPay belum aktif. Silahkan lakukan aktivasi untuk menggunakan metode pembayaran ini.",
+            languageServices
+                .language
+                .value
+                .rideCheckoutSelectPaymentMethodGopayDoesNotActivate ??
+            "-",
       );
       return;
     }
@@ -97,11 +101,21 @@ class RideCheckoutSelectPaymentMethodController extends GetxController {
 
     if (payType == payTypeCash) {
       SnackbarHelper.showSnackbarSuccess(
-        text: "Pembayaran cash berhasil dipilih sebagai metode pembayaran.",
+        text:
+            languageServices
+                .language
+                .value
+                .rideCheckoutSelectPaymentMethodCashSelectSuccess ??
+            "-",
       );
     } else if (payType == payTypeGopay) {
       SnackbarHelper.showSnackbarSuccess(
-        text: "Pembayaran GoPay berhasil dipilih sebagai metode pembayaran.",
+        text:
+            languageServices
+                .language
+                .value
+                .rideCheckoutSelectPaymentMethodGopaySelectSuccess ??
+            "-",
       );
     }
 
@@ -112,7 +126,11 @@ class RideCheckoutSelectPaymentMethodController extends GetxController {
     var phone = (userServices.userInfo.value.phone ?? "").removeAllWhitespace;
 
     if (phone.isEmpty) {
-      throw "Nomor telepon tidak ditemukan";
+      throw languageServices
+              .language
+              .value
+              .rideCheckoutSelectPaymentMethodMobilePhoneNotFound ??
+          "-";
     }
 
     if (phone.startsWith("62")) {
@@ -141,7 +159,11 @@ class RideCheckoutSelectPaymentMethodController extends GetxController {
 
       final activationUrl = linkData.activationUrl;
       if (activationUrl == null || activationUrl.isEmpty) {
-        throw "URL aktivasi GoPay tidak ditemukan";
+        throw languageServices
+                .language
+                .value
+                .rideCheckoutSelectPaymentMethodUrlActivationNotFound ??
+            "-";
       }
 
       await Get.toNamed(

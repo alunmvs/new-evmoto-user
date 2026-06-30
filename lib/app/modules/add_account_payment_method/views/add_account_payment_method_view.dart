@@ -14,7 +14,8 @@ class AddAccountPaymentMethodView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Metode Lainnya",
+            controller.languageServices.language.value.addPaymentMethodTitle ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -63,7 +64,12 @@ class AddAccountPaymentMethodView
                       ),
                       SizedBox(height: 16),
                       Text(
-                        "Metode Pembayaran Belum Tersedia",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .addPaymentMethodEmptyTitle ??
+                            "-",
                         style:
                             controller.typographyServices.bodyLargeBold.value,
                         textAlign: TextAlign.center,
@@ -72,7 +78,12 @@ class AddAccountPaymentMethodView
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 297 / 375,
                         child: Text(
-                          "Nantikan berbagai pilihan metode pembayaran untuk mendukung transaksi yang lebih mudah dan praktis.",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .addPaymentMethodEmptyDescription ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -93,7 +104,12 @@ class AddAccountPaymentMethodView
                     children: [
                       SizedBox(height: 16),
                       Text(
-                        "Dompet Digital",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .addPaymentMethodDigitalWalletSection ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodySmallRegular

@@ -18,7 +18,12 @@ class AccountPaymentMethodGopayDetailView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pengaturan Pembayaran",
+            controller
+                    .languageServices
+                    .language
+                    .value
+                    .accountPaymentMethodGopayTitle ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -90,7 +95,12 @@ class AccountPaymentMethodGopayDetailView
                           children: [
                             SizedBox(height: 16),
                             Text(
-                              "Detail GoPay",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .accountPaymentMethodGopayDetailGopaySectionTitle ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -134,7 +144,7 @@ class AccountPaymentMethodGopayDetailView
                                           ),
                                           SizedBox(height: 4),
                                           Text(
-                                            "Saldo: ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(controller.gopayBalance.value.balance ?? 0)}",
+                                            "${controller.languageServices.language.value.accountPaymentMethodGopayDetailGopaySectionAmount ?? "-"}: ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(controller.gopayBalance.value.balance ?? 0)}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -151,14 +161,17 @@ class AccountPaymentMethodGopayDetailView
                                     ),
                                     Center(
                                       child: Text(
-                                        "Terhubung",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .accountPaymentMethodGopayDetailGopaySectionConnected ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .captionLargeRegular
                                             .value
-                                            .copyWith(
-                                              color: Color(0XFF01AC63),
-                                            ),
+                                            .copyWith(color: Color(0XFF01AC63)),
                                       ),
                                     ),
                                   ],
@@ -187,7 +200,12 @@ class AccountPaymentMethodGopayDetailView
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Nomor Akun",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .accountPaymentMethodGopayDetailGopaySectionAccountNumber ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -232,7 +250,12 @@ class AccountPaymentMethodGopayDetailView
                             ),
                             SizedBox(height: 16),
                             Text(
-                              "Pengaturan",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .accountPaymentMethodGopaySettingSectionTitle ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -260,7 +283,12 @@ class AccountPaymentMethodGopayDetailView
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        "Atur menjadi metode utama",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .accountPaymentMethodGopaySettingSectionSetAsDefaultMethod ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular
@@ -301,11 +329,13 @@ class AccountPaymentMethodGopayDetailView
                       },
                       buttonColor: controller.themeColorServices.redColor.value,
                       child: Text(
-                        "Batalkan metode pembayaran",
-                        style: controller
-                            .typographyServices
-                            .bodyLargeBold
-                            .value
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .accountPaymentMethodGopayButtonCancel ??
+                            "-",
+                        style: controller.typographyServices.bodyLargeBold.value
                             .copyWith(
                               color: controller
                                   .themeColorServices

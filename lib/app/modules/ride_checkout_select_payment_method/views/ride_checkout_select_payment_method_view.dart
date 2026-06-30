@@ -16,7 +16,12 @@ class RideCheckoutSelectPaymentMethodView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Metode Pembayaran",
+            controller
+                    .languageServices
+                    .language
+                    .value
+                    .rideCheckoutSelectPaymentMethodTitle ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -51,7 +56,12 @@ class RideCheckoutSelectPaymentMethodView
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        "Pilih Metode Pembayaran",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .rideCheckoutSelectPaymentMethodSelectMethodSectionTitle ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodySmallRegular
@@ -125,8 +135,16 @@ class RideCheckoutSelectPaymentMethodView
                     ),
                     SizedBox(height: 2),
                     Text(
-                      "Pembayaran praktis dan cepat",
-                      style: controller.typographyServices.bodySmallRegular.value
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .rideCheckoutSelectPaymentMethodCashDescription ??
+                          "-",
+                      style: controller
+                          .typographyServices
+                          .bodySmallRegular
+                          .value
                           .copyWith(color: Color(0XFFB3B3B3)),
                     ),
                   ],
@@ -191,7 +209,12 @@ class RideCheckoutSelectPaymentMethodView
                   ),
                   SizedBox(height: 2),
                   Text(
-                    "Silahkan aktifkan layanan ini",
+                    controller
+                            .languageServices
+                            .language
+                            .value
+                            .rideCheckoutSelectPaymentMethodGopayNotActivateDescription ??
+                        "-",
                     style: controller.typographyServices.bodySmallRegular.value
                         .copyWith(color: Color(0XFFB3B3B3)),
                   ),
@@ -205,7 +228,12 @@ class RideCheckoutSelectPaymentMethodView
                 buttonColor: Color(0XFF009756),
                 borderRadius: BorderRadius.circular(6),
                 child: Text(
-                  "Aktifkan",
+                  controller
+                          .languageServices
+                          .language
+                          .value
+                          .rideCheckoutSelectPaymentMethodActivate ??
+                      "-",
                   style: controller.typographyServices.bodySmallBold.value
                       .copyWith(
                         color: controller
@@ -272,12 +300,19 @@ class RideCheckoutSelectPaymentMethodView
                         children: [
                           Text(
                             "GoPay",
-                            style:
-                                controller.typographyServices.bodySmallBold.value,
+                            style: controller
+                                .typographyServices
+                                .bodySmallBold
+                                .value,
                           ),
                           SizedBox(height: 2),
                           Text(
-                            "Transaksi lebih nyaman dengan GoPay",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .rideCheckoutSelectPaymentMethodGopayActivateDescription ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular

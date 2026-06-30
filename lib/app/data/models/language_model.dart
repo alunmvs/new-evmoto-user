@@ -412,7 +412,116 @@ class Language {
   String? waitingTimeFeeTitle;
   String? waitingTimeFeeDescription;
 
+  String? gopayUnbindConfirmationTitle;
+  String? gopayUnbindConfirmationDescription1;
+  String? gopayUnbindConfirmationDescription2;
+  String? gopayUnbindConfirmationButton1;
+  String? gopayUnbindConfirmationButton2;
+
+  String? paymentMethodDefaultConfirmationTitle;
+  String? paymentMethodDefaultConfirmationDescription;
+  String? paymentMethodDefaultConfirmationButton1;
+  String? paymentMethodDefaultConfirmationButton2;
+
+  String? accountPaymentMethodGopayTitle;
+  String? accountPaymentMethodGopayDetailGopaySectionTitle;
+  String? accountPaymentMethodGopaySettingSectionTitle;
+  String? accountPaymentMethodGopayDetailGopaySectionAmount;
+  String? accountPaymentMethodGopayDetailGopaySectionConnected;
+  String? accountPaymentMethodGopayDetailGopaySectionAccountNumber;
+  String? accountPaymentMethodGopaySettingSectionSetAsDefaultMethod;
+  String? accountPaymentMethodGopayButtonCancel;
+  String? accountPaymentMethodGopaySnackbarCopyAccountNumberSuccess;
+  String? accountPaymentMethodGopaySnackbarPaymentMethodCancelSuccess;
+
+  String? addPaymentMethodTitle;
+  String? addPaymentMethodEmptyTitle;
+  String? addPaymentMethodEmptyDescription;
+  String? addPaymentMethodDigitalWalletSection;
+  String? addPaymentMethodMobileNumberNotFound;
+  String? addPaymentMethodUrlActivationNotFound;
+
+  String? accountPaymentMethodTitle;
+  String? accountPaymentMethodSelectMethodSectionTitle;
+  String? accountPaymentMethodDefaultMethod;
+  String? accountPaymentMethodConnected;
+  String? accountPaymentMethodAmount;
+  String? accountPaymentMethodAddOtherMethodButton;
+
+  String? rideCheckoutSelectPaymentMethodTitle;
+  String? rideCheckoutSelectPaymentMethodSelectMethodSectionTitle;
+  String? rideCheckoutSelectPaymentMethodCashDescription;
+  String? rideCheckoutSelectPaymentMethodGopayNotActivateDescription;
+  String? rideCheckoutSelectPaymentMethodGopayActivateDescription;
+  String? rideCheckoutSelectPaymentMethodActivate;
+  String? rideCheckoutSelectPaymentMethodGopayDoesNotActivate;
+  String? rideCheckoutSelectPaymentMethodCashSelectSuccess;
+  String? rideCheckoutSelectPaymentMethodGopaySelectSuccess;
+  String? rideCheckoutSelectPaymentMethodMobilePhoneNotFound;
+  String? rideCheckoutSelectPaymentMethodUrlActivationNotFound;
+
+  String? accountPaymentSetting;
+
+  String? mapSelectDestination;
+  String? mapSelectPickup;
+  String? mapSelectAdditionalNote;
+  String? mapSelectButton;
+
+  String? gopaySuccessBindTitle;
+  String? gopaySuccessBindDescription;
+  String? gopaySuccessBindButton;
+
   Language({
+    this.gopaySuccessBindTitle,
+    this.gopaySuccessBindDescription,
+    this.gopaySuccessBindButton,
+    this.accountPaymentSetting,
+    this.mapSelectDestination,
+    this.mapSelectPickup,
+    this.mapSelectAdditionalNote,
+    this.mapSelectButton,
+    this.rideCheckoutSelectPaymentMethodTitle,
+    this.rideCheckoutSelectPaymentMethodSelectMethodSectionTitle,
+    this.rideCheckoutSelectPaymentMethodCashDescription,
+    this.rideCheckoutSelectPaymentMethodGopayNotActivateDescription,
+    this.rideCheckoutSelectPaymentMethodGopayActivateDescription,
+    this.rideCheckoutSelectPaymentMethodActivate,
+    this.rideCheckoutSelectPaymentMethodGopayDoesNotActivate,
+    this.rideCheckoutSelectPaymentMethodCashSelectSuccess,
+    this.rideCheckoutSelectPaymentMethodGopaySelectSuccess,
+    this.rideCheckoutSelectPaymentMethodMobilePhoneNotFound,
+    this.rideCheckoutSelectPaymentMethodUrlActivationNotFound,
+    this.accountPaymentMethodTitle,
+    this.accountPaymentMethodSelectMethodSectionTitle,
+    this.accountPaymentMethodDefaultMethod,
+    this.accountPaymentMethodConnected,
+    this.accountPaymentMethodAmount,
+    this.accountPaymentMethodAddOtherMethodButton,
+    this.addPaymentMethodDigitalWalletSection,
+    this.addPaymentMethodMobileNumberNotFound,
+    this.addPaymentMethodUrlActivationNotFound,
+    this.addPaymentMethodTitle,
+    this.addPaymentMethodEmptyTitle,
+    this.addPaymentMethodEmptyDescription,
+    this.accountPaymentMethodGopayTitle,
+    this.accountPaymentMethodGopayDetailGopaySectionTitle,
+    this.accountPaymentMethodGopaySettingSectionTitle,
+    this.accountPaymentMethodGopayDetailGopaySectionAmount,
+    this.accountPaymentMethodGopayDetailGopaySectionConnected,
+    this.accountPaymentMethodGopayDetailGopaySectionAccountNumber,
+    this.accountPaymentMethodGopaySettingSectionSetAsDefaultMethod,
+    this.accountPaymentMethodGopayButtonCancel,
+    this.accountPaymentMethodGopaySnackbarCopyAccountNumberSuccess,
+    this.accountPaymentMethodGopaySnackbarPaymentMethodCancelSuccess,
+    this.paymentMethodDefaultConfirmationTitle,
+    this.paymentMethodDefaultConfirmationDescription,
+    this.paymentMethodDefaultConfirmationButton1,
+    this.paymentMethodDefaultConfirmationButton2,
+    this.gopayUnbindConfirmationTitle,
+    this.gopayUnbindConfirmationDescription1,
+    this.gopayUnbindConfirmationDescription2,
+    this.gopayUnbindConfirmationButton1,
+    this.gopayUnbindConfirmationButton2,
     this.waitingTimeFeeTitle,
     this.waitingTimeFeeDescription,
     this.cancelByDriver,
@@ -808,6 +917,146 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    gopaySuccessBindTitle =
+        json['gopay_success_bind_title'] ?? "(Translate Not Found)";
+    gopaySuccessBindDescription =
+        json['gopay_success_bind_description'] ?? "(Translate Not Found)";
+    gopaySuccessBindButton =
+        json['gopay_success_bind_button'] ?? "(Translate Not Found)";
+
+    accountPaymentSetting =
+        json['account_payment_setting'] ?? "(Translate Not Found)";
+
+    mapSelectDestination =
+        json['map_select_destination'] ?? "(Translate Not Found)";
+    mapSelectPickup = json['map_select_pickup'] ?? "(Translate Not Found)";
+    mapSelectAdditionalNote =
+        json['map_select_additional_note'] ?? "(Translate Not Found)";
+    mapSelectButton = json['map_select_button'] ?? "(Translate Not Found)";
+
+    rideCheckoutSelectPaymentMethodTitle =
+        json['ride_checkout_select_payment_method_title'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodSelectMethodSectionTitle =
+        json['ride_checkout_select_payment_method_select_method_section_title'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodCashDescription =
+        json['ride_checkout_select_payment_method_cash_description'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodGopayNotActivateDescription =
+        json['ride_checkout_select_payment_method_gopay_not_activate_description'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodGopayActivateDescription =
+        json['ride_checkout_select_payment_method_gopay_activate_description'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodMobilePhoneNotFound =
+        json['ride_checkout_select_payment_method_mobile_phone_not_found'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodUrlActivationNotFound =
+        json['ride_checkout_select_payment_method_url_activation_not_found'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodActivate =
+        json['ride_checkout_select_payment_method_activate'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodGopayDoesNotActivate =
+        json['ride_checkout_select_payment_method_gopay_does_not_activate'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodCashSelectSuccess =
+        json['ride_checkout_select_payment_method_cash_select_success'] ??
+        "(Translate Not Found)";
+    rideCheckoutSelectPaymentMethodGopaySelectSuccess =
+        json['ride_checkout_select_payment_method_gopay_select_success'] ??
+        "(Translate Not Found)";
+
+    accountPaymentMethodTitle =
+        json['account_payment_method_title'] ?? "(Translate Not Found)";
+    accountPaymentMethodSelectMethodSectionTitle =
+        json['account_payment_method_select_method_section_title'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodDefaultMethod =
+        json['account_payment_method_default_method'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodConnected =
+        json['account_payment_method_connected'] ?? "(Translate Not Found)";
+    accountPaymentMethodAmount =
+        json['account_payment_method_amount'] ?? "(Translate Not Found)";
+    accountPaymentMethodAddOtherMethodButton =
+        json['account_payment_method_add_other_method_button'] ??
+        "(Translate Not Found)";
+
+    addPaymentMethodDigitalWalletSection =
+        json['add_payment_method_digital_wallet_section'] ??
+        "(Translate Not Found)";
+    addPaymentMethodMobileNumberNotFound =
+        json['add_payment_method_mobile_number_not_found'] ??
+        "(Translate Not Found)";
+    addPaymentMethodUrlActivationNotFound =
+        json['add_payment_method_url_activation_not_found'] ??
+        "(Translate Not Found)";
+
+    addPaymentMethodTitle =
+        json['add_payment_method_title'] ?? "(Translate Not Found)";
+    addPaymentMethodEmptyTitle =
+        json['add_payment_method_empty_title'] ?? "(Translate Not Found)";
+    addPaymentMethodEmptyDescription =
+        json['add_payment_method_empty_description'] ?? "(Translate Not Found)";
+
+    accountPaymentMethodGopayTitle =
+        json['account_payment_method_gopay_title'] ?? "(Translate Not Found)";
+    accountPaymentMethodGopayDetailGopaySectionTitle =
+        json['account_payment_method_gopay_detail_gopay_section_title'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopaySettingSectionTitle =
+        json['account_payment_method_gopay_setting_section_title'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopayDetailGopaySectionAmount =
+        json['account_payment_method_gopay_section_amount'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopayDetailGopaySectionConnected =
+        json['account_payment_method_gopay_section_connected'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopayDetailGopaySectionAccountNumber =
+        json['account_payment_method_gopay_section_account_number'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopaySettingSectionSetAsDefaultMethod =
+        json['account_payment_method_gopay_setting_section_set_as_default_method'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopayButtonCancel =
+        json['account_payment_method_gopay_button_cancel'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopaySnackbarCopyAccountNumberSuccess =
+        json['account_payment_method_gopay_snackbar_copy_account_number_success'] ??
+        "(Translate Not Found)";
+    accountPaymentMethodGopaySnackbarPaymentMethodCancelSuccess =
+        json['account_payment_method_gopay_snackbar_payment_method_cancel_success'] ??
+        "(Translate Not Found)";
+
+    paymentMethodDefaultConfirmationTitle =
+        json['payment_method_default_confirmation_title'] ??
+        "(Translate Not Found)";
+    paymentMethodDefaultConfirmationDescription =
+        json['payment_method_default_confirmation_description'] ??
+        "(Translate Not Found)";
+    paymentMethodDefaultConfirmationButton1 =
+        json['payment_method_default_confirmation_button1'] ??
+        "(Translate Not Found)";
+    paymentMethodDefaultConfirmationButton2 =
+        json['payment_method_default_confirmation_button2'] ??
+        "(Translate Not Found)";
+
+    gopayUnbindConfirmationTitle =
+        json['gopay_unbind_confirmation_title'] ?? "(Translate Not Found)";
+    gopayUnbindConfirmationDescription1 =
+        json['gopay_unbind_confirmation_description1'] ??
+        "(Translate Not Found)";
+    gopayUnbindConfirmationDescription2 =
+        json['gopay_unbind_confirmation_description2'] ??
+        "(Translate Not Found)";
+    gopayUnbindConfirmationButton1 =
+        json['gopay_unbind_confirmation_button1'] ?? "(Translate Not Found)";
+    gopayUnbindConfirmationButton2 =
+        json['gopay_unbind_confirmation_button2'] ?? "(Translate Not Found)";
+
     waitingTimeFeeTitle =
         json['waiting_time_fee_title'] ?? "(Translate Not Found)";
     waitingTimeFeeDescription =
@@ -882,8 +1131,7 @@ class Language {
     advancedBookingCreatedTitle =
         json['advanced_booking_created_title'] ?? "(Translate Not Found)";
     advancedBookingCreatedDescription =
-        json['advanced_booking_created_description'] ??
-        "(Translate Not Found)";
+        json['advanced_booking_created_description'] ?? "(Translate Not Found)";
     advancedBookingCreatedButton =
         json['advanced_booking_created_button'] ?? "(Translate Not Found)";
 
@@ -924,8 +1172,7 @@ class Language {
         json['driver_not_available_title'] ?? "(Translate Not Found)";
     driverNotAvailableDescription =
         json['driver_not_available_description'] ?? "(Translate Not Found)";
-    driverBusyTitle =
-        json['driver_busy_title'] ?? "(Translate Not Found)";
+    driverBusyTitle = json['driver_busy_title'] ?? "(Translate Not Found)";
     driverBusyDescription =
         json['driver_busy_description'] ?? "(Translate Not Found)";
     serviceTimeValidationTitle =
@@ -1195,7 +1442,7 @@ class Language {
         json['ev_motorcycle_driver_search'] ?? "(Translate Not Found)";
     evMotorcycleWaitingDriverConfirmation =
         json['ev_motorcycle_waiting_driver_confirmation'] ??
-            "(Translate Not Found)";
+        "(Translate Not Found)";
     passenger = json['passenger'] ?? "(Translate Not Found)";
     noMessagesYet = json['no_messages_yet'] ?? "(Translate Not Found)";
     yourEstimateToYourDestination =

@@ -33,10 +33,7 @@ class AddAccountPaymentMethodController extends GetxController {
     super.onInit();
     isFetch.value = true;
     try {
-      await Future.wait([
-        userServices.getUserInfo(),
-        _fetchGopayLinkStatus(),
-      ]);
+      await Future.wait([userServices.getUserInfo(), _fetchGopayLinkStatus()]);
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());
     } catch (e) {
@@ -59,7 +56,11 @@ class AddAccountPaymentMethodController extends GetxController {
     var phone = (userServices.userInfo.value.phone ?? "").removeAllWhitespace;
 
     if (phone.isEmpty) {
-      throw "Nomor telepon tidak ditemukan";
+      throw languageServices
+              .language
+              .value
+              .addPaymentMethodMobileNumberNotFound ??
+          "-";
     }
 
     if (phone.startsWith("62")) {
@@ -87,14 +88,16 @@ class AddAccountPaymentMethodController extends GetxController {
 
       final activationUrl = linkData.activationUrl;
       if (activationUrl == null || activationUrl.isEmpty) {
-        throw "URL aktivasi GoPay tidak ditemukan";
+        throw languageServices
+                .language
+                .value
+                .addPaymentMethodUrlActivationNotFound ??
+            "-";
       }
 
       await Get.toNamed(
         Routes.GOPAY_ACTIVATION_WEBVIEW,
-        arguments: {
-          "activation_url": activationUrl,
-        },
+        arguments: {"activation_url": activationUrl},
       );
     } on DioException catch (e) {
       SnackbarHelper.showSnackbarError(text: e.error.toString());

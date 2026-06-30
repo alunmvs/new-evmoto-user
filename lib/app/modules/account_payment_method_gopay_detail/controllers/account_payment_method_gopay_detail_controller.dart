@@ -67,7 +67,14 @@ class AccountPaymentMethodGopayDetailController extends GetxController {
     if (phoneNumber.isEmpty) return;
 
     await Clipboard.setData(ClipboardData(text: phoneNumber));
-    SnackbarHelper.showSnackbarSuccess(text: "Nomor akun disalin");
+    SnackbarHelper.showSnackbarSuccess(
+      text:
+          languageServices
+              .language
+              .value
+              .accountPaymentMethodGopaySnackbarCopyAccountNumberSuccess ??
+          "-",
+    );
   }
 
   Future<void> onTapSetAsMainMethod() async {
@@ -86,7 +93,12 @@ class AccountPaymentMethodGopayDetailController extends GetxController {
             Get.close(1);
             Get.back();
             SnackbarHelper.showSnackbarSuccess(
-              text: "Metode pembayaran GoPay berhasil dibatalkan",
+              text:
+                  languageServices
+                      .language
+                      .value
+                      .accountPaymentMethodGopaySnackbarPaymentMethodCancelSuccess ??
+                  "-",
             );
           } on DioException catch (e) {
             SnackbarHelper.showSnackbarError(text: e.error.toString());
