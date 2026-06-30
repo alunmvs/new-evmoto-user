@@ -166,6 +166,66 @@ class RideOrderPaymentMethodSubView extends GetView<RideOrderDetailController> {
               ],
             ),
           ],
+          if (controller.orderRideDetail.value.payType == 4) ...[
+            Row(
+              children: [
+                Image.asset(
+                  "assets/icons/icon_payment_method_gopay.png",
+                  width: 20,
+                  height: 20,
+                ),
+                SizedBox(width: 11),
+                Text(
+                  "GoPay",
+                  style: controller.typographyServices.bodyLargeBold.value
+                      .copyWith(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey700
+                            .value,
+                      ),
+                ),
+                Spacer(),
+                if (controller.orderRideDetail.value.couponId != 0) ...[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: controller.themeColorServices.primaryBlue.value,
+                      borderRadius: BorderRadius.circular(9999),
+                    ),
+                    child: Text(
+                      controller.languageServices.language.value.promo ?? "-",
+                      style: controller
+                          .typographyServices
+                          .captionLargeRegular
+                          .value
+                          .copyWith(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey0
+                                .value,
+                          ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                ],
+                Text(
+                  NumberFormat.currency(
+                    locale: 'id_ID',
+                    symbol: 'Rp',
+                    decimalDigits: 0,
+                  ).format(controller.orderRideDetail.value.payMoney),
+                  style: controller.typographyServices.bodySmallBold.value
+                      .copyWith(
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey700
+                            .value,
+                      ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
