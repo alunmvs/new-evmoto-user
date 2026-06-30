@@ -575,6 +575,7 @@ class LoginRegisterView extends GetView<LoginRegisterController> {
                       "assets/icons/icon_user_add.svg",
                       width: 24,
                       height: 24,
+                      color: controller.themeColorServices.primaryBlue.value,
                     ),
                     SizedBox(width: 5),
                     Text(

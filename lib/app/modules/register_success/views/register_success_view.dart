@@ -10,49 +10,54 @@ class RegisterSuccessView extends GetView<RegisterSuccessController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('RegisterSuccessView'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/images/img_register_success.png",
-              width: 85,
-              height: 85,
-            ),
-            SizedBox(height: 16),
-            Text(
-              "Pendaftaran Berhasil",
-              style: controller.typographyServices.headingMediumBold.value
-                  .copyWith(color: Color(0XFF272727)),
-            ),
-            Text(
-              "Selamat, akun anda telah berhasil dibuat.",
-              style: controller.typographyServices.bodySmallRegular.value
-                  .copyWith(color: Color(0XFFB3B3B3)),
-            ),
-            SizedBox(height: 32),
-            Text(
-              "Kode refferal benar",
-              style: controller.typographyServices.headingMediumBold.value
-                  .copyWith(color: Color(0XFF2E2E2E)),
-            ),
-            SizedBox(height: 4),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 7),
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0XFF0060C6)),
+      // appBar: AppBar(
+      //   title: const Text('RegisterSuccessView'),
+      //   centerTitle: true,
+      // ),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 16 * 8),
+              Image.asset(
+                "assets/images/img_register_success.png",
+                width: 85,
+                height: 85,
               ),
-              child: Text(
-                "DRV - 00842",
-                style: controller.typographyServices.bodyLargeBold.value
-                    .copyWith(color: Color(0XFF0060C6), fontSize: 18),
+              SizedBox(height: 16),
+              Text(
+                "Pendaftaran Berhasil",
+                style: controller.typographyServices.headingMediumBold.value
+                    .copyWith(color: Color(0XFF272727)),
               ),
-            ),
-          ],
+              Text(
+                "Selamat, akun anda telah berhasil dibuat.",
+                style: controller.typographyServices.bodySmallRegular.value
+                    .copyWith(color: Color(0XFFB3B3B3)),
+              ),
+              SizedBox(height: 32),
+              Text(
+                "Kode referral benar",
+                style: controller.typographyServices.bodySmallRegular.value
+                    .copyWith(color: Color(0XFF2E2E2E)),
+              ),
+              SizedBox(height: 4),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 7),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0XFF0060C6)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  "DRV - 00842",
+                  style: controller.typographyServices.bodyLargeBold.value
+                      .copyWith(color: Color(0XFF0060C6), fontSize: 18),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(

@@ -12,13 +12,17 @@ class RegisterView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   centerTitle: false,
-      //   backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
-      //   surfaceTintColor:
-      //       controller.themeColorServices.neutralsColorGrey0.value,
-      // ),
+      appBar: AppBar(
+        title: Text(
+          "Kembali",
+          style: controller.typographyServices.bodyLargeBold.value,
+        ),
+        automaticallyImplyLeading: true,
+        centerTitle: false,
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        surfaceTintColor:
+            controller.themeColorServices.neutralsColorGrey0.value,
+      ),
       backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
       body: SingleChildScrollView(
         child: Padding(
@@ -28,7 +32,7 @@ class RegisterView extends GetView<RegisterController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16 * 4),
+                SizedBox(height: 8),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
@@ -366,7 +370,7 @@ class RegisterView extends GetView<RegisterController> {
                           "Request OTP",
                           style: controller
                               .typographyServices
-                              .bodySmallRegular
+                              .bodySmallBold
                               .value
                               .copyWith(color: Color(0XFF272727)),
                         ),
