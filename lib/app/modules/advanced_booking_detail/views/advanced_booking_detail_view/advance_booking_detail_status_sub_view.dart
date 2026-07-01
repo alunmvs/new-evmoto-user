@@ -38,7 +38,12 @@ class AdvanceBookingDetailStatusSubView
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      "Sedang Menunggu Driver",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .advanceBookingStatusWaitingDriver ??
+                          "-",
                       style: controller.typographyServices.bodyLargeBold.value
                           .copyWith(color: Color(0XFFEA7405)),
                       maxLines: 1,
@@ -76,7 +81,12 @@ class AdvanceBookingDetailStatusSubView
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      "Driver Menuju Titik Jemput",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .advanceBookingStatusOngoingOrigin ??
+                          "-",
                       style: controller.typographyServices.bodyLargeBold.value
                           .copyWith(color: Color(0XFF0060C6)),
                       maxLines: 1,
@@ -115,7 +125,12 @@ class AdvanceBookingDetailStatusSubView
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      "Driver Sedang Mengantar",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .advanceBookingStatusOngoingDestination ??
+                          "-",
                       style: controller.typographyServices.bodyLargeBold.value
                           .copyWith(color: Color(0XFF0060C6)),
                       maxLines: 1,
@@ -147,7 +162,12 @@ class AdvanceBookingDetailStatusSubView
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      "Pesanan Telah Dibatalkan",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .advanceBookingStatusCancel ??
+                          "-",
                       style: controller.typographyServices.bodyLargeBold.value
                           .copyWith(color: Color(0XFFF22626)),
                       maxLines: 1,
@@ -179,9 +199,51 @@ class AdvanceBookingDetailStatusSubView
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      "Tidak Ada Driver Tersedia",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .advanceBookingStatusExpired ??
+                          "-",
                       style: controller.typographyServices.bodyLargeBold.value
                           .copyWith(color: Color(0XFF6D6D6D)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          if ([
+            AdvancedBookingState.COMPLETED,
+          ].contains(controller.advancedBooking.value.state)) ...[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                color: Color(0XFFE8FFF5),
+                border: Border.all(color: Color(0XFF99CEB3)),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/icons/icon_advance_booking_status_completed.png",
+                    width: 32,
+                    height: 32,
+                  ),
+                  SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .advanceBookingStatusCompleted ??
+                          "-",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(color: Color(0XFF2C8357)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

@@ -101,6 +101,7 @@ dependencies:
   http_cache_file_store: ^2.0.1
   path_provider: ^2.1.6
   webview_flutter: ^4.14.0
+  chucker_flutter: ^1.9.2
 
 dependency_overrides:
   http: ^1.1.2

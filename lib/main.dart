@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ import 'app/routes/app_pages.dart';
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = ChuckerFlutter.navigatorKey;
 
 Future<void> applyProxy(ProxySetting settings) async {
   if (!settings.enabled || settings.host == null) {
@@ -45,6 +46,8 @@ Future<void> applyProxy(ProxySetting settings) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  ChuckerFlutter.showOnRelease = isChuckerEnabled;
 
   try {
     final settings = await NativeProxyReader.proxySetting;
@@ -140,96 +143,105 @@ Future<void> main() async {
       builder: FlutterSmartDialog.init(
         builder: (context, child) {
           return env == "dev"
-            ? Banner(
-                message: "Dev",
-                location: BannerLocation.topEnd,
-                color: Color(0XFF0060C6),
-                shadow: BoxShadow(
-                  color: Colors.transparent,
-                  blurRadius: 0,
-                  spreadRadius: 0,
-                  offset: Offset(0, 0),
-                ),
-                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                child: SafeArea(
-                  top: false,
-                  left: false,
-                  right: false,
-                  bottom: true,
-                  child: GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: Stack(
-                      children: [
-                        child!,
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.only(right: 16),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Obx(
-                                () => Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (Get.find<SocketServices>()
-                                            .isSocketClose
-                                            .value ==
-                                        true) ...[
+              ? Banner(
+                  message: "Dev",
+                  location: BannerLocation.topEnd,
+                  color: Color(0XFF0060C6),
+                  shadow: BoxShadow(
+                    color: Colors.transparent,
+                    blurRadius: 0,
+                    spreadRadius: 0,
+                    offset: Offset(0, 0),
+                  ),
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                  child: SafeArea(
+                    top: false,
+                    left: false,
+                    right: false,
+                    bottom: true,
+                    child: GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      child: Stack(
+                        children: [
+                          child!,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.only(right: 16),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Obx(
+                                  () => Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
                                       if (Get.find<SocketServices>()
-                                              .isProcessConnect
+                                              .isSocketClose
                                               .value ==
                                           true) ...[
-                                        Text(
-                                          "Ping : Reconnecting",
-                                          style: Get.find<TypographyServices>()
-                                              .captionSmallRegular
-                                              .value
-                                              .copyWith(color: Colors.white),
-                                        ),
+                                        if (Get.find<SocketServices>()
+                                                .isProcessConnect
+                                                .value ==
+                                            true) ...[
+                                          Text(
+                                            "Ping : Reconnecting",
+                                            style:
+                                                Get.find<TypographyServices>()
+                                                    .captionSmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                          ),
+                                        ] else ...[
+                                          Text(
+                                            "Ping : Disconnected",
+                                            style:
+                                                Get.find<TypographyServices>()
+                                                    .captionSmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                          ),
+                                        ],
                                       ] else ...[
                                         Text(
-                                          "Ping : Disconnected",
+                                          "Ping : ${Get.find<SocketServices>().pingMs.value} ms",
                                           style: Get.find<TypographyServices>()
                                               .captionSmallRegular
                                               .value
                                               .copyWith(color: Colors.white),
                                         ),
                                       ],
-                                    ] else ...[
-                                      Text(
-                                        "Ping : ${Get.find<SocketServices>().pingMs.value} ms",
-                                        style: Get.find<TypographyServices>()
-                                            .captionSmallRegular
-                                            .value
-                                            .copyWith(color: Colors.white),
-                                      ),
                                     ],
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-            : SafeArea(
-                top: false,
-                left: false,
-                right: false,
-                bottom: true,
-                child: GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: child!,
-                ),
-              );
+                )
+              : SafeArea(
+                  top: false,
+                  left: false,
+                  right: false,
+                  bottom: true,
+                  child: GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: child!,
+                  ),
+                );
         },
       ),
     ),

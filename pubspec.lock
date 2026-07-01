@@ -169,6 +169,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.4"
+  chopper:
+    dependency: transitive
+    description:
+      name: chopper
+      sha256: "2e7535c174752c6b051e18baa6f9a7dcaa13fc2159f77b755ab58b5537a8545c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.6.0"
+  chucker_flutter:
+    dependency: "direct main"
+    description:
+      name: chucker_flutter
+      sha256: bd6f91df3908e2fad32b09f91e94ee6e17fca5ccc42f56b0231a9761986579ec
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.9.2"
   chunked_stream:
     dependency: transitive
     description:
@@ -1573,6 +1589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  qs_dart:
+    dependency: transitive
+    description:
+      name: qs_dart
+      sha256: "6cd66537513d16797b807bf30618501482ace0948609d0caa2c402f972b90385"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.0"
   rbush:
     dependency: transitive
     description:
@@ -1637,6 +1661,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.3.1"
+  share_plus:
+    dependency: transitive
+    description:
+      name: share_plus
+      sha256: "223873d106614442ea6f20db5a038685cc5b32a2fba81cdecaefbbae0523f7fa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "12.0.2"
+  share_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: share_plus_platform_interface
+      sha256: "88023e53a13429bd65d8e85e11a9b484f49d4c190abbd96c7932b74d6927cc9a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
   shared_preferences:
     dependency: "direct main"
     description:

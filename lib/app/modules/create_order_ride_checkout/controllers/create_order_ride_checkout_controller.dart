@@ -179,9 +179,16 @@ class CreateOrderRideCheckoutController extends GetxController {
       return [];
     }
 
+    final roundedMinMinute = ((minMinute + 14) ~/ 15) * 15;
+    final roundedMaxMinute = (maxMinute ~/ 15) * 15;
+
+    if (roundedMinMinute > roundedMaxMinute || roundedMinMinute >= 60) {
+      return [];
+    }
+
     return List.generate(
-      maxMinute - minMinute + 1,
-      (index) => (minMinute + index).toString().padLeft(2, '0'),
+      (roundedMaxMinute - roundedMinMinute) ~/ 15 + 1,
+      (index) => (roundedMinMinute + index * 15).toString().padLeft(2, '0'),
     );
   }
 

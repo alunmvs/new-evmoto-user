@@ -1,7 +1,9 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_user/app/modules/account/controllers/account_controller.dart';
+import 'package:new_evmoto_user/environment.dart';
 
 import '../../../../routes/app_pages.dart';
 
@@ -325,6 +327,66 @@ class AccountMenuSection2SubView extends GetView<AccountController> {
                 ),
               ),
             ),
+            if (isChuckerEnabled) ...[
+              InkWell(
+                onTap: () {
+                  ChuckerFlutter.showChuckerScreen();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: controller
+                              .themeColorServices
+                              .sematicColorBlue100
+                              .value,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_docs.svg",
+                              width: 14.22,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                controller
+                                    .themeColorServices
+                                    .sematicColorBlue500
+                                    .value,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        "Chucker Debug",
+                        style:
+                            controller.typographyServices.bodySmallBold.value,
+                      ),
+                      Spacer(),
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_arrow_right.svg",
+                            width: 6,
+                            height: 12,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

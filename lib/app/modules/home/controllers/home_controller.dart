@@ -166,11 +166,14 @@ class HomeController extends GetxController {
   Offset mapPanLastOffset = Offset.zero;
   final customGestureEnabled = true.obs;
 
+  final markerIconDriverNearby = Rx<BitmapDescriptor?>(null);
+
   @override
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
     isCriticalError.value = false;
+
     if (locationServices.currentLatitude.value == null ||
         locationServices.geocodingAddress.value.address == null) {
       await locationServices.requestLocation();
@@ -184,6 +187,7 @@ class HomeController extends GetxController {
           latitude: currentLatitude.value ?? -6.1744651,
           longitude: currentLongitude.value ?? 106.822745,
         ),
+        preloadCacheMarkerIcon(),
       ]),
     );
 
@@ -293,6 +297,13 @@ class HomeController extends GetxController {
     super.onClose();
     FlutterCallkitIncoming.endAllCalls();
     disableDriverNearbyTimer();
+  }
+
+  Future<void> preloadCacheMarkerIcon() async {
+    markerIconDriverNearby.value = await BitmapDescriptor.asset(
+      ImageConfiguration(size: Size(64, 106)),
+      'assets/icons/icon_driver.png',
+    );
   }
 
   Future<void> setHomeControllerRegistered() async {
@@ -569,10 +580,7 @@ class HomeController extends GetxController {
         markerId: markerId,
         position: LatLng(driverNearby.lat!, driverNearby.lon!),
         // icon: widgetBitmapDescriptor,
-        icon: await BitmapDescriptor.asset(
-          ImageConfiguration(size: Size(64, 106)),
-          'assets/icons/icon_driver.png',
-        ),
+        icon: markerIconDriverNearby.value!,
         anchor: Offset(0.5, 0.5),
         visible: true,
       );

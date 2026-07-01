@@ -471,7 +471,20 @@ class Language {
   String? gopaySuccessBindDescription;
   String? gopaySuccessBindButton;
 
+  String? advanceBookingStatusCompleted;
+  String? advanceBookingStatusWaitingDriver;
+  String? advanceBookingStatusOngoingOrigin;
+  String? advanceBookingStatusOngoingDestination;
+  String? advanceBookingStatusCancel;
+  String? advanceBookingStatusExpired;
+
   Language({
+    this.advanceBookingStatusCompleted,
+    this.advanceBookingStatusWaitingDriver,
+    this.advanceBookingStatusOngoingOrigin,
+    this.advanceBookingStatusOngoingDestination,
+    this.advanceBookingStatusCancel,
+    this.advanceBookingStatusExpired,
     this.gopaySuccessBindTitle,
     this.gopaySuccessBindDescription,
     this.gopaySuccessBindButton,
@@ -917,6 +930,22 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    advanceBookingStatusCompleted =
+        json['advance_booking_status_completed'] ?? "(Translate Not Found)";
+    advanceBookingStatusWaitingDriver =
+        json['advance_booking_status_waiting_driver'] ??
+        "(Translate Not Found)";
+    advanceBookingStatusOngoingOrigin =
+        json['advance_booking_status_ongoing_origin'] ??
+        "(Translate Not Found)";
+    advanceBookingStatusOngoingDestination =
+        json['advance_booking_status_ongoing_destination'] ??
+        "(Translate Not Found)";
+    advanceBookingStatusCancel =
+        json['advance_booking_status_cancel'] ?? "(Translate Not Found)";
+    advanceBookingStatusExpired =
+        json['advance_booking_status_expired'] ?? "(Translate Not Found)";
+
     gopaySuccessBindTitle =
         json['gopay_success_bind_title'] ?? "(Translate Not Found)";
     gopaySuccessBindDescription =
