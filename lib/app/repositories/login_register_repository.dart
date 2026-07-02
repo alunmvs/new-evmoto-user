@@ -41,4 +41,23 @@ class LoginRegisterRepository {
       rethrow;
     }
   }
+
+  Future<bool> checkPhoneRegistered({String? phone}) async {
+    try {
+      var url = "$baseUrl/account/tUser/user/phone-usage";
+
+      var dio = apiServices.dio;
+      var response = await dio.get(url, queryParameters: {"phone": phone});
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return response.data['data'];
+    } on DioException {
+      rethrow;
+    }
+  }
 }

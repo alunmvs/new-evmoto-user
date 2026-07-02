@@ -412,7 +412,10 @@ class Language {
   String? waitingTimeFeeTitle;
   String? waitingTimeFeeDescription;
 
+  String? snackbarPhoneNotRegistered;
+
   Language({
+    this.snackbarPhoneNotRegistered,
     this.waitingTimeFeeTitle,
     this.waitingTimeFeeDescription,
     this.cancelByDriver,
@@ -808,6 +811,9 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    snackbarPhoneNotRegistered =
+        json['snackbar_phone_not_registered'] ?? "(Translate Not Found)";
+
     waitingTimeFeeTitle =
         json['waiting_time_fee_title'] ?? "(Translate Not Found)";
     waitingTimeFeeDescription =
@@ -882,8 +888,7 @@ class Language {
     advancedBookingCreatedTitle =
         json['advanced_booking_created_title'] ?? "(Translate Not Found)";
     advancedBookingCreatedDescription =
-        json['advanced_booking_created_description'] ??
-        "(Translate Not Found)";
+        json['advanced_booking_created_description'] ?? "(Translate Not Found)";
     advancedBookingCreatedButton =
         json['advanced_booking_created_button'] ?? "(Translate Not Found)";
 
@@ -924,8 +929,7 @@ class Language {
         json['driver_not_available_title'] ?? "(Translate Not Found)";
     driverNotAvailableDescription =
         json['driver_not_available_description'] ?? "(Translate Not Found)";
-    driverBusyTitle =
-        json['driver_busy_title'] ?? "(Translate Not Found)";
+    driverBusyTitle = json['driver_busy_title'] ?? "(Translate Not Found)";
     driverBusyDescription =
         json['driver_busy_description'] ?? "(Translate Not Found)";
     serviceTimeValidationTitle =
@@ -1195,7 +1199,7 @@ class Language {
         json['ev_motorcycle_driver_search'] ?? "(Translate Not Found)";
     evMotorcycleWaitingDriverConfirmation =
         json['ev_motorcycle_waiting_driver_confirmation'] ??
-            "(Translate Not Found)";
+        "(Translate Not Found)";
     passenger = json['passenger'] ?? "(Translate Not Found)";
     noMessagesYet = json['no_messages_yet'] ?? "(Translate Not Found)";
     yourEstimateToYourDestination =
